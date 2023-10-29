@@ -2,7 +2,7 @@ interface Model {
   // login
   // logout
   // create a workspace-- ?
-  createWorkspace: (name: string) => Promise<Workspace>
+  // createWorkspace: (name: string) => Promise<Workspace>
   // select a workspace-- get all documents in the channel coll of the workspace
   // delete a workspace-- delete this workspace document
   // create a channel-- ?
@@ -11,5 +11,6 @@ interface Model {
 
   // post reaction -- patch on a post
   // post creation-- POST call on a document
-  // 
+
+
 }
