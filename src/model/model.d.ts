@@ -11,6 +11,4 @@ interface Model {
 
   // post reaction -- patch on a post
   // post creation-- POST call on a document
-
-
 }

@@ -20,3 +20,9 @@ export type ModelPostMetadata = {
     LastModifiedBy: string;
     LastModifiedAt: number;
 }
+
+// Represents the information (token and expiration time) for a user 
+export type UserInfo = {
+    token: string 
+    expireAt: Date 
+}

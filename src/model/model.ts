@@ -1,4 +1,4 @@
-import {ModelPost} from "./modelTypes"
+import {ModelPost, UserInfo} from "./modelTypes"
 
 /**
  * Wrapper around fetch to return a Promise that resolves to the desired
@@ -43,14 +43,19 @@ export class OwlDBModel {
         return process.env.DATABASE_HOST + process.env.DATABASE_PATH;
     }
 
-    // Method to get all posts from channel channelName in workspace workspaceName, using token authToken.
-    getPosts(workspaceName: string, channelName: string, authToken: string): Promise<Array<ModelPost>> {
-        const options = {
-            headers: new Headers({
-                'Authorization': 'Bearer ' + authToken,
-                'accept': 'application/json'
-            })
+    login(username: string): Promise<UserInfo> {
+      const options = {
+          method: "POST",
+          // Should use the actual username here 
+          body: `{"username": "dummy_user"}`,
         };
-        return typedFetch<Array<ModelPost>>(this.getDatabasePath() + "/" + workspaceName + "/channels/" + channelName + "/posts/", options);
+        return typedFetch(this.getDatabasePath() + "/auth", options); 
+      }
+
+      logout(token: string): Promise<void> {
+        const options = {
+          method: "DELETE",
+        };
+        return typedFetch(this.getDatabasePath() + "/auth", options);
     }
-}
+  } 

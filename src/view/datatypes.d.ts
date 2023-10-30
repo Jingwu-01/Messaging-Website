@@ -1,3 +1,7 @@
+interface User {
+  name: string 
+}
+
 interface Channel {
   name: string
 }
