@@ -1,4 +1,5 @@
-import {ModelPost, UserInfo} from "./modelTypes"
+import { fetchEventSource } from "@microsoft/fetch-event-source";
+import {ModelPost, UserInfo, PostsEvent} from "./modelTypes"
 
 /**
  * Wrapper around fetch to return a Promise that resolves to the desired
@@ -29,8 +30,25 @@ function typedFetch<T>(url: string, options?: RequestInit): Promise<T> {
     });
 }
 
+// TODO: can you declare a global in both the model AND the view?
+declare global {
+  interface DocumentEventMap {
+    postsEvent: CustomEvent<PostsEvent>;
+  }
+}
+
 // Class representing our model interfacing with OwlDB.
 export class OwlDBModel {
+
+    private posts: Array<ModelPost>;
+
+    private token: string;
+
+    constructor() {
+      this.posts = [];
+      this.token = "";
+      this.addPost.bind(this);
+    }
 
     // Method to return the path to the database used.
     getDatabasePath(): string {
@@ -43,19 +61,63 @@ export class OwlDBModel {
         return process.env.DATABASE_HOST + process.env.DATABASE_PATH;
     }
 
+    getAuthPath(): string {
+      if (process.env.DATABASE_HOST === undefined) {
+        throw new Error("Database host is undefined");
+      }
+      return process.env.DATABASE_HOST + "/auth";
+    }
+
     login(username: string): Promise<UserInfo> {
       const options = {
           method: "POST",
           // Should use the actual username here 
-          body: `{"username": "dummy_user"}`,
+          body: `{"username": ${username}}`,
         };
-        return typedFetch(this.getDatabasePath() + "/auth", options); 
+        return typedFetch(this.getAuthPath(), options); 
       }
 
-      logout(token: string): Promise<void> {
+    logout(token: string): Promise<void> {
         const options = {
           method: "DELETE",
         };
-        return typedFetch(this.getDatabasePath() + "/auth", options);
+        return typedFetch(this.getAuthPath(), options);
+    }
+
+    addPost(postContent: string): void {
+      // TODO: obviously do some sort of validation here.
+      // most likely do this on the receiving end. call a valid. func
+      const jsonContents = JSON.parse(postContent) as ModelPost;
+      this.posts.push(jsonContents);
+    }
+
+    subscribeToPosts(workspaceName: string, collectionName: string): void {
+      const thisModel = this;
+      const options = {
+        Authorization: "Bearer " + this.token,
+        accept: "application/json"
+      }
+      let fetchUrl = this.getDatabasePath() + `/${workspaceName}/channels/${collectionName}/posts/?mode=subscribe`
+      fetchEventSource(fetchUrl, {
+        headers: options,
+        // TODO: I am SURE that you can theoretically have some extra
+        // error handling here too, for impossible events.
+        onmessage(event) {
+          switch (event.event) {
+            case "update":
+              thisModel.addPost(event.data);
+              const postsEvent = new CustomEvent("postsEvent", {
+                detail: {posts: thisModel.posts},
+              });
+              document.dispatchEvent(postsEvent);
+              // TODO: does TS use these 'break' statements
+              // like are conventionally used?
+              break;
+            case "delete":
+              // placeholder
+              throw new Error("Posts cannot be deleted");
+          }
+        }
+      })
     }
   } 
