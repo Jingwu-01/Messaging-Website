@@ -93,8 +93,9 @@ export class OwlDBModel {
 
     subscribeToPosts(workspaceName: string, collectionName: string): void {
       const thisModel = this;
+      // TODO: change this to use the actual token (hardcoding it here for testing)
       const options = {
-        Authorization: "Bearer " + this.token,
+        Authorization: "Bearer " + "a1b2c3d4e5f6g7h8i9j0",
         accept: "application/json"
       }
       let fetchUrl = this.getDatabasePath() + `/${workspaceName}/channels/${collectionName}/posts/?mode=subscribe`

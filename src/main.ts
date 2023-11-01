@@ -1,5 +1,5 @@
 import { OwlDBModel } from "./model/model";
-import { PostsEvent } from "./model/modelTypes";
+import { ModelPost, PostsEvent } from "./model/modelTypes";
 import { slog } from "./slog";
 
 /**
@@ -15,8 +15,8 @@ declare const process: {
 
 // TODO: just a placeholder function for testing posts
 // because I can't get jest to work for some reason
-function testUpdatePosts(model: OwlDBModel) {
-  model.subscribeToPosts("ws1", "coll1");
+function testUpdatePosts(model: OwlDBModel): void {
+  model.subscribeToPosts("ws1", "ch1");
 }
 
 /**
@@ -32,9 +32,15 @@ function main(): void {
   document.addEventListener(
     "postsEvent",
     function (evt: CustomEvent<PostsEvent>) {
+      // TODO: change console.log to slog
       console.log("postsEvent", evt);
+      
   });
   
+}
+
+function getViewPosts(modelPosts: Array<ModelPost>): Array<ViewPost> {
+  let sortedPosts = modelPosts.toSorted((a, b) => a.Path.split("/")[])
 }
 
 /* Register event handler to run after the page is fully loaded. */
