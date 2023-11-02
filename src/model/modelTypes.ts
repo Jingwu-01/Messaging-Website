@@ -27,6 +27,7 @@ export type UserInfo = {
     expireAt: Date;
 };
 
+// An event that is thrown every time we receive a new post.
 export type PostsEvent = {
     posts: Array<ModelPost>;
 };

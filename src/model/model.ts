@@ -40,11 +40,13 @@ declare global {
 // Class representing our model interfacing with OwlDB.
 export class OwlDBModel {
 
+    // Store posts as a field in the model.
     private posts: Array<ModelPost>;
 
     private token: string;
 
     constructor() {
+      // Initialize the posts as an empty array.
       this.posts = [];
       this.token = "";
       this.addPost.bind(this);
@@ -84,6 +86,7 @@ export class OwlDBModel {
         return typedFetch(this.getAuthPath(), options);
     }
 
+    // Adds a post to our internal array.
     addPost(postContent: string): void {
       // TODO: obviously do some sort of validation here.
       // most likely do this on the receiving end. call a valid. func
@@ -91,6 +94,7 @@ export class OwlDBModel {
       this.posts.push(jsonContents);
     }
 
+    // Subscribes to all posts in a particular workspace and collection.
     subscribeToPosts(workspaceName: string, collectionName: string): void {
       const thisModel = this;
       // TODO: change this to use the actual token (hardcoding it here for testing)
@@ -105,6 +109,8 @@ export class OwlDBModel {
         // error handling here too, for impossible events.
         onmessage(event) {
           switch (event.event) {
+            // When we receive a new post, add it to our internal array
+            // and send an event with all the posts.
             case "update":
               thisModel.addPost(event.data);
               const postsEvent = new CustomEvent("postsEvent", {
