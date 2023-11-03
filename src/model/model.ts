@@ -72,19 +72,24 @@ export class OwlDBModel {
 
     login(username: string): Promise<UserInfo> {
       const options = {
-          method: "POST",
-          body: `{"username": ${username}}`,
-          accept: "application/json" 
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: `{"username": ${username}}`,
         };
         return typedFetch(this.getAuthPath(), options); 
       }
 
     logout(): Promise<void> {
-        const options = {
-          Authorization: "Bearer " + this.token, 
-          method: "DELETE",
-          accept: "application/json"
-        };
+      const options = {
+        method: "DELETE",
+        headers: {
+          'Authorization': "Bearer " + this.token,
+          'Accept': "application/json"
+        }
+      };      
         return typedFetch(this.getAuthPath(), options);
     }
 
