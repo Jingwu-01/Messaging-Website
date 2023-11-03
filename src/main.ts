@@ -14,10 +14,15 @@ declare const process: {
   };
 };
 
-// TODO: just a placeholder function for testing posts
-// because I can't get jest to work for some reason
+// // TODO: just a placeholder function for testing posts
+// // because I can't get jest to work for some reason
 function testUpdatePosts(model: OwlDBModel): void {
-  model.subscribeToPosts("ws1", "ch1");
+  model.login("user1")
+  model.getWorkspace("ws1").then((ws) => {
+    ws.getChannel("ch1").then((chan) => {
+      chan.subscribeToPosts("ws1", "ch1");
+    });
+  })
 }
 
 /**
@@ -41,6 +46,8 @@ function main(): void {
       console.log("postsEvent", evt);
   });
   
+  // example for how to use OOP model for posts
+  // getModel().getWorkspace("this_workspace").getChannel("channel").getPost("")
 }
 
 // Function that converts an array of modelposts into an array of Viewposts.

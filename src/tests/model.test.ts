@@ -1,13 +1,45 @@
-import {OwlDBModel} from "../model/model"
+import { getModel } from "../model/model";
 
-const owldbModel = new OwlDBModel();
+const owldbModel = getModel();
+
+// let openChannel
+
+beforeAll(async () => {
+  require("dotenv").config();
+  owldbModel.login("user1").then(() => console.log(owldbModel.getToken));
+});
 
 // Test all posts.
-// test('Get all posts', async () => {
-//     // Set process environmental variables. Is there a better way to do this?
-//     process.env.DATABASE_HOST = "http://localhost:4318";
-//     process.env.DATABASE_PATH = "/v1/p2group50"
-//     // This always fails because 'fetch' is not recognized?
-//     const data = await owldbModel.getPosts("ws1", "ch1", "Uuc5ABwJhqd4gDd");
-//     expect(data).toBe([]);
-// });
+test("Get all posts", async () => {
+  // This always fails because 'fetch' is not recognized?
+  // const data = await owldbModel.getPosts("ws1", "ch1", "Uuc5ABwJhqd4gDd");
+  // expect(data).toBe([]);
+});
+
+test("Get all workspaces", async () => {
+  // Create workspace
+  owldbModel.typedModelFetch(`/getallworkspace1`, {
+    method: "PUT",
+    body: JSON.stringify({}),
+  }).then(() => console.log(owldbModel.getToken()));
+  owldbModel.typedModelFetch(`/getallworkspace1/channels/`, {
+    method: "PUT",
+  });
+  owldbModel.typedModelFetch(`/getallworkspace2`, {
+    method: "PUT",
+    body: JSON.stringify({}),
+  });
+  owldbModel.typedModelFetch(`/getallworkspace2/channels/`, {
+    method: "PUT",
+  });
+  owldbModel.typedModelFetch(`/getallworkspace2/channels/chan1`, {
+    method: "PUT",
+    body: JSON.stringify({}),
+  });
+  let result = await owldbModel.getAllWorkspaces();
+  expect(result.size).toBe(2);
+});
+
+afterAll(async () => {
+    owldbModel.logout().then(() => console.log(owldbModel.getToken())); 
+});
