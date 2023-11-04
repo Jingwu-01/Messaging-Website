@@ -15,7 +15,7 @@ export class ModelChannel {
     this.addPost.bind(this);
   }
 
-    // Adds a post to our internal array.
+  // Adds a post to our internal array.
   addPost(postContent: string): void {
     // TODO: obviously do some sort of validation here.
     // most likely do this on the receiving end. call a valid. func
@@ -24,13 +24,14 @@ export class ModelChannel {
   }
 
   // Subscribes to all posts in a particular workspace and collection.
-  subscribeToPosts(workspaceName: string, collectionName: string): void {
-    const thisModel = this;
-    // TODO: change this to use the actual token (hardcoding it here for testing)
+  subscribeToPosts(workspaceName: string, collectionName: string, token: string): void {
+    // TODO: is there a better way to do this?
+    let thisChannel = this;
     const options = {
-      Authorization: "Bearer " + "-Sw6E.PAQ3RrZcm",
+      Authorization: "Bearer " + token,
       accept: "application/json"
     }
+    // TODO: can make this more elegant by making modelFetch take in a fetch function which it uses
     let fetchUrl = getDatabasePath() + `/${workspaceName}/channels/${collectionName}/posts/?mode=subscribe`
     fetchEventSource(fetchUrl, {
       headers: options,
@@ -41,9 +42,12 @@ export class ModelChannel {
           // When we receive a new post, add it to our internal array
           // and send an event with all the posts.
           case "update":
-            thisModel.addPost(event.data);
+            thisChannel.addPost(event.data);
+            console.log(`subscribeToPosts: thisChannel.posts: ${JSON.stringify(thisChannel.posts)}`)
             const postsEvent = new CustomEvent("postsEvent", {
-              detail: {posts: thisModel.posts},
+              // NOTE: we are passing by reference here. so mutations will be seen.
+              // however, with kill and fill and queueing of events, this may not be an issue
+              detail: {posts: thisChannel.posts},
             });
             document.dispatchEvent(postsEvent);
             // TODO: does TS use these 'break' statements

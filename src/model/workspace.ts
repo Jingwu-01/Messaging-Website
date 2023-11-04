@@ -21,7 +21,11 @@ export class ModelWorkspace {
       return existingChannel;
     } else {
       let freshChannel = new ModelChannel(
-        await getModel().typedModelFetch(`/${this.path}/channels/${id}`)
+        await getModel().typedModelFetch(`${this.path}/channels/${id}`, {
+          headers: {
+            "accept": "application/json"
+          }
+        })
       );
       this.channels.set(id, freshChannel);
       return freshChannel;

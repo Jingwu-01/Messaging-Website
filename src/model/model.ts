@@ -28,10 +28,13 @@ export class OwlDBModel {
     // adds the Authorization header based on the logged-in user
     // and the database path before the url
     async typedModelFetch<T>(url: string, options?: RequestInit): Promise<T> {
+      // console.log(`typedModelFetch: this.token: ${this.token}`)
       if (!options) {
         options = {};
       }
-      options.headers = { ...options.headers, Authorization: this.token };
+      options.headers = { ...options.headers, Authorization: "Bearer " + this.token };
+      console.log(`typedModelFetch: options: ${JSON.stringify(options)}`)
+      console.log(`typedModelFetch: fetch path: ${getDatabasePath()}${url}`)
       return typedFetch<T>(`${getDatabasePath()}${url}`, options);
     }
 
@@ -71,7 +74,11 @@ export class OwlDBModel {
         return existingWorkspace;
       } else {
         let freshWorkspace = new ModelWorkspace(
-          await this.typedModelFetch<WorkspaceResponse>(`/${id}`)
+          await this.typedModelFetch<WorkspaceResponse>(`/${id}`, {
+            headers: {
+              "accept": "application/json"
+            }
+          })
         );
         this.workspaces.set(id, freshWorkspace);
         return freshWorkspace;

@@ -1,4 +1,4 @@
-import { OwlDBModel } from "./model/model";
+import { OwlDBModel, getModel } from "./model/model";
 import { ModelPost, PostsEvent } from "./model/modelTypes";
 import { slog } from "./slog";
 import { ViewPost } from "./view/datatypes";
@@ -16,13 +16,18 @@ declare const process: {
 
 // // TODO: just a placeholder function for testing posts
 // // because I can't get jest to work for some reason
-function testUpdatePosts(model: OwlDBModel): void {
-  model.login("user1")
-  model.getWorkspace("ws1").then((ws) => {
-    ws.getChannel("ch1").then((chan) => {
-      chan.subscribeToPosts("ws1", "ch1");
-    });
-  })
+async function testUpdatePosts(model: OwlDBModel) {
+  await model.login("user1");
+  // TODO: how to do subscriptions when the model has the token?
+  // hard to refactor because the fetchEventSource is pretty different from the fetch function.
+  (await (await model.getWorkspace("ws1")).getChannel("ch1")).subscribeToPosts("ws1", "ch1", model.getToken());
+  // model.login("user1").then(() => {
+  //   model.getWorkspace("ws1").then((ws) => {
+  //     ws.getChannel("ch1").then((chan) => {
+  //       chan.subscribeToPosts("ws1", "ch1");
+  //     });
+  //   })
+  // })
 }
 
 /**
@@ -35,7 +40,7 @@ function main(): void {
   ]);
   // Initialize a model for testing purposes
   // TODO: change later when I figure out how to use jest
-  const model = new OwlDBModel();
+  const model = getModel();
   testUpdatePosts(model);
   // *Placeholder, testing code to ensure that we are listening for posts
   // correctly.*
