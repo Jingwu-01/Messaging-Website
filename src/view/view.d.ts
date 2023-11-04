@@ -1,10 +1,12 @@
+import { Channel, Workspace } from "./datatypes"
+
 export interface View {
   // Makes the view display displayedChannels and only displayedChannels on screen.
   setDisplayedChannels: (displayedChannels: Channel[]) => void
   // Makes the view display displayedWorkspaces and only displayedWorkspaces on screen.
   setDisplayedWorkspaces: (displayedWorkspaces: Workspace[]) => void
   // Makes the view display displayedPosts and only displayedPosts on screen.
-  setDisplayedPosts: (displayedPosts: Post[]) => void
+//   setDisplayedPosts: (displayedPosts: Post[]) => void
 
   login: () => void
   logout: () => void
