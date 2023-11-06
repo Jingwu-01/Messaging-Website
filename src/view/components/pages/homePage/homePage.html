@@ -1,0 +1,44 @@
+<template id="login-template">
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <script src="src/view/components/pages/homePage/index.ts"></script>
+  <style>
+    * {
+      background-color: #add8e6;
+      text-align: center;
+    }
+    div {
+      background-color: #ffffff;
+    }
+    div p {
+      background-color: #ffffff;
+    }
+
+    div form {
+      background-color: #ffffff;
+    }
+    button {
+      background-color: #ffffff;
+    }
+    button iconify-icon {
+      background-color: #ffffff;
+    }
+    input {
+      background-color: #d9d9d9;
+      border: 1px solid #333;
+    }
+  </style>
+  <h1>Messaging</h1>
+  <p>A Messaging App for All Your Groups</p>
+  <div>
+    <p>Enter your username to login:</p>
+    <form id="username-box">
+      <input type="text" id="username-input" name="text_field" placeholder="Your username..." />
+      <button type="submit">
+        <iconify-icon
+          icon="ic:baseline-login"
+          id="username-submit"
+        ></iconify-icon>
+      </button>
+    </form>
+  </div>
+</template>
