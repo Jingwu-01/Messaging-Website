@@ -1,8 +1,6 @@
+import { PostsEvent } from "../model/modelTypes";
+import { initPosts } from "./posts/init";
+
 export function initAdapter() {
-  document.addEventListener(
-    "postsEvent",
-    function (evt: CustomEvent<PostsEvent>) {
-      // TODO: change console.log to slog
-      console.log("postsEvent", evt);
-  });
+  initPosts()
 }
