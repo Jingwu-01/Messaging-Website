@@ -1,4 +1,5 @@
 import { ViewPost } from "../../../../datatypes";
+import { getView } from "../../../../view";
 import { Post } from "../postComponent";
 
 export class PostDisplay extends HTMLElement {
@@ -36,6 +37,10 @@ export class PostDisplay extends HTMLElement {
         this.postsContainer = postsContainer;
 
         this.displayPosts.bind(this);
+    }
+
+    connectedCallback() {
+        getView().addPostListener(this)
     }
 
     // TODO: add another helper for setting the channel name

@@ -1,3 +1,7 @@
+type LoginEvent = {
+  username: string
+} 
+
 class LoginPage extends HTMLElement {
   private controller: AbortController | null = null;
 
@@ -31,7 +35,17 @@ class LoginPage extends HTMLElement {
 
   handleSubmit(event: SubmitEvent) {
     event.preventDefault();
-    const username = usernameInput.value;
+    const usernameInput = document.querySelector("#username-input")
+    if (usernameInput instanceof HTMLInputElement) {
+      const username = usernameInput.value;
+      const loginEvent = new CustomEvent("loginEvent", {
+  detail: { username: username }
+});
+      document.dispatchEvent(loginEvent);
+    } else {
+      throw new Error("No username submitted")
+    }
 }
 } 
+
 customElements.define("login-page", LoginPage);
