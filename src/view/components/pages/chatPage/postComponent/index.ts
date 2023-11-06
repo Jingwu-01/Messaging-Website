@@ -1,6 +1,6 @@
 import { ViewPost } from "../../../../datatypes";
 
-class Post extends HTMLElement {
+export class Post extends HTMLElement {
 
     private postHeader: HTMLElement;
 
