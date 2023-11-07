@@ -1,53 +1,38 @@
-import { AppBar } from "../chatPage/appBarComponent";
-import { ChannelSidebar } from "../chatPage/channelSidebarComponent";
-import { PostDisplay } from "../chatPage/postDisplayComponent";
+// Root component for the application.
+// Handles routing to the correct page.
+export default class M3ssagin8AppComponent extends HTMLElement {
+  routes: { [key: string]: string } = {
+    "#/home": "<home-page></home-page>",
+    "#/chat": "<chat-page></chat-page>",
+  };
 
-export class M3ssagin8App extends HTMLElement {
+  constructor() {
+    super();
 
-    private appBar: AppBar;
+    this.attachShadow({ mode: "open" });
 
-    private channelList: ChannelSidebar;
+    let template = document.querySelector("#m3ssagin8-app-template");
 
-    private postDisplay: PostDisplay;
-
-    constructor() {
-        super();
-
-        this.attachShadow({mode: "open"});
-
-        let template = document.querySelector("m3ssagin8-app-template");
-
-        // Note: this constructor code (when using a shadow root) code is
-        // pretty duplicated; not sure how to reduce duplication because it's
-        // kind of entangled
-        if (!(template instanceof HTMLTemplateElement)) {
-            throw Error("m3ssagin8app template was not found");
-        }
-
-        if (this.shadowRoot === null) {
-            throw Error("could not find shadow DOM root for m3ssagin8app element in constructor");
-        }
-
-        this.shadowRoot.append(template.content.cloneNode(true));
-
-        let appBar = this.shadowRoot.querySelector("app-bar");
-        let channelList = this.shadowRoot.querySelector("channel-list");
-        let postDisplay = this.shadowRoot.querySelector("post-display");
-
-        if (!(appBar instanceof AppBar)) {
-            throw Error("Could not find an app-bar element");
-        }
-
-        if (!(channelList instanceof ChannelSidebar)) {
-            throw Error("Could not find a channel-list element");
-        }
-
-        if (!(postDisplay instanceof PostDisplay)) {
-            throw Error("Could not find a post-display element");
-        }
-
-        this.appBar = appBar;
-        this.channelList = channelList;
-        this.postDisplay = postDisplay;
+    if (!(template instanceof HTMLTemplateElement)) {
+      throw Error("m3ssagin8app template was not found");
     }
+    this.shadowRoot?.append(template.content.cloneNode(true));
+  }
+
+  connectedCallback() {
+    // When the URL changes,
+    // change the page we are on.
+    window.addEventListener("hashchange", (event: Event) => {
+      let page_component = this.routes[window.location.hash];
+      console.log(window.location.hash);
+      if (!page_component) {
+        page_component = `<h2>404 not found</h2>`;
+      }
+      console.log(page_component);
+      let app_element = this.shadowRoot?.querySelector("#app");
+      if (app_element) {
+        app_element.innerHTML = page_component;
+      }
+    });
+  }
 }

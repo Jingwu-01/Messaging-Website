@@ -1,6 +1,4 @@
 import { initAdapter } from "./adapter/init";
-import { OwlDBModel, getModel } from "./model/model";
-import { ModelPost, PostsEvent } from "./model/modelTypes";
 import { PostTree } from "./model/posttree";
 import { slog } from "./slog";
 import { ViewPost } from "./view/datatypes";
@@ -49,6 +47,11 @@ function main(): void {
   // correctly.*
   initAdapter();
   initView();
+
+  // Redirect to homepage, if we just type in the URL
+  if (window.location.hash == "") {
+    window.location.hash = "#/home";
+  }
   // example for how to use OOP model for posts
   // getModel().getWorkspace("this_workspace").getChannel("channel").getPost("")
 }
