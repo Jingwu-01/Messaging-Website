@@ -1,7 +1,6 @@
 import { initAdapter } from "./adapter/init";
 import { OwlDBModel, getModel } from "./model/model";
 import { ModelPost, PostsEvent } from "./model/modelTypes";
-import { PostTree } from "./model/posttree";
 import { slog } from "./slog";
 import { ViewPost } from "./view/datatypes";
 
@@ -51,11 +50,29 @@ function main(): void {
   // getModel().getWorkspace("this_workspace").getChannel("channel").getPost("")
 }
 
-// Function that converts an array of modelposts into an array of Viewposts.
+function viewPostConverter(modelPost: ModelPost): ViewPost {
+  return {
+    
+  }
+}
+
+// Function that converts a tree of modelposts into an array of Viewposts.
 // Viewposts will form a tree-like structure for posts.
-function getViewPosts(modelPosts: PostTree): Array<ViewPost> {
+function getViewPosts(modelPostRoots: Map<string, ModelPost>): Array<ViewPost> {
   // let sortedPosts = modelPosts.toSorted((a, b) => a.Path.split("/")[])
+  let viewPostRoots = new Array<ViewPost>();
+  let topModelPosts = Array.from(modelPostRoots.values());
+  topModelPosts.sort((a, b) => a.getResponse().meta.createdAt < b.getResponse().meta.createdAt ? -1 :
+  a.getResponse().meta.createdAt > b.getResponse().meta.createdAt ? 1 : 0);
+  for (let topModelPost of topModelPosts) {
+    viewPostRoots.push()
+  }
   return [];
+}
+
+// modifies viewPosts inplace
+function getViewPostsHelper(curViewPost: ViewPost, curModelPostRoots: Map<string, ModelPost>, viewPosts: Array<ViewPost>): void {
+  
 }
 
 /* Register event handler to run after the page is fully loaded. */

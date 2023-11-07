@@ -39,8 +39,13 @@ export class PostDisplay extends HTMLElement {
         this.displayPosts.bind(this);
     }
 
+    // is connected callback atomic?
     connectedCallback() {
-        getView().addPostListener(this)
+        getView().setPostListener(this);
+    }
+
+    disconnectedCallback() {
+        getView().clearPostListener();
     }
 
     // TODO: add another helper for setting the channel name

@@ -2,21 +2,20 @@ import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { ModelPost } from "./post";
 import { ChannelResponse, PostResponse } from "./responseTypes";
 import { getDatabasePath } from "./utils";
-import { PostTree } from "./posttree";
 
 export class ModelChannel {
   path: string;
 
-  private posts: PostTree;
+  private postRoots: Map<string, ModelPost>;
 
   constructor(res: ChannelResponse) {
     this.path = res.path;
-    this.posts = new PostTree();
+    this.postRoots = new Map<string, ModelPost>();
   }
 
   // Subscribes to all posts in a particular workspace and collection.
   subscribeToPosts(workspaceName: string, collectionName: string, token: string): void {
-    // TODO: is there a better way to do this?
+    // TODO: is there a better way to do this? bind isn't working
     let thisChannel = this;
     const options = {
       Authorization: "Bearer " + token,
@@ -34,12 +33,12 @@ export class ModelChannel {
           // and send an event with all the posts.
           case "update":
             const jsonContents = JSON.parse(event.data) as PostResponse;
-            thisChannel.posts.addPost(new ModelPost(jsonContents));
-            console.log(`subscribeToPosts: thisChannel.posts: ${JSON.stringify(thisChannel.posts)}`)
+            thisChannel.addPost(jsonContents);
+            console.log(`subscribeToPosts: thisChannel.posts: ${JSON.stringify(thisChannel.postRoots)}`)
             const postsEvent = new CustomEvent("postsEvent", {
               // NOTE: we are passing by reference here. so mutations will be seen.
               // however, with kill and fill and queueing of events, this may not be an issue
-              detail: {posts: thisChannel.posts},
+              detail: {posts: thisChannel.postRoots},
             });
             document.dispatchEvent(postsEvent);
             // TODO: does TS use these 'break' statements
@@ -51,5 +50,33 @@ export class ModelChannel {
         }
       }
     })
+  }
+
+  addPost(newPostResponse: PostResponse): Boolean {
+    let newPost = new ModelPost(newPostResponse);
+    let parentPath = newPostResponse.doc.parent;
+    let postName = newPostResponse.path.split("/")[-1];
+    if (parentPath === "") {
+        this.postRoots.set(postName, newPost);
+        return true;
+    }
+    let parentPathArr = parentPath.split("/");
+    // TODO: use the workspace name and the currently open channel name
+    // to validate against what's the WS and curr open channel 
+    if (parentPathArr.length < 6) {
+        console.log("addPost: invalid parentPathArr: parentPathArr is too short");
+        return false;
+    }
+    let workspaceName = parentPathArr[1];
+    let channelName = parentPathArr[3];
+    let postParentPath = parentPathArr.slice(5);
+
+    let nextChildName = postParentPath[0];
+    let nextChild = this.postRoots.get(nextChildName);
+    if (nextChild === undefined) {
+        console.log("addPost: invalid path to addPost");
+        return false;
+    }
+    return nextChild.addReply(newPost, postParentPath.slice(1));
   }
 }
