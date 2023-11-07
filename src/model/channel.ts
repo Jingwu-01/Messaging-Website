@@ -1,26 +1,17 @@
 import { fetchEventSource } from "@microsoft/fetch-event-source";
-import { ModelPost } from "./modelTypes";
-import { ChannelResponse } from "./responseTypes";
+import { ModelPost } from "./post";
+import { ChannelResponse, PostResponse } from "./responseTypes";
 import { getDatabasePath } from "./utils";
+import { PostTree } from "./posttree";
 
 export class ModelChannel {
   path: string;
 
-  private posts: Array<ModelPost>;
-
+  private posts: PostTree;
 
   constructor(res: ChannelResponse) {
     this.path = res.path;
-    this.posts = [];
-    this.addPost.bind(this);
-  }
-
-  // Adds a post to our internal array.
-  addPost(postContent: string): void {
-    // TODO: obviously do some sort of validation here.
-    // most likely do this on the receiving end. call a valid. func
-    const jsonContents = JSON.parse(postContent) as ModelPost;
-    this.posts.push(jsonContents);
+    this.posts = new PostTree();
   }
 
   // Subscribes to all posts in a particular workspace and collection.
@@ -42,7 +33,8 @@ export class ModelChannel {
           // When we receive a new post, add it to our internal array
           // and send an event with all the posts.
           case "update":
-            thisChannel.addPost(event.data);
+            const jsonContents = JSON.parse(event.data) as PostResponse;
+            thisChannel.posts.addPost(new ModelPost(jsonContents));
             console.log(`subscribeToPosts: thisChannel.posts: ${JSON.stringify(thisChannel.posts)}`)
             const postsEvent = new CustomEvent("postsEvent", {
               // NOTE: we are passing by reference here. so mutations will be seen.
