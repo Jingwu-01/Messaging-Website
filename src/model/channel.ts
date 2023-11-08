@@ -53,10 +53,11 @@ export class ModelChannel {
   }
 
   addPost(newPostResponse: PostResponse): Boolean {
+    console.log("addPost: was called");
     let newPost = new ModelPost(newPostResponse);
     let parentPath = newPostResponse.doc.parent;
     let postName = newPostResponse.path.split("/")[-1];
-    console.log(`postName: ${postName}`);
+    console.log(`addPost: postName: ${postName}`);
     if (parentPath === "") {
         this.postRoots.set(postName, newPost);
         return true;
@@ -75,7 +76,7 @@ export class ModelChannel {
     let nextChildName = postParentPath[0];
     let nextChild = this.postRoots.get(nextChildName);
     if (nextChild === undefined) {
-        console.log("addPost: invalid path to addPost");
+        console.log(`addPost: invalid path to addPost: ${parentPath}`);
         return false;
     }
     return nextChild.addReply(newPost, postParentPath.slice(1));
