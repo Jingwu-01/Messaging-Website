@@ -2,6 +2,7 @@ import { initAdapter } from "./adapter/init";
 import { OwlDBModel, getModel } from "./model/model";
 import { ModelPost } from "./model/post";
 import { slog } from "./slog";
+import PostDisplay from "./view/components/pages/chatPage/postDisplayComponent";
 import { ViewPost } from "./view/datatypes";
 import initView from "./view/init";
 
@@ -22,6 +23,7 @@ async function testUpdatePosts(model: OwlDBModel) {
   await model.login("user1");
   // TODO: how to do subscriptions when the model has the token?
   // hard to refactor because the fetchEventSource is pretty different from the fetch function.
+  document.querySelector("body")?.append(new PostDisplay());
   (await (await model.getWorkspace("ws1")).getChannel("ch1")).subscribeToPosts("ws1", "ch1", model.getToken());
   // model.login("user1").then(() => {
   //   model.getWorkspace("ws1").then((ws) => {
@@ -43,11 +45,11 @@ function main(): void {
   // Initialize a model for testing purposes
   // TODO: change later when I figure out how to use jest
   const model = getModel();
-  testUpdatePosts(model);
   // *Placeholder, testing code to ensure that we are listening for posts
   // correctly.*
   initAdapter();
   initView();
+  testUpdatePosts(model);
   // example for how to use OOP model for posts
   // getModel().getWorkspace("this_workspace").getChannel("channel").getPost("")
 }

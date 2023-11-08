@@ -1,6 +1,6 @@
 import { ViewPost } from "../../../../datatypes";
 import { getView } from "../../../../view";
-import { ChatPost } from "../chatPostComponent";
+import { Post } from "../postComponent";
 
 export class PostDisplay extends HTMLElement {
 
@@ -12,7 +12,7 @@ export class PostDisplay extends HTMLElement {
 
         this.attachShadow({mode: "open"});
 
-        let template = document.querySelector("postdisplay-template");
+        let template = document.querySelector("#postdisplay-template");
         if (!(template instanceof HTMLTemplateElement)) {
             throw Error("post display template was not found");
         }
@@ -51,8 +51,9 @@ export class PostDisplay extends HTMLElement {
     // TODO: add another helper for setting the channel name
 
     displayPosts(allPosts: Array<ViewPost>): void {
+        this.postsContainer.innerHTML = "";
         for (let viewPost of allPosts) {
-            let postEl = new ChatPost();
+            let postEl = new Post();
             postEl.addPostContent(viewPost);
             this.postsContainer.append(postEl);
             postEl.addPostChildren(viewPost.Children);

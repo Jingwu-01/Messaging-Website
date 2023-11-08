@@ -1,19 +1,17 @@
 import { ViewPost } from "../../../../datatypes";
 
-export class ChatPost extends HTMLElement {
+export class Post extends HTMLElement {
 
     private postHeader: HTMLElement;
 
     private postBody: HTMLElement;
-
-    private postTime: HTMLElement;
 
     constructor() {
         super();
 
         this.attachShadow({mode: "open"});
 
-        let template = document.querySelector("post-template");
+        let template = document.querySelector("#post-template");
         if (!(template instanceof HTMLTemplateElement)) {
             throw Error("post template was not found");
         }
@@ -23,7 +21,6 @@ export class ChatPost extends HTMLElement {
         this.shadowRoot.append(template.content.cloneNode(true));
         let postHeader = this.shadowRoot.querySelector("#post-header");
         let postBody = this.shadowRoot.querySelector("#post-body");
-        let postTime = this.shadowRoot.querySelector("#post-time");
         
         if (!(postHeader instanceof HTMLElement)) {
             throw Error("Could not find an element with the post-header class");
@@ -31,13 +28,9 @@ export class ChatPost extends HTMLElement {
         if (!(postBody instanceof HTMLElement)) {
             throw Error("Could not find an element with the post-body class");
         }
-        if (!(postTime instanceof HTMLElement)) {
-            throw Error("Could not find an element with the post-time class");
-        }
 
         this.postHeader = postHeader;
         this.postBody = postBody;
-        this.postTime = postTime;
     }
 
     addPostContent(viewPost: ViewPost): void {
@@ -46,13 +39,16 @@ export class ChatPost extends HTMLElement {
         this.postHeader.innerText = viewPost.CreatedUser;
         // assumed that time is in ms
         let postTimeObj = new Date(viewPost.PostTime);
-        console.log(`addPostContent: postTimeObj: ${postTimeObj.toDateString()}`)
-        this.postTime.innerText = postTimeObj.toDateString();
+        let postTime = document.createElement("time");
+        console.log(`addPostContent: postTime: ${postTime}`);
+        console.log(`addPostContent: postTimeObj: ${postTimeObj.toString()}`)
+        postTime.innerText = postTimeObj.toString();
+        this.postHeader.append(postTime);
     }
 
     addPostChildren(childrenPosts: Array<ViewPost>): void {
         for (let childPost of childrenPosts) {
-            let childPostEl = new ChatPost();
+            let childPostEl = new Post();
             childPostEl.addPostContent(childPost);
             this.shadowRoot?.append(childPostEl);
             childPostEl.addPostChildren(childPost.Children);
@@ -64,4 +60,4 @@ export class ChatPost extends HTMLElement {
     // tags as needed
 }
 
-export default ChatPost;
+export default Post;

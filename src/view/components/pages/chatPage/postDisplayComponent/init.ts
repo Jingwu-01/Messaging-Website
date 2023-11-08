@@ -12,6 +12,6 @@ export default function postDisplayComponentInit() {
 `
     );
 
-    customElements.define("post-display", PostDisplay);
+    customElements.define("post-display-component", PostDisplay);
 }
 

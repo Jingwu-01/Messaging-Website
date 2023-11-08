@@ -15,6 +15,7 @@ export class View {
 
 
    setPostListener(listener: PostListener) {
+    console.log(`setPostListener: listener: ${listener}`);
     this.postListener = listener;
    }
 
