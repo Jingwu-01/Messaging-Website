@@ -56,6 +56,7 @@ export class ModelChannel {
     let newPost = new ModelPost(newPostResponse);
     let parentPath = newPostResponse.doc.parent;
     let postName = newPostResponse.path.split("/")[-1];
+    console.log(`postName: ${postName}`);
     if (parentPath === "") {
         this.postRoots.set(postName, newPost);
         return true;
