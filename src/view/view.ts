@@ -1,4 +1,3 @@
-import { PostTree } from "../model/posttree";
 import { PostDisplay } from "./components/pages/chatPage/postDisplayComponent";
 import { ViewPost } from "./datatypes";
 
@@ -8,15 +7,10 @@ interface PostListener {
 
 // TODO: think about how to consoldiate all functionality in the view?
 export class View {
-   private postsDisplay: PostDisplay | null = null;
 
    private postListener: PostListener | null = null;
 
    constructor() {
-    this.postsDisplay = document.querySelector("post-display");
-    if (!(this.postsDisplay instanceof PostDisplay)) {
-        console.log("")
-    }
    }
 
 
@@ -34,7 +28,7 @@ export class View {
 }
 
 // view singleton
-let view: View = new View()
+let view: View = new View();
 export function getView() {
     return view
 }

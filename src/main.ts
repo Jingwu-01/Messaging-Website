@@ -3,6 +3,7 @@ import { OwlDBModel, getModel } from "./model/model";
 import { ModelPost } from "./model/post";
 import { slog } from "./slog";
 import { ViewPost } from "./view/datatypes";
+import initView from "./view/init";
 
 /**
  * Declare names and types of environment variables.
@@ -46,6 +47,7 @@ function main(): void {
   // *Placeholder, testing code to ensure that we are listening for posts
   // correctly.*
   initAdapter();
+  initView();
   // example for how to use OOP model for posts
   // getModel().getWorkspace("this_workspace").getChannel("channel").getPost("")
 }

@@ -1,6 +1,6 @@
 import { ViewPost } from "../../../../datatypes";
 import { getView } from "../../../../view";
-import { Post } from "../postComponent";
+import { ChatPost } from "../chatPostComponent";
 
 export class PostDisplay extends HTMLElement {
 
@@ -51,13 +51,15 @@ export class PostDisplay extends HTMLElement {
     // TODO: add another helper for setting the channel name
 
     displayPosts(allPosts: Array<ViewPost>): void {
-        // TODO: obv. just placeholder for testing
         for (let viewPost of allPosts) {
-            let postEl = new Post();
+            let postEl = new ChatPost();
             postEl.addPostContent(viewPost);
             this.postsContainer.append(postEl);
+            postEl.addPostChildren(viewPost.Children);
         }
     }
 
 
 }
+
+export default PostDisplay;
