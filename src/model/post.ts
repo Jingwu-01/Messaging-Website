@@ -6,15 +6,20 @@ export class ModelPost {
 
   private response: PostResponse;
 
-  private replies: Map<string, ModelPost> = new Map<string, ModelPost>();
+  private replies: Map<string, ModelPost>;
 
   constructor(response: PostResponse) {
     this.name = response.path.split("/")[-1];
     this.response = response;
+    this.replies = new Map<string, ModelPost>();
   }
 
   getResponse(): PostResponse {
     return this.response;
+  }
+
+  getReplies(): Map<string, ModelPost> {
+    return this.replies;
   }
 
   addReply(newPost: ModelPost, parentPath: string[]): Boolean {

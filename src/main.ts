@@ -1,6 +1,6 @@
 import { initAdapter } from "./adapter/init";
 import { OwlDBModel, getModel } from "./model/model";
-import { ModelPost, PostsEvent } from "./model/modelTypes";
+import { ModelPost } from "./model/post";
 import { slog } from "./slog";
 import { ViewPost } from "./view/datatypes";
 
@@ -52,27 +52,34 @@ function main(): void {
 
 function viewPostConverter(modelPost: ModelPost): ViewPost {
   return {
-    
+    Msg: modelPost.getResponse().doc.msg,
+    Reactions: modelPost.getResponse().doc.reactions,
+    Extensions: modelPost.getResponse().doc.extensions,
+    CreatedUser: modelPost.getResponse().meta.createdBy,
+    PostTime: modelPost.getResponse().meta.createdAt,
+    Children: new Array<ViewPost>()
   }
 }
 
 // Function that converts a tree of modelposts into an array of Viewposts.
 // Viewposts will form a tree-like structure for posts.
-function getViewPosts(modelPostRoots: Map<string, ModelPost>): Array<ViewPost> {
+export function getViewPosts(modelPostRoots: Map<string, ModelPost>): Array<ViewPost> {
   // let sortedPosts = modelPosts.toSorted((a, b) => a.Path.split("/")[])
   let viewPostRoots = new Array<ViewPost>();
-  let topModelPosts = Array.from(modelPostRoots.values());
-  topModelPosts.sort((a, b) => a.getResponse().meta.createdAt < b.getResponse().meta.createdAt ? -1 :
-  a.getResponse().meta.createdAt > b.getResponse().meta.createdAt ? 1 : 0);
-  for (let topModelPost of topModelPosts) {
-    viewPostRoots.push()
-  }
-  return [];
+  getViewPostsHelper(viewPostRoots, modelPostRoots);
+  return viewPostRoots;
 }
 
-// modifies viewPosts inplace
-function getViewPostsHelper(curViewPost: ViewPost, curModelPostRoots: Map<string, ModelPost>, viewPosts: Array<ViewPost>): void {
-  
+// modifies curViewPost inplace
+function getViewPostsHelper(viewPostChildren: Array<ViewPost>, modelPostChildren: Map<string, ModelPost>): void {
+  let modelPostChildrenArr = Array.from(modelPostChildren.values());
+  modelPostChildrenArr.sort((a, b) => a.getResponse().meta.createdAt < b.getResponse().meta.createdAt ? -1 :
+  a.getResponse().meta.createdAt > b.getResponse().meta.createdAt ? 1 : 0);
+  for (let modelPostChild of modelPostChildrenArr) {
+    let viewPostChild = viewPostConverter(modelPostChild);
+    getViewPostsHelper(viewPostChild.Children, modelPostChild.getReplies());
+    viewPostChildren.push(viewPostChild);
+  }
 }
 
 /* Register event handler to run after the page is fully loaded. */
