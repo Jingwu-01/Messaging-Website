@@ -56,7 +56,11 @@ export class ModelChannel {
     console.log("addPost: was called");
     let newPost = new ModelPost(newPostResponse);
     let parentPath = newPostResponse.doc.parent;
-    let postName = newPostResponse.path.split("/")[-1];
+    console.log(`addPost: parentPath: ${parentPath}`);
+    let postName = newPostResponse.path.split("/").pop();
+    if (postName === undefined) {
+      throw Error("addPost: internal server error: post has an empty path string");
+    }
     console.log(`addPost: postName: ${postName}`);
     if (parentPath === "") {
         this.postRoots.set(postName, newPost);
@@ -72,8 +76,10 @@ export class ModelChannel {
     let workspaceName = parentPathArr[1];
     let channelName = parentPathArr[3];
     let postParentPath = parentPathArr.slice(5);
+    console.log(`addPost: postParentPath: ${postParentPath}`);
 
     let nextChildName = postParentPath[0];
+    console.log(`addPost: nextChildName: ${nextChildName}`);
     let nextChild = this.postRoots.get(nextChildName);
     if (nextChild === undefined) {
         console.log(`addPost: invalid path to addPost: ${parentPath}`);

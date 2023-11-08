@@ -9,7 +9,14 @@ export class ModelPost {
   private replies: Map<string, ModelPost>;
 
   constructor(response: PostResponse) {
-    this.name = response.path.split("/")[-1];
+    console.log(`Post constructor: response.path: ${response.path}`);
+    console.log(`Post constructor: response.path.split("/"): ${response.path.split("/")}`);
+    console.log(`Post constructor: response.path.split("/").pop(): ${response.path.split("/").pop()}`);
+    let name = response.path.split("/").pop()
+    if (name === undefined) {
+      throw Error("ModelPost constructor: internal server error; path is an empty string");
+    }
+    this.name = name;
     this.response = response;
     this.replies = new Map<string, ModelPost>();
   }
@@ -24,17 +31,10 @@ export class ModelPost {
 
   addReply(newPost: ModelPost, parentPath: string[]): Boolean {
     if (parentPath.length === 0) {
-      console.log("addReply: error: parentPath is empty (internal server error)");
-      return false;
+      this.replies.set(newPost.name, newPost);
+      return true;
     }
     let parentName = parentPath[0];
-    if (parentPath.length === 1) {
-      if (parentName === this.name) {
-        this.replies.set(newPost.name, newPost);
-        return true;
-      }
-      return false;
-    }
     let nextChild = this.replies.get(parentName);
     if (nextChild === undefined) {
       console.log(`addReply: invalid parent path for post ${newPost.name}`);
