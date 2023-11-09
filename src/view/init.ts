@@ -8,6 +8,7 @@ import chatPageInit from "./components/pages/chatPage/init";
 import postDisplayComponentInit from "./components/pages/chatPage/postDisplayComponent/init";
 import postComponentInit from "./components/pages/chatPage/postComponent/init";
 import homePageInit from "./components/pages/homePage/init";
+import channelSidebarComponentInit from "./components/pages/chatPage/channelSidebarComponent/init";
 
 export function initView() {
   popoverComponentInit();
@@ -20,4 +21,5 @@ export function initView() {
   postDisplayComponentInit();
   postComponentInit();
   homePageInit();
+  channelSidebarComponentInit();
 }

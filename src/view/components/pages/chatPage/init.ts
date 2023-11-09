@@ -8,12 +8,19 @@ export default function chatPageInit() {
     `
 <template id="chat-page-template">
   <style>
-    
+    main {
+      display: flex;
+    }
+    channel-sidebar-component {
+      background-color: #ADD8E6;
+    }
   </style>
   <div>
     <app-bar-component></app-bar-component>
-    <channel-sidebar-component></channel-sidebar-component>
-    <post-display-component></post-display-component>
+    <main>
+      <channel-sidebar-component></channel-sidebar-component>
+      <post-display-component></post-display-component>
+    </main>
   </div>
 </template>
 `

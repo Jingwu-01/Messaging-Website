@@ -1,5 +1,5 @@
 import M3ssagin8AppComponent from "./components/pages/m3ssagin8AppComponent";
-import { ViewPost, ViewUser, ViewWorkspace } from "./datatypes";
+import { ViewChannel, ViewPost, ViewUser, ViewWorkspace } from "./datatypes";
 
 interface PostListener {
   displayPosts(posts: Array<ViewPost>): void;
@@ -12,6 +12,11 @@ interface UserListener {
 interface WorkspaceListener {
   displayWorkspaces(workspaces: Array<ViewWorkspace>): void;
   displayOpenWorkspace(open_workspace: ViewWorkspace): void;
+}
+
+interface ChannelListener {
+  displayOpenChannel(open_channel: ViewChannel): void;
+  displayChannels(channels: Array<ViewChannel>): void;
 }
 
 // TODO: think about how to consoldiate all functionality in the view?
@@ -85,6 +90,10 @@ export class View {
     this.workspaceListeners.forEach((listener) => {
       listener.displayOpenWorkspace(workspace);
     });
+  }
+
+  addChannelListener(listener: ChannelListener) {
+    // TODO: add functionality
   }
 }
 

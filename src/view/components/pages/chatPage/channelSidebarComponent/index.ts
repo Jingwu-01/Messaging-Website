@@ -1,4 +1,5 @@
 import { ViewChannel } from "../../../../datatypes";
+import { getView } from "../../../../view";
 
 export class ChannelSidebar extends HTMLElement {
 
@@ -9,9 +10,9 @@ export class ChannelSidebar extends HTMLElement {
 
         this.attachShadow({mode: "open"});
 
-        let template = document.querySelector("#channel-display-template");
+        let template = document.querySelector("#channel-sidebar-component-template");
         if (!(template instanceof HTMLTemplateElement)) {
-            throw Error("channel display template was not found");
+            throw Error("element with id #channel-sidebar-component-template was not found");
         }
         if (this.shadowRoot === null) {
             throw Error("could not find shadow DOM root for channeldisplay element in constructor");
@@ -29,6 +30,10 @@ export class ChannelSidebar extends HTMLElement {
 
         // this.displayPosts.bind(this);
 
+    }
+
+    connectedCallback() {
+        getView().addChannelListener(this);
     }
 
     displayOpenChannel(channel: ViewChannel) {
