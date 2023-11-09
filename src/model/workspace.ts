@@ -1,3 +1,4 @@
+import { slog } from "../slog";
 import { ModelChannel } from "./channel";
 import { getModel } from "./model";
 import { WorkspaceResponse } from "./responseTypes";
@@ -36,8 +37,9 @@ export class ModelWorkspace {
     // Update channels, if we aren't subscribed
     if (!this.subscribedToChannels) {
       this.channels = new Map<string, ModelChannel>();
+      slog.info("getAllChannels", ["this.path", `${this.path}`]);
       let db_channels = await getModel().typedModelFetch<WorkspaceResponse[]>(
-        `${getDatabasePath()}/`
+        `${this.path}/channels/`
       );
       db_channels.forEach((channel_response) => {
         let split_path = channel_response.path.split("/");
@@ -45,6 +47,7 @@ export class ModelWorkspace {
         this.channels.set(workspace_name, new ModelChannel(channel_response));
       });
     }
+    slog.info("getAllChannels", ["this.channels", `${this.channels}`]);
     return this.channels;
   }
 }

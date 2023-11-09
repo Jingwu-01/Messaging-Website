@@ -1,7 +1,8 @@
 import { ModelChannel } from "../model/channel";
 import { getModel } from "../model/model";
 import { ModelWorkspace } from "../model/workspace";
-import { ViewWorkspace } from "../view/datatypes";
+import { slog } from "../slog";
+import { ViewChannel, ViewWorkspace } from "../view/datatypes";
 import { getView } from "../view/view";
 import { WorkspaceListener } from "./adapterTypes";
 
@@ -66,6 +67,20 @@ class Adapter {
     });
     listener.displayWorkspaces(viewWorkspaceArr);
   }
+
+  async displayViewChannels() {
+    let viewChannelArr = new Array<ViewChannel>();
+    this.openWorkspace?.getAllChannels().then((modelChannels) => {
+      modelChannels.forEach((modelChannel) => {
+        slog.info("displayViewChannels", ["viewChannel name", modelChannel.path.split("/")[3]]);
+        viewChannelArr.push({
+          name: modelChannel.path.split("/")[3],
+        });
+      });
+      getView().displayChannels(viewChannelArr);
+    });
+  }
+
 }
 
 // adapter singleton

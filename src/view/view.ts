@@ -1,6 +1,5 @@
 import M3ssagin8AppComponent from "./components/pages/m3ssagin8AppComponent";
 import { ViewChannel, ViewPost, ViewUser, ViewWorkspace } from "./datatypes";
-import { ViewChannel, ViewPost, ViewUser, ViewWorkspace } from "./datatypes";
 
 interface PostListener {
   displayPosts(posts: Array<ViewPost>): void;
@@ -110,7 +109,7 @@ export class View {
   }
 
   addChannelListener(listener: ChannelListener) {
-    // TODO: add functionality
+    this.channelListeners.push(listener);
   }
 }
 
