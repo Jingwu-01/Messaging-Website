@@ -1,4 +1,3 @@
-import { PostDisplay } from "./components/pages/chatPage/postDisplayComponent";
 import { ViewPost, ViewUser, ViewWorkspace } from "./datatypes";
 
 interface PostListener {

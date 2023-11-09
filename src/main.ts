@@ -1,11 +1,8 @@
 import { initAdapter } from "./adapter/init";
-import { OwlDBModel, getModel } from "./model/model";
 import { ModelPost } from "./model/post";
-import { PostTree } from "./model/posttree";
 import { slog } from "./slog";
-import PostDisplay from "./view/components/pages/chatPage/postDisplayComponent";
 import { ViewPost } from "./view/datatypes";
-import { LoginEvent } from "./view/components/pages/homePage/index";
+import { LoginEvent } from "./view/datatypes";
 import { initView } from "./view/init";
 import { PostsEvent } from "./model/modelTypes";
 

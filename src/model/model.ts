@@ -1,4 +1,4 @@
-import { UserInfo, PostsEvent } from "./modelTypes";
+import { UserInfo } from "./modelTypes";
 import { typedFetch, getAuthPath, getDatabasePath } from "./utils";
 import { ModelWorkspace } from "./workspace";
 import { WorkspaceResponse } from "./responseTypes";
