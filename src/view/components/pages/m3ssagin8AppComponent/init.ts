@@ -6,7 +6,6 @@ function m3ssagin8AppComponentInit() {
     `
     <template id="m3ssagin8-app-template">
       <div id="app">
-        <home-page></home-page>
       </div>
     </template>
     `
