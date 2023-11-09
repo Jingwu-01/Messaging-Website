@@ -5,6 +5,7 @@ import { slog } from "./slog";
 import PostDisplay from "./view/components/pages/chatPage/postDisplayComponent";
 import { ViewPost } from "./view/datatypes";
 import initView from "./view/init";
+import {LoginEvent} from "./view/components/pages/homePage/index";  
 
 /**
  * Declare names and types of environment variables.
@@ -86,7 +87,19 @@ function getViewPostsHelper(viewPostChildren: Array<ViewPost>, modelPostChildren
   }
 }
 
+
 /* Register event handler to run after the page is fully loaded. */
 document.addEventListener("DOMContentLoaded", () => {
   main();
 });
+
+
+// TODO: Need something to switch to the chatPage 
+// document.addEventListener(
+//   "loginEvent",
+//   (event: CustomEvent<LoginEvent>) => {
+//     model.login(event.detail.username).then((userInfo) => {
+//       view.loginResponse(activity);
+//     });
+//   },
+// );
