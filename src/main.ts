@@ -1,7 +1,11 @@
 import { initAdapter } from "./adapter/init";
+import { OwlDBModel, getModel } from "./model/model";
+import { ModelPost } from "./model/post";
 import { PostTree } from "./model/posttree";
 import { slog } from "./slog";
+import PostDisplay from "./view/components/pages/chatPage/postDisplayComponent";
 import { ViewPost } from "./view/datatypes";
+import {LoginEvent} from "./view/components/pages/homePage/index";  
 import { initView } from "./view/init";
 
 /**
@@ -41,8 +45,10 @@ function main(): void {
   ]);
   // Initialize a model for testing purposes
   // TODO: change later when I figure out how to use jest
+
   // const model = getModel();
   // testUpdatePosts(model);
+
   // *Placeholder, testing code to ensure that we are listening for posts
   // correctly.*
   initAdapter();
@@ -56,14 +62,51 @@ function main(): void {
   // getModel().getWorkspace("this_workspace").getChannel("channel").getPost("")
 }
 
-// Function that converts an array of modelposts into an array of Viewposts.
-// Viewposts will form a tree-like structure for posts.
-function getViewPosts(modelPosts: PostTree): Array<ViewPost> {
-  // let sortedPosts = modelPosts.toSorted((a, b) => a.Path.split("/")[])
-  return [];
+function viewPostConverter(modelPost: ModelPost): ViewPost {
+  return {
+    Msg: modelPost.getResponse().doc.msg,
+    Reactions: modelPost.getResponse().doc.reactions,
+    Extensions: modelPost.getResponse().doc.extensions,
+    CreatedUser: modelPost.getResponse().meta.createdBy,
+    PostTime: modelPost.getResponse().meta.createdAt,
+    Children: new Array<ViewPost>()
+  }
 }
+
+// Function that converts a tree of modelposts into an array of Viewposts.
+// Viewposts will form a tree-like structure for posts.
+export function getViewPosts(modelPostRoots: Map<string, ModelPost>): Array<ViewPost> {
+  // let sortedPosts = modelPosts.toSorted((a, b) => a.Path.split("/")[])
+  let viewPostRoots = new Array<ViewPost>();
+  getViewPostsHelper(viewPostRoots, modelPostRoots);
+  return viewPostRoots;
+}
+
+// modifies curViewPost inplace
+function getViewPostsHelper(viewPostChildren: Array<ViewPost>, modelPostChildren: Map<string, ModelPost>): void {
+  let modelPostChildrenArr = Array.from(modelPostChildren.values());
+  modelPostChildrenArr.sort((a, b) => a.getResponse().meta.createdAt < b.getResponse().meta.createdAt ? -1 :
+  a.getResponse().meta.createdAt > b.getResponse().meta.createdAt ? 1 : 0);
+  for (let modelPostChild of modelPostChildrenArr) {
+    let viewPostChild = viewPostConverter(modelPostChild);
+    getViewPostsHelper(viewPostChild.Children, modelPostChild.getReplies());
+    viewPostChildren.push(viewPostChild);
+  }
+}
+
 
 /* Register event handler to run after the page is fully loaded. */
 document.addEventListener("DOMContentLoaded", () => {
   main();
 });
+
+
+// TODO: Need something to switch to the chatPage 
+// document.addEventListener(
+//   "loginEvent",
+//   (event: CustomEvent<LoginEvent>) => {
+//     model.login(event.detail.username).then((userInfo) => {
+//       view.loginResponse(activity);
+//     });
+//   },
+// );

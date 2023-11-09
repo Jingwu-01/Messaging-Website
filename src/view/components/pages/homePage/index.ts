@@ -1,6 +1,6 @@
-type LoginEvent = {
-  username: string
-} 
+export type LoginEvent = {
+  username: string;
+};
 
 class LoginPage extends HTMLElement {
   private controller: AbortController | null = null;
@@ -10,16 +10,17 @@ class LoginPage extends HTMLElement {
     this.attachShadow({ mode: "open" });
 
     if (this.shadowRoot) {
-      let template = document.querySelector("#counter-template");
+      let template = document.querySelector("#login-template");
       if (!(template instanceof HTMLTemplateElement)) {
-        throw new Error("login page")
+        throw new Error("Login template is not HTML template element");
       } else {
-      this.shadowRoot.append(template.content.cloneNode(true));} 
-    } 
-  } 
+        this.shadowRoot.append(template.content.cloneNode(true));
+      }
+    }
+  }
 
   connectedCallback(): void {
-    const form = this.shadowRoot?.querySelector("#username-box");
+    const form = this.shadowRoot?.querySelector("#username-form");
     if (!(form instanceof HTMLFormElement)) {
       throw new Error("form not found");
     }
@@ -35,17 +36,17 @@ class LoginPage extends HTMLElement {
 
   handleSubmit(event: SubmitEvent) {
     event.preventDefault();
-    const usernameInput = document.querySelector("#username-input")
+    const usernameInput = document.querySelector("#username-input");
     if (usernameInput instanceof HTMLInputElement) {
       const username = usernameInput.value;
       const loginEvent = new CustomEvent("loginEvent", {
-  detail: { username: username }
-});
+        detail: { username: username },
+      });
       document.dispatchEvent(loginEvent);
     } else {
-      throw new Error("No username submitted")
+      throw new Error("No username submitted");
     }
+  }
 }
-} 
 
 customElements.define("login-page", LoginPage);

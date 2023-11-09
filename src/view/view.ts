@@ -16,25 +16,35 @@ interface WorkspaceListener {
 
 // TODO: think about how to consoldiate all functionality in the view?
 export class View {
-  private postsDisplay: PostDisplay | null = null;
+   private postListener: PostListener | null = null;
+
+   constructor() {
+   }
+
+
+   setPostListener(listener: PostListener) {
+    console.log(`setPostListener: listener: ${listener}`);
+    this.postListener = listener;
+   }
+
+   clearPostListener() {
+    this.postListener = null;
+   }
+
+   displayPosts(posts: Array<ViewPost>) {
+    this.postListener?.displayPosts(posts);
+   }
 
   private userListeners: Array<UserListener> = new Array<UserListener>();
 
   private workspaceListeners: Array<WorkspaceListener> =
     new Array<WorkspaceListener>();
 
-  constructor() {
-    this.postsDisplay = document.querySelector("post-display");
-    if (!(this.postsDisplay instanceof PostDisplay)) {
-      console.log("");
-    }
-  }
+//   private postListeners: Array<PostListener> = new Array<PostListener>();
 
-  private postListeners: Array<PostListener> = new Array<PostListener>();
-
-  addPostListener(listener: PostListener) {
-    this.postListeners.push(listener);
-  }
+//   addPostListener(listener: PostListener) {
+//     this.postListeners.push(listener);
+//   }
 
   addUserListener(listener: UserListener) {
     this.userListeners.push(listener);
@@ -42,12 +52,6 @@ export class View {
 
   addWorkspaceListener(listener: WorkspaceListener) {
     this.workspaceListeners.push(listener);
-  }
-
-  displayPosts(posts: Array<ViewPost>) {
-    this.postListeners.forEach((listener) => {
-      listener.displayPosts(posts);
-    });
   }
 
   displayUser(user: ViewUser) {

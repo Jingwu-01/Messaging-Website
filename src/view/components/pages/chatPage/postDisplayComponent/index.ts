@@ -12,7 +12,7 @@ export class PostDisplay extends HTMLElement {
 
         this.attachShadow({mode: "open"});
 
-        let template = document.querySelector("postdisplay-template");
+        let template = document.querySelector("#postdisplay-template");
         if (!(template instanceof HTMLTemplateElement)) {
             throw Error("post display template was not found");
         }
@@ -39,20 +39,28 @@ export class PostDisplay extends HTMLElement {
         this.displayPosts.bind(this);
     }
 
+    // is connected callback atomic?
     connectedCallback() {
-        getView().addPostListener(this)
+        getView().setPostListener(this);
+    }
+
+    disconnectedCallback() {
+        getView().clearPostListener();
     }
 
     // TODO: add another helper for setting the channel name
 
     displayPosts(allPosts: Array<ViewPost>): void {
-        // TODO: obv. just placeholder for testing
+        this.postsContainer.innerHTML = "";
         for (let viewPost of allPosts) {
             let postEl = new Post();
             postEl.addPostContent(viewPost);
             this.postsContainer.append(postEl);
+            postEl.addPostChildren(viewPost.Children);
         }
     }
 
 
 }
+
+export default PostDisplay;

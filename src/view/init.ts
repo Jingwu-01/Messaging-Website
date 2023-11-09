@@ -5,6 +5,8 @@ import appBarComponentInit from "./components/pages/chatPage/appBarComponent/ini
 import workspaceMenuComponentInit from "./components/pages/chatPage/appBarComponent/workspaceMenuComponent/init";
 import m3ssagin8AppComponentInit from "./components/pages/m3ssagin8AppComponent/init";
 import chatPageInit from "./components/pages/chatPage/init";
+import postDisplayComponentInit from "./components/pages/chatPage/postDisplayComponent/init";
+import postComponentInit from "./components/pages/chatPage/postComponent/init";
 
 export function initView() {
   popoverComponentInit();
@@ -14,4 +16,6 @@ export function initView() {
   workspaceMenuComponentInit();
   m3ssagin8AppComponentInit();
   chatPageInit();
+  postDisplayComponentInit();
+  postComponentInit();
 }

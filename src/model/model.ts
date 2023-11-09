@@ -38,7 +38,7 @@ export class OwlDBModel {
       return typedFetch<T>(`${getDatabasePath()}${url}`, options);
     }
 
-    async login(username: string): Promise<void> {
+    async login(username: string): Promise<UserInfo> {
       const options = {
         method: "POST",
         headers: {
@@ -54,6 +54,7 @@ export class OwlDBModel {
         catch (error) {
           throw error 
         }
+        return typedFetch<UserInfo>(getAuthPath(), options)  
       }
 
     async logout(): Promise<void> {

@@ -1,4 +1,4 @@
-import { PostTree } from "./posttree";
+import { ModelPost } from "./post";
 
 // Represents the information (token and expiration time) for a user 
 export type UserInfo = {
@@ -7,5 +7,5 @@ export type UserInfo = {
 
 // An event that is thrown every time we receive a new post.
 export type PostsEvent = {
-    posts: PostTree;
+    posts: Map<string, ModelPost>;
 };
