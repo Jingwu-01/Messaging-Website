@@ -37,6 +37,7 @@ export class PostDisplay extends HTMLElement {
         this.postsContainer = postsContainer;
 
         this.displayPosts.bind(this);
+        console.log(`constructor: this.channelHeader: ${this.channelHeader}`);
     }
 
     // is connected callback atomic?

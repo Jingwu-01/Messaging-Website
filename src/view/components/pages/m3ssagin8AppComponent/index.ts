@@ -1,12 +1,14 @@
 // Root component for the application.
+
+import ChatPageComponent from "../chatPage";
+import HomePage from "../homePage";
+
 // Handles routing to the correct page.
 export default class M3ssagin8AppComponent extends HTMLElement {
   // Map of each URL hash to the component
   // that should be rendered when that hash is displayed
-  routes: { [key: string]: string } = {
-    "#/home": "<home-page></home-page>",
-    "#/chat": "<chat-page></chat-page>",
-  };
+
+  private app_element: HTMLElement;
 
   constructor() {
     super();
@@ -19,26 +21,26 @@ export default class M3ssagin8AppComponent extends HTMLElement {
       throw Error("m3ssagin8app template was not found");
     }
     this.shadowRoot?.append(template.content.cloneNode(true));
+
+    let app_element = this.shadowRoot?.querySelector("#app");
+
+    if (!(app_element instanceof HTMLElement)) {
+      throw Error("m3ssag1n8-app-component constructor: element with id app is not an HTMLElement");
+    }
+    
+    this.app_element = app_element;
   }
 
-  connectedCallback() {
-    // When the URL changes,
-    // change the page we are on.
+  setHomePage() {
+    // Clears, then sets the home page.
+    this.app_element.innerHTML = "";
+    let homePage = new HomePage();
+    this.app_element.append(homePage);
+  }
 
-    // needs to be a hash because there are no listeners for just a URL change for
-    // some reason
-    window.addEventListener("hashchange", (event: Event) => {
-      // get the component of the page referred to by the hash
-      let page_component = this.routes[window.location.hash];
-      // If it doesn't exist, throw up a 404 error
-      if (!page_component) {
-        page_component = `<h2>404 not found</h2>`;
-      }
-      // Render the page referred to by the hash
-      let app_element = this.shadowRoot?.querySelector("#app");
-      if (app_element) {
-        app_element.innerHTML = page_component;
-      }
-    });
+  setChatPage() {
+    this.app_element.innerHTML = "";
+    let chatPage = new ChatPageComponent();
+    this.app_element.append(chatPage);
   }
 }

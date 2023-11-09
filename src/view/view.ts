@@ -1,4 +1,4 @@
-import { PostDisplay } from "./components/pages/chatPage/postDisplayComponent";
+import M3ssagin8AppComponent from "./components/pages/m3ssagin8AppComponent";
 import { ViewPost, ViewUser, ViewWorkspace } from "./datatypes";
 
 interface PostListener {
@@ -18,7 +18,14 @@ interface WorkspaceListener {
 export class View {
    private postListener: PostListener | null = null;
 
+   private m3ssag1n8AppComponent: M3ssagin8AppComponent | null = null;
+
    constructor() {
+    let m3ssag1n8AppComponent = document.querySelector("m3ssagin8-app-component");
+    if (!(m3ssag1n8AppComponent instanceof M3ssagin8AppComponent)) {
+      throw Error("main(): could not find a m3ssagin8-app-component element");
+    }
+    this.m3ssag1n8AppComponent = m3ssag1n8AppComponent;
    }
 
 
@@ -33,6 +40,14 @@ export class View {
 
    displayPosts(posts: Array<ViewPost>) {
     this.postListener?.displayPosts(posts);
+   }
+
+   setChatPage() {
+    this.m3ssag1n8AppComponent?.setChatPage();
+   }
+
+   setHomePage() {
+    this.m3ssag1n8AppComponent?.setHomePage();
    }
 
   private userListeners: Array<UserListener> = new Array<UserListener>();
@@ -74,7 +89,12 @@ export class View {
 }
 
 // view singleton
-let view: View = new View();
+let lazyView: View | null = null;
+// NOTE: this is a LAZY view now
 export function getView() {
-  return view;
+  if (lazyView === null) {
+    lazyView = new View();
+    return lazyView;
+  }
+  return lazyView;
 }

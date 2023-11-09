@@ -10,6 +10,7 @@ export default function chatPageInit() {
   </style>
   <div>
     <app-bar-component></app-bar-component>
+    <post-display-component></post-display-component>
   </div>
 </template>
 `

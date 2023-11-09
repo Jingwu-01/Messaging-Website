@@ -1,13 +1,11 @@
 import { initAdapter } from "./adapter/init";
-import { OwlDBModel, getModel } from "./model/model";
 import { ModelPost } from "./model/post";
-import { PostTree } from "./model/posttree";
 import { slog } from "./slog";
-import PostDisplay from "./view/components/pages/chatPage/postDisplayComponent";
 import { ViewPost } from "./view/datatypes";
-import { LoginEvent } from "./view/components/pages/homePage/index";
+import { LoginEvent } from "./view/datatypes";
 import { initView } from "./view/init";
 import { PostsEvent } from "./model/modelTypes";
+import { getView } from "./view/view";
 
 /**
  * Declare names and types of environment variables.
@@ -63,10 +61,9 @@ function main(): void {
   initAdapter();
   initView();
 
+  getView().setHomePage();
+
   // Redirect to homepage, if we just type in the URL
-  if (window.location.hash == "") {
-    window.location.hash = "#/home";
-  }
   // example for how to use OOP model for posts
   // getModel().getWorkspace("this_workspace").getChannel("channel").getPost("")
 }

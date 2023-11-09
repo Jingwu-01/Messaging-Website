@@ -73,8 +73,8 @@ export class ModelChannel {
         console.log("addPost: invalid parentPathArr: parentPathArr is too short");
         return false;
     }
-    let workspaceName = parentPathArr[1];
-    let channelName = parentPathArr[3];
+    // let workspaceName = parentPathArr[1];
+    // let channelName = parentPathArr[3];
     let postParentPath = parentPathArr.slice(5);
     console.log(`addPost: postParentPath: ${postParentPath}`);
 
