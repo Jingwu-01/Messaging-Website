@@ -1,13 +1,13 @@
 interface User {
-  name: string 
+  name: string;
 }
 
 interface Channel {
-  name: string
+  name: string;
 }
 
 interface Workspace {
-  name: string
+  name: string;
 }
 
 // interface Post {
@@ -24,4 +24,42 @@ export type ViewPost = {
   CreatedUser: string;
   PostTime: number;
   Children: Array<ViewPost>;
-}
+};
+
+export type ViewUser = {
+  username: string;
+};
+
+export type ViewWorkspace = {
+  name: string;
+};
+
+export type LoginEvent = {
+  username: string;
+};
+
+export type LogoutEvent = {};
+
+export type CreateWorkspaceEvent = {
+  name: string;
+};
+
+export type SelectWorkspaceEvent = {
+  name: string;
+};
+
+export type DeleteWorkspaceEvent = {
+  name: string;
+};
+
+export type CreateChannelEvent = {
+  name: string;
+};
+
+export type SelectChannelEvent = {
+  name: string;
+};
+
+export type DeleteChannelEvent = {
+  name: string;
+};
