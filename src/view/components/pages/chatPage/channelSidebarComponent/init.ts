@@ -5,12 +5,12 @@ export default function channelDisplayComponentInit() {
         "beforeend",
 `
 <template id="channel-display-template">
-    <section id="channel-container">
-    </section>
+    <ul id="channel-list">
+    </ul>
 </template>
 `
     );
 
-    customElements.define("channel-sidebar", ChannelSidebar);
+    customElements.define("channel-sidebar-component", ChannelSidebar);
 }
 

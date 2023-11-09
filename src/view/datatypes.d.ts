@@ -34,6 +34,10 @@ export type ViewWorkspace = {
   name: string;
 };
 
+export type ViewChannel = {
+  name: string;
+}
+
 export type LoginEvent = {
   username: string;
 };
