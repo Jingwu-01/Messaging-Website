@@ -14,10 +14,13 @@ export default function workspaceMenuComponentInit() {
       display: flex;
       align-items: center;
     }
+    #open-workspace-text{
+      color: white;
+    }
   </style>
   <menu-component>
     <div id="workspace-menu-anchor" slot="anchor-el" display="inline-block">
-      <p id="open-workspace-text"></p>
+      <p id="open-workspace-text">Select Workspace</p>
       <iconify-icon icon="gridicons:dropdown" aria-label="user avatar"></iconify-icon>
     </div>
     <div slot="menu-items">
