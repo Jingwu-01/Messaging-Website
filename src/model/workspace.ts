@@ -1,7 +1,7 @@
 import { ModelChannel } from "./channel";
 import { getModel } from "./model";
 import { WorkspaceResponse } from "./responseTypes";
-import { getDatabasePath} from "./utils";
+import { getDatabasePath } from "./utils";
 
 // got rid of typed fetch from imports in utils
 
@@ -23,8 +23,8 @@ export class ModelWorkspace {
       let freshChannel = new ModelChannel(
         await getModel().typedModelFetch(`${this.path}/channels/${id}`, {
           headers: {
-            "accept": "application/json"
-          }
+            accept: "application/json",
+          },
         })
       );
       this.channels.set(id, freshChannel);
@@ -37,7 +37,7 @@ export class ModelWorkspace {
     if (!this.subscribedToChannels) {
       this.channels = new Map<string, ModelChannel>();
       let db_channels = await getModel().typedModelFetch<WorkspaceResponse[]>(
-        `${getDatabasePath()}/`,
+        `${getDatabasePath()}/`
       );
       db_channels.forEach((channel_response) => {
         let split_path = channel_response.path.split("/");

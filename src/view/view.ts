@@ -1,5 +1,5 @@
 import M3ssagin8AppComponent from "./components/pages/m3ssagin8AppComponent";
-import { ViewPost, ViewUser, ViewWorkspace } from "./datatypes";
+import { ViewChannel, ViewPost, ViewUser, ViewWorkspace } from "./datatypes";
 
 interface PostListener {
   displayPosts(posts: Array<ViewPost>): void;
@@ -14,52 +14,61 @@ interface WorkspaceListener {
   displayOpenWorkspace(open_workspace: ViewWorkspace): void;
 }
 
+interface ChannelListener {
+  displayChannels(channels: Array<ViewChannel>): void;
+  displayOpenChannel(open_channel: ViewChannel): void;
+}
+
 // TODO: think about how to consoldiate all functionality in the view?
 export class View {
-   private postListener: PostListener | null = null;
+  private postListener: PostListener | null = null;
 
-   private m3ssag1n8AppComponent: M3ssagin8AppComponent | null = null;
+  private m3ssag1n8AppComponent: M3ssagin8AppComponent | null = null;
 
-   constructor() {
-    let m3ssag1n8AppComponent = document.querySelector("m3ssagin8-app-component");
+  constructor() {
+    let m3ssag1n8AppComponent = document.querySelector(
+      "m3ssagin8-app-component"
+    );
     if (!(m3ssag1n8AppComponent instanceof M3ssagin8AppComponent)) {
       throw Error("main(): could not find a m3ssagin8-app-component element");
     }
     this.m3ssag1n8AppComponent = m3ssag1n8AppComponent;
-   }
+  }
 
-
-   setPostListener(listener: PostListener) {
+  setPostListener(listener: PostListener) {
     console.log(`setPostListener: listener: ${listener}`);
     this.postListener = listener;
-   }
+  }
 
-   clearPostListener() {
+  clearPostListener() {
     this.postListener = null;
-   }
+  }
 
-   displayPosts(posts: Array<ViewPost>) {
+  displayPosts(posts: Array<ViewPost>) {
     this.postListener?.displayPosts(posts);
-   }
+  }
 
-   setChatPage() {
+  setChatPage() {
     this.m3ssag1n8AppComponent?.setChatPage();
-   }
+  }
 
-   setHomePage() {
+  setHomePage() {
     this.m3ssag1n8AppComponent?.setHomePage();
-   }
+  }
 
   private userListeners: Array<UserListener> = new Array<UserListener>();
 
   private workspaceListeners: Array<WorkspaceListener> =
     new Array<WorkspaceListener>();
 
-//   private postListeners: Array<PostListener> = new Array<PostListener>();
+  private channelListeners: Array<ChannelListener> =
+    new Array<ChannelListener>();
 
-//   addPostListener(listener: PostListener) {
-//     this.postListeners.push(listener);
-//   }
+  //   private postListeners: Array<PostListener> = new Array<PostListener>();
+
+  //   addPostListener(listener: PostListener) {
+  //     this.postListeners.push(listener);
+  //   }
 
   addUserListener(listener: UserListener) {
     this.userListeners.push(listener);
@@ -84,6 +93,18 @@ export class View {
   displayOpenWorkspace(workspace: ViewWorkspace) {
     this.workspaceListeners.forEach((listener) => {
       listener.displayOpenWorkspace(workspace);
+    });
+  }
+
+  displayChannels(channels: Array<ViewChannel>) {
+    this.channelListeners.forEach((listener) => {
+      listener.displayChannels(channels);
+    });
+  }
+
+  displayOpenChannel(channel: ViewChannel) {
+    this.channelListeners.forEach((listener) => {
+      listener.displayOpenChannel(channel);
     });
   }
 }

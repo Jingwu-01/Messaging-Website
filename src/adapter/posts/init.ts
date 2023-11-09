@@ -8,7 +8,7 @@ export function initPosts() {
     function (evt: CustomEvent<PostsEvent>) {
       // TODO: change console.log to slog
       let viewPosts = getViewPosts(evt.detail.posts);
-      console.log(`postsEvent Listener: ${JSON.stringify(viewPosts)}`);
       getView().displayPosts(viewPosts);
-  });
+    }
+  );
 }

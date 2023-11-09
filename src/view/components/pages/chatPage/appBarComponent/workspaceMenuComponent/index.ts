@@ -1,3 +1,4 @@
+import getAdapter from "../../../../../../adapter/adapter";
 import { ViewWorkspace } from "../../../../../datatypes";
 import { getView } from "../../../../../view";
 
@@ -19,8 +20,10 @@ class WorkspaceMenuComponent extends HTMLElement {
   connectedCallback(): void {
     // The browser calls this when the element is added to a document.
 
-    // Tell the view that this component wants to listen to user updates
+    // Tell the view that this component wants to listen to workspace updates
     getView().addWorkspaceListener(this);
+    // Tell the adapter to go ahead and re-render the workspaces for this component
+    getAdapter().reRenderWorkspaces(this);
   }
 
   disconnectedCallback(): void {
@@ -57,23 +60,23 @@ class WorkspaceMenuComponent extends HTMLElement {
     if (workspace_menu_items_el instanceof HTMLElement) {
       // loop through, creating a new HTML element to display each workspace
       let new_inner_html = "";
-      workspaces.forEach((workspace) => {
+      workspaces.forEach((workspace, i) => {
         new_inner_html += `
-          <p id="workspace-select-${workspace.name}">${workspace.name}</p>
+          <p id="workspace-select-${i}">${workspace.name}</p>
         `;
       });
       // update the document
       workspace_menu_items_el.innerHTML = new_inner_html;
       // give every element we just added a click listener
-      workspaces.forEach((workspace) => {
+      workspaces.forEach((workspace, i) => {
         this.shadowRoot
-          ?.querySelector(`#workspace-select-${workspace.name}`)
+          ?.querySelector(`#workspace-select-${i}`)
           ?.addEventListener("click", () => {
             // when the element is clicked, dispatch an event so that the adapter knows to change
             // the selected workspace.
             document.dispatchEvent(
               new CustomEvent("workspaceSelected", {
-                detail: { workspace: workspace.name },
+                detail: { name: workspace.name },
               })
             );
           });
