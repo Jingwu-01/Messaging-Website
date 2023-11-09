@@ -16,28 +16,29 @@ export default function homePageInit() {
       #flex-container1 {
         display: flex;
         flex-direction: column;
-        justify-content: center;
         width: 100vw;
-        margin: 0;
-        height: 100vh;
+        margin: 20vh auto;
       }
   
       h1 {
-        margin-top: 60px;
         font-size: 50px;
+        margin-block-end: 0;
       }
   
       #subtitle {
         background-color: #add8e6;
+        margin-block-end: 3em;
       }
   
       #flex-container2 {
         background-color: #ffffff;
         width: 50%;
         margin: 0 auto;
+        border-radius: 15px;
       }
   
       p {
+        font-size: 20px;
         background-color: #ffffff;
       }
   
@@ -48,6 +49,15 @@ export default function homePageInit() {
       input {
         background-color: #d9d9d9;
         border: 1px solid #333;
+        border-radius: 15px;
+        height: 3em;
+        width: 25vw;
+        font-size: 15px;
+      }
+      button {
+          border-radius: 15px;
+          height: 2em;
+          width: 2em;
       }
     </style>
   
