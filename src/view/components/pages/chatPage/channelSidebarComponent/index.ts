@@ -1,9 +1,12 @@
+import { slog } from "../../../../../slog";
 import { ViewChannel } from "../../../../datatypes";
 import { getView } from "../../../../view";
 
 export class ChannelSidebar extends HTMLElement {
 
     private channelList: HTMLElement;
+
+    private channelNameToIdx = new Map<String, Number>();
 
     constructor() {
         super();
@@ -41,7 +44,12 @@ export class ChannelSidebar extends HTMLElement {
         this.shadowRoot?.querySelectorAll("#channel-list > li.selected-channel").forEach((selectedEl) => {
             selectedEl.classList.remove("selected-channel");
         });
-        let selectedChannelEl = this.shadowRoot?.querySelector("#channel-select-" + channel.name);
+        let channelIdx = this.channelNameToIdx.get(channel.name);
+        if (channelIdx === undefined) {
+            // TODO: test to reproduce this error
+            throw Error("displayOpenChannel: trying to display a channel that doesn't exist on the view");
+        }
+        let selectedChannelEl = this.shadowRoot?.querySelector("#channel-select-" + channelIdx);
         if (!(selectedChannelEl instanceof HTMLElement)) {
             throw Error(`displayOpenChannel: selected element with ID #channel-select-${channel.name} is not an HTML element`);
         }
@@ -49,20 +57,23 @@ export class ChannelSidebar extends HTMLElement {
     }
 
     displayChannels(channels: Array<ViewChannel>) {
+        slog.info("displayChannels", ["channels", `${JSON.stringify(channels)}`]);
         this.channelList.innerHTML = "";
-        for (let channel of channels) {
+        channels.forEach((channel, idx) => {
             let channelListEl = document.createElement("li");
-            channelListEl.id = "channel-select-" + channel.name;
+            channelListEl.id = "channel-select-" + idx;
+            this.channelNameToIdx.set(channel.name, idx);
             channelListEl.innerText = channel.name;
             this.channelList.append(channelListEl);
             channelListEl.addEventListener("click", () => {
+                slog.info("clicked channel list el", ["channel.name", `${channel.name}`]);
                 document.dispatchEvent(
                     new CustomEvent("channelSelected", {
-                        detail: {channel: channel.name}
+                        detail: {name: channel.name}
                     })
                 )
             });
-        }
+        })
     }
 }
 

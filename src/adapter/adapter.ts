@@ -46,7 +46,7 @@ class Adapter {
       // TODO: subscribe to this channel
       this.openChannel.subscribeToPosts();
       getView().displayOpenChannel({
-        name: this.openChannel.path,
+        name: this.openChannel.path.split("/")[3],
       });
       return this.openChannel;
     } else {
