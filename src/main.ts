@@ -5,8 +5,9 @@ import { PostTree } from "./model/posttree";
 import { slog } from "./slog";
 import PostDisplay from "./view/components/pages/chatPage/postDisplayComponent";
 import { ViewPost } from "./view/datatypes";
-import {LoginEvent} from "./view/components/pages/homePage/index";  
+import { LoginEvent } from "./view/components/pages/homePage/index";
 import { initView } from "./view/init";
+import { PostsEvent } from "./model/modelTypes";
 
 /**
  * Declare names and types of environment variables.
@@ -18,6 +19,14 @@ declare const process: {
     AUTH_PATH: string;
   };
 };
+
+// TODO: can you declare a global in both the model AND the view?
+declare global {
+  interface DocumentEventMap {
+    postsEvent: CustomEvent<PostsEvent>;
+    loginEvent: CustomEvent<LoginEvent>;
+  }
+}
 
 // // // TODO: just a placeholder function for testing posts
 // // // because I can't get jest to work for some reason
@@ -69,13 +78,15 @@ function viewPostConverter(modelPost: ModelPost): ViewPost {
     Extensions: modelPost.getResponse().doc.extensions,
     CreatedUser: modelPost.getResponse().meta.createdBy,
     PostTime: modelPost.getResponse().meta.createdAt,
-    Children: new Array<ViewPost>()
-  }
+    Children: new Array<ViewPost>(),
+  };
 }
 
 // Function that converts a tree of modelposts into an array of Viewposts.
 // Viewposts will form a tree-like structure for posts.
-export function getViewPosts(modelPostRoots: Map<string, ModelPost>): Array<ViewPost> {
+export function getViewPosts(
+  modelPostRoots: Map<string, ModelPost>
+): Array<ViewPost> {
   // let sortedPosts = modelPosts.toSorted((a, b) => a.Path.split("/")[])
   let viewPostRoots = new Array<ViewPost>();
   getViewPostsHelper(viewPostRoots, modelPostRoots);
@@ -83,10 +94,18 @@ export function getViewPosts(modelPostRoots: Map<string, ModelPost>): Array<View
 }
 
 // modifies curViewPost inplace
-function getViewPostsHelper(viewPostChildren: Array<ViewPost>, modelPostChildren: Map<string, ModelPost>): void {
+function getViewPostsHelper(
+  viewPostChildren: Array<ViewPost>,
+  modelPostChildren: Map<string, ModelPost>
+): void {
   let modelPostChildrenArr = Array.from(modelPostChildren.values());
-  modelPostChildrenArr.sort((a, b) => a.getResponse().meta.createdAt < b.getResponse().meta.createdAt ? -1 :
-  a.getResponse().meta.createdAt > b.getResponse().meta.createdAt ? 1 : 0);
+  modelPostChildrenArr.sort((a, b) =>
+    a.getResponse().meta.createdAt < b.getResponse().meta.createdAt
+      ? -1
+      : a.getResponse().meta.createdAt > b.getResponse().meta.createdAt
+      ? 1
+      : 0
+  );
   for (let modelPostChild of modelPostChildrenArr) {
     let viewPostChild = viewPostConverter(modelPostChild);
     getViewPostsHelper(viewPostChild.Children, modelPostChild.getReplies());
@@ -94,19 +113,7 @@ function getViewPostsHelper(viewPostChildren: Array<ViewPost>, modelPostChildren
   }
 }
 
-
 /* Register event handler to run after the page is fully loaded. */
 document.addEventListener("DOMContentLoaded", () => {
   main();
 });
-
-
-// TODO: Need something to switch to the chatPage 
-// document.addEventListener(
-//   "loginEvent",
-//   (event: CustomEvent<LoginEvent>) => {
-//     model.login(event.detail.username).then((userInfo) => {
-//       view.loginResponse(activity);
-//     });
-//   },
-// );

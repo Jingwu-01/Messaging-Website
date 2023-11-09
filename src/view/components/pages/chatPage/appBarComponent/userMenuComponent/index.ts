@@ -54,6 +54,14 @@ class UserMenuComponent extends HTMLElement {
       user_text_el.innerHTML = user.username;
     }
   }
+  // render() {
+  //   let user = getUser()
+  //   // update the displayed username
+  //   let user_text_el = this.shadowRoot?.querySelector("#user-text");
+  //   if (user_text_el instanceof HTMLElement) {
+  //     user_text_el.innerHTML = user.username;
+  //   }
+  // }
 }
 
 export default UserMenuComponent;

@@ -1,8 +1,6 @@
-export type LoginEvent = {
-  username: string;
-};
+import { slog } from "../../../../slog";
 
-class LoginPage extends HTMLElement {
+class HomePage extends HTMLElement {
   private controller: AbortController | null = null;
 
   constructor() {
@@ -10,7 +8,7 @@ class LoginPage extends HTMLElement {
     this.attachShadow({ mode: "open" });
 
     if (this.shadowRoot) {
-      let template = document.querySelector("#login-template");
+      let template = document.querySelector("#home-page-template");
       if (!(template instanceof HTMLTemplateElement)) {
         throw new Error("Login template is not HTML template element");
       } else {
@@ -36,17 +34,20 @@ class LoginPage extends HTMLElement {
 
   handleSubmit(event: SubmitEvent) {
     event.preventDefault();
-    const usernameInput = document.querySelector("#username-input");
+    const usernameInput = this.shadowRoot?.querySelector("#username-input");
     if (usernameInput instanceof HTMLInputElement) {
       const username = usernameInput.value;
       const loginEvent = new CustomEvent("loginEvent", {
         detail: { username: username },
       });
+      slog.info(`User submitted login ${username}`);
       document.dispatchEvent(loginEvent);
     } else {
-      throw new Error("No username submitted");
+      throw new Error(
+        "Element with id #username-input is not a HTMLInputElement"
+      );
     }
   }
 }
 
-customElements.define("login-page", LoginPage);
+export default HomePage;
