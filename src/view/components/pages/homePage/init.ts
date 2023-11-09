@@ -17,7 +17,7 @@ export default function homePageInit() {
         display: flex;
         flex-direction: column;
         width: 100vw;
-        margin: 20vh auto;
+        height: 100vh;        
       }
   
       h1 {
@@ -35,6 +35,7 @@ export default function homePageInit() {
         width: 50%;
         margin: 0 auto;
         border-radius: 15px;
+        padding: 0px 0px 30px 0px;
       }
   
       p {
