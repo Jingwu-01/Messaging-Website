@@ -69,7 +69,7 @@ export class ModelChannel {
       );
     }
     console.log(`addPost: postName: ${postName}`);
-    if (parentPath === "") {
+    if (parentPath === "" || parentPath === undefined) {
       this.postRoots.set(postName, newPost);
       return true;
     }

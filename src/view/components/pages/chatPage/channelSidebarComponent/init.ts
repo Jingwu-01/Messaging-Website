@@ -20,9 +20,6 @@ export default function channelSidebarComponentInit() {
     }
     </style>
     <ul id="channel-list">
-        <li id="channel-select-ch1" class="selected-channel">ch1</li>
-        <li id="channel-select-ch2">ch2</li>
-        <li id="channel-select-ch3">ch3</li>
     </ul>
 </template>
 `

@@ -12,6 +12,9 @@ export default function postComponentInit() {
     time {
         margin-left: 5em;
     }
+    post-component {
+        margin-left: 5em;
+    }
     </style>
     <section>
         <header id="post-header">
