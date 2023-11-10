@@ -1,9 +1,9 @@
-import {ChannelSidebar}  from "./index";
+import { ChannelSidebar } from "./index";
 
 export default function channelSidebarComponentInit() {
-    document.body.insertAdjacentHTML(
-        "beforeend",
-`
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    `
 <template id="channel-sidebar-component-template">
     <style>
     .selected-channel {
@@ -13,6 +13,8 @@ export default function channelSidebarComponentInit() {
     ul {
         list-style-type: none;
         margin-top: 0em;
+        width: max(10vw, 80px);
+        padding: 10px 10px;
     }
     li {
         margin-top: 1em;
@@ -23,12 +25,11 @@ export default function channelSidebarComponentInit() {
     </ul>
 </template>
 `
-    );
-    // an example channel element looks like:
-    // <li id="channel-select-{channel-name}">{channel-name}</li>
-    // and a selected channel should look like:
-    // <li id="channel-select-{channel-name}" class="selected-channel">{channel-name}</li>
+  );
+  // an example channel element looks like:
+  // <li id="channel-select-{channel-name}">{channel-name}</li>
+  // and a selected channel should look like:
+  // <li id="channel-select-{channel-name}" class="selected-channel">{channel-name}</li>
 
-    customElements.define("channel-sidebar-component", ChannelSidebar);
+  customElements.define("channel-sidebar-component", ChannelSidebar);
 }
-

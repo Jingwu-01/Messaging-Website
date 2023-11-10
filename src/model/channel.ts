@@ -9,6 +9,8 @@ export class ModelChannel {
 
   private postRoots: Map<string, ModelPost>;
 
+  private controller = new AbortController();
+
   constructor(res: ChannelResponse) {
     this.path = res.path;
     this.postRoots = new Map<string, ModelPost>();
@@ -54,6 +56,8 @@ export class ModelChannel {
             throw new Error("Posts cannot be deleted");
         }
       },
+
+      signal: this.controller.signal,
     });
   }
 
@@ -93,5 +97,9 @@ export class ModelChannel {
       return false;
     }
     return nextChild.addReply(newPost, postParentPath.slice(1));
+  }
+
+  unsubscribe() {
+    this.controller.abort();
   }
 }

@@ -18,6 +18,10 @@ class Adapter {
   }
 
   async setOpenWorkspace(workspaceName: string): Promise<ModelWorkspace> {
+    // Don't do anything if it's the same workspace.
+    if (this.openWorkspace?.path.slice(1) === workspaceName) {
+      return this.openWorkspace;
+    }
     if (this.openWorkspace != null) {
       // TODO unsubscribe from old workspace
       // this.openWorkspace.unsubscribe()
@@ -25,9 +29,12 @@ class Adapter {
     this.openWorkspace = await getModel().getWorkspace(workspaceName);
     // TODO: subscribe to this workspace
     // this.openWorkspace.subscribe()
+    // Display the new open workspace.
     getView().displayOpenWorkspace({
       name: this.openWorkspace.path.slice(1),
     });
+    // Un-select the open channel.
+    this.setOpenChannel(null);
     return this.openWorkspace;
   }
 
@@ -35,10 +42,17 @@ class Adapter {
     return this.openChannel;
   }
 
-  async setOpenChannel(channelName: string): Promise<ModelChannel> {
+  async setOpenChannel(
+    channelName: string | null
+  ): Promise<ModelChannel | null> {
     if (this.openChannel != null) {
       // TODO unsubscribe from old channel
-      // this.openChannel.unsubscribe()
+      this.openChannel.unsubscribe();
+    }
+    if (channelName == null) {
+      this.openChannel = null;
+      getView().displayOpenChannel(null);
+      return null;
     }
     let ws = this.getOpenWorkspace();
     if (ws != null) {
@@ -72,7 +86,10 @@ class Adapter {
     let viewChannelArr = new Array<ViewChannel>();
     this.openWorkspace?.getAllChannels().then((modelChannels) => {
       modelChannels.forEach((modelChannel) => {
-        slog.info("displayViewChannels", ["viewChannel name", modelChannel.path.split("/")[3]]);
+        slog.info("displayViewChannels", [
+          "viewChannel name",
+          modelChannel.path.split("/")[3],
+        ]);
         viewChannelArr.push({
           name: modelChannel.path.split("/")[3],
         });
@@ -80,7 +97,6 @@ class Adapter {
       getView().displayChannels(viewChannelArr);
     });
   }
-
 }
 
 // adapter singleton

@@ -16,7 +16,7 @@ interface WorkspaceListener {
 
 interface ChannelListener {
   displayChannels(channels: Array<ViewChannel>): void;
-  displayOpenChannel(open_channel: ViewChannel): void;
+  displayOpenChannel(open_channel: ViewChannel | null): void;
 }
 
 // TODO: think about how to consoldiate all functionality in the view?
@@ -102,7 +102,7 @@ export class View {
     });
   }
 
-  displayOpenChannel(channel: ViewChannel) {
+  displayOpenChannel(channel: ViewChannel | null) {
     this.channelListeners.forEach((listener) => {
       listener.displayOpenChannel(channel);
     });
