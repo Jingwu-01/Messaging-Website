@@ -2,6 +2,7 @@ import { initAdapter } from "./adapter/init";
 import { ModelPost } from "./model/post";
 import { slog } from "./slog";
 import {
+  LogoutEvent,
   SelectChannelEvent,
   SelectWorkspaceEvent,
   ViewPost,
@@ -27,6 +28,7 @@ declare global {
   interface DocumentEventMap {
     postsEvent: CustomEvent<PostsEvent>;
     loginEvent: CustomEvent<LoginEvent>;
+    logoutEvent: CustomEvent<LogoutEvent>; 
     workspaceSelected: CustomEvent<SelectWorkspaceEvent>;
     channelSelected: CustomEvent<SelectChannelEvent>;
   }
