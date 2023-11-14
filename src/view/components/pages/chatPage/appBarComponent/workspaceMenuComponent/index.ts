@@ -1,4 +1,3 @@
-import getAdapter from "../../../../../../adapter/adapter";
 import { ViewWorkspace } from "../../../../../datatypes";
 import { getView } from "../../../../../view";
 
@@ -22,8 +21,6 @@ class WorkspaceMenuComponent extends HTMLElement {
 
     // Tell the view that this component wants to listen to workspace updates
     getView().addWorkspaceListener(this);
-    // Tell the adapter to go ahead and re-render the workspaces for this component
-    getAdapter().reRenderWorkspaces(this);
   }
 
   disconnectedCallback(): void {
@@ -41,13 +38,16 @@ class WorkspaceMenuComponent extends HTMLElement {
   ): void {}
 
   // called by view whenever there is a change in the open workspace
-  displayOpenWorkspace(workspace: ViewWorkspace) {
+  displayOpenWorkspace(workspace: ViewWorkspace | null) {
     // update the displayed open workspace
     let open_workspace_el = this.shadowRoot?.querySelector(
       "#open-workspace-text"
     );
+    // Default to "Select Workspace" text if there is no workspace.
     if (open_workspace_el instanceof HTMLElement) {
-      open_workspace_el.innerHTML = workspace.name;
+      open_workspace_el.innerHTML = workspace
+        ? workspace.name
+        : "Select Workspace";
     }
   }
 

@@ -68,19 +68,19 @@ class Adapter {
     }
   }
 
-  async reRenderWorkspaces(listener: WorkspaceListener) {
-    listener.displayOpenWorkspace({
-      name: this.openWorkspace?.path.slice(1) ?? "Select Workspace",
-    });
-    let workspaces = await getModel().getAllWorkspaces();
-    let viewWorkspaceArr: Array<ViewWorkspace> = new Array<ViewWorkspace>();
-    workspaces.forEach((workspace) => {
-      viewWorkspaceArr.push({
-        name: workspace.path.slice(1),
-      });
-    });
-    listener.displayWorkspaces(viewWorkspaceArr);
-  }
+  // async reRenderWorkspaces(listener: WorkspaceListener) {
+  //   listener.displayOpenWorkspace({
+  //     name: this.openWorkspace?.path.slice(1) ?? "Select Workspace",
+  //   });
+  //   let workspaces = await getModel().getAllWorkspaces();
+  //   let viewWorkspaceArr: Array<ViewWorkspace> = new Array<ViewWorkspace>();
+  //   workspaces.forEach((workspace) => {
+  //     viewWorkspaceArr.push({
+  //       name: workspace.path.slice(1),
+  //     });
+  //   });
+  //   listener.displayWorkspaces(viewWorkspaceArr);
+  // }
 
   async displayViewChannels() {
     let viewChannelArr = new Array<ViewChannel>();
