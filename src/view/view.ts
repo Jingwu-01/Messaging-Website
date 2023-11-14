@@ -68,6 +68,16 @@ export class View {
     listener.displayPosts(this.posts);
   }
 
+  removePostListener(listener: PostListener) {
+    let index = this.postListeners.indexOf(listener);
+    if (index < 0) {
+      throw new ReferenceError(
+        "Attempted to remove a post listener that was not subscribed"
+      );
+    }
+    this.postListeners.splice(index, 1);
+  }
+
   displayPosts(posts: Array<ViewPost>) {
     this.posts = posts;
     this.postListeners.forEach((listener) => {
