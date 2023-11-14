@@ -6,15 +6,37 @@ export default function postComponentInit() {
     `
 <template id="post-template">
     <style>
+        header {
+            display: flex;
+            gap: 5em;
+            align-items: center;
+        }
         time {
-            margin-left: 5em
+            font-size: 0.8rem;
         }
         #post-child-container{
-            margin-left: 5em
+            margin-left: 5em;
+        }
+        #post-user-text{
+            font-size: 0.8rem;
+        }
+        #post-body{
+            font-size: 1rem;
+            margin: 0 0;
+        }
+        #hover-wrapper{
+            flex: 1;
         }
     </style>
     <section>
         <header id="post-header">
+            <p id="post-user-text"></p>
+            <div id="hover-wrapper">
+                <hover-component align="top">
+                    <time id="post-time-short" slot="anchor-el"></time>
+                    <time id="post-time-long" slot="hover-items"></time>
+                </hover-component>
+            </div>
         </header>
         <p id="post-body">    
             <!-- TODO: can also add additional HTML element(s) for buttons (reactions, replies)-->

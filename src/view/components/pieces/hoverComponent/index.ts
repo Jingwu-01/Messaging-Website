@@ -1,10 +1,10 @@
-class MenuComponent extends HTMLElement {
+class HoverComponent extends HTMLElement {
   constructor() {
     super();
 
     this.attachShadow({ mode: "open" });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#menu-component-template"
+      "#hover-component-template"
     );
     if (!template) {
       throw Error("Could not find template #hover-component-template");
@@ -15,22 +15,21 @@ class MenuComponent extends HTMLElement {
   connectedCallback(): void {
     // The browser calls this when the element is added to a document.
 
-    // Add a click listener to the document that closes this menu if it isn't open.
-    // This means clicking outside the menu will close it.
-    window.addEventListener("click", () => {
-      let popover_el = this.shadowRoot?.querySelector("#popover");
-      if (popover_el?.getAttribute("open") == "true") {
-        popover_el?.setAttribute("open", "false");
-      }
-    });
-
-    // Add a click listener to the anchor element that opens the menu.
+    // Add a hover listener to the anchor element that opens the hover component.
     this.shadowRoot
-      ?.querySelector("#anchor-el-wrapper")
-      ?.addEventListener("click", (event: Event) => {
+      ?.querySelector("#popover")
+      ?.addEventListener("mouseover", (event: Event) => {
         let popover_el = this.shadowRoot?.querySelector("#popover");
         popover_el?.setAttribute("open", "true");
-        event.stopPropagation();
+      });
+
+    // Add a hover listener to the hover component.
+    // Make it so that the document doesn't close the hover.
+    this.shadowRoot
+      ?.querySelector("#popover")
+      ?.addEventListener("mouseout", (event: Event) => {
+        let popover_el = this.shadowRoot?.querySelector("#popover");
+        popover_el?.setAttribute("open", "false");
       });
   }
 
@@ -39,13 +38,19 @@ class MenuComponent extends HTMLElement {
   }
   static get observedAttributes(): Array<string> {
     // Attributes to observe
-    return [];
+    return ["align"];
   }
   attributeChangedCallback(
     name: string,
     oldValue: string,
     newValue: string
-  ): void {}
+  ): void {
+    if (name == "align") {
+      this.shadowRoot
+        ?.querySelector("#popover")
+        ?.setAttribute("align", newValue);
+    }
+  }
 }
 
-export default MenuComponent;
+export default HoverComponent;
