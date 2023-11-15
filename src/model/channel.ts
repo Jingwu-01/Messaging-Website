@@ -3,6 +3,7 @@ import { ModelPost } from "./post";
 import { ChannelResponse, PostResponse } from "./responseTypes";
 import { getDatabasePath } from "./utils";
 import { getModel } from "./model";
+import { slog } from "../slog";
 
 export class ModelChannel {
   path: string;
@@ -26,6 +27,7 @@ export class ModelChannel {
     };
     // TODO: can make this more elegant by making modelFetch take in a fetch function which it uses
     let fetchUrl = getDatabasePath() + `${this.path}/posts/?mode=subscribe`;
+    slog.info("subscribeToPosts", ["fetchUrl", `${fetchUrl}`]);
     fetchEventSource(fetchUrl, {
       headers: options,
       // TODO: I am SURE that you can theoretically have some extra
