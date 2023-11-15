@@ -14,6 +14,7 @@ export default function postDisplayComponentInit() {
     <h2 id="channel-name"></h2>
     <section id="posts-container">
     </section>
+    <post-editor-component></post-editor-component>
 </template>
 `
   );

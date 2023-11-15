@@ -9,6 +9,7 @@ import postDisplayComponentInit from "./components/pages/chatPage/postDisplayCom
 import postComponentInit from "./components/pages/chatPage/postComponent/init";
 import homePageInit from "./components/pages/homePage/init";
 import channelSidebarComponentInit from "./components/pages/chatPage/channelSidebarComponent/init";
+import postEditorInit from "./components/pages/chatPage/postEditorComponent/init";
 
 export function initView() {
   popoverComponentInit();
@@ -22,4 +23,5 @@ export function initView() {
   postComponentInit();
   homePageInit();
   channelSidebarComponentInit();
+  postEditorInit();
 }
