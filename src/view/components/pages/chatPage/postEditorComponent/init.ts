@@ -12,28 +12,44 @@ export default function postEditorInit() {
         #post-operations {
             list-style-type: none;
             padding-left: 0em;
+            margin-top: 0em;
+            margin-bottom: 0em;
         }
         #post-editor-wrapper {
             display: flex;
             flex-direction: column;
             background-color: #ADD8E6;
             margin-left: 1em;
+            margin-right: 1em;
             padding-left: 1em;
             padding-right: 1em;
-            padding-top: 1em;
-            padding-bottom: 1em;
+            padding-top: .5em;
+            padding-bottom: .5em;
+            border-radius: 10px;
         }
         #post-form {
             display: flex;
             flex-direction: column;
+            justify-content: flex-end;
         }
         #post-input {
-            width: 20em;
             height: 5em;
+            resize: none;
         }
         #post-submit {
             margin-top: 1em;
-            width: 25%;
+            width: fit-content;
+            display: flex;
+            align-items: center;
+            background-color: #26667C;
+            color: #FFFFFF;
+            border-radius: 1em;
+        }
+        #send-icon {
+            margin-left: .5em;
+        }
+        #post-operations iconify-icon {
+            font-size: 1.5em;
         }
 
     </style>
@@ -50,7 +66,7 @@ export default function postEditorInit() {
         </ul>
         <form id="post-form">
             <textarea id="post-input" name="post_input"></textarea>
-            <button type="submit" id="post-submit">Send<iconify-icon icon="tabler:send" aria-label="send"></iconify-icon>
+            <button type="submit" id="post-submit">Send<iconify-icon id="send-icon" icon="tabler:send" aria-label="send"></iconify-icon>
         </form>
     </section>
 </template>

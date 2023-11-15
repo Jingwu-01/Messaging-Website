@@ -20,6 +20,10 @@ export default function chatPageInit() {
     }
     channel-sidebar-component {
       background-color: #ADD8E6;
+      width: 17%;
+    }
+    post-display-component {
+      width: 83%;
     }
   </style>
   <div>
