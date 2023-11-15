@@ -1,8 +1,12 @@
 import { ViewWorkspace } from "../../../../../datatypes";
 import { getView } from "../../../../../view";
+import EditDialogComponent from "../../editDialog";
 
 // Displays username, handles logout.
 class WorkspaceMenuComponent extends HTMLElement {
+  private editDialog: EditDialogComponent;
+  private editWorkspacesButton: HTMLButtonElement;
+
   constructor() {
     super();
 
@@ -14,10 +18,40 @@ class WorkspaceMenuComponent extends HTMLElement {
       throw Error("Could not find template #workspace-menu-component-template");
     }
     this.shadowRoot?.append(template.content.cloneNode(true));
+
+    let edit_dialog_query = this.shadowRoot?.querySelector("#edit-dialog");
+    if (!(edit_dialog_query instanceof EditDialogComponent)) {
+      throw Error("Could not find element with id #edit-dialog");
+    }
+    this.editDialog = edit_dialog_query;
+
+    let edit_workspaces_button_query = this.shadowRoot?.querySelector(
+      "#edit-workspaces-button"
+    );
+    if (!(edit_workspaces_button_query instanceof HTMLButtonElement)) {
+      throw Error("Could not find element with id #edit-dialog");
+    }
+
+    this.editWorkspacesButton = edit_workspaces_button_query;
   }
 
   connectedCallback(): void {
     // The browser calls this when the element is added to a document.
+
+    // Setup events for edit dialog
+    this.editDialog.onAdd = (new_item_name: string) => {
+      // TODO: make this send something to the adapter, which should then add a workspace to the db.
+      // Additional idea: this should become the selected workspace, and maybe the dialog should close.
+    };
+
+    this.editDialog.onRemove = (item_id: string) => {
+      // TODO: make this send something to the adapter
+    };
+
+    // make the edit workspaces button show the modal
+    this.editWorkspacesButton.addEventListener("click", () => {
+      this.editDialog.showModal();
+    });
 
     // Tell the view that this component wants to listen to workspace updates
     getView().addWorkspaceListener(this);
@@ -25,17 +59,8 @@ class WorkspaceMenuComponent extends HTMLElement {
 
   disconnectedCallback(): void {
     // The browser calls this when the element is removed from a document.
+    // TODO remove workspace listener.
   }
-  static get observedAttributes(): Array<string> {
-    // Attributes to observe
-    return [];
-  }
-
-  attributeChangedCallback(
-    name: string,
-    oldValue: string,
-    newValue: string
-  ): void {}
 
   // called by view whenever there is a change in the open workspace
   displayOpenWorkspace(workspace: ViewWorkspace | null) {
@@ -82,6 +107,8 @@ class WorkspaceMenuComponent extends HTMLElement {
           });
       });
     }
+    // tell the edit dialog to render these workspaces
+    this.editDialog.setItems(workspaces.map((ws) => ws.name));
   }
 }
 

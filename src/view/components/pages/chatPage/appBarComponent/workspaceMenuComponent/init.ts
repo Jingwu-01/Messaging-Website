@@ -27,8 +27,12 @@ export default function workspaceMenuComponentInit() {
       <div id="workspace-menu-items">
 
       </div>
+      <button id="edit-workspaces-button">Edit Workspaces</button>
     </div>
   </menu-component>
+  <edit-dialog-component id="edit-dialog">
+    <h2 slot="title">Edit Workspaces</h2>
+  </edit-dialog-component>
 </template>
 `
   );

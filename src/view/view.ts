@@ -90,7 +90,7 @@ export class View {
     listener.displayUser(this.user);
   }
 
-  displayUser(user: ViewUser) {
+  displayUser(user: ViewUser | null) {
     this.user = user;
     this.userListeners.forEach((listener) => {
       listener.displayUser(user);
