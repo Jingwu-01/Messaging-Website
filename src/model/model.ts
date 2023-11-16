@@ -1,5 +1,5 @@
 import { UserInfo } from "./modelTypes";
-import { typedFetch, getAuthPath, getDatabasePath } from "./utils";
+import { typedFetch, emptyFetch, getAuthPath, getDatabasePath } from "./utils";
 import { ModelWorkspace } from "./workspace";
 import { WorkspaceResponse } from "./responseTypes";
 
@@ -63,7 +63,7 @@ export class OwlDBModel {
         Accept: "application/json",
       },
     };
-    return typedFetch(getAuthPath(), options);
+    return emptyFetch(getAuthPath(), options);
   }
 
   async getWorkspace(id: string): Promise<ModelWorkspace> {
