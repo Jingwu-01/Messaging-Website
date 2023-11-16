@@ -3,6 +3,8 @@ import { getView } from "../../../../../view";
 
 // Displays username, handles logout.
 class UserMenuComponent extends HTMLElement {
+  private controller: AbortController | null = null;
+
   constructor() {
     super();
 
@@ -23,13 +25,25 @@ class UserMenuComponent extends HTMLElement {
     getView().addUserListener(this);
 
     // Add logout listener to logout button
-    this.shadowRoot
-      ?.querySelector("#logout-button")
-      ?.addEventListener("click", this.handleLogout);
+    const logoutButton = this.shadowRoot?.querySelector("#logout-button");
+    if (!(logoutButton instanceof HTMLElement)) {
+      throw new Error("Logout not HTMLElement");
+    }
+    this.controller = new AbortController();
+    const options = { signal: this.controller.signal };
+    logoutButton.addEventListener(
+      "click",
+      this.handleLogout.bind(this),
+      options
+    );
   }
 
   handleLogout(event: Event) {
-    document.dispatchEvent(new CustomEvent("logout"));
+    event.preventDefault();
+    const logoutEvent = new CustomEvent("logoutEvent", {
+      detail: {},
+    });
+    document.dispatchEvent(logoutEvent);
   }
 
   disconnectedCallback(): void {
