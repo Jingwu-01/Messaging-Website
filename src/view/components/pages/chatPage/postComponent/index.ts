@@ -1,5 +1,7 @@
 import { slog } from "../../../../../slog";
 import { ViewPost } from "../../../../datatypes";
+import { getView } from "../../../../view";
+import { PostEditor } from "../postEditorComponent";
 
 export class PostComponent extends HTMLElement {
   private postHeader: HTMLElement;
@@ -31,6 +33,16 @@ export class PostComponent extends HTMLElement {
 
     this.postHeader = postHeader;
     this.postBody = postBody;
+  }
+
+  connectedCallback() {
+    this.postBody.addEventListener("click", this.addPostEditor.bind(this));
+  }
+
+  addPostEditor(event: MouseEvent) {
+    let postEditor = new PostEditor();
+    this.postBody.parentNode?.insertBefore(postEditor, this.postBody.nextSibling);
+    getView().replacePostEditor(postEditor);
   }
 
   // Sets the content of this post equal to viewPost

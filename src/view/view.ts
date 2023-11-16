@@ -1,8 +1,12 @@
+import { PostEditor } from "./components/pages/chatPage/postEditorComponent";
 import M3ssagin8AppComponent from "./components/pages/m3ssagin8AppComponent";
 import { ViewChannel, ViewPost, ViewUser, ViewWorkspace } from "./datatypes";
 
 interface PostListener {
   displayPosts(posts: Array<ViewPost>): void;
+  displayPostEditor(): void;
+  removePostEditor(): void;
+  replacePostEditor(newPostEditor: PostEditor): void;
 }
 
 interface UserListener {
@@ -53,6 +57,24 @@ export class View {
       throw Error("main(): could not find a m3ssagin8-app-component element");
     }
     this.m3ssag1n8AppComponent = m3ssag1n8AppComponent;
+  }
+
+  displayPostEditor() {
+    this.postListeners.forEach((listener) => {
+      listener.displayPostEditor();
+    });
+  }
+
+  removePostEditor() {
+    this.postListeners.forEach((listener) => {
+      listener.removePostEditor();
+    });
+  }
+
+  replacePostEditor(newPostEditor: PostEditor) {
+    this.postListeners.forEach((listener) => {
+      listener.replacePostEditor(newPostEditor);
+    });
   }
 
   setChatPage() {

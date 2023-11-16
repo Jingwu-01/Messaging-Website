@@ -9,6 +9,7 @@ import postDisplayComponentInit from "./components/pages/chatPage/postDisplayCom
 import postComponentInit from "./components/pages/chatPage/postComponent/init";
 import homePageInit from "./components/pages/homePage/init";
 import channelSidebarComponentInit from "./components/pages/chatPage/channelSidebarComponent/init";
+import postEditorInit from "./components/pages/chatPage/postEditorComponent/init";
 import hoverComponentInit from "./components/pieces/hoverComponent/init";
 import editDialogComponentInit from "./components/pages/chatPage/editDialog/init";
 
@@ -25,5 +26,6 @@ export function initView() {
   homePageInit();
   hoverComponentInit();
   channelSidebarComponentInit();
+  postEditorInit();
   editDialogComponentInit();
 }

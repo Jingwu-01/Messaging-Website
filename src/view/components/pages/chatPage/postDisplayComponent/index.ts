@@ -1,11 +1,15 @@
 import { ViewPost } from "../../../../datatypes";
 import { getView } from "../../../../view";
 import { PostComponent } from "../postComponent";
+import { PostEditor } from "../postEditorComponent";
 
 export class PostDisplay extends HTMLElement {
   private channelHeader: HTMLElement;
 
   private postsContainer: HTMLElement;
+
+  private postEditor: PostEditor | undefined;
+
   constructor() {
     super();
 
@@ -61,6 +65,22 @@ export class PostDisplay extends HTMLElement {
       postEl.addPostChildren(viewPost.Children);
     }
   }
+
+  displayPostEditor(): void {
+    this.postEditor?.remove();
+    this.postEditor = new PostEditor();
+    this.shadowRoot?.append(this.postEditor);
+  }
+
+  removePostEditor(): void {
+    this.postEditor?.remove();
+  }
+
+  replacePostEditor(newPostEditor: PostEditor) {
+    this.postEditor?.remove();
+    this.postEditor = newPostEditor;
+  }
+
 }
 
 export default PostDisplay;
