@@ -1,3 +1,4 @@
+import { slog } from "../../../../../slog";
 import { ViewPost } from "../../../../datatypes";
 
 export class PostComponent extends HTMLElement {
@@ -36,14 +37,30 @@ export class PostComponent extends HTMLElement {
   addPostContent(viewPost: ViewPost): void {
     // TODO: obviously can add more functionality here later as needed.
     this.postBody.innerText = viewPost.Msg;
-    this.postHeader.innerText = viewPost.CreatedUser;
+    let postUserText = this.postHeader.querySelector("#post-user-text");
+    // TODO handle error better
+    if (postUserText != null) {
+      postUserText.innerHTML = viewPost.CreatedUser;
+    }
     // assumed that time is in ms
     let postTimeObj = new Date(viewPost.PostTime);
-    let postTime = document.createElement("time");
-    console.log(`addPostContent: postTime: ${postTime}`);
-    console.log(`addPostContent: postTimeObj: ${postTimeObj.toString()}`);
-    postTime.innerText = postTimeObj.toString();
-    this.postHeader.append(postTime);
+    let postTimeShortEl = this.postHeader.querySelector("#post-time-short");
+    // TODO handle error better
+    if (postTimeShortEl != null) {
+      // display date if not today, time if today
+      let timeToDisplay = `${postTimeObj.getDate()}`;
+      if (postTimeObj.getDate() == new Date().getDate()) {
+        timeToDisplay = postTimeObj.toLocaleTimeString();
+      }
+      postTimeShortEl.setAttribute("datetime", postTimeObj.toISOString());
+      postTimeShortEl.innerHTML = `<u>${timeToDisplay}</u>`;
+    }
+    // TODO handle error better
+    let postTimeLongEl = this.postHeader.querySelector("#post-time-long");
+    if (postTimeLongEl != null) {
+      postTimeLongEl.setAttribute("datetime", postTimeObj.toISOString());
+      postTimeLongEl.innerHTML = postTimeObj.toString();
+    }
   }
 
   // Adds childrenPosts as replies to this ViewPost.

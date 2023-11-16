@@ -47,11 +47,11 @@ class UserMenuComponent extends HTMLElement {
   ): void {}
 
   // called by view whenever there is a change in the logged-in user
-  displayUser(user: ViewUser) {
+  displayUser(user: ViewUser | null) {
     // update the displayed username
     let user_text_el = this.shadowRoot?.querySelector("#user-text");
     if (user_text_el instanceof HTMLElement) {
-      user_text_el.innerHTML = user.username;
+      user_text_el.innerHTML = user?.username ?? "";
     }
   }
   // render() {
