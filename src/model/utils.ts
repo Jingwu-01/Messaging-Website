@@ -27,6 +27,24 @@ export function typedFetch<T>(url: string, options?: RequestInit): Promise<T> {
   });
 }
 
+export function emptyFetch(url: string, options?: RequestInit): Promise<void> {
+  return fetch(url, options).then((response: Response) => {
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    // Return decoded JSON if there is a response body or null otherwise
+    const contentLength = response.headers.get("Content-Length");
+    if (contentLength && contentLength !== "0") {
+      // Should not be a response body
+      throw new Error(`expected empty response`);
+    } else {
+      // No content
+      return;
+    }
+  });
+}
+
 
 // Method to return the path to the database used.
 export function getDatabasePath(): string {

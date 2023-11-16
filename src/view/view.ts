@@ -10,12 +10,12 @@ interface PostListener {
 }
 
 interface UserListener {
-  displayUser(user: ViewUser): void;
+  displayUser(user: ViewUser | null): void;
 }
 
 interface WorkspaceListener {
   displayWorkspaces(workspaces: Array<ViewWorkspace>): void;
-  displayOpenWorkspace(open_workspace: ViewWorkspace): void;
+  displayOpenWorkspace(open_workspace: ViewWorkspace | null): void;
 }
 
 interface ChannelListener {
@@ -25,7 +25,27 @@ interface ChannelListener {
 
 // TODO: think about how to consoldiate all functionality in the view?
 export class View {
-  private postListener: PostListener | null = null;
+  private user: ViewUser | null = null;
+
+  private userListeners: Array<UserListener> = new Array<UserListener>();
+
+  private postListeners: Array<PostListener> = new Array<PostListener>();
+
+  private workspaceListeners: Array<WorkspaceListener> =
+    new Array<WorkspaceListener>();
+
+  private channelListeners: Array<ChannelListener> =
+    new Array<ChannelListener>();
+
+  private workspaces = new Array<ViewWorkspace>();
+
+  private openWorkspace: ViewWorkspace | null = null;
+
+  private posts = new Array<ViewPost>();
+
+  private channels = new Array<ViewChannel>();
+
+  private openChannel: ViewChannel | null = null;
 
   private m3ssag1n8AppComponent: M3ssagin8AppComponent | null = null;
 
@@ -39,29 +59,22 @@ export class View {
     this.m3ssag1n8AppComponent = m3ssag1n8AppComponent;
   }
 
-  setPostListener(listener: PostListener) {
-    console.log(`setPostListener: listener: ${listener}`);
-    this.postListener = listener;
-  }
-
-  clearPostListener() {
-    this.postListener = null;
-  }
-
-  displayPosts(posts: Array<ViewPost>) {
-    this.postListener?.displayPosts(posts);
-  }
-
   displayPostEditor() {
-    this.postListener?.displayPostEditor();
+    this.postListeners.forEach((listener) => {
+      listener.displayPostEditor();
+    });
   }
 
   removePostEditor() {
-    this.postListener?.removePostEditor();
+    this.postListeners.forEach((listener) => {
+      listener.removePostEditor();
+    });
   }
 
   replacePostEditor(newPostEditor: PostEditor) {
-    this.postListener?.replacePostEditor(newPostEditor);
+    this.postListeners.forEach((listener) => {
+      listener.replacePostEditor(newPostEditor);
+    });
   }
 
   setChatPage() {
@@ -72,60 +85,78 @@ export class View {
     this.m3ssag1n8AppComponent?.setHomePage();
   }
 
-  private userListeners: Array<UserListener> = new Array<UserListener>();
+  addPostListener(listener: PostListener) {
+    this.postListeners.push(listener);
+    listener.displayPosts(this.posts);
+  }
 
-  private workspaceListeners: Array<WorkspaceListener> =
-    new Array<WorkspaceListener>();
+  removePostListener(listener: PostListener) {
+    let index = this.postListeners.indexOf(listener);
+    if (index < 0) {
+      throw new ReferenceError(
+        "Attempted to remove a post listener that was not subscribed"
+      );
+    }
+    this.postListeners.splice(index, 1);
+  }
 
-  private channelListeners: Array<ChannelListener> =
-    new Array<ChannelListener>();
-
-  //   private postListeners: Array<PostListener> = new Array<PostListener>();
-
-  //   addPostListener(listener: PostListener) {
-  //     this.postListeners.push(listener);
-  //   }
+  displayPosts(posts: Array<ViewPost>) {
+    this.posts = posts;
+    this.postListeners.forEach((listener) => {
+      listener.displayPosts(posts);
+    });
+  }
 
   addUserListener(listener: UserListener) {
     this.userListeners.push(listener);
+    listener.displayUser(this.user);
   }
 
-  addWorkspaceListener(listener: WorkspaceListener) {
-    this.workspaceListeners.push(listener);
-  }
-
-  displayUser(user: ViewUser) {
+  displayUser(user: ViewUser | null) {
+    this.user = user;
     this.userListeners.forEach((listener) => {
       listener.displayUser(user);
     });
   }
 
+  addWorkspaceListener(listener: WorkspaceListener) {
+    this.workspaceListeners.push(listener);
+    listener.displayWorkspaces(this.workspaces);
+    listener.displayOpenWorkspace(this.openWorkspace);
+  }
+
   displayWorkspaces(workspaces: Array<ViewWorkspace>) {
+    this.workspaces = workspaces;
     this.workspaceListeners.forEach((listener) => {
       listener.displayWorkspaces(workspaces);
     });
   }
 
-  displayOpenWorkspace(workspace: ViewWorkspace) {
+  displayOpenWorkspace(workspace: ViewWorkspace | null) {
+    this.openWorkspace = workspace;
     this.workspaceListeners.forEach((listener) => {
       listener.displayOpenWorkspace(workspace);
     });
   }
 
+  addChannelListener(listener: ChannelListener) {
+    this.channelListeners.push(listener);
+    listener.displayChannels(this.channels);
+    listener.displayOpenChannel(this.openChannel);
+  }
+
   displayChannels(channels: Array<ViewChannel>) {
+    this.channels = channels;
     this.channelListeners.forEach((listener) => {
       listener.displayChannels(channels);
     });
   }
 
   displayOpenChannel(channel: ViewChannel | null) {
+    this.openChannel = channel;
     this.channelListeners.forEach((listener) => {
       listener.displayOpenChannel(channel);
     });
-  }
-
-  addChannelListener(listener: ChannelListener) {
-    this.channelListeners.push(listener);
   }
 }
 

@@ -67,3 +67,7 @@ export type SelectChannelEvent = {
 export type DeleteChannelEvent = {
   name: string;
 };
+
+export type ReactionUpdateEvent = {
+  reactionName: string; 
+}
