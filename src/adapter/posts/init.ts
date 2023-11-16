@@ -1,6 +1,8 @@
 import { getViewPosts } from "../../main";
 import { PostsEvent } from "../../model/modelTypes";
+import { ReactionUpdateEvent } from "../../view/datatypes";
 import { getView } from "../../view/view";
+import { getModel } from "../../model/model";
 
 export function initPosts() {
   document.addEventListener(
@@ -11,4 +13,14 @@ export function initPosts() {
       getView().displayPosts(viewPosts);
     }
   );
+
+  document.addEventListener(
+    "reactionUpdateEvent", 
+    function (evt: CustomEvent<ReactionUpdateEvent>) {
+      let model = getModel();
+      // Todo: I need the actual name of the reaction as an input 
+      model.updateReaction("dummyReaction") 
+
+    }
+  )
 }

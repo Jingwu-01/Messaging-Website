@@ -21,7 +21,7 @@ class ReactionComponent extends HTMLElement {
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
 
-    const reactionButton = this.shadowRoot?.querySelector("reaction-button");
+    const reactionButton = this.shadowRoot?.querySelector("#reaction-button");
     if (!(reactionButton instanceof HTMLButtonElement)) {
       throw new Error("reactionButton not HTML button element");
     }

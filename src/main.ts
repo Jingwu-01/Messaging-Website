@@ -6,6 +6,7 @@ import {
   SelectChannelEvent,
   SelectWorkspaceEvent,
   ViewPost,
+  ReactionUpdateEvent 
 } from "./view/datatypes";
 import { LoginEvent } from "./view/datatypes";
 import { initView } from "./view/init";
@@ -31,6 +32,7 @@ declare global {
     logoutEvent: CustomEvent<LogoutEvent>; 
     workspaceSelected: CustomEvent<SelectWorkspaceEvent>;
     channelSelected: CustomEvent<SelectChannelEvent>;
+    reactionUpdateEvent: CustomEvent<ReactionUpdateEvent>; 
   }
 }
 
