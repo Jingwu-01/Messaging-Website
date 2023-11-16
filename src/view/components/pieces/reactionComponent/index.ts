@@ -45,7 +45,7 @@ class ReactionComponent extends HTMLElement {
         this.display(); 
     }
     const reactionUpdateEvent = new CustomEvent("reactionUpdateEvent", {
-        detail: {} 
+        detail: {reactionName: "dummyReactionName"} 
     })
     document.dispatchEvent(reactionUpdateEvent) 
   } 
