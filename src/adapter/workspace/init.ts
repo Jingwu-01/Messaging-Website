@@ -18,6 +18,7 @@ export function initWorkspaces() {
           ]);
           getAdapter().displayViewChannels();
           getView().displayPosts([]);
+          getView().removePostEditor();
         });
     }
   );
