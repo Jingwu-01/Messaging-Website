@@ -1,4 +1,4 @@
-import { ViewPost } from "../../../../datatypes";
+import { ViewPost, ViewPostUpdate } from "../../../../datatypes";
 import { getView } from "../../../../view";
 import { PostComponent } from "../postComponent";
 import { PostEditor } from "../postEditorComponent";
@@ -56,13 +56,17 @@ export class PostDisplay extends HTMLElement {
 
   // TODO: add another helper for setting the channel name
 
-  displayPosts(allPosts: Array<ViewPost>): void {
+  displayPosts(update: ViewPostUpdate): void {
     this.postsContainer.innerHTML = "";
-    for (let viewPost of allPosts) {
+    if (update.op == "modify") {
+      // get the post that's affected
+      // add the reaction
+    }
+    for (let viewPost of update.allPosts) {
       let postEl = new PostComponent();
       postEl.addPostContent(viewPost);
       this.postsContainer.append(postEl);
-      postEl.addPostChildren(viewPost.Children);
+      postEl.addPostChildren(viewPost.children);
     }
   }
 

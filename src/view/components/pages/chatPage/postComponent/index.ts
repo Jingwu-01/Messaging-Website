@@ -99,6 +99,11 @@ export class PostComponent extends HTMLElement {
     }
   }
 
+  displayPosts(update: ViewPostUpdate) {
+    // if this post's id is in update.affectedPosts,
+    // then add the reactio if it's a "modify"
+  }
+
   // TODO: add a private filter function on posts that can basically
   // handle filtering unstyled HTML with ** and stuff to strong and em
   // tags as needed
