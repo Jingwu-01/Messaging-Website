@@ -10,7 +10,7 @@ export function initPosts() {
     "postsEvent",
     function (evt: CustomEvent<PostsEvent>) {
       // TODO: change console.log to slog
-      slog.info("postsEvent", ["posts", `${JSON.stringify(Object.fromEntries(evt.detail.posts))}`]);
+      slog.info("postsEvent", ["posts", `${JSON.stringify(Object.fromEntries(evt.detail.posts))}`], ["number of posts", `${evt.detail.posts.size}`]);
       let viewPosts = getViewPosts(evt.detail.posts);
       getView().displayPosts(viewPosts);
     }
