@@ -1,7 +1,10 @@
+import { ViewPost } from "../../../datatypes";
+
 class ReactionComponent extends HTMLElement {
   private controller: AbortController | null = null;
   private count: number = 0;
-  private isClicked: Boolean = false; 
+  private isClicked: Boolean = false;
+  private reactionIcon: HTMLElement;
 
   constructor() {
     super();
@@ -15,6 +18,7 @@ class ReactionComponent extends HTMLElement {
         this.shadowRoot.append(template.content.cloneNode(true));
       }
     }
+
   }
 
   connectedCallback(): void {
@@ -34,21 +38,21 @@ class ReactionComponent extends HTMLElement {
     this.controller = null;
   }
 
-  update(){
+  update() {
     if (!this.isClicked) {
-        this.isClicked = true; 
-        this.count++; 
-        this.display(); 
+      this.isClicked = true;
+      this.count++;
+      this.display();
     } else {
-        this.isClicked = false; 
-        this.count--; 
-        this.display(); 
+      this.isClicked = false;
+      this.count--;
+      this.display();
     }
     const reactionUpdateEvent = new CustomEvent("reactionUpdateEvent", {
-        detail: {reactionName: "dummyReactionName"} 
-    })
-    document.dispatchEvent(reactionUpdateEvent) 
-  } 
+      detail: { reactionName: "dummyReactionName" },
+    });
+    document.dispatchEvent(reactionUpdateEvent);
+  }
 
   display() {
     const countText = this.shadowRoot?.querySelector("#count");
@@ -57,6 +61,18 @@ class ReactionComponent extends HTMLElement {
     } else {
       throw new Error("countText not HTML paragraph element");
     }
+  }
+
+  addReactionContent(viewPost: ViewPost): void {
+    let reactionData = viewPost.Reactions; 
+
+  }
+
+  static get observedAttributes(): string[] {
+    return ["icon"]
+  }
+
+  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
   }
 }
 

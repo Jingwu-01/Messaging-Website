@@ -22,7 +22,7 @@ export default function reactionComponentInit() {
     </style>
     <div id="wrapper">
       <button id="reaction-button">
-        <iconify-icon icon="lucide:smile"></iconify-icon>
+        <iconify-icon icon="lucide:smile" id="reaction-icon"></iconify-icon>
       </button>
       <p id="count"></p>
     </div>
