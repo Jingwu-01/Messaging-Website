@@ -44,3 +44,8 @@ export type SelectChannelEvent = {
 export type DeleteChannelEvent = {
     name: string
 }
+
+export type CreatPostEvent = {
+    msg: string,
+    parent: string
+}

@@ -53,6 +53,7 @@ export class PostEditor extends HTMLElement {
     }
 
     connectedCallback() {
+        // post editor operation callbacks
         let postOperationElements = this.postOperations.children;
         for (let childEl of postOperationElements) {
             let id = childEl.id;
@@ -101,6 +102,9 @@ export class PostEditor extends HTMLElement {
                 this.applyTextFormatting(prefixFunc, suffixFunc, innerTextFunc);
             });
         }
+
+        // adding a post callback
+        this.postSubmit.addEventListener("submit", this.submitPost.bind(this))
     }
 
     applyTextFormatting(prefixFunc: StringFunction, suffixFunc: StringFunction, selectedValFunc: StringFunction) {
@@ -108,6 +112,11 @@ export class PostEditor extends HTMLElement {
         let endCharIdx = this.postInput.selectionEnd;
         this.postInput.value = this.postInput.value.substring(0, startCharIdx) + 
         prefixFunc() + selectedValFunc() + suffixFunc() + this.postInput.value.substring(endCharIdx);
+    }
+
+    submitPost(event: SubmitEvent) {
+        event.preventDefault();
+        
     }
 
     reactionMarkdown() {
