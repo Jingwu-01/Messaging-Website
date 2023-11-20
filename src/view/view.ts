@@ -1,3 +1,4 @@
+import PostComponent from "./components/pages/chatPage/postComponent";
 import { PostEditor } from "./components/pages/chatPage/postEditorComponent";
 import M3ssagin8AppComponent from "./components/pages/m3ssagin8AppComponent";
 import { ViewChannel, ViewPost, ViewUser, ViewWorkspace } from "./datatypes";
@@ -63,6 +64,11 @@ export class View {
     this.postListeners.forEach((listener) => {
       listener.displayPostEditor();
     });
+  }
+
+  // TODO: have an abstract superclass that adds a parent field.
+  movePostEditorTo(postElement: PostComponent) {
+    
   }
 
   removePostEditor() {

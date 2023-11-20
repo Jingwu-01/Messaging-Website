@@ -12,6 +12,8 @@ export class PostEditor extends HTMLElement {
 
     private postSubmit: HTMLElement;
 
+    private parentPath: string | undefined;
+
     constructor() {
         super();
 

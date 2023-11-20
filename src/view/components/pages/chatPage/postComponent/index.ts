@@ -8,6 +8,8 @@ export class PostComponent extends HTMLElement {
 
   private postBody: HTMLElement;
 
+  private postPath: string | undefined;
+
   constructor() {
     super();
 
@@ -40,14 +42,24 @@ export class PostComponent extends HTMLElement {
   }
 
   addPostEditor(event: MouseEvent) {
-    let postEditor = new PostEditor();
-    this.postBody.parentNode?.insertBefore(postEditor, this.postBody.nextSibling);
-    getView().replacePostEditor(postEditor);
+    // let postEditor = new PostEditor();
+    // // this call should technically be before the previous one
+    // getView().replacePostEditor(postEditor);
+    // this.postBody.parentNode?.insertBefore(postEditor, this.postBody.nextSibling);
+    getView().movePostEditorTo(this);
+
+    
+
+  }
+
+  insertPostEditor(postEditor: PostEditor) {
+      this.postBody.parentNode?.insertBefore(postEditor, this.postBody.nextSibling);
   }
 
   // Sets the content of this post equal to viewPost
   addPostContent(viewPost: ViewPost): void {
     // TODO: obviously can add more functionality here later as needed.
+    this.postPath = viewPost.Path;
     this.postBody.innerText = viewPost.Msg;
     let postUserText = this.postHeader.querySelector("#post-user-text");
     // TODO handle error better
