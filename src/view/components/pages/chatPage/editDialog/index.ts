@@ -3,7 +3,8 @@ export class EditDialogComponent extends HTMLElement {
   public onAdd(new_item_name: string) {}
   public onRemove(item_id: string) {}
 
-  private addItemForm: HTMLFormElement;
+  private addItemButton: HTMLElement;
+  private addItemInput: HTMLInputElement;
   private itemDisplay: HTMLDivElement;
   private dialog: HTMLDialogElement;
   private saveAndCloseButton: HTMLButtonElement;
@@ -16,24 +17,24 @@ export class EditDialogComponent extends HTMLElement {
       "#edit-dialog-component-template"
     );
     if (!template) {
-      throw Error("Could not find template #app-bar-component-template");
+      throw Error("Could not find template #edit-dialog-component-template");
     }
     this.shadowRoot?.append(template.content.cloneNode(true));
 
-    // Set up add item form
-    let add_item_form_query = this.shadowRoot?.querySelector("#add-item-form");
-    if (!(add_item_form_query instanceof HTMLFormElement)) {
+    // Set up add item input
+    let add_item_input = this.shadowRoot?.querySelector("#add-item-input");
+    if (!(add_item_input instanceof HTMLInputElement)) {
+      throw Error("Could not find form #add-item-input");
+    }
+    this.addItemInput = add_item_input;
+
+    // Set up add item button
+    let add_item_button_query =
+      this.shadowRoot?.querySelector("#add-item-button");
+    if (!(add_item_button_query instanceof HTMLElement)) {
       throw Error("Could not find form #add-item-form");
     }
-    this.addItemForm = add_item_form_query;
-    this.addItemForm.addEventListener("submit", () => {
-      let data = new FormData(this.addItemForm);
-      let name = data.get("new-item-name");
-      if (!name) {
-        throw Error("add-item-form has no input with name new-item-name");
-      }
-      this.onAdd(name.toString());
-    });
+    this.addItemButton = add_item_button_query;
 
     // Set up item display
     let item_display_query = this.shadowRoot?.querySelector("#item-display");
@@ -60,6 +61,10 @@ export class EditDialogComponent extends HTMLElement {
   }
 
   connectedCallback(): void {
+    this.addItemButton.addEventListener("click", () => {
+      this.onAdd(this.addItemInput.value);
+    });
+
     this.saveAndCloseButton.addEventListener("click", () => {
       this.close();
     });

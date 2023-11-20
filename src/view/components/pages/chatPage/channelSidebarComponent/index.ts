@@ -1,9 +1,11 @@
 import { slog } from "../../../../../slog";
-import { ViewChannel } from "../../../../datatypes";
+import { ViewChannel, ViewWorkspace } from "../../../../datatypes";
 import { getView } from "../../../../view";
 
 export class ChannelSidebar extends HTMLElement {
   private channelList: HTMLElement;
+
+  private editChannelsButtonWrapper: HTMLElement;
 
   private channelNameToIdx = new Map<String, Number>();
 
@@ -36,11 +38,26 @@ export class ChannelSidebar extends HTMLElement {
 
     this.channelList = channelList;
 
+    let edit_channels_button_wrapper_query = this.shadowRoot.querySelector(
+      "#edit-channels-button-wrapper"
+    );
+
+    if (!(edit_channels_button_wrapper_query instanceof HTMLElement)) {
+      throw Error(
+        "Could not find an element with the edit-channels-button-wrapper id"
+      );
+    }
+
+    this.editChannelsButtonWrapper = edit_channels_button_wrapper_query;
+
     // this.displayPosts.bind(this);
   }
 
   connectedCallback() {
     getView().addChannelListener(this);
+    // We need this so that we can listen for when a workspace is closed.
+    // Since if the workspace is closed, we shouldn't render the "Edit Channels" button.
+    getView().addWorkspaceListener(this);
   }
 
   displayOpenChannel(channel: ViewChannel | null) {
@@ -96,4 +113,16 @@ export class ChannelSidebar extends HTMLElement {
       });
     });
   }
+
+  // If no workspace is selected, then don't render the "edit channels" button.
+  displayOpenWorkspace(workspace: ViewWorkspace | null) {
+    if (workspace == null) {
+      this.editChannelsButtonWrapper.style.display = "none";
+    } else {
+      this.editChannelsButtonWrapper.style.display = "inherit";
+    }
+  }
+
+  // We don't care about the actual workspaces.
+  displayWorkspaces(workspaces: Array<ViewWorkspace>) {}
 }

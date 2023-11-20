@@ -12,6 +12,7 @@ import channelSidebarComponentInit from "./components/pages/chatPage/channelSide
 import postEditorInit from "./components/pages/chatPage/postEditorComponent/init";
 import hoverComponentInit from "./components/pieces/hoverComponent/init";
 import editDialogComponentInit from "./components/pages/chatPage/editDialog/init";
+import { openDialogButtonComponentInit } from "./components/pieces/openDialogButtonComponent/init";
 import replyButtonComponentInit from "./components/pieces/replyButtonComponent/init";
 import reactionComponentInit from "./components/pieces/reactionComponent/init";
 
@@ -30,6 +31,7 @@ export function initView() {
   channelSidebarComponentInit();
   postEditorInit();
   editDialogComponentInit();
+  openDialogButtonComponentInit();
   replyButtonComponentInit();
-  reactionComponentInit(); 
+  reactionComponentInit();
 }
