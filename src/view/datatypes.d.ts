@@ -24,6 +24,7 @@ export type ViewPost = {
   CreatedUser: string;
   PostTime: number;
   Children: Array<ViewPost>;
+  Path: string;
 };
 
 export type ReactionData = {

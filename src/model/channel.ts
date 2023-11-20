@@ -38,6 +38,7 @@ export class ModelChannel {
           // and send an event with all the posts.
           case "update":
             const jsonContents = JSON.parse(event.data) as PostResponse;
+            slog.info("update event for post", ["incoming post", JSON.stringify(jsonContents)]);
             thisChannel.addPost(jsonContents);
             console.log(
               `subscribeToPosts: thisChannel.posts: ${JSON.stringify(

@@ -12,6 +12,8 @@ export class PostEditor extends HTMLElement {
 
     private postSubmit: HTMLElement;
 
+    private parentPath: string | undefined;
+
     constructor() {
         super();
 
@@ -53,54 +55,58 @@ export class PostEditor extends HTMLElement {
     }
 
     connectedCallback() {
-        // let postOperationElements = this.postOperations.children;
-        // for (let childEl of postOperationElements) {
-        //     let id = childEl.id;
-        //     let splitId = id.split("-");
-        //     let operationType = splitId[1];
-        //     let innerTextFunc: StringFunction;
-        //     let prefixFunc: StringFunction;
-        //     let suffixFunc: StringFunction;
-        //     switch (operationType) {
-        //         case "reaction": {
-        //             innerTextFunc = () => {return splitId[0]};
-        //             break;
-        //         }
-        //         case "text": {
-        //             innerTextFunc = () => {
-        //                 let startCharIdx = this.postInput.selectionStart;
-        //                 let endCharIdx = this.postInput.selectionEnd;
-        //                 return this.postInput.value.substring(startCharIdx, endCharIdx);
-        //             }
-        //             break;
-        //         }
-        //         default: {
-        //             throw Error(`post editor connected callback: expected id of post operation to be of the form <operation>-text or <operation>-reaction, but id is: ${id}`);
-        //         }
-        //     }
-        //     switch (splitId[0]) {
-        //         case "bold":
-        //             prefixFunc = this.boldMarkdown;
-        //             suffixFunc = this.boldMarkdown;
-        //             break;
-        //         case "italicize":
-        //             prefixFunc = this.italicsMarkdown;
-        //             suffixFunc = this.italicsMarkdown;
-        //             break;
-        //         case "link":
-        //             prefixFunc = this.urlPrefixMarkdown;
-        //             suffixFunc = this.urlSuffixMarkdown;
-        //             break;
-        //         default:
-        //             // assume it's a reaction; there's no error handling here.
-        //             prefixFunc = this.reactionMarkdown;
-        //             suffixFunc = this.reactionMarkdown;
-        //             break;
-        //     }
-        //     childEl.addEventListener("click", (evt: MouseEvent) => {
-        //         this.applyTextFormatting(prefixFunc, suffixFunc, selectedValFunc);
-        //     })
-        // }
+        // post editor operation callbacks
+        let postOperationElements = this.postOperations.children;
+        for (let childEl of postOperationElements) {
+            let id = childEl.id;
+            let splitId = id.split("-");
+            let operationType = splitId[1];
+            let innerTextFunc: StringFunction;
+            let prefixFunc: StringFunction;
+            let suffixFunc: StringFunction;
+            switch (operationType) {
+                case "reaction": {
+                    innerTextFunc = () => {return splitId[0]};
+                    break;
+                }
+                case "text": {
+                    innerTextFunc = () => {
+                        let startCharIdx = this.postInput.selectionStart;
+                        let endCharIdx = this.postInput.selectionEnd;
+                        return this.postInput.value.substring(startCharIdx, endCharIdx);
+                    }
+                    break;
+                }
+                default: {
+                    throw Error(`post editor connected callback: expected id of post operation to be of the form <operation>-text or <operation>-reaction, but id is: ${id}`);
+                }
+            }
+            switch (splitId[0]) {
+                case "bold":
+                    prefixFunc = this.boldMarkdown;
+                    suffixFunc = this.boldMarkdown;
+                    break;
+                case "italicize":
+                    prefixFunc = this.italicsMarkdown;
+                    suffixFunc = this.italicsMarkdown;
+                    break;
+                case "link":
+                    prefixFunc = this.urlPrefixMarkdown;
+                    suffixFunc = this.urlSuffixMarkdown;
+                    break;
+                default:
+                    // assume it's a reaction; there's no error handling here.
+                    prefixFunc = this.reactionMarkdown;
+                    suffixFunc = this.reactionMarkdown;
+                    break;
+            }
+            childEl.addEventListener("click", () => {
+                this.applyTextFormatting(prefixFunc, suffixFunc, innerTextFunc);
+            });
+        }
+
+        // adding a post callback
+        this.postSubmit.addEventListener("submit", this.submitPost.bind(this))
     }
 
     applyTextFormatting(prefixFunc: StringFunction, suffixFunc: StringFunction, selectedValFunc: StringFunction) {
@@ -110,16 +116,21 @@ export class PostEditor extends HTMLElement {
         prefixFunc() + selectedValFunc() + suffixFunc() + this.postInput.value.substring(endCharIdx);
     }
 
+    submitPost(event: SubmitEvent) {
+        event.preventDefault();
+        
+    }
+
     reactionMarkdown() {
         return ":";
     }
 
     boldMarkdown() {
-        return "*";
+        return "**";
     }
 
     italicsMarkdown() {
-        return "**";
+        return "*";
     }
 
     urlPrefixMarkdown() {

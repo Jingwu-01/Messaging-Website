@@ -87,6 +87,7 @@ function viewPostConverter(modelPost: ModelPost): ViewPost {
     CreatedUser: modelPost.getResponse().meta.createdBy,
     PostTime: modelPost.getResponse().meta.createdAt,
     Children: new Array<ViewPost>(),
+    Path: modelPost.getResponse().path
   };
 }
 
