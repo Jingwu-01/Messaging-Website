@@ -32,5 +32,4 @@ export function initView() {
   editDialogComponentInit();
   replyButtonComponentInit();
   reactionComponentInit(); 
-
 }

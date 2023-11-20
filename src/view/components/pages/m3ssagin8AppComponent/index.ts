@@ -32,14 +32,11 @@ export default class M3ssagin8AppComponent extends HTMLElement {
   }
 
   setHomePage() {
-    // Clears, then sets the home page.
-    this.app_element.innerHTML = "";
     let homePage = new HomePage();
     this.app_element.append(homePage);
   }
 
   setChatPage() {
-    this.app_element.innerHTML = "";
     let chatPage = new ChatPageComponent();
     this.app_element.append(chatPage);
   }

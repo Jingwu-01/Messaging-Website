@@ -19,12 +19,19 @@ interface Workspace {
 // that the view can display.
 export type ViewPost = {
   Msg: string;
-  Reactions: any; // TODO: should be an array of strings? or custom reactions objects based on what we want?
+  Reactions: ReactionData; // TODO: should be an array of strings? or custom reactions objects based on what we want?
   Extensions: any; // TODO: see above for 'reactions'
   CreatedUser: string;
   PostTime: number;
   Children: Array<ViewPost>;
 };
+
+export type ReactionData = {
+  smile: string[]; 
+  frown: string[]; 
+  like: string[]; 
+  celebrate: string[]; 
+} 
 
 export type ViewUser = {
   username: string;
