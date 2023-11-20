@@ -8,7 +8,6 @@ export function initLogin() {
     let model = getModel();
     let view = getView();
     model.login(event.detail.username).then((userInfo) => {
-      view.setChatPage();
       view.displayUser({
         username: event.detail.username,
       });
