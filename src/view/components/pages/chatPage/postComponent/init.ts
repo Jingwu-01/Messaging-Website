@@ -45,8 +45,8 @@ export default function postComponentInit() {
             <!-- TODO: can also add additional HTML element(s) for buttons (reactions, replies)-->
         </p>
         <section id="buttons"> 
-        <reply-button-component> </reply-button-component> 
-        <reaction-component> </reaction-component> 
+        <reply-button-component></reply-button-component> 
+        <reaction-component></reaction-component> 
         </section> 
         <div id="post-child-container">
         </div>

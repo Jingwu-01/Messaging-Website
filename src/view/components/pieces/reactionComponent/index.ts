@@ -51,7 +51,7 @@ class ReactionComponent extends HTMLElement {
   } 
 
   display() {
-    const countText = this.shadowRoot?.querySelector("count");
+    const countText = this.shadowRoot?.querySelector("#count");
     if (countText instanceof HTMLParagraphElement) {
       countText.innerHTML = this.count.toString();
     } else {
