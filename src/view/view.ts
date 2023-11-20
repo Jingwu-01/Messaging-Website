@@ -23,6 +23,19 @@ interface ChannelListener {
   displayOpenChannel(open_channel: ViewChannel | null): void;
 }
 
+interface Dialog {
+  showModal(): void;
+  close(): void;
+}
+
+function isDialog(element: any): element is Dialog {
+  return (
+    element &&
+    typeof element.showModal == "function" &&
+    typeof element.close == "function"
+  );
+}
+
 // TODO: think about how to consoldiate all functionality in the view?
 export class View {
   private user: ViewUser | null = null;
@@ -157,6 +170,31 @@ export class View {
     this.channelListeners.forEach((listener) => {
       listener.displayOpenChannel(channel);
     });
+  }
+
+  // Opens the dialog with the given ID.
+  // Unfortunately, we have to do it this way since dialogs need
+  // to be at the root of the application to work properly. This is because
+  // they should render on top of everything else, and, if they're nested in a parent component,
+  // they might be affected by the styles of that parent. E.G if parent has "display: none",
+  // then the dialog won't ever render.
+  openDialog(dialog_id: string) {
+    let dialog_query = document.querySelector(`#${dialog_id}`);
+    if (isDialog(dialog_query)) {
+      dialog_query.showModal();
+    } else {
+      throw Error(`No dialog with ID ${dialog_id}`);
+    }
+  }
+
+  // Closes the dialog with the given ID
+  closeDialog(dialog_id: string) {
+    let dialog_query = document.querySelector(`#${dialog_id}`);
+    if (isDialog(dialog_query)) {
+      dialog_query.close();
+    } else {
+      throw Error(`No dialog with ID ${dialog_id}`);
+    }
   }
 }
 

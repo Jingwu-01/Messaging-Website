@@ -20,9 +20,29 @@ export default function channelSidebarComponentInit() {
         margin-top: 1em;
         margin-bottom: 1em;
     }
+    #edit-channels-button-wrapper{
+        text-align: center;
+    }
+    #edit-channels-button-content{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background-color: #26667C;
+        border-radius: 10px 10px 10px 10px;
+        color: white;
+        padding: 0 10px;
+    }
     </style>
     <ul id="channel-list">
     </ul>
+    <div id="edit-channels-button-wrapper">
+        <open-dialog-button-component dialog="edit-channels-dialog">
+            <div slot="button-content" id="edit-channels-button-content">
+                <p>Edit Channels</p>
+                <iconify-icon icon="material-symbols:edit"></iconify-icon>
+            </div>
+        </open-dialog-button-component>
+    </div>
 </template>
 `
   );

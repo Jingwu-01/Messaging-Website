@@ -1,4 +1,6 @@
 import EditDialogComponent from ".";
+import editChannelsDialogComponentInit from "./editChannelsDialog/init";
+import editWorkspacesDialogComponentInit from "./editWorkspacesDialog/init";
 
 export default function editDialogComponentInit() {
   document.body.insertAdjacentHTML(
@@ -6,11 +8,14 @@ export default function editDialogComponentInit() {
     `
 <template id="edit-dialog-component-template">
   <style>
-    form {
+    #add-item-form {
       display: inline-block;
     }
     .item {
       display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.25rem;
     }
     #dialog-content {
       display: flex;
@@ -20,12 +25,12 @@ export default function editDialogComponentInit() {
   </style>
   <dialog id="dialog">
     <div id="dialog-content">
-      <slot name="title"></slot>
+      <h2 id="dialog-title"></h2>
       <div id="item-display"></div>
-      <form id="add-item-form">
-        <input type="text" id="add-item-input" name="new-item-name" required />
-        <input type="submit">Add</input>
-      </form>
+      <div id="add-item-form">
+        <input type="text" id="add-item-input" />
+        <button id="add-item-button">Add</button>
+      </div>
       <button id="save-and-close-button">Save and Close</button>
     </div>
   </dialog>
@@ -34,4 +39,7 @@ export default function editDialogComponentInit() {
   );
 
   customElements.define("edit-dialog-component", EditDialogComponent);
+
+  editWorkspacesDialogComponentInit();
+  editChannelsDialogComponentInit();
 }
