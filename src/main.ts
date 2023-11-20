@@ -72,6 +72,7 @@ function main(): void {
   initView();
 
   getView().setHomePage();
+  getView().setChatPage();
 
   // Redirect to homepage, if we just type in the URL
   // example for how to use OOP model for posts
