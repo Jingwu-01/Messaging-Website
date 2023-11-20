@@ -81,11 +81,11 @@ function main(): void {
 
 function viewPostConverter(modelPost: ModelPost): ViewPost {
   return {
-    Msg: modelPost.getResponse().doc.msg,
-    Reactions: modelPost.getResponse().doc.reactions,
-    Extensions: modelPost.getResponse().doc.extensions,
+    msg: modelPost.getResponse().doc.msg,
+    reactions: modelPost.getResponse().doc.reactions,
+    extensions: modelPost.getResponse().doc.extensions,
     CreatedUser: modelPost.getResponse().meta.createdBy,
-    PostTime: modelPost.getResponse().meta.createdAt,
+    postTime: modelPost.getResponse().meta.createdAt,
     Children: new Array<ViewPost>(),
     Path: modelPost.getResponse().path
   };

@@ -15,16 +15,29 @@ interface Workspace {
 //   createdAt: number
 // }
 
+
+export type ViewPostUpdate = {
+  allPosts: Array<ViewPost>
+  op: "add" | "modify"
+  affectedPosts: Array<ViewPost>
+}
+
+export type ViewWorkspaceUpdate = {
+  allWorkspaces: Array<ViewWorkspace>
+}
+
 // This ViewPost type will effectively allow us to represent a tree of posts
 // that the view can display.
 export type ViewPost = {
-  Msg: string;
-  Reactions: ReactionData; // TODO: should be an array of strings? or custom reactions objects based on what we want?
-  Extensions: any; // TODO: see above for 'reactions'
-  CreatedUser: string;
-  PostTime: number;
-  Children: Array<ViewPost>;
-  Path: string;
+
+  msg: string;
+  reactions: ReactionData; // TODO: should be an array of strings? or custom reactions objects based on what we want?
+  extensions: any; // TODO: see above for 'reactions'
+  createdUser: string;
+  postTime: number;
+  children: Array<ViewPost>;
+  path: string;
+  parent: string;
 };
 
 export type ReactionData = {
@@ -78,4 +91,9 @@ export type DeleteChannelEvent = {
 
 export type ReactionUpdateEvent = {
   reactionName: string; 
+}
+
+export type CreatePostEvent = {
+  msg: string,
+  parent: string
 }

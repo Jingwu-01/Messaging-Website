@@ -2,9 +2,8 @@ import { ModelChannel } from "../model/channel";
 import { getModel } from "../model/model";
 import { ModelWorkspace } from "../model/workspace";
 import { slog } from "../slog";
-import { ViewChannel, ViewWorkspace } from "../view/datatypes";
+import { ViewChannel } from "../view/datatypes";
 import { getView } from "../view/view";
-import { WorkspaceListener } from "./adapterTypes";
 
 // The Adapter has functions that the view can use to manipulate
 // the state of the application.

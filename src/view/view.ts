@@ -1,10 +1,10 @@
 import PostComponent from "./components/pages/chatPage/postComponent";
 import { PostEditor } from "./components/pages/chatPage/postEditorComponent";
 import M3ssagin8AppComponent from "./components/pages/m3ssagin8AppComponent";
-import { ViewChannel, ViewPost, ViewUser, ViewWorkspace } from "./datatypes";
+import { ViewChannel, ViewPost, ViewPostUpdate, ViewUser, ViewWorkspace } from "./datatypes";
 
 interface PostListener {
-  displayPosts(posts: Array<ViewPost>): void;
+  displayPosts(posts: ViewPostUpdate): void;
   displayPostEditor(): void;
   removePostEditor(): void;
   replacePostEditor(newPostEditor: PostEditor): void;
@@ -104,9 +104,10 @@ export class View {
     this.m3ssag1n8AppComponent?.setHomePage();
   }
 
+  
   addPostListener(listener: PostListener) {
     this.postListeners.push(listener);
-    listener.displayPosts(this.posts);
+    listener.displayPosts();
   }
 
   removePostListener(listener: PostListener) {
@@ -119,8 +120,10 @@ export class View {
     this.postListeners.splice(index, 1);
   }
 
-  displayPosts(posts: Array<ViewPost>) {
-    this.posts = posts;
+  displayPosts(posts: ViewPostUpdate) {
+    // add a function call to modify this.posts to contain the new post
+    // do the listener thing
+    this.posts = posts.allPosts;
     this.postListeners.forEach((listener) => {
       listener.displayPosts(posts);
     });

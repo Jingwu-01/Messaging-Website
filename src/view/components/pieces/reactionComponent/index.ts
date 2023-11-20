@@ -64,7 +64,7 @@ class ReactionComponent extends HTMLElement {
   }
 
   addReactionContent(viewPost: ViewPost): void {
-    let reactionData = viewPost.Reactions; 
+    let reactionData = viewPost.reactions; 
 
   }
 

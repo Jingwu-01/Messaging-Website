@@ -60,14 +60,14 @@ export class PostComponent extends HTMLElement {
   addPostContent(viewPost: ViewPost): void {
     // TODO: obviously can add more functionality here later as needed.
     this.postPath = viewPost.Path;
-    this.postBody.innerText = viewPost.Msg;
+    this.postBody.innerText = viewPost.msg;
     let postUserText = this.postHeader.querySelector("#post-user-text");
     // TODO handle error better
     if (postUserText != null) {
       postUserText.innerHTML = viewPost.CreatedUser;
     }
     // assumed that time is in ms
-    let postTimeObj = new Date(viewPost.PostTime);
+    let postTimeObj = new Date(viewPost.postTime);
     let postTimeShortEl = this.postHeader.querySelector("#post-time-short");
     // TODO handle error better
     if (postTimeShortEl != null) {
