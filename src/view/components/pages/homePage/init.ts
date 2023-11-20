@@ -8,6 +8,17 @@ export default function homePageInit() {
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <script src="src/view/components/pages/homePage/index.ts"></script>
     <style>
+
+    dialog {
+      border: none;
+      box-shadow: #00000029 2px 2px 5px 2px;
+      border-radius: 10px;
+      padding: 0px;
+      height: 500px; 
+      width: 1000px;
+      
+    }
+    
       * {
         background-color: #add8e6;
         text-align: center;
@@ -15,9 +26,7 @@ export default function homePageInit() {
   
       #flex-container1 {
         display: flex;
-        flex-direction: column;
-        width: 100vw;
-        height: 100vh;        
+        flex-direction: column;      
       }
   
       h1 {
@@ -61,7 +70,7 @@ export default function homePageInit() {
           width: 2em;
       }
     </style>
-  
+    <dialog id="dialog">
     <div id="flex-container1">
       <h1>Messaging</h1>
       <p id="subtitle">A Messaging App for All Your Groups</p>
@@ -83,6 +92,7 @@ export default function homePageInit() {
         </form>
       </div>
     </div>
+    </dialog>
   </template>
   
 `

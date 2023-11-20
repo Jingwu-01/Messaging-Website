@@ -15,7 +15,7 @@ export type PostResponse = {
   doc: {
     msg: string;
     parent: string;
-    reactions: any; // TODO: add some sort of validation for reactions
+    reactions: ReactionData 
     extensions: any; // TODO: add some sort of validation for extensions
   };
   meta: DocumentMetadata;
@@ -27,3 +27,10 @@ export type DocumentMetadata = {
   lastModifiedBy: string;
   lastModifiedAt: number;
 };
+
+export type ReactionData = {
+  smile: string[]; 
+  frown: string[]; 
+  like: string[]; 
+  celebrate: string[]; 
+}

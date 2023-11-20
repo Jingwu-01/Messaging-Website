@@ -7,7 +7,7 @@ import { initLogout } from "./logout/init";
 export function initAdapter() {
   initPosts();
   initLogin();
+  initLogout(); 
   initWorkspaces();
   initChannels();
-  initLogout(); 
 }
