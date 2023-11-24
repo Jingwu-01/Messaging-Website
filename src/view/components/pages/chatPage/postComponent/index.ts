@@ -52,19 +52,15 @@ export class PostComponent extends HTMLElement {
 
   }
 
-  insertPostEditor(postEditor: PostEditor) {
-      this.postBody.parentNode?.insertBefore(postEditor, this.postBody.nextSibling);
-  }
-
   // Sets the content of this post equal to viewPost
   addPostContent(viewPost: ViewPost): void {
     // TODO: obviously can add more functionality here later as needed.
-    this.postPath = viewPost.Path;
+    this.postPath = viewPost.path;
     this.postBody.innerText = viewPost.msg;
     let postUserText = this.postHeader.querySelector("#post-user-text");
     // TODO handle error better
     if (postUserText != null) {
-      postUserText.innerHTML = viewPost.CreatedUser;
+      postUserText.innerHTML = viewPost.createdUser;
     }
     // assumed that time is in ms
     let postTimeObj = new Date(viewPost.postTime);
@@ -95,18 +91,19 @@ export class PostComponent extends HTMLElement {
       this.shadowRoot
         ?.querySelector("#post-child-container")
         ?.appendChild(childPostEl);
-      childPostEl.addPostChildren(childPost.Children);
+      childPostEl.addPostChildren(childPost.children);
     }
   }
 
-  displayPosts(update: ViewPostUpdate) {
-    // if this post's id is in update.affectedPosts,
-    // then add the reactio if it's a "modify"
-  }
+  // displayPosts(update: ViewPostUpdate) {
+  //   // if this post's id is in update.affectedPosts,
+  //   // then add the reactio if it's a "modify"
+  // }
 
   // TODO: add a private filter function on posts that can basically
   // handle filtering unstyled HTML with ** and stuff to strong and em
   // tags as needed
+
 }
 
 export default PostComponent;

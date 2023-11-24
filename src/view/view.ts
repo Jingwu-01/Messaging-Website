@@ -5,9 +5,7 @@ import { ViewChannel, ViewPost, ViewPostUpdate, ViewUser, ViewWorkspace } from "
 
 interface PostListener {
   displayPosts(posts: ViewPostUpdate): void;
-  displayPostEditor(): void;
-  removePostEditor(): void;
-  replacePostEditor(newPostEditor: PostEditor): void;
+  movePostEditorTo(postEl: PostComponent): void;
 }
 
 interface UserListener {
@@ -73,26 +71,10 @@ export class View {
     this.m3ssag1n8AppComponent = m3ssag1n8AppComponent;
   }
 
-  displayPostEditor() {
-    this.postListeners.forEach((listener) => {
-      listener.displayPostEditor();
-    });
-  }
-
   // TODO: have an abstract superclass that adds a parent field.
   movePostEditorTo(postElement: PostComponent) {
-    
-  }
-
-  removePostEditor() {
     this.postListeners.forEach((listener) => {
-      listener.removePostEditor();
-    });
-  }
-
-  replacePostEditor(newPostEditor: PostEditor) {
-    this.postListeners.forEach((listener) => {
-      listener.replacePostEditor(newPostEditor);
+      listener.movePostEditorTo(postElement);
     });
   }
 
@@ -107,7 +89,13 @@ export class View {
   
   addPostListener(listener: PostListener) {
     this.postListeners.push(listener);
-    listener.displayPosts();
+    // TODO: change this, is just a placeholder for now.
+    let viewPostUpdate: ViewPostUpdate = {
+      allPosts: this.posts,
+      op: "add",
+      affectedPosts: new Array<ViewPost>(),
+    }
+    listener.displayPosts(viewPostUpdate);
   }
 
   removePostListener(listener: PostListener) {

@@ -84,10 +84,11 @@ function viewPostConverter(modelPost: ModelPost): ViewPost {
     msg: modelPost.getResponse().doc.msg,
     reactions: modelPost.getResponse().doc.reactions,
     extensions: modelPost.getResponse().doc.extensions,
-    CreatedUser: modelPost.getResponse().meta.createdBy,
+    createdUser: modelPost.getResponse().meta.createdBy,
     postTime: modelPost.getResponse().meta.createdAt,
-    Children: new Array<ViewPost>(),
-    Path: modelPost.getResponse().path
+    children: new Array<ViewPost>(),
+    path: modelPost.getResponse().path,
+    parent: modelPost.getResponse().doc.parent,
   };
 }
 
@@ -117,7 +118,7 @@ function getViewPostsHelper(
   );
   for (let modelPostChild of modelPostChildrenArr) {
     let viewPostChild = viewPostConverter(modelPostChild);
-    getViewPostsHelper(viewPostChild.Children, modelPostChild.getReplies());
+    getViewPostsHelper(viewPostChild.children, modelPostChild.getReplies());
     viewPostChildren.push(viewPostChild);
   }
 }
