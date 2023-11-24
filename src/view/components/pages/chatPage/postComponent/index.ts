@@ -10,6 +10,8 @@ export class PostComponent extends HTMLElement {
 
   private postPath: string | undefined;
 
+  private controller: AbortController | null = null;
+
   constructor() {
     super();
 
@@ -38,7 +40,14 @@ export class PostComponent extends HTMLElement {
   }
 
   connectedCallback() {
-    this.postBody.addEventListener("click", this.addPostEditor.bind(this));
+    this.controller = new AbortController();
+    const options = { signal: this.controller.signal };
+    this.postBody.addEventListener("click", this.addPostEditor.bind(this), options);
+  }
+
+  disconnectedCallback() {
+    this.controller?.abort();
+    this.controller = null;
   }
 
   addPostEditor(event: MouseEvent) {
@@ -93,6 +102,14 @@ export class PostComponent extends HTMLElement {
         ?.appendChild(childPostEl);
       childPostEl.addPostChildren(childPost.children);
     }
+  }
+
+  appendPostEditor(postEditor: PostEditor) {
+    this.append(postEditor);
+  }
+
+  getPostPath() {
+    return this.postPath;
   }
 
   // displayPosts(update: ViewPostUpdate) {

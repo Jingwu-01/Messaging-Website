@@ -48,6 +48,7 @@ export class PostDisplay extends HTMLElement {
     this.channelHeader = channelHeader;
     this.postsContainer = postsContainer;
     this.postEditor = postEditor;
+    this.postEditor.setParentPath("");
 
     this.displayPosts.bind(this);
     console.log(`constructor: this.channelHeader: ${this.channelHeader}`);
@@ -105,6 +106,11 @@ export class PostDisplay extends HTMLElement {
 
   movePostEditorTo(postEl: PostComponent) {
     postEl.parentNode?.insertBefore(this.postEditor, postEl.nextSibling);
+    let postPath = postEl.getPostPath();
+    if (postPath === undefined) {
+      throw Error("movePostEditorTo: postEl's parent path is undefined");
+    }
+    this.postEditor.setParentPath(postPath);
   }
 
 }

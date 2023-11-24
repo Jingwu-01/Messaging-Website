@@ -1,6 +1,6 @@
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { ModelPost } from "./post";
-import { ChannelResponse, PostResponse } from "./responseTypes";
+import { ChannelResponse, PostDocumentResponse, PostResponse } from "./responseTypes";
 import { getDatabasePath } from "./utils";
 import { getModel } from "./model";
 import { slog } from "../slog";
@@ -100,6 +100,18 @@ export class ModelChannel {
       return false;
     }
     return nextChild.addReply(newPost, postParentPath.slice(1));
+  }
+
+  createPost(postContent: string, postParent: string): Promise<PostDocumentResponse> {
+    let postPath = postParent.split("/").slice(0, -1).join("/")
+    return getModel().typedModelFetch<PostDocumentResponse>(postPath, {
+      method: 'POST',
+      body: postContent,
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
   }
 
   unsubscribe() {

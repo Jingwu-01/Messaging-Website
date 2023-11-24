@@ -16,13 +16,13 @@ export function initWorkspaces() {
             "Opened Channel displaying view channels",
             "",
           ]);
-          // let viewPostUpdate: ViewPostUpdate = {
-          //   allPosts: [],
-          //   op: "add",
-          //   affectedPosts: []
-          // }
+          let viewPostUpdate: ViewPostUpdate = {
+            allPosts: [],
+            op: "add",
+            affectedPosts: []
+          }
           getAdapter().displayViewChannels();
-          // getView().displayPosts(viewPostUpdate);
+          getView().displayPosts(viewPostUpdate);
         });
     }
   );

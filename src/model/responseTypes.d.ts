@@ -34,3 +34,7 @@ export type ReactionData = {
   like: string[]; 
   celebrate: string[]; 
 }
+
+export type PostDocumentResponse = {
+  uri: string;
+}

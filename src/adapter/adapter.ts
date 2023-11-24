@@ -1,8 +1,9 @@
 import { ModelChannel } from "../model/channel";
 import { getModel } from "../model/model";
+import { PostDocumentResponse } from "../model/responseTypes";
 import { ModelWorkspace } from "../model/workspace";
 import { slog } from "../slog";
-import { ViewChannel } from "../view/datatypes";
+import { CreatePostEvent, ViewChannel } from "../view/datatypes";
 import { getView } from "../view/view";
 
 // The Adapter has functions that the view can use to manipulate
@@ -65,6 +66,21 @@ class Adapter {
     } else {
       throw new Error("Cannot get open channel: no open workspace");
     }
+  }
+
+  createPost(postData: CreatePostEvent) {
+    let channel = this.getOpenChannel();
+    if (channel === null) {
+      throw new Error("Cannot add a post: no open channel");
+    }
+    channel.createPost(postData.msg, postData.parent)
+    .then((result: PostDocumentResponse) => {
+      slog.info("createPost: added to the database");
+    })
+    .catch((error: unknown) => {
+      // TODO: notify view that their post failed for whatever reason.
+      throw Error("createPost: creating the post failed");
+    });
   }
 
   // async reRenderWorkspaces(listener: WorkspaceListener) {

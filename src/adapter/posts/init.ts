@@ -1,7 +1,7 @@
 import { getViewPosts } from "../../main";
 import { PostsEvent } from "../../model/modelTypes";
 import { slog } from "../../slog";
-import { ReactionUpdateEvent, ViewPost, ViewPostUpdate } from "../../view/datatypes";
+import { CreatePostEvent, ReactionUpdateEvent, ViewPost, ViewPostUpdate } from "../../view/datatypes";
 import { getView } from "../../view/view";
 import { getModel } from "../../model/model";
 
@@ -21,6 +21,13 @@ export function initPosts() {
       getView().displayPosts(viewPostUpdate);
     }
   );
+
+  document.addEventListener(
+    "createPostEvent",
+    function (evt: CustomEvent<CreatePostEvent>) {
+      slog.info("createPostEvent handler", ["create post event", `${JSON.stringify(evt.detail)}`]);
+    }
+  )
 
   document.addEventListener(
     "reactionUpdateEvent", 
