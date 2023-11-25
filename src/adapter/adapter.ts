@@ -69,11 +69,12 @@ class Adapter {
   }
 
   createPost(postData: CreatePostEvent) {
+    // TODO: consider if we want to enforce that a channel are open in order to send a message?
     let channel = this.getOpenChannel();
     if (channel === null) {
       throw new Error("Cannot add a post: no open channel");
     }
-    channel.createPost(postData.msg, postData.parent)
+    channel.createPost(postData.msg, postData.parent, channel.path)
     .then((result: PostDocumentResponse) => {
       slog.info("createPost: added to the database");
     })

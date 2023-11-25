@@ -4,14 +4,15 @@ import { slog } from "../../slog";
 import { CreatePostEvent, ReactionUpdateEvent, ViewPost, ViewPostUpdate } from "../../view/datatypes";
 import { getView } from "../../view/view";
 import { getModel } from "../../model/model";
+import getAdapter from "../adapter";
 
 export function initPosts() {
   document.addEventListener(
     "postsEvent",
     function (evt: CustomEvent<PostsEvent>) {
       // TODO: change console.log to slog
-      slog.info("postsEvent", ["posts", `${JSON.stringify(Object.fromEntries(evt.detail.posts))}`], ["number of posts", `${evt.detail.posts.size}`]);
-      let viewPosts = getViewPosts(evt.detail.posts);
+      slog.info("postsEvent", ["posts", `${JSON.stringify(evt.detail.postRoots)}`], ["number of post roots", `${evt.detail.postRoots.length}`]);
+      let viewPosts = getViewPosts(evt.detail.postRoots);
       // TODO: change this, is just a placeholder
       let viewPostUpdate: ViewPostUpdate = {
         allPosts: viewPosts,
@@ -26,16 +27,17 @@ export function initPosts() {
     "createPostEvent",
     function (evt: CustomEvent<CreatePostEvent>) {
       slog.info("createPostEvent handler", ["create post event", `${JSON.stringify(evt.detail)}`]);
+      getAdapter().createPost(evt.detail);
     }
   )
 
-  document.addEventListener(
-    "reactionUpdateEvent", 
-    function (evt: CustomEvent<ReactionUpdateEvent>) {
-      let model = getModel();
-      // Todo: I need the actual name of the reaction as an input 
-      model.updateReaction("dummyReaction") 
+  // document.addEventListener(
+  //   "reactionUpdateEvent", 
+  //   function (evt: CustomEvent<ReactionUpdateEvent>) {
+  //     let model = getModel();
+  //     // Todo: I need the actual name of the reaction as an input 
+  //     model.updateReaction("dummyReaction") 
 
-    }
-  )
+  //   }
+  // );
 }

@@ -7,5 +7,5 @@ export type UserInfo = {
 
 // An event that is thrown every time we receive a new post.
 export type PostsEvent = {
-    posts: Map<string, ModelPost>;
+    postRoots: Array<ModelPost>;
 };

@@ -8,13 +8,16 @@ import { slog } from "../slog";
 export class ModelChannel {
   path: string;
 
-  private postRoots: Map<string, ModelPost>;
+  private postMap: Map<string, ModelPost> = new Map<string, ModelPost>();
+
+  private postRoots: Array<ModelPost> = new Array<ModelPost>();
+
+  private pendingPosts = new Map<string, ModelPost>();
 
   private controller = new AbortController();
 
   constructor(res: ChannelResponse) {
     this.path = res.path;
-    this.postRoots = new Map<string, ModelPost>();
   }
 
   // Subscribes to all posts in a particular workspace and collection.
@@ -40,15 +43,11 @@ export class ModelChannel {
             const jsonContents = JSON.parse(event.data) as PostResponse;
             slog.info("update event for post", ["incoming post", JSON.stringify(jsonContents)]);
             thisChannel.addPost(jsonContents);
-            console.log(
-              `subscribeToPosts: thisChannel.posts: ${JSON.stringify(
-                thisChannel.postRoots
-              )}`
-            );
+            slog.info("subscribeToPosts", ["thisChannel.postMap", `${thisChannel.postMap}`], ["thisChannel.postRoots", `${thisChannel.postRoots}`]);
             const postsEvent = new CustomEvent("postsEvent", {
               // NOTE: we are passing by reference here. so mutations will be seen.
               // however, with kill and fill and queueing of events, this may not be an issue
-              detail: { posts: thisChannel.postRoots },
+              detail: { postRoots: thisChannel.postRoots },
             });
             document.dispatchEvent(postsEvent);
             // TODO: does TS use these 'break' statements
@@ -77,36 +76,44 @@ export class ModelChannel {
     }
     console.log(`addPost: postName: ${postName}`);
     if (parentPath === "" || parentPath === undefined) {
-      this.postRoots.set(postName, newPost);
+      this.postRoots.push(newPost);
+      this.postMap.set(postName, newPost);
       return true;
     }
     let parentPathArr = parentPath.split("/");
     // TODO: use the workspace name and the currently open channel name
     // to validate against what's the WS and curr open channel
-    if (parentPathArr.length < 6) {
-      console.log("addPost: invalid parentPathArr: parentPathArr is too short");
+    if (parentPathArr.length !== 6) {
+      console.log("addPost: invalid parentPathArr: parentPathArr is not of length 6");
       return false;
     }
     // let workspaceName = parentPathArr[1];
     // let channelName = parentPathArr[3];
-    let postParentPath = parentPathArr.slice(5);
-    console.log(`addPost: postParentPath: ${postParentPath}`);
 
-    let nextChildName = postParentPath[0];
-    console.log(`addPost: nextChildName: ${nextChildName}`);
-    let nextChild = this.postRoots.get(nextChildName);
-    if (nextChild === undefined) {
-      console.log(`addPost: invalid path to addPost: ${parentPath}`);
+    let parentName = parentPathArr.pop();
+    if (parentName === undefined) {
+      slog.error("addPost", ["internal server error", "parentName is undefined, but this should be impossible"]);
       return false;
     }
-    return nextChild.addReply(newPost, postParentPath.slice(1));
+    console.log(`addPost: parentName: ${parentName}`);
+    let parentPost = this.postMap.get(parentName);
+    if (parentPost === undefined) {
+      slog.info("addPost", ["parentPost is undefined", ""], ["parentName", `${parentName}`], ["this.postMap", `${JSON.stringify(Object.fromEntries(this.postMap))}`]);
+      this.pendingPosts.set(parentName, newPost);
+    }
+    if (parentPost.addChildPost(newPost)) {
+      this.postMap.set(postName, newPost);
+    };
+    return true;
   }
 
-  createPost(postContent: string, postParent: string): Promise<PostDocumentResponse> {
-    let postPath = postParent.split("/").slice(0, -1).join("/")
-    return getModel().typedModelFetch<PostDocumentResponse>(postPath, {
+  createPost(postContent: string, postParent: string, channelPath: string): Promise<PostDocumentResponse> {
+    return getModel().typedModelFetch<PostDocumentResponse>(`${channelPath}/posts/`, {
       method: 'POST',
-      body: postContent,
+      body: JSON.stringify({
+        "msg": postContent,
+        "parent": postParent
+      }),
       headers: {
         'accept': 'application/json',
         'Content-Type': 'application/json'
