@@ -1,0 +1,6 @@
+{
+    "$id": "workspaceResult.json",
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "WorkspaceResult",
+    "type": "object"
+}

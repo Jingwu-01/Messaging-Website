@@ -1,0 +1,18 @@
+{
+    "$id": "patchDocumentResult.json",
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "PatchDocumentResult",
+    "type": "object",
+    "required": ["uri", "patchFailed", "message"],
+    "properties": {
+        "uri": {
+            "type": "string"
+        },
+        "patchFailed": {
+            "type": "boolean"
+        },
+        "message": {
+            "type": "string"
+        }
+    }
+}

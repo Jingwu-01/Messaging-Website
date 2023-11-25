@@ -1,0 +1,36 @@
+{
+    "$id": "getDocumentsResult.json",
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "GetDocumentsResult",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "required": ["path", "doc", "meta"],
+        "properties": {
+            "path": {
+                "type": "string"
+            },
+            "doc": {
+                "type": "object"
+            },
+            "meta": {
+                "type": "object",
+                "required": ["createdAt", "createdBy", "lastModifiedAt", "lastModifiedBy"],
+                "properties": {
+                    "createdAt": {
+                        "type": "integer"
+                    },
+                    "createdBy": {
+                        "type": "string"
+                    },
+                    "lastModifiedAt": {
+                        "type": "integer"
+                    },
+                    "lastModifiedBy": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
