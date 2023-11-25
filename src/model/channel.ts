@@ -12,7 +12,7 @@ export class ModelChannel {
 
   private postRoots: Array<ModelPost> = new Array<ModelPost>();
 
-  private pendingPosts = new Map<string, ModelPost>();
+  private pendingPosts: Map<string, Array<ModelPost>> = new Map<string, Array<ModelPost>>();
 
   private controller = new AbortController();
 
@@ -78,6 +78,7 @@ export class ModelChannel {
     if (parentPath === "" || parentPath === undefined) {
       this.postRoots.push(newPost);
       this.postMap.set(postName, newPost);
+      this.addPendingPosts(postName, newPost);
       return true;
     }
     let parentPathArr = parentPath.split("/");
@@ -99,12 +100,31 @@ export class ModelChannel {
     let parentPost = this.postMap.get(parentName);
     if (parentPost === undefined) {
       slog.info("addPost", ["parentPost is undefined", ""], ["parentName", `${parentName}`], ["this.postMap", `${JSON.stringify(Object.fromEntries(this.postMap))}`]);
-      this.pendingPosts.set(parentName, newPost);
+      let parentPendingPosts = this.pendingPosts.get(parentName);
+      if (parentPendingPosts === undefined) {
+        parentPendingPosts = new Array<ModelPost>();
+      }
+      parentPendingPosts.push(newPost);
+      this.pendingPosts.set(parentName, parentPendingPosts);
+      return false;
     }
     if (parentPost.addChildPost(newPost)) {
       this.postMap.set(postName, newPost);
-    };
+      this.addPendingPosts(postName, newPost);
+    }
     return true;
+  }
+
+  addPendingPosts(addedPostName: string, addedPost: ModelPost): void {
+    let parentPendingPosts = this.pendingPosts.get(addedPostName);
+    if (parentPendingPosts === undefined) {
+      return
+    }
+    parentPendingPosts.forEach((pendingPost: ModelPost) => {
+      addedPost.addChildPost(pendingPost);
+      this.postMap.set(pendingPost.getName(), pendingPost);
+      this.addPendingPosts(pendingPost.getName(), pendingPost);
+    });
   }
 
   createPost(postContent: string, postParent: string, channelPath: string): Promise<PostDocumentResponse> {

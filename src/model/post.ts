@@ -46,6 +46,10 @@ export class ModelPost {
     return this.replies;
   }
 
+  getName(): string {
+    return this.name;
+  }
+
   addReply(newPost: ModelPost, parentPath: string[]): Boolean {
     if (parentPath.length === 0) {
       this.replies.set(newPost.name, newPost);
