@@ -1,7 +1,8 @@
-import { UserInfo } from "./modelTypes";
-import { typedFetch, emptyFetch, getAuthPath, getDatabasePath } from "./utils";
+import { typedFetch, emptyFetch, getAuthPath, getDatabasePath, validateLoginResponse } from "./utils";
 import { ModelWorkspace } from "./workspace";
 import { WorkspaceResponse } from "./responseTypes";
+import { slog } from "../slog";
+import { LoginResponse } from "../types/loginResponse";
 
 // Class representing our model interfacing with OwlDB.
 export class OwlDBModel {
@@ -35,7 +36,7 @@ export class OwlDBModel {
     return typedFetch<T>(`${getDatabasePath()}${url}`, options);
   }
 
-  async login(username: string): Promise<UserInfo> {
+  async login(username: string): Promise<LoginResponse> {
     const options = {
       method: "POST",
       headers: {
@@ -45,14 +46,23 @@ export class OwlDBModel {
       body: JSON.stringify({ username: username }),
     };
     try {
-      const response = await typedFetch<UserInfo>(getAuthPath(), options);
+      const response = await typedFetch<LoginResponse>(getAuthPath(), options);
+      const valid = validateLoginResponse(response);
+      if (!valid) {
+        slog.error("login", ["invalid response from login", `${validateLoginResponse.errors}`]);
+        // TODO: make a custom login error class so we can gracefully handle this situation by notifying the user.
+        throw new Error("invalid login response received from owldb");
+      }
       if (response.token) {
         this.token = response.token;
       }
+      // return response;
     } catch (error) {
+      // maybe don't catch an error if you're just going to rethrow it
       throw error;
     }
-    return typedFetch<UserInfo>(getAuthPath(), options);
+    // TODO: fix: why are you making another login call????
+    return typedFetch<LoginResponse>(getAuthPath(), options);
   }
 
   async logout(): Promise<void> {
@@ -63,6 +73,8 @@ export class OwlDBModel {
         Accept: "application/json",
       },
     };
+    // TODO: how are you handling the case where emptyFetch has invalid data because it does indeed
+    // have a response body?
     return emptyFetch(getAuthPath(), options);
   }
 

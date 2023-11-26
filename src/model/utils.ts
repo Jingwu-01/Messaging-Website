@@ -1,6 +1,12 @@
 import Ajv from "ajv";
 import CreateResponseSchema from "../../schemas/createResponse.json";
-import { CreateResponse } from 
+import GetDocumentsResponseSchema from "../../schemas/getDocumentsResponse.json";
+import LoginResponseSchema from "../../schemas/loginResponse.json";
+import PatchDocumentResponseSchema from "../../schemas/patchDocumentResponse.json";
+import PostResponseSchema from "../../schemas/postResponse.json";
+import WorkspaceResponseSchema from "../../schemas/workspaceResponse.json";
+
+type ValidationFunction = (data: any) => boolean | Promise<any>
 
 /**
  * Wrapper around fetch to return a Promise that resolves to the desired
@@ -73,3 +79,14 @@ export function getAuthPath(): string {
 
 const ajv = new Ajv();
 
+export const validateCreateResponse = ajv.compile(CreateResponseSchema);
+
+export const validateGetDocumentsResponse = ajv.compile(GetDocumentsResponseSchema);
+
+export const validateLoginResponse = ajv.compile(LoginResponseSchema);
+
+export const validatePatchDocumentResponse = ajv.compile(PatchDocumentResponseSchema);
+
+export const validatePostResponse = ajv.compile(PostResponseSchema);
+
+export const validateWorkspaceResponse = ajv.compile(WorkspaceResponseSchema);
