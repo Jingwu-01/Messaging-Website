@@ -1,3 +1,7 @@
+import Ajv from "ajv";
+import CreateResponseSchema from "../../schemas/createResponse.json";
+import { CreateResponse } from 
+
 /**
  * Wrapper around fetch to return a Promise that resolves to the desired
  * type. This function does not validate whether the response actually
@@ -63,3 +67,9 @@ export function getAuthPath(): string {
     }
     return process.env.DATABASE_HOST + "/auth";
   }
+
+
+// Data validation
+
+const ajv = new Ajv();
+

@@ -1,7 +1,7 @@
 {
-    "$id": "patchDocumentResult.json",
+    "$id": "patchDocumentResponse.json",
     "$schema": "http://json-schema.org/draft-07/schema",
-    "title": "PatchDocumentResult",
+    "title": "PatchDocumentResponse",
     "type": "object",
     "required": ["uri", "patchFailed", "message"],
     "properties": {

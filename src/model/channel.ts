@@ -1,9 +1,11 @@
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { ModelPost } from "./post";
-import { ChannelResponse, PostDocumentResponse, PostResponse } from "./responseTypes";
+import { ChannelResponse, PostDocumentResponse} from "./responseTypes";
 import { getDatabasePath } from "./utils";
 import { getModel } from "./model";
 import { slog } from "../slog";
+import PostResponseSchema from "../../schemas/postResponse.json";
+import { PostResponse } from "../types/postResponse.d.ts";
 
 export class ModelChannel {
   path: string;
