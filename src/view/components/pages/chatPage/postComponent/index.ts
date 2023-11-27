@@ -40,10 +40,6 @@ export class PostComponent extends HTMLElement {
   }
 
   connectedCallback() {
-    // this.controller = new AbortController();
-    // const options = { signal: this.controller.signal };
-    // this.postBody.addEventListener("click", this.addPostEditor.bind(this), options);
-
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
     const replyButton = this.shadowRoot?.querySelector(

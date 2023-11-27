@@ -31,7 +31,7 @@ export type ViewWorkspaceUpdate = {
 export type ViewPost = {
 
   msg: string;
-  reactions: ReactionData; // TODO: should be an array of strings? or custom reactions objects based on what we want?
+  reactions: ReactionData; 
   extensions: any; // TODO: see above for 'reactions'
   createdUser: string;
   postTime: number;

@@ -1,10 +1,15 @@
 import { ViewPost } from "../../../datatypes";
 
+type reactions = "smile" | "frown" | "like" | "celebrate";
+
 class ReactionComponent extends HTMLElement {
   private controller: AbortController | null = null;
+
+  private reactionName: reactions = "smile";
   private count: number = 0;
   private isClicked: Boolean = false;
-  private reactionIcon: HTMLElement;
+
+  // private reactionIcon: HTMLElement;
 
   constructor() {
     super();
@@ -37,6 +42,9 @@ class ReactionComponent extends HTMLElement {
     this.controller = null;
   }
 
+  addReactionCount(viewPost: ViewPost): void {
+  }
+
   update() {
     if (!this.isClicked) {
       this.isClicked = true;
@@ -62,19 +70,38 @@ class ReactionComponent extends HTMLElement {
     }
   }
 
-  addReactionContent(viewPost: ViewPost): void {
-    let reactionData = viewPost.reactions; 
-
-  }
-
   static get observedAttributes(): string[] {
-    return ["icon"]
+    return ["icon"];
   }
 
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-  }
+    if (newValue == "lucide:frown"){
+      this.reactionName = "frown"; 
+    } else if (newValue == "mdi:like-outline") {
+      this.reactionName = "like"; 
+    } else if (newValue == "mingcute:celebrate-line") {
+      this.reactionName = "celebrate"
+    } else {
+      throw new Error (newValue +" is not a valid iconify id.")
+    }
 
+    const smileReaction = this.shadowRoot?.querySelector("#reaction-icon")
+    if (!(smileReaction instanceof HTMLElement)) {
+      throw new Error("smileButton is not an HTMLElement");
+    } 
+    smileReaction.remove()
 
+    const reactionButton = this.shadowRoot?.querySelector("#reaction-button")
+    if (!(reactionButton instanceof HTMLButtonElement)) {
+      throw new Error("reactionButton is not an HTMLButton Element")
+    }
+    const iconifyIcon = document.createElement("iconify-icon") 
+    iconifyIcon.setAttribute('icon', newValue);
+    iconifyIcon.id = 'reaction-icon';
+    reactionButton.append(iconifyIcon) 
+    }
+    
+  
 }
 
 export default ReactionComponent;

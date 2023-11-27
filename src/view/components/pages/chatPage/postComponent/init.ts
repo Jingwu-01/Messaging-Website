@@ -47,8 +47,10 @@ export default function postComponentInit() {
         </p>
         <section id="buttons"> 
         <reply-button-component></reply-button-component> 
-        <reaction-component icon="">
-        </reaction-component> 
+        <reaction-component></reaction-component>
+        <reaction-component icon="lucide:frown"></reaction-component> 
+        <reaction-component icon="mdi:like-outline"></reaction-component> 
+        <reaction-component icon="mingcute:celebrate-line"></reaction-component> 
         </section> 
         <div id="post-child-container">
         </div>
