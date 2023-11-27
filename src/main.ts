@@ -11,7 +11,7 @@ import {
 } from "./view/datatypes";
 import { LoginEvent } from "./view/datatypes";
 import { initView } from "./view/init";
-import { PostsEvent } from "./model/modelTypes";
+import { ModelPostEvent, PostsEvent } from "./model/modelTypes";
 import { getView } from "./view/view";
 
 /**
@@ -35,6 +35,7 @@ declare global {
     channelSelected: CustomEvent<SelectChannelEvent>;
     reactionUpdateEvent: CustomEvent<ReactionUpdateEvent>; 
     createPostEvent: CustomEvent<CreatePostEvent>;
+    modelPostEvent: CustomEvent<ModelPostEvent>;
   }
 }
 

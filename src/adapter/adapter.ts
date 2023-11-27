@@ -5,6 +5,8 @@ import { ModelWorkspace } from "../model/workspace";
 import { slog } from "../slog";
 import { CreatePostEvent, ViewChannel } from "../view/datatypes";
 import { getView } from "../view/view";
+import { ModelPost } from "../model/post";
+import { AdapterPost } from "./adapterPost";
 
 // The Adapter has functions that the view can use to manipulate
 // the state of the application.
@@ -12,6 +14,10 @@ class Adapter {
   private openWorkspace: ModelWorkspace | null = null;
 
   private openChannel: ModelChannel | null = null;
+
+  private adapterPosts: Map<string, AdapterPost> = new Map<string, AdapterPost>();
+
+  private rootAdapterPosts: Array<AdapterPost> = new Array<AdapterPost>();
 
   getOpenWorkspace(): ModelWorkspace | null {
     return this.openWorkspace;
@@ -112,6 +118,31 @@ class Adapter {
       });
       getView().displayChannels(viewChannelArr);
     });
+  }
+
+  updateModelPost(modelPost: ModelPost) {
+    let postName = modelPost.getName();
+    let existingAdapterPost = this.adapterPosts.get(postName);
+    if (existingAdapterPost !== undefined) {
+      // already exists. just a reaction thingy.
+    } else {
+      let newAdapterPost = new AdapterPost(modelPost.getResponse());
+      this.insertAdapterPost(newAdapterPost);
+    }
+  }
+
+  insertAdapterPost(adapterPost: AdapterPost) {
+    let parentPost = this.adapterPosts.get(adapterPost.getParentName());
+    if (parentPost !== undefined) {
+      parentPost.addChildPost(adapterPost);
+    } else {
+      this.insertRootAdapterPost(adapterPost);
+    }
+    this.adapterPosts.set(adapterPost.getName(), adapterPost);
+  }
+
+  insertRootAdapterPost(adapterPost: AdapterPost) {
+    // binary search
   }
 }
 

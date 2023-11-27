@@ -1,5 +1,5 @@
 import { getViewPosts } from "../../main";
-import { PostsEvent } from "../../model/modelTypes";
+import { ModelPostEvent, PostsEvent } from "../../model/modelTypes";
 import { slog } from "../../slog";
 import { CreatePostEvent, ReactionUpdateEvent, ViewPost, ViewPostUpdate } from "../../view/datatypes";
 import { getView } from "../../view/view";
@@ -40,4 +40,10 @@ export function initPosts() {
 
   //   }
   // );
+
+
+  document.addEventListener("modelPostEvent", 
+  function(evt: CustomEvent<ModelPostEvent>) {
+      
+  })
 }

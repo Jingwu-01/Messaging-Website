@@ -4,3 +4,7 @@ import { ModelPost } from "./post";
 export type PostsEvent = {
     postRoots: Array<ModelPost>;
 };
+
+export type ModelPostEvent = {
+    post: ModelPost;
+}
