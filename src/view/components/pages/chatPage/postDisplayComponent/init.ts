@@ -10,10 +10,14 @@ export default function postDisplayComponentInit() {
             padding-left: 10px;
             padding-top: 10px
         }
+        .post-children {
+          margin-left: 5em;
+        }
     </style>
     <h2 id="channel-name"></h2>
     <section id="posts-container">
     </section>
+    <post-editor-component></post-editor-component>
 </template>
 `
   );

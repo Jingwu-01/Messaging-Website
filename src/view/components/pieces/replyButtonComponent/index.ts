@@ -17,23 +17,21 @@ class ReplyButtonComponent extends HTMLElement {
   
     connectedCallback(): void {
       this.controller = new AbortController();
-      const options = { signal: this.controller.signal };
+      // const options = { signal: this.controller.signal };
   
-      const replyButton = this.shadowRoot?.querySelector("#reply-button");
-      if (!(replyButton instanceof HTMLButtonElement)) {
-        throw new Error("replyButton not HTML button element");
-      }
-      replyButton.addEventListener("click", this.openChatBox.bind(this), options); 
+      // const replyButton = this.shadowRoot?.querySelector("#reply-button");
+      // if (!(replyButton instanceof HTMLButtonElement)) {
+      //   throw new Error("replyButton not HTML button element");
+      // }
+      // replyButton.addEventListener("click", this.addPostEditor.bind(this), options); 
     }
   
     disconnectedCallback(): void {
       this.controller?.abort();
       this.controller = null;
     } 
-  
-    openChatBox() {
 
-    }
+    
 
   }
   export default ReplyButtonComponent; 

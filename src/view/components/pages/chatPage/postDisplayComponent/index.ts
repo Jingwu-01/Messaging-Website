@@ -1,4 +1,4 @@
-import { ViewPost } from "../../../../datatypes";
+import { ViewPost, ViewPostUpdate } from "../../../../datatypes";
 import { getView } from "../../../../view";
 import { PostComponent } from "../postComponent";
 import { PostEditor } from "../postEditorComponent";
@@ -8,7 +8,9 @@ export class PostDisplay extends HTMLElement {
 
   private postsContainer: HTMLElement;
 
-  private postEditor: PostEditor | undefined;
+  private postEditor: PostEditor;
+
+  private postToHTMLChildren: Map<string, HTMLElement> = new Map<string, HTMLElement>();
 
   constructor() {
     super();
@@ -29,6 +31,7 @@ export class PostDisplay extends HTMLElement {
 
     let channelHeader = this.shadowRoot.querySelector("#channel-name");
     let postsContainer = this.shadowRoot.querySelector("#posts-container");
+    let postEditor = this.shadowRoot.querySelector("post-editor-component");
 
     if (!(channelHeader instanceof HTMLElement)) {
       throw Error("Could not find an element with the channel-name id");
@@ -38,8 +41,14 @@ export class PostDisplay extends HTMLElement {
       throw Error("Could not find an element with the posts-container id");
     }
 
+    if (!(postEditor instanceof PostEditor)) {
+      throw Error("Could not find a post-editor-component element");
+    }
+
     this.channelHeader = channelHeader;
     this.postsContainer = postsContainer;
+    this.postEditor = postEditor;
+    this.postEditor.setParentPath("");
 
     this.displayPosts.bind(this);
     console.log(`constructor: this.channelHeader: ${this.channelHeader}`);
@@ -56,29 +65,52 @@ export class PostDisplay extends HTMLElement {
 
   // TODO: add another helper for setting the channel name
 
-  displayPosts(allPosts: Array<ViewPost>): void {
+  displayPosts(update: ViewPostUpdate): void {
     this.postsContainer.innerHTML = "";
-    for (let viewPost of allPosts) {
+    if (update.op == "modify") {
+      // get the post that's affected
+      // add the reaction
+    }
+    for (let viewPost of update.allPosts) {
       let postEl = new PostComponent();
       postEl.addPostContent(viewPost);
+      let postPathArr = viewPost.path.split("/");
+      if (postPathArr.length !== 6) {
+        throw Error("displayPosts: postPathArr is not of length 6");
+      }
+      let childrenContainer = document.createElement("section");
+      childrenContainer.classList.add("post-children");
+      this.postToHTMLChildren.set(postPathArr[5], childrenContainer);
       this.postsContainer.append(postEl);
-      postEl.addPostChildren(viewPost.Children);
+      postEl.parentNode?.insertBefore(childrenContainer, postEl.nextSibling);
+      this.displayPostsHelper(postEl, viewPost.children, childrenContainer);
     }
   }
 
-  displayPostEditor(): void {
-    this.postEditor?.remove();
-    this.postEditor = new PostEditor();
-    this.shadowRoot?.append(this.postEditor);
+  displayPostsHelper(postEl: PostComponent, childrenPosts: Array<ViewPost>, childrenContainer: HTMLElement) {
+    for (let childPost of childrenPosts) {
+      let childPostEl = new PostComponent();
+      childPostEl.addPostContent(childPost);
+      childrenContainer.append(childPostEl);
+      let childPostPathArr = childPost.path.split("/");
+      if (childPostPathArr.length !== 6) {
+        throw Error("displayPostsHelper: childPostPathArr is not of length 6");
+      }
+      let nextChildContainer = document.createElement("section");
+      nextChildContainer.classList.add("post-children");
+      this.postToHTMLChildren.set(childPostPathArr[5], nextChildContainer);
+      childPostEl.parentNode?.insertBefore(nextChildContainer, childPostEl.nextSibling);
+      this.displayPostsHelper(childPostEl, childPost.children, nextChildContainer);
+    }
   }
 
-  removePostEditor(): void {
-    this.postEditor?.remove();
-  }
-
-  replacePostEditor(newPostEditor: PostEditor) {
-    this.postEditor?.remove();
-    this.postEditor = newPostEditor;
+  movePostEditorTo(postEl: PostComponent) {
+    postEl.parentNode?.insertBefore(this.postEditor, postEl.nextSibling);
+    let postPath = postEl.getPostPath();
+    if (postPath === undefined) {
+      throw Error("movePostEditorTo: postEl's parent path is undefined");
+    }
+    this.postEditor.setParentPath(postPath);
   }
 
 }

@@ -26,7 +26,6 @@ export default function reactionComponentInit() {
       </button>
       <p id="count"></p>
     </div>
-    
   </template>
 
 `

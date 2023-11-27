@@ -1,8 +1,10 @@
 import { ModelChannel } from "../model/channel";
 import { getModel } from "../model/model";
+import { PostDocumentResponse } from "../model/responseTypes";
 import { ModelWorkspace } from "../model/workspace";
+import { slog } from "../slog";
+import { CreatePostEvent } from "../view/datatypes";
 import { getView } from "../view/view";
-import modelToViewChannels from "./channel/modelToViewChannels";
 
 // The Adapter has functions that the view can use to manipulate
 // the state of the application.
@@ -64,6 +66,23 @@ class Adapter {
     } else {
       throw new Error("Cannot get open channel: no open workspace");
     }
+  }
+
+  createPost(postData: CreatePostEvent) {
+    // TODO: consider if we want to enforce that a channel are open in order to send a message?
+    let channel = this.getOpenChannel();
+    if (channel === null) {
+      throw new Error("Cannot add a post: no open channel");
+    }
+    channel
+      .createPost(postData.msg, postData.parent, channel.path)
+      .then((result: PostDocumentResponse) => {
+        slog.info("createPost: added to the database");
+      })
+      .catch((error: unknown) => {
+        // TODO: notify view that their post failed for whatever reason.
+        throw Error("createPost: creating the post failed");
+      });
   }
 }
 

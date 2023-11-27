@@ -5,8 +5,8 @@ import { WorkspaceResponse } from "./responseTypes";
 
 // Class representing our model interfacing with OwlDB.
 export class OwlDBModel {
+  private username: string;
   private token: string;
-
   private workspaces: Map<string, ModelWorkspace> = new Map<
     string,
     ModelWorkspace
@@ -15,6 +15,7 @@ export class OwlDBModel {
 
   constructor() {
     // Initialize the posts as an empty array.
+    this.username = "";
     this.token = "";
   }
 
@@ -35,7 +36,10 @@ export class OwlDBModel {
     return typedFetch<T>(`${getDatabasePath()}${url}`, options);
   }
 
+  /* async function that logs in with the input username. It sends a Post request with the username in the body and stores the token of the response if it exists. It returns a promise of UserInfo. */
   async login(username: string): Promise<UserInfo> {
+    this.username = username;
+    // Send a POST request to OwlDB with the username in the body to log in.
     const options = {
       method: "POST",
       headers: {
@@ -46,16 +50,22 @@ export class OwlDBModel {
     };
     try {
       const response = await typedFetch<UserInfo>(getAuthPath(), options);
+      // If the response contains a token, store it in this.token.
       if (response.token) {
         this.token = response.token;
       }
     } catch (error) {
+      // Rethrow any caught error.
       throw error;
     }
+
+    // Return a promise of UserInfo
     return typedFetch<UserInfo>(getAuthPath(), options);
   }
 
+  /* async function that logs out the current user. It sends a DELETE request to log out and returns a void promise. */
   async logout(): Promise<void> {
+    // Send a DELETE request to OwlDB to log out.
     const options = {
       method: "DELETE",
       headers: {
@@ -63,6 +73,7 @@ export class OwlDBModel {
         Accept: "application/json",
       },
     };
+    // Return a void promise.
     return emptyFetch(getAuthPath(), options);
   }
 
@@ -101,6 +112,7 @@ export class OwlDBModel {
     return this.workspaces;
   }
 
+<<<<<<< HEAD
   // Adds the workspace with name workspaceName to OwlDB.
   // Will not overwrite an existing workspace.
   async addWorkspace(workspace_name: string): Promise<void> {
@@ -122,6 +134,19 @@ export class OwlDBModel {
     });
   }
 
+=======
+  async updateReaction(reactionName: string): Promise<void> {
+    const options = {
+      method: "PATCH",
+      headers: {
+        Authorization: "Bearer " + this.token,
+        Accept: "application/json",
+      },
+    };
+  }
+
+  /* Getter function that returns the token. */
+>>>>>>> origin/feature/LoginRedesign
   getToken(): string {
     return this.token;
   }

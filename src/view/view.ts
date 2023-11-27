@@ -1,20 +1,18 @@
 import PostComponent from "./components/pages/chatPage/postComponent";
-import { PostEditor } from "./components/pages/chatPage/postEditorComponent";
 import M3ssagin8AppComponent from "./components/pages/m3ssagin8AppComponent";
 import {
   ViewChannel,
   ViewChannelUpdate,
   ViewPost,
+  ViewPostUpdate,
   ViewUser,
   ViewWorkspace,
   ViewWorkspaceUpdate,
 } from "./datatypes";
 
 interface PostListener {
-  displayPosts(posts: Array<ViewPost>): void;
-  displayPostEditor(): void;
-  removePostEditor(): void;
-  replacePostEditor(newPostEditor: PostEditor): void;
+  displayPosts(posts: ViewPostUpdate): void;
+  movePostEditorTo(postEl: PostComponent): void;
 }
 
 interface UserListener {
@@ -80,24 +78,10 @@ export class View {
     this.m3ssag1n8AppComponent = m3ssag1n8AppComponent;
   }
 
-  displayPostEditor() {
-    this.postListeners.forEach((listener) => {
-      listener.displayPostEditor();
-    });
-  }
-
   // TODO: have an abstract superclass that adds a parent field.
-  movePostEditorTo(postElement: PostComponent) {}
-
-  removePostEditor() {
+  movePostEditorTo(postElement: PostComponent) {
     this.postListeners.forEach((listener) => {
-      listener.removePostEditor();
-    });
-  }
-
-  replacePostEditor(newPostEditor: PostEditor) {
-    this.postListeners.forEach((listener) => {
-      listener.replacePostEditor(newPostEditor);
+      listener.movePostEditorTo(postElement);
     });
   }
 
@@ -111,7 +95,13 @@ export class View {
 
   addPostListener(listener: PostListener) {
     this.postListeners.push(listener);
-    listener.displayPosts(this.posts);
+    // TODO: change this, is just a placeholder for now.
+    let viewPostUpdate: ViewPostUpdate = {
+      allPosts: this.posts,
+      op: "add",
+      affectedPosts: new Array<ViewPost>(),
+    };
+    listener.displayPosts(viewPostUpdate);
   }
 
   removePostListener(listener: PostListener) {
@@ -124,8 +114,10 @@ export class View {
     this.postListeners.splice(index, 1);
   }
 
-  displayPosts(posts: Array<ViewPost>) {
-    this.posts = posts;
+  displayPosts(posts: ViewPostUpdate) {
+    // add a function call to modify this.posts to contain the new post
+    // do the listener thing
+    this.posts = posts.allPosts;
     this.postListeners.forEach((listener) => {
       listener.displayPosts(posts);
     });

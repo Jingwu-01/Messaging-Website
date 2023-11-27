@@ -1,6 +1,8 @@
 import HomePage from ".";
 
+/* Initializes the HomePage by inserting its html to the document and defining the home-page custom element. */
 export default function homePageInit() {
+  // Insert the html of HomePage to the document. 
   document.body.insertAdjacentHTML(
     "beforeend",
     `
@@ -55,7 +57,7 @@ export default function homePageInit() {
       form {
         background-color: #ffffff;
       }
-  
+
       input {
         background-color: #d9d9d9;
         border: 1px solid #333;
@@ -64,6 +66,7 @@ export default function homePageInit() {
         width: 25vw;
         font-size: 15px;
       }
+
       button {
           border-radius: 15px;
           height: 2em;
@@ -98,5 +101,6 @@ export default function homePageInit() {
 `
   );
 
+  // Define the custom element of home-page. 
   customElements.define("home-page", HomePage);
 }

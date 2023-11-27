@@ -1,6 +1,7 @@
 import { slog } from "../../../../../slog";
 import { ViewPost } from "../../../../datatypes";
 import { getView } from "../../../../view";
+import ReactionComponent from "../../../pieces/reactionComponent/index";
 import { PostEditor } from "../postEditorComponent";
 
 export class PostComponent extends HTMLElement {
@@ -10,9 +11,10 @@ export class PostComponent extends HTMLElement {
 
   private postPath: string | undefined;
 
+  private controller: AbortController | null = null;
+
   constructor() {
     super();
-
     this.attachShadow({ mode: "open" });
 
     let template = document.querySelector("#post-template");
@@ -38,7 +40,24 @@ export class PostComponent extends HTMLElement {
   }
 
   connectedCallback() {
-    this.postBody.addEventListener("click", this.addPostEditor.bind(this));
+    this.controller = new AbortController();
+    const options = { signal: this.controller.signal };
+    const replyButton = this.shadowRoot?.querySelector(
+      "reply-button-component"
+    );
+    if (!(replyButton instanceof HTMLElement)) {
+      throw new Error("reply-button-component is not an HTMLElement");
+    }
+    replyButton.addEventListener(
+      "click",
+      this.addPostEditor.bind(this),
+      options
+    );
+  }
+
+  disconnectedCallback() {
+    this.controller?.abort();
+    this.controller = null;
   }
 
   addPostEditor(event: MouseEvent) {
@@ -47,27 +66,22 @@ export class PostComponent extends HTMLElement {
     // getView().replacePostEditor(postEditor);
     // this.postBody.parentNode?.insertBefore(postEditor, this.postBody.nextSibling);
     getView().movePostEditorTo(this);
-
-    
-
-  }
-
-  insertPostEditor(postEditor: PostEditor) {
-      this.postBody.parentNode?.insertBefore(postEditor, this.postBody.nextSibling);
   }
 
   // Sets the content of this post equal to viewPost
   addPostContent(viewPost: ViewPost): void {
     // TODO: obviously can add more functionality here later as needed.
-    this.postPath = viewPost.Path;
-    this.postBody.innerText = viewPost.Msg;
+    this.postPath = viewPost.path;
+    let rawMsg = viewPost.msg
+    let newText = this.replaceReactionText(rawMsg)
+    this.postBody.innerText = newText;
     let postUserText = this.postHeader.querySelector("#post-user-text");
     // TODO handle error better
     if (postUserText != null) {
-      postUserText.innerHTML = viewPost.CreatedUser;
+      postUserText.innerHTML = viewPost.createdUser;
     }
     // assumed that time is in ms
-    let postTimeObj = new Date(viewPost.PostTime);
+    let postTimeObj = new Date(viewPost.postTime);
     let postTimeShortEl = this.postHeader.querySelector("#post-time-short");
     // TODO handle error better
     if (postTimeShortEl != null) {
@@ -85,6 +99,57 @@ export class PostComponent extends HTMLElement {
       postTimeLongEl.setAttribute("datetime", postTimeObj.toISOString());
       postTimeLongEl.innerHTML = postTimeObj.toString();
     }
+
+    // let smileCount, frownCount, likeCount, celebrateCount: number
+
+    // if (!(viewPost.reactions.smile) == undefined) {
+    //   smileCount = viewPost.reactions.smile.length 
+    // } else {
+    //   smileCount = 0; 
+    // }
+    
+    // if (viewPost.reactions.frown) {
+    //   frownCount = viewPost.reactions.frown.length 
+    // } else {
+    //   frownCount = 0; 
+    // }
+
+    // if (viewPost.reactions.like) {
+    //   likeCount = viewPost.reactions.like.length 
+    // } else {
+    //   likeCount = 0; 
+    // }
+
+    // if (viewPost.reactions.celebrate) {
+    //   celebrateCount = viewPost.reactions.celebrate.length 
+    // } else {
+    //   celebrateCount = 0; 
+    // }
+
+    // const smileReaction = this.shadowRoot?.querySelector("reaction-component") 
+    // console.log(smileReaction)
+    // if (!(smileReaction instanceof ReactionComponent)){
+    //   throw new Error ("smileReaction is not a ReactionComponent")
+    // }
+    // smileReaction.addReactionCount(smileCount)
+
+    // const frownReaction = this.shadowRoot?.querySelector("#frown-reaction")
+    // if (!(frownReaction instanceof ReactionComponent)){
+    //   throw new Error ("frownReaction is not a ReactionComponent")
+    // }
+    // frownReaction.addReactionCount(frownCount)
+
+    // const likeReaction = this.shadowRoot?.querySelector("#like-reaction")
+    // if (!(likeReaction instanceof ReactionComponent)){
+    //   throw new Error ("likeReaction is not a ReactionComponent")
+    // }
+    // likeReaction.addReactionCount(likeCount)
+
+    // const celebrateReaction = this.shadowRoot?.querySelector("#celebrate-reaction")
+    // if (!(celebrateReaction instanceof ReactionComponent)){
+    //   throw new Error ("celebrateReaction is not a ReactionComponent")
+    // }
+    // celebrateReaction.addReactionCount(celebrateCount)
   }
 
   // Adds childrenPosts as replies to this ViewPost.
@@ -95,13 +160,38 @@ export class PostComponent extends HTMLElement {
       this.shadowRoot
         ?.querySelector("#post-child-container")
         ?.appendChild(childPostEl);
-      childPostEl.addPostChildren(childPost.Children);
+      childPostEl.addPostChildren(childPost.children);
     }
   }
+
+  appendPostEditor(postEditor: PostEditor) {
+    this.append(postEditor);
+  }
+
+  getPostPath() {
+    return this.postPath;
+  }
+
+  // displayPosts(update: ViewPostUpdate) {
+  //   // if this post's id is in update.affectedPosts,
+  //   // then add the reactio if it's a "modify"
+  // }
 
   // TODO: add a private filter function on posts that can basically
   // handle filtering unstyled HTML with ** and stuff to strong and em
   // tags as needed
+
+  replaceReactionText(text: string): string {
+    const replacements: {[key: string]: string} = {
+      ':smile:': '<iconify-icon icon="lucide:smile" class="reaction-icon"></iconify-icon>', 
+      ':frown:': '<iconify-icon icon="lucide:frown" class="reaction-icon"></iconify-icon>', 
+      ':like:': '<iconify-icon icon="mdi:like-outline" class="reaction-icon"></iconify-icon>', 
+      ':celebrate:': '<iconify-icon icon="mingcute:celebrate-line" class="reaction-icon"></iconify-icon>'
+    };
+
+    return text.replace(/:smile:|:frown:|:like:|:celebrate:/g, (match) => replacements[match]);
+}
+  
 }
 
 export default PostComponent;

@@ -15,7 +15,6 @@ export function initChannels() {
     function (evt: CustomEvent<SelectChannelEvent>) {
       slog.info("initChannels", ["Channel Selected", `${evt.detail.name}`]);
       getAdapter().setOpenChannel(evt.detail.name);
-      getView().displayPostEditor();
     }
   );
 

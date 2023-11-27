@@ -4,6 +4,7 @@ import {
   SelectWorkspaceEvent,
   CreateWorkspaceEvent,
   DeleteWorkspaceEvent,
+  ViewPostUpdate,
 } from "../../view/datatypes";
 import { getView } from "../../view/view";
 import getAdapter from "../adapter";
@@ -33,8 +34,12 @@ export function initWorkspaces() {
                 cause: evt,
               });
             });
-          getView().displayPosts([]);
-          getView().removePostEditor();
+          let viewPostUpdate: ViewPostUpdate = {
+            allPosts: [],
+            op: "add",
+            affectedPosts: [],
+          };
+          getView().displayPosts(viewPostUpdate);
         });
     }
   );

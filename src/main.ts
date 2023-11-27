@@ -11,6 +11,7 @@ import {
   CreateChannelEvent,
   DeleteWorkspaceEvent,
   DeleteChannelEvent,
+  CreatePostEvent,
 } from "./view/datatypes";
 import { LoginEvent } from "./view/datatypes";
 import { initView } from "./view/init";
@@ -41,6 +42,7 @@ declare global {
     channelCreated: CustomEvent<CreateChannelEvent>;
     workspaceDeleted: CustomEvent<DeleteWorkspaceEvent>;
     channelDeleted: CustomEvent<DeleteChannelEvent>;
+    createPostEvent: CustomEvent<CreatePostEvent>;
   }
 }
 
@@ -89,20 +91,21 @@ function main(): void {
 
 function viewPostConverter(modelPost: ModelPost): ViewPost {
   return {
-    Msg: modelPost.getResponse().doc.msg,
-    Reactions: modelPost.getResponse().doc.reactions,
-    Extensions: modelPost.getResponse().doc.extensions,
-    CreatedUser: modelPost.getResponse().meta.createdBy,
-    PostTime: modelPost.getResponse().meta.createdAt,
-    Children: new Array<ViewPost>(),
-    Path: modelPost.getResponse().path,
+    msg: modelPost.getResponse().doc.msg,
+    reactions: modelPost.getResponse().doc.reactions,
+    extensions: modelPost.getResponse().doc.extensions,
+    createdUser: modelPost.getResponse().meta.createdBy,
+    postTime: modelPost.getResponse().meta.createdAt,
+    children: new Array<ViewPost>(),
+    path: modelPost.getResponse().path,
+    parent: modelPost.getResponse().doc.parent,
   };
 }
 
 // Function that converts a tree of modelposts into an array of Viewposts.
 // Viewposts will form a tree-like structure for posts.
 export function getViewPosts(
-  modelPostRoots: Map<string, ModelPost>
+  modelPostRoots: Array<ModelPost>
 ): Array<ViewPost> {
   // let sortedPosts = modelPosts.toSorted((a, b) => a.Path.split("/")[])
   let viewPostRoots = new Array<ViewPost>();
@@ -113,19 +116,21 @@ export function getViewPosts(
 // modifies curViewPost inplace
 function getViewPostsHelper(
   viewPostChildren: Array<ViewPost>,
-  modelPostChildren: Map<string, ModelPost>
+  modelPostRoots: Array<ModelPost>
 ): void {
-  let modelPostChildrenArr = Array.from(modelPostChildren.values());
-  modelPostChildrenArr.sort((a, b) =>
+  modelPostRoots.sort((a, b) =>
     a.getResponse().meta.createdAt < b.getResponse().meta.createdAt
       ? -1
       : a.getResponse().meta.createdAt > b.getResponse().meta.createdAt
       ? 1
       : 0
   );
-  for (let modelPostChild of modelPostChildrenArr) {
+  for (let modelPostChild of modelPostRoots) {
     let viewPostChild = viewPostConverter(modelPostChild);
-    getViewPostsHelper(viewPostChild.Children, modelPostChild.getReplies());
+    getViewPostsHelper(
+      viewPostChild.children,
+      Array.from(modelPostChild.getReplies().values())
+    );
     viewPostChildren.push(viewPostChild);
   }
 }
