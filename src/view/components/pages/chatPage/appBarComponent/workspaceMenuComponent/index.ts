@@ -1,4 +1,4 @@
-import { ViewWorkspace } from "../../../../../datatypes";
+import { ViewWorkspace, ViewWorkspaceUpdate } from "../../../../../datatypes";
 import { getView } from "../../../../../view";
 
 // Displays username, handles logout.
@@ -44,7 +44,8 @@ class WorkspaceMenuComponent extends HTMLElement {
 
   // called by view whenever there is a change in the workspaces
   // create text for all of the workspaces and display them
-  displayWorkspaces(workspaces: Array<ViewWorkspace>) {
+  displayWorkspaces(update: ViewWorkspaceUpdate) {
+    const workspaces = update.allWorkspaces;
     let workspace_menu_items_el = this.shadowRoot?.querySelector(
       "#workspace-menu-items"
     );

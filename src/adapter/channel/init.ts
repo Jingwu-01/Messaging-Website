@@ -32,7 +32,12 @@ export function initChannels() {
           "Tried to add a channel without a workspace currently open"
         );
       }
-      getView().displayChannels(modelToViewChannels(channels));
+      getView().displayChannels({
+        allChannels: modelToViewChannels(channels),
+        op: "replace",
+        affectedChannels: modelToViewChannels(channels),
+        cause: evt,
+      });
     }
   );
 
@@ -49,7 +54,12 @@ export function initChannels() {
           "Tried to remove a channel without a workspace currently open"
         );
       }
-      getView().displayChannels(modelToViewChannels(channels));
+      getView().displayChannels({
+        allChannels: modelToViewChannels(channels),
+        op: "replace",
+        affectedChannels: modelToViewChannels(channels),
+        cause: evt,
+      });
     }
   );
 }

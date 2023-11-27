@@ -1,20 +1,3 @@
-interface User {
-  name: string;
-}
-
-interface Channel {
-  name: string;
-}
-
-interface Workspace {
-  name: string;
-}
-
-// interface Post {
-//   text: string
-//   createdAt: number
-// }
-
 // This ViewPost type will effectively allow us to represent a tree of posts
 // that the view can display.
 export type ViewPost = {
@@ -27,12 +10,28 @@ export type ViewPost = {
   Path: string;
 };
 
+export type ViewWorkspaceUpdate = {
+  allWorkspaces: Array<ViewWorkspace>;
+  op: "add" | "remove" | "replace";
+  // NOTE: deltas aren't implemented yet, so this won't contain accurate data
+  affectedWorkspaces: Array<ViewWorkspace>;
+  cause: Event;
+};
+
+export type ViewChannelUpdate = {
+  allChannels: Array<ViewChannel>;
+  op: "add" | "remove" | "replace";
+  // NOTE: deltas aren't implemented yet, so this won't contain accurate data
+  affectedChannels: Array<ViewWorkspace>;
+  cause: Event;
+};
+
 export type ReactionData = {
-  smile: string[]; 
-  frown: string[]; 
-  like: string[]; 
-  celebrate: string[]; 
-} 
+  smile: string[];
+  frown: string[];
+  like: string[];
+  celebrate: string[];
+};
 
 export type ViewUser = {
   username: string;
@@ -77,5 +76,5 @@ export type DeleteChannelEvent = {
 };
 
 export type ReactionUpdateEvent = {
-  reactionName: string; 
-}
+  reactionName: string;
+};

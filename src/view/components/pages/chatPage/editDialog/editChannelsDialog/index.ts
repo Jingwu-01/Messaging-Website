@@ -1,5 +1,5 @@
 import EditDialogComponent from "..";
-import { ViewChannel } from "../../../../../datatypes";
+import { ViewChannel, ViewChannelUpdate } from "../../../../../datatypes";
 import { getView } from "../../../../../view";
 
 // Edit-dialog that allows user to edit workspaces
@@ -14,10 +14,10 @@ export class EditChannelsDialogComponent extends EditDialogComponent {
     getView().addChannelListener(this);
   }
 
-  displayOpenChannel(channel: ViewChannel) {}
+  displayOpenChannel(channel: ViewChannel | null) {}
 
-  displayChannels(channels: Array<ViewChannel>) {
-    this.setItems(channels.map((ch) => ch.name));
+  displayChannels(update: ViewChannelUpdate) {
+    this.setItems(update.allChannels.map((ch) => ch.name));
   }
 
   public onAdd(new_item_name: string): void {

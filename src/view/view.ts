@@ -1,7 +1,14 @@
 import PostComponent from "./components/pages/chatPage/postComponent";
 import { PostEditor } from "./components/pages/chatPage/postEditorComponent";
 import M3ssagin8AppComponent from "./components/pages/m3ssagin8AppComponent";
-import { ViewChannel, ViewPost, ViewUser, ViewWorkspace } from "./datatypes";
+import {
+  ViewChannel,
+  ViewChannelUpdate,
+  ViewPost,
+  ViewUser,
+  ViewWorkspace,
+  ViewWorkspaceUpdate,
+} from "./datatypes";
 
 interface PostListener {
   displayPosts(posts: Array<ViewPost>): void;
@@ -15,12 +22,12 @@ interface UserListener {
 }
 
 interface WorkspaceListener {
-  displayWorkspaces(workspaces: Array<ViewWorkspace>): void;
+  displayWorkspaces(update: ViewWorkspaceUpdate): void;
   displayOpenWorkspace(open_workspace: ViewWorkspace | null): void;
 }
 
 interface ChannelListener {
-  displayChannels(channels: Array<ViewChannel>): void;
+  displayChannels(update: ViewChannelUpdate): void;
   displayOpenChannel(open_channel: ViewChannel | null): void;
 }
 
@@ -138,14 +145,19 @@ export class View {
 
   addWorkspaceListener(listener: WorkspaceListener) {
     this.workspaceListeners.push(listener);
-    listener.displayWorkspaces(this.workspaces);
+    listener.displayWorkspaces({
+      allWorkspaces: this.workspaces,
+      op: "add",
+      affectedWorkspaces: this.workspaces,
+      cause: new Event("listenerAdded"),
+    });
     listener.displayOpenWorkspace(this.openWorkspace);
   }
 
-  displayWorkspaces(workspaces: Array<ViewWorkspace>) {
-    this.workspaces = workspaces;
+  displayWorkspaces(update: ViewWorkspaceUpdate) {
+    this.workspaces = update.allWorkspaces;
     this.workspaceListeners.forEach((listener) => {
-      listener.displayWorkspaces(workspaces);
+      listener.displayWorkspaces(update);
     });
   }
 
@@ -158,14 +170,19 @@ export class View {
 
   addChannelListener(listener: ChannelListener) {
     this.channelListeners.push(listener);
-    listener.displayChannels(this.channels);
+    listener.displayChannels({
+      allChannels: this.workspaces,
+      op: "add",
+      affectedChannels: this.workspaces,
+      cause: new Event("listenerAdded"),
+    });
     listener.displayOpenChannel(this.openChannel);
   }
 
-  displayChannels(channels: Array<ViewChannel>) {
-    this.channels = channels;
+  displayChannels(update: ViewChannelUpdate) {
+    this.channels = update.allChannels;
     this.channelListeners.forEach((listener) => {
-      listener.displayChannels(channels);
+      listener.displayChannels(update);
     });
   }
 

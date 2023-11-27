@@ -14,7 +14,12 @@ export function initLogin() {
       });
       // When we log in, we need to fetch the open workspaces as well so that the view can display them.
       model.getAllWorkspaces().then((workspaces) => {
-        view.displayWorkspaces(modelToViewWorkspaces(workspaces));
+        view.displayWorkspaces({
+          allWorkspaces: modelToViewWorkspaces(workspaces),
+          op: "replace",
+          affectedWorkspaces: modelToViewWorkspaces(workspaces),
+          cause: event,
+        });
       });
     });
   });

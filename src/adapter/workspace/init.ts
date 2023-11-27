@@ -7,6 +7,7 @@ import {
 } from "../../view/datatypes";
 import { getView } from "../../view/view";
 import getAdapter from "../adapter";
+import modelToViewChannels from "../channel/modelToViewChannels";
 import modelToViewWorkspaces from "./modelToViewWorkspaces";
 
 export function initWorkspaces() {
@@ -21,7 +22,17 @@ export function initWorkspaces() {
             "Opened Channel displaying view channels",
             "",
           ]);
-          getAdapter().displayViewChannels();
+          getAdapter()
+            .getOpenWorkspace()
+            ?.getAllChannels()
+            .then((modelChannels) => {
+              getView().displayChannels({
+                allChannels: modelToViewChannels(modelChannels),
+                op: "replace",
+                affectedChannels: modelToViewChannels(modelChannels),
+                cause: evt,
+              });
+            });
           getView().displayPosts([]);
           getView().removePostEditor();
         });
@@ -34,7 +45,12 @@ export function initWorkspaces() {
       // TODO handle error if workspace wasn't added
       await getModel().addWorkspace(evt.detail.name);
       const workspaces = await getModel().getAllWorkspaces();
-      getView().displayWorkspaces(modelToViewWorkspaces(workspaces));
+      getView().displayWorkspaces({
+        allWorkspaces: modelToViewWorkspaces(workspaces),
+        op: "replace",
+        affectedWorkspaces: modelToViewWorkspaces(workspaces),
+        cause: evt,
+      });
     }
   );
 
@@ -46,7 +62,12 @@ export function initWorkspaces() {
       // TODO handle promise rejection
       await getModel().removeWorkspace(evt.detail.name);
       const workspaces = await getModel().getAllWorkspaces();
-      getView().displayChannels(modelToViewWorkspaces(workspaces));
+      getView().displayWorkspaces({
+        allWorkspaces: modelToViewWorkspaces(workspaces),
+        op: "replace",
+        affectedWorkspaces: modelToViewWorkspaces(workspaces),
+        cause: evt,
+      });
     }
   );
 }
