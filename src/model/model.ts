@@ -101,6 +101,27 @@ export class OwlDBModel {
     return this.workspaces;
   }
 
+  // Adds the workspace with name workspaceName to OwlDB.
+  // Will not overwrite an existing workspace.
+  async addWorkspace(workspace_name: string): Promise<void> {
+    // Add this workspace to the API
+    await this.typedModelFetch<any>(`/${workspace_name}`, {
+      method: "PUT",
+    });
+    // TODO: Figure out how to make the workspace not overwrite.
+    // Now, either:
+    // 1. we are subscribed to workspaces, so OWLDB will send back a message which updates the state
+    // or:
+    // 2. we aren't subscribed, in which case the adapter will manually refresh, if it wants to.
+    // Either way, we don't have to do anything else.
+  }
+
+  async removeWorkspace(workspace_name: string): Promise<void> {
+    await this.typedModelFetch<any>(`/${workspace_name}`, {
+      method: "DELETE",
+    });
+  }
+
   getToken(): string {
     return this.token;
   }

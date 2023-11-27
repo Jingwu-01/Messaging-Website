@@ -19,4 +19,24 @@ export class EditChannelsDialogComponent extends EditDialogComponent {
   displayChannels(channels: Array<ViewChannel>) {
     this.setItems(channels.map((ch) => ch.name));
   }
+
+  public onAdd(new_item_name: string): void {
+    document.dispatchEvent(
+      new CustomEvent("channelCreated", {
+        detail: {
+          name: new_item_name,
+        },
+      })
+    );
+  }
+
+  public onRemove(channel_name: string): void {
+    document.dispatchEvent(
+      new CustomEvent("channelDeleted", {
+        detail: {
+          name: channel_name,
+        },
+      })
+    );
+  }
 }

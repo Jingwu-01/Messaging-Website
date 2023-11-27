@@ -6,7 +6,11 @@ import {
   SelectChannelEvent,
   SelectWorkspaceEvent,
   ViewPost,
-  ReactionUpdateEvent 
+  ReactionUpdateEvent,
+  CreateWorkspaceEvent,
+  CreateChannelEvent,
+  DeleteWorkspaceEvent,
+  DeleteChannelEvent,
 } from "./view/datatypes";
 import { LoginEvent } from "./view/datatypes";
 import { initView } from "./view/init";
@@ -29,10 +33,14 @@ declare global {
   interface DocumentEventMap {
     postsEvent: CustomEvent<PostsEvent>;
     loginEvent: CustomEvent<LoginEvent>;
-    logoutEvent: CustomEvent<LogoutEvent>; 
+    logoutEvent: CustomEvent<LogoutEvent>;
     workspaceSelected: CustomEvent<SelectWorkspaceEvent>;
     channelSelected: CustomEvent<SelectChannelEvent>;
-    reactionUpdateEvent: CustomEvent<ReactionUpdateEvent>; 
+    reactionUpdateEvent: CustomEvent<ReactionUpdateEvent>;
+    workspaceCreated: CustomEvent<CreateWorkspaceEvent>;
+    channelCreated: CustomEvent<CreateChannelEvent>;
+    workspaceDeleted: CustomEvent<DeleteWorkspaceEvent>;
+    channelDeleted: CustomEvent<DeleteChannelEvent>;
   }
 }
 
@@ -87,7 +95,7 @@ function viewPostConverter(modelPost: ModelPost): ViewPost {
     CreatedUser: modelPost.getResponse().meta.createdBy,
     PostTime: modelPost.getResponse().meta.createdAt,
     Children: new Array<ViewPost>(),
-    Path: modelPost.getResponse().path
+    Path: modelPost.getResponse().path,
   };
 }
 

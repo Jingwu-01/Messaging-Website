@@ -50,4 +50,22 @@ export class ModelWorkspace {
     slog.info("getAllChannels", ["this.channels", `${this.channels}`]);
     return this.channels;
   }
+
+  async addChannel(channel_name: string): Promise<void> {
+    // Add this channel under this workspace to the API
+    await getModel().typedModelFetch<any>(`${this.path}/${channel_name}`, {
+      method: "PUT",
+    });
+    // Now, either:
+    // 1. we are subscribed to channels, so OWLDB will send back a message which updates the state
+    // or:
+    // 2. we aren't subscribed, in which case the adapter will manually refresh, if it wants to.
+    // Either way, we don't have to do anything else.
+  }
+
+  async removeChannel(channel_name: string): Promise<void> {
+    await getModel().typedModelFetch<any>(`${this.path}/${channel_name}`, {
+      method: "DELETE",
+    });
+  }
 }

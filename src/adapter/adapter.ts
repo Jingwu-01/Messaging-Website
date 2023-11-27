@@ -5,6 +5,7 @@ import { slog } from "../slog";
 import { ViewChannel, ViewWorkspace } from "../view/datatypes";
 import { getView } from "../view/view";
 import { WorkspaceListener } from "./adapterTypes";
+import modelToViewChannels from "./channel/modelToViewChannels";
 
 // The Adapter has functions that the view can use to manipulate
 // the state of the application.
@@ -83,18 +84,8 @@ class Adapter {
   // }
 
   async displayViewChannels() {
-    let viewChannelArr = new Array<ViewChannel>();
     this.openWorkspace?.getAllChannels().then((modelChannels) => {
-      modelChannels.forEach((modelChannel) => {
-        slog.info("displayViewChannels", [
-          "viewChannel name",
-          modelChannel.path.split("/")[3],
-        ]);
-        viewChannelArr.push({
-          name: modelChannel.path.split("/")[3],
-        });
-      });
-      getView().displayChannels(viewChannelArr);
+      getView().displayChannels(modelToViewChannels(modelChannels));
     });
   }
 }

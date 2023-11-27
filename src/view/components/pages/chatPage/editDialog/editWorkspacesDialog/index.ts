@@ -19,4 +19,24 @@ export class EditWorkspacesDialogComponent extends EditDialogComponent {
   displayWorkspaces(workspaces: Array<ViewWorkspace>) {
     this.setItems(workspaces.map((ws) => ws.name));
   }
+
+  public onAdd(new_item_name: string): void {
+    document.dispatchEvent(
+      new CustomEvent("workspaceCreated", {
+        detail: {
+          name: new_item_name,
+        },
+      })
+    );
+  }
+
+  public onRemove(workspace_name: string): void {
+    document.dispatchEvent(
+      new CustomEvent("workspaceDeleted", {
+        detail: {
+          name: workspace_name,
+        },
+      })
+    );
+  }
 }

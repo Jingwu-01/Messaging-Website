@@ -1,6 +1,7 @@
 import { getModel } from "../../model/model";
 import { LoginEvent, ViewWorkspace } from "../../view/datatypes";
 import { getView } from "../../view/view";
+import modelToViewWorkspaces from "../workspace/modelToViewWorkspaces";
 
 export function initLogin() {
   // TODO: Need something to switch to the chatPage
@@ -13,13 +14,7 @@ export function initLogin() {
       });
       // When we log in, we need to fetch the open workspaces as well so that the view can display them.
       model.getAllWorkspaces().then((workspaces) => {
-        let view_workspaces: ViewWorkspace[] = [];
-        workspaces.forEach((ws) => {
-          view_workspaces.push({
-            name: ws.path.slice(1),
-          });
-        });
-        view.displayWorkspaces(view_workspaces);
+        view.displayWorkspaces(modelToViewWorkspaces(workspaces));
       });
     });
   });
