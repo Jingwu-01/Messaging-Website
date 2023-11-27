@@ -1,10 +1,11 @@
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { ModelPost } from "./post";
-import { ChannelResponse, PostDocumentResponse} from "./responseTypes";
+import { CreateResponse } from "../../types/createResponse";
 import { getDatabasePath, validatePostResponse } from "./utils";
 import { getModel } from "./model";
 import { slog } from "../slog";
-import { PostResponse } from "../types/postResponse";
+import { PostResponse } from "../../types/postResponse";
+import { ChannelResponse } from "../../types/channelResponse";
 
 export class ModelChannel {
   path: string;
@@ -43,7 +44,7 @@ export class ModelChannel {
           case "update":
             const valid = validatePostResponse(event.data);
             if (!valid) {
-              slog.error("subscribeToPosts", ["invalid data", `${validatePostResponse.errors}`]);
+              slog.error("subscribeToPosts", ["invalid post data", `${validatePostResponse.errors}`]);
             } else {
               const jsonContents = JSON.parse(event.data) as PostResponse;
               slog.info("update event for post", ["incoming post", JSON.stringify(jsonContents)]);
@@ -131,10 +132,12 @@ export class ModelChannel {
       this.postMap.set(pendingPost.getName(), pendingPost);
       this.addPendingPosts(pendingPost.getName(), pendingPost);
     });
+    this.pendingPosts.delete(addedPostName);
   }
 
-  createPost(postContent: string, postParent: string, channelPath: string): Promise<PostDocumentResponse> {
-    return getModel().typedModelFetch<PostDocumentResponse>(`${channelPath}/posts/`, {
+  createPost(postContent: string, postParent: string, channelPath: string): Promise<CreateResponse> {
+    // for now, this return type is indeed ignored. because i update from the subscription always.
+    return getModel().typedModelFetch<CreateResponse>(`${channelPath}/posts/`, {
       method: 'POST',
       body: JSON.stringify({
         "msg": postContent,

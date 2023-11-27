@@ -1,8 +1,9 @@
-import { typedFetch, emptyFetch, getAuthPath, getDatabasePath, validateLoginResponse } from "./utils";
+import { typedFetch, emptyFetch, getAuthPath, getDatabasePath, validateLoginResponse, validateWorkspaceResponse, validateGetDocumentsResponse } from "./utils";
 import { ModelWorkspace } from "./workspace";
-import { WorkspaceResponse } from "./responseTypes";
+import { WorkspaceResponse } from "../../types/workspaceResponse";
 import { slog } from "../slog";
-import { LoginResponse } from "../types/loginResponse";
+import { LoginResponse } from "../../types/loginResponse";
+import { GetDocumentsResponse } from "../../types/getDocumentsResponse";
 
 // Class representing our model interfacing with OwlDB.
 export class OwlDBModel {
@@ -84,13 +85,18 @@ export class OwlDBModel {
     if (existingWorkspace) {
       return existingWorkspace;
     } else {
-      let freshWorkspace = new ModelWorkspace(
-        await this.typedModelFetch<WorkspaceResponse>(`/${id}`, {
-          headers: {
-            accept: "application/json",
-          },
-        })
-      );
+      const response = await this.typedModelFetch<WorkspaceResponse>(`/${id}`, {
+        headers: {
+          accept: "application/json",
+        },
+      });
+      const valid = validateWorkspaceResponse(response);
+      if (!valid) {
+        slog.error("getWorkspace", ["invalid response from retrieving a workspace", `${validateWorkspaceResponse.errors}`]);
+        // TODO: make a custom login error class so we can gracefully handle this situation by notifying the user.
+        throw new Error("invalid workspace response received from owldb");
+      }
+      let freshWorkspace = new ModelWorkspace(response);
       this.workspaces.set(id, freshWorkspace);
       return freshWorkspace;
     }
@@ -100,7 +106,13 @@ export class OwlDBModel {
     // Update workspaces, if we aren't subscribed
     if (!this.subscribedToWorkspaces) {
       this.workspaces = new Map<string, ModelWorkspace>();
-      let db_workspaces = await this.typedModelFetch<WorkspaceResponse[]>(`/`);
+      let db_workspaces = await this.typedModelFetch<GetDocumentsResponse>(`/`);
+      const valid = validateGetDocumentsResponse(db_workspaces);
+      if (!valid) {
+        slog.error("getWorkspace", ["invalid response from getting all workspaces", `${validateGetDocumentsResponse.errors}`]);
+        // TODO: make a custom login error class so we can gracefully handle this situation by notifying the user.
+        throw new Error("invalid getting all workspaces response received from owldb");
+      }
       db_workspaces.forEach((workspace_response) => {
         let split_path = workspace_response.path.split("/");
         let workspace_name = split_path[split_path.length - 1];

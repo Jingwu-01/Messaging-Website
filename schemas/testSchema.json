@@ -1,0 +1,12 @@
+{
+    "$id": "testSchema.json",
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "testSchema",
+    "type": "object",
+    "properties": {
+        "number": {"type": "number"},
+        "street_name": {"type": "string"},
+        "street_type": {"type": "string"}
+    },
+    "additionalProperties": { "type": "string" }
+}

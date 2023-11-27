@@ -1,6 +1,6 @@
 import { ModelChannel } from "../model/channel";
 import { getModel } from "../model/model";
-import { PostDocumentResponse } from "../model/responseTypes";
+import { CreateResponse } from "../../types/createResponse";
 import { ModelWorkspace } from "../model/workspace";
 import { slog } from "../slog";
 import { CreatePostEvent, ViewChannel } from "../view/datatypes";
@@ -75,7 +75,7 @@ class Adapter {
       throw new Error("Cannot add a post: no open channel");
     }
     channel.createPost(postData.msg, postData.parent, channel.path)
-    .then((result: PostDocumentResponse) => {
+    .then((result: CreateResponse) => {
       slog.info("createPost: added to the database");
     })
     .catch((error: unknown) => {

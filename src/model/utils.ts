@@ -5,6 +5,7 @@ import LoginResponseSchema from "../../schemas/loginResponse.json";
 import PatchDocumentResponseSchema from "../../schemas/patchDocumentResponse.json";
 import PostResponseSchema from "../../schemas/postResponse.json";
 import WorkspaceResponseSchema from "../../schemas/workspaceResponse.json";
+import ChannelResponseSchema from "../../schemas/channelResponse.json"
 
 type ValidationFunction = (data: any) => boolean | Promise<any>
 
@@ -79,6 +80,8 @@ export function getAuthPath(): string {
 
 const ajv = new Ajv();
 
+// TODO: see if singletons are ok? if not, make these lazy and create new ones on demand?
+
 export const validateCreateResponse = ajv.compile(CreateResponseSchema);
 
 export const validateGetDocumentsResponse = ajv.compile(GetDocumentsResponseSchema);
@@ -90,3 +93,5 @@ export const validatePatchDocumentResponse = ajv.compile(PatchDocumentResponseSc
 export const validatePostResponse = ajv.compile(PostResponseSchema);
 
 export const validateWorkspaceResponse = ajv.compile(WorkspaceResponseSchema);
+
+export const validateChannelResponse = ajv.compile(ChannelResponseSchema);
