@@ -42,9 +42,9 @@ export default function postComponentInit() {
                 </hover-component>
             </div>
         </header>
-        <p id="post-body">    
+        <div id="post-body">    
             <!-- TODO: can also add additional HTML element(s) for buttons (reactions, replies)-->
-        </p>
+        </div>
         <section id="buttons"> 
         <reply-button-component></reply-button-component> 
         <reaction-component></reaction-component>

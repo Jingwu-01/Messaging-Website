@@ -21,6 +21,8 @@ class ReactionComponent extends HTMLElement {
   }
 
   connectedCallback(): void {
+    this.addReactionCount(this.count);
+
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
 
@@ -29,7 +31,6 @@ class ReactionComponent extends HTMLElement {
       throw new Error("reactionButton not HTML button element");
     }
     reactionButton.addEventListener("click", this.update.bind(this), options);
-    this.addReactionCount(this.count);
   }
 
   disconnectedCallback(): void {
@@ -44,8 +45,7 @@ class ReactionComponent extends HTMLElement {
     document.dispatchEvent(reactionUpdateEvent);
   }
 
-
-    addReactionCount(count: number): void {
+  addReactionCount(count: number): void {
     const countText = this.shadowRoot?.querySelector("#count");
     if (!(countText instanceof HTMLParagraphElement)) {
       throw new Error("countText is not an HTML paragraph element");
@@ -59,31 +59,31 @@ class ReactionComponent extends HTMLElement {
   }
 
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-    if (newValue == "lucide:frown"){
-      this.reactionName = "frown"; 
+    if (newValue == "lucide:frown") {
+      this.reactionName = "frown";
     } else if (newValue == "mdi:like-outline") {
-      this.reactionName = "like"; 
+      this.reactionName = "like";
     } else if (newValue == "mingcute:celebrate-line") {
-      this.reactionName = "celebrate"
+      this.reactionName = "celebrate";
     } else {
-      throw new Error (newValue +" is not a valid iconify id.")
+      throw new Error(newValue + " is not a valid iconify id.");
     }
 
-    const smileReaction = this.shadowRoot?.querySelector("#reaction-icon")
+    const smileReaction = this.shadowRoot?.querySelector("#reaction-icon");
     if (!(smileReaction instanceof HTMLElement)) {
       throw new Error("smileButton is not an HTMLElement");
-    } 
-    smileReaction.remove()
+    }
+    smileReaction.remove();
 
-    const reactionButton = this.shadowRoot?.querySelector("#reaction-button")
+    const reactionButton = this.shadowRoot?.querySelector("#reaction-button");
     if (!(reactionButton instanceof HTMLButtonElement)) {
-      throw new Error("reactionButton is not an HTMLButton Element")
+      throw new Error("reactionButton is not an HTMLButton Element");
     }
-    const iconifyIcon = document.createElement("iconify-icon") 
-    iconifyIcon.setAttribute('icon', newValue);
-    iconifyIcon.id = 'reaction-icon';
-    reactionButton.append(iconifyIcon) 
-    }
+    const iconifyIcon = document.createElement("iconify-icon");
+    iconifyIcon.setAttribute("icon", newValue);
+    iconifyIcon.id = "reaction-icon";
+    reactionButton.append(iconifyIcon);
+  }
 }
 
 export default ReactionComponent;

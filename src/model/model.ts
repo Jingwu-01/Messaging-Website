@@ -5,7 +5,7 @@ import { WorkspaceResponse } from "./responseTypes";
 
 // Class representing our model interfacing with OwlDB.
 export class OwlDBModel {
-  private username: string; 
+  private username: string;
   private token: string;
   private workspaces: Map<string, ModelWorkspace> = new Map<
     string,
@@ -15,7 +15,7 @@ export class OwlDBModel {
 
   constructor() {
     // Initialize the posts as an empty array.
-    this.username = ""; 
+    this.username = "";
     this.token = "";
   }
 
@@ -38,7 +38,7 @@ export class OwlDBModel {
 
   /* async function that logs in with the input username. It sends a Post request with the username in the body and stores the token of the response if it exists. It returns a promise of UserInfo. */
   async login(username: string): Promise<UserInfo> {
-    this.username = username; 
+    this.username = username;
     // Send a POST request to OwlDB with the username in the body to log in.
     const options = {
       method: "POST",
@@ -110,6 +110,16 @@ export class OwlDBModel {
       });
     }
     return this.workspaces;
+  }
+
+  async updateReaction(reactionName: string): Promise<void> {
+    const options = {
+      method: "PATCH",
+      headers: {
+        Authorization: "Bearer " + this.token,
+        Accept: "application/json",
+      },
+    };
   }
 
   /* Getter function that returns the token. */

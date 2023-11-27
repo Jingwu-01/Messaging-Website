@@ -72,7 +72,9 @@ export class PostComponent extends HTMLElement {
   addPostContent(viewPost: ViewPost): void {
     // TODO: obviously can add more functionality here later as needed.
     this.postPath = viewPost.path;
-    this.postBody.innerText = viewPost.msg;
+    let rawMsg = viewPost.msg
+    let newText = this.replaceReactionText(rawMsg)
+    this.postBody.innerText = newText;
     let postUserText = this.postHeader.querySelector("#post-user-text");
     // TODO handle error better
     if (postUserText != null) {
@@ -178,6 +180,18 @@ export class PostComponent extends HTMLElement {
   // TODO: add a private filter function on posts that can basically
   // handle filtering unstyled HTML with ** and stuff to strong and em
   // tags as needed
+
+  replaceReactionText(text: string): string {
+    const replacements: {[key: string]: string} = {
+      ':smile:': '<iconify-icon icon="lucide:smile" class="reaction-icon"></iconify-icon>', 
+      ':frown:': '<iconify-icon icon="lucide:frown" class="reaction-icon"></iconify-icon>', 
+      ':like:': '<iconify-icon icon="mdi:like-outline" class="reaction-icon"></iconify-icon>', 
+      ':celebrate:': '<iconify-icon icon="mingcute:celebrate-line" class="reaction-icon"></iconify-icon>'
+    };
+
+    return text.replace(/:smile:|:frown:|:like:|:celebrate:/g, (match) => replacements[match]);
+}
+  
 }
 
 export default PostComponent;
