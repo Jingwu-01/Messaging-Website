@@ -1,4 +1,4 @@
-import { PostResponse } from "./responseTypes";
+import { PostResponse } from "../../types/postResponse";
 
 export class ModelPost {
   

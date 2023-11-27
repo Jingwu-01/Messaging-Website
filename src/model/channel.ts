@@ -1,9 +1,11 @@
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { ModelPost } from "./post";
-import { ChannelResponse, PostDocumentResponse, PostResponse } from "./responseTypes";
-import { getDatabasePath } from "./utils";
+import { CreateResponse } from "../../types/createResponse";
+import { getDatabasePath, validatePostResponse } from "./utils";
 import { getModel } from "./model";
 import { slog } from "../slog";
+import { PostResponse } from "../../types/postResponse";
+import { ChannelResponse } from "../../types/channelResponse";
 
 export class ModelChannel {
   path: string;
@@ -40,18 +42,25 @@ export class ModelChannel {
           // When we receive a new post, add it to our internal array
           // and send an event with all the posts.
           case "update":
-            const jsonContents = JSON.parse(event.data) as PostResponse;
-            slog.info("update event for post", ["incoming post", JSON.stringify(jsonContents)]);
-            thisChannel.addPost(jsonContents);
-            slog.info("subscribeToPosts", ["thisChannel.postMap", `${thisChannel.postMap}`], ["thisChannel.postRoots", `${thisChannel.postRoots}`]);
-            const postsEvent = new CustomEvent("postsEvent", {
-              // NOTE: we are passing by reference here. so mutations will be seen.
-              // however, with kill and fill and queueing of events, this may not be an issue
-              detail: { postRoots: thisChannel.postRoots },
-            });
-            document.dispatchEvent(postsEvent);
-            // TODO: does TS use these 'break' statements
-            // like are conventionally used?
+              const response = JSON.parse(event.data) as PostResponse;
+              const valid = validatePostResponse(response);
+              if (!valid) {
+                slog.error("subscribeToPosts", ["invalid post data", `${JSON.stringify(validatePostResponse.errors)}`]);
+
+              } else {
+              // slog.info("subscribeToPosts", ["event.data", `${JSON.stringify(event.data)}`]);
+              slog.info("update event for post", ["incoming post", JSON.stringify(response)]);
+              thisChannel.addPost(response);
+              slog.info("subscribeToPosts", ["thisChannel.postMap", `${thisChannel.postMap}`], ["thisChannel.postRoots", `${thisChannel.postRoots}`]);
+              const postsEvent = new CustomEvent("postsEvent", {
+                // NOTE: we are passing by reference here. so mutations will be seen.
+                // however, with kill and fill and queueing of events, this may not be an issue
+                detail: { postRoots: thisChannel.postRoots },
+              });
+              document.dispatchEvent(postsEvent);
+              // TODO: does TS use these 'break' statements
+              // like are conventionally used?
+              }
             break;
           case "delete":
             // placeholder
@@ -125,10 +134,12 @@ export class ModelChannel {
       this.postMap.set(pendingPost.getName(), pendingPost);
       this.addPendingPosts(pendingPost.getName(), pendingPost);
     });
+    this.pendingPosts.delete(addedPostName);
   }
 
-  createPost(postContent: string, postParent: string, channelPath: string): Promise<PostDocumentResponse> {
-    return getModel().typedModelFetch<PostDocumentResponse>(`${channelPath}/posts/`, {
+  createPost(postContent: string, postParent: string, channelPath: string): Promise<CreateResponse> {
+    // for now, this return type is indeed ignored. because i update from the subscription always.
+    return getModel().typedModelFetch<CreateResponse>(`${channelPath}/posts/`, {
       method: 'POST',
       body: JSON.stringify({
         "msg": postContent,

@@ -1,7 +1,17 @@
-import { UserInfo } from "./modelTypes";
-import { typedFetch, emptyFetch, getAuthPath, getDatabasePath } from "./utils";
+import {
+  typedFetch,
+  emptyFetch,
+  getAuthPath,
+  getDatabasePath,
+  validateLoginResponse,
+  validateWorkspaceResponse,
+  validateGetWorkspacesResponse,
+} from "./utils";
 import { ModelWorkspace } from "./workspace";
-import { WorkspaceResponse } from "./responseTypes";
+import { WorkspaceResponse } from "../../types/workspaceResponse";
+import { slog } from "../slog";
+import { LoginResponse } from "../../types/loginResponse";
+import { GetWorkspacesResponse } from "../../types/getWorkspacesResponse";
 
 // Class representing our model interfacing with OwlDB.
 export class OwlDBModel {
@@ -36,10 +46,7 @@ export class OwlDBModel {
     return typedFetch<T>(`${getDatabasePath()}${url}`, options);
   }
 
-  /* async function that logs in with the input username. It sends a Post request with the username in the body and stores the token of the response if it exists. It returns a promise of UserInfo. */
-  async login(username: string): Promise<UserInfo> {
-    this.username = username;
-    // Send a POST request to OwlDB with the username in the body to log in.
+  async login(username: string): Promise<LoginResponse> {
     const options = {
       method: "POST",
       headers: {
@@ -49,18 +56,26 @@ export class OwlDBModel {
       body: JSON.stringify({ username: username }),
     };
     try {
-      const response = await typedFetch<UserInfo>(getAuthPath(), options);
-      // If the response contains a token, store it in this.token.
+      const response = await typedFetch<LoginResponse>(getAuthPath(), options);
+      const valid = validateLoginResponse(response);
+      if (!valid) {
+        slog.error("login", [
+          "invalid response from login",
+          `${validateLoginResponse.errors}`,
+        ]);
+        // TODO: make a custom login error class so we can gracefully handle this situation by notifying the user.
+        throw new Error("invalid login response received from owldb");
+      }
       if (response.token) {
         this.token = response.token;
       }
+      // return response;
     } catch (error) {
-      // Rethrow any caught error.
+      // maybe don't catch an error if you're just going to rethrow it
       throw error;
     }
-
-    // Return a promise of UserInfo
-    return typedFetch<UserInfo>(getAuthPath(), options);
+    // TODO: fix: why are you making another login call????
+    return typedFetch<LoginResponse>(getAuthPath(), options);
   }
 
   /* async function that logs out the current user. It sends a DELETE request to log out and returns a void promise. */
@@ -74,6 +89,8 @@ export class OwlDBModel {
       },
     };
     // Return a void promise.
+    // TODO: how are you handling the case where emptyFetch has invalid data because it does indeed
+    // have a response body?
     return emptyFetch(getAuthPath(), options);
   }
 
@@ -83,13 +100,21 @@ export class OwlDBModel {
     if (existingWorkspace) {
       return existingWorkspace;
     } else {
-      let freshWorkspace = new ModelWorkspace(
-        await this.typedModelFetch<WorkspaceResponse>(`/${id}`, {
-          headers: {
-            accept: "application/json",
-          },
-        })
-      );
+      const response = await this.typedModelFetch<WorkspaceResponse>(`/${id}`, {
+        headers: {
+          accept: "application/json",
+        },
+      });
+      const valid = validateWorkspaceResponse(response);
+      if (!valid) {
+        slog.error("getWorkspace", [
+          "invalid response from retrieving a workspace",
+          `${validateWorkspaceResponse.errors}`,
+        ]);
+        // TODO: make a custom login error class so we can gracefully handle this situation by notifying the user.
+        throw new Error("invalid workspace response received from owldb");
+      }
+      let freshWorkspace = new ModelWorkspace(response);
       this.workspaces.set(id, freshWorkspace);
       return freshWorkspace;
     }
@@ -99,7 +124,19 @@ export class OwlDBModel {
     // Update workspaces, if we aren't subscribed
     if (!this.subscribedToWorkspaces) {
       this.workspaces = new Map<string, ModelWorkspace>();
-      let db_workspaces = await this.typedModelFetch<WorkspaceResponse[]>(`/`);
+      let db_workspaces =
+        await this.typedModelFetch<GetWorkspacesResponse>(`/`);
+      const valid = validateGetWorkspacesResponse(db_workspaces);
+      if (!valid) {
+        slog.error("getWorkspace", [
+          "invalid response from getting all workspaces",
+          `${validateGetWorkspacesResponse.errors}`,
+        ]);
+        // TODO: make a custom login error class so we can gracefully handle this situation by notifying the user.
+        throw new Error(
+          "invalid getting all workspaces response received from owldb"
+        );
+      }
       db_workspaces.forEach((workspace_response) => {
         let split_path = workspace_response.path.split("/");
         let workspace_name = split_path[split_path.length - 1];
@@ -112,7 +149,6 @@ export class OwlDBModel {
     return this.workspaces;
   }
 
-<<<<<<< HEAD
   // Adds the workspace with name workspaceName to OwlDB.
   // Will not overwrite an existing workspace.
   async addWorkspace(workspace_name: string): Promise<void> {
@@ -134,7 +170,6 @@ export class OwlDBModel {
     });
   }
 
-=======
   async updateReaction(reactionName: string): Promise<void> {
     const options = {
       method: "PATCH",
@@ -146,7 +181,6 @@ export class OwlDBModel {
   }
 
   /* Getter function that returns the token. */
->>>>>>> origin/feature/LoginRedesign
   getToken(): string {
     return this.token;
   }

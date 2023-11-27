@@ -1,6 +1,6 @@
 import { ModelChannel } from "../model/channel";
 import { getModel } from "../model/model";
-import { PostDocumentResponse } from "../model/responseTypes";
+import { CreateResponse } from "../../types/createResponse";
 import { ModelWorkspace } from "../model/workspace";
 import { slog } from "../slog";
 import { CreatePostEvent } from "../view/datatypes";
@@ -76,7 +76,7 @@ class Adapter {
     }
     channel
       .createPost(postData.msg, postData.parent, channel.path)
-      .then((result: PostDocumentResponse) => {
+      .then((result: CreateResponse) => {
         slog.info("createPost: added to the database");
       })
       .catch((error: unknown) => {

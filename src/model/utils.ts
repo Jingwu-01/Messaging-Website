@@ -1,3 +1,15 @@
+import Ajv from "ajv";
+import CreateResponseSchema from "../../schemas/createResponse.json";
+import GetChannelsResponseSchema from "../../schemas/getChannelsResponse.json";
+import GetWorkspacesResponseSchema from "../../schemas/getWorkspacesResponse.json";
+import LoginResponseSchema from "../../schemas/loginResponse.json";
+import PatchDocumentResponseSchema from "../../schemas/patchDocumentResponse.json";
+import PostResponseSchema from "../../schemas/postResponse.json";
+import WorkspaceResponseSchema from "../../schemas/workspaceResponse.json";
+import ChannelResponseSchema from "../../schemas/channelResponse.json"
+
+type ValidationFunction = (data: any) => boolean | Promise<any>
+
 /**
  * Wrapper around fetch to return a Promise that resolves to the desired
  * type. This function does not validate whether the response actually
@@ -64,3 +76,26 @@ export function getAuthPath(): string {
     }
     return process.env.DATABASE_HOST + "/auth";
   }
+
+
+// Data validation
+
+const ajv = new Ajv();
+
+// TODO: see if singletons are ok? if not, make these lazy and create new ones on demand?
+
+export const validateCreateResponse = ajv.compile(CreateResponseSchema);
+
+export const validateGetWorkspacesResponse = ajv.compile(GetWorkspacesResponseSchema);
+
+export const validateGetChannelsResponse = ajv.compile(GetChannelsResponseSchema);
+
+export const validateLoginResponse = ajv.compile(LoginResponseSchema);
+
+export const validatePatchDocumentResponse = ajv.compile(PatchDocumentResponseSchema);
+
+export const validatePostResponse = ajv.compile(PostResponseSchema);
+
+export const validateWorkspaceResponse = ajv.compile(WorkspaceResponseSchema);
+
+export const validateChannelResponse = ajv.compile(ChannelResponseSchema);

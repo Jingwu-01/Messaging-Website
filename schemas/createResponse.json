@@ -1,0 +1,12 @@
+{
+    "$id": "createResponse.json",
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "CreateResponse",
+    "type": "object",
+    "required": ["uri"],
+    "properties": {
+        "uri": {
+            "type": "string"
+        }
+    }
+}
