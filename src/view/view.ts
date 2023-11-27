@@ -29,6 +29,10 @@ interface ChannelListener {
   displayOpenChannel(open_channel: ViewChannel | null): void;
 }
 
+interface EventCompletedListener {
+  onEventCompleted(id: number, message: string): void;
+}
+
 interface Dialog {
   showModal(): void;
   close(): void;
@@ -56,6 +60,8 @@ export class View {
   private channelListeners: Array<ChannelListener> =
     new Array<ChannelListener>();
 
+  private eventCompletedListeners: Array<EventCompletedListener> = new Array<EventCompletedListener>();
+
   private workspaces = new Array<ViewWorkspace>();
 
   private openWorkspace: ViewWorkspace | null = null;
@@ -67,6 +73,8 @@ export class View {
   private openChannel: ViewChannel | null = null;
 
   private m3ssag1n8AppComponent: M3ssagin8AppComponent | null = null;
+
+  private errors = new Array<string>();
 
   constructor() {
     let m3ssag1n8AppComponent = document.querySelector(
@@ -163,9 +171,9 @@ export class View {
   addChannelListener(listener: ChannelListener) {
     this.channelListeners.push(listener);
     listener.displayChannels({
-      allChannels: this.workspaces,
+      allChannels: this.channels,
       op: "add",
-      affectedChannels: this.workspaces,
+      affectedChannels: this.channels,
       cause: new Event("listenerAdded"),
     });
     listener.displayOpenChannel(this.openChannel);
@@ -183,6 +191,16 @@ export class View {
     this.channelListeners.forEach((listener) => {
       listener.displayOpenChannel(channel);
     });
+  }
+
+  completeEvent(id: number, message: string) {
+    this.eventCompletedListeners.forEach((listener) => {
+      listener.onEventCompleted(id, message)
+    })
+  }
+
+  displayError(message: string) {
+    this.errors.push(message)
   }
 
   // Opens the dialog with the given ID.
