@@ -1,10 +1,7 @@
 import { ModelChannel } from "../model/channel";
 import { getModel } from "../model/model";
 import { ModelWorkspace } from "../model/workspace";
-import { slog } from "../slog";
-import { ViewChannel, ViewWorkspace } from "../view/datatypes";
 import { getView } from "../view/view";
-import { WorkspaceListener } from "./adapterTypes";
 import modelToViewChannels from "./channel/modelToViewChannels";
 
 // The Adapter has functions that the view can use to manipulate

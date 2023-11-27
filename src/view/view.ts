@@ -80,9 +80,7 @@ export class View {
   }
 
   // TODO: have an abstract superclass that adds a parent field.
-  movePostEditorTo(postElement: PostComponent) {
-    
-  }
+  movePostEditorTo(postElement: PostComponent) {}
 
   removePostEditor() {
     this.postListeners.forEach((listener) => {
