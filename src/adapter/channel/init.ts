@@ -2,7 +2,6 @@ import { slog } from "../../slog";
 import { SelectChannelEvent } from "../../view/datatypes";
 import getAdapter from "../adapter";
 
-
 export function initChannels() {
     document.addEventListener("channelSelected",
     function(evt: CustomEvent<SelectChannelEvent>) {
