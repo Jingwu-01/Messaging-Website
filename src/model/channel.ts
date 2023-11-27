@@ -42,13 +42,15 @@ export class ModelChannel {
           // When we receive a new post, add it to our internal array
           // and send an event with all the posts.
           case "update":
-            const valid = validatePostResponse(event.data);
-            if (!valid) {
-              slog.error("subscribeToPosts", ["invalid post data", `${validatePostResponse.errors}`]);
-            } else {
-              const jsonContents = JSON.parse(event.data) as PostResponse;
-              slog.info("update event for post", ["incoming post", JSON.stringify(jsonContents)]);
-              thisChannel.addPost(jsonContents);
+              const response = JSON.parse(event.data) as PostResponse;
+              const valid = validatePostResponse(response);
+              if (!valid) {
+                slog.error("subscribeToPosts", ["invalid post data", `${JSON.stringify(validatePostResponse.errors)}`]);
+
+              } else {
+              // slog.info("subscribeToPosts", ["event.data", `${JSON.stringify(event.data)}`]);
+              slog.info("update event for post", ["incoming post", JSON.stringify(response)]);
+              thisChannel.addPost(response);
               slog.info("subscribeToPosts", ["thisChannel.postMap", `${thisChannel.postMap}`], ["thisChannel.postRoots", `${thisChannel.postRoots}`]);
               const postsEvent = new CustomEvent("postsEvent", {
                 // NOTE: we are passing by reference here. so mutations will be seen.
@@ -58,7 +60,7 @@ export class ModelChannel {
               document.dispatchEvent(postsEvent);
               // TODO: does TS use these 'break' statements
               // like are conventionally used?
-            }
+              }
             break;
           case "delete":
             // placeholder

@@ -2,9 +2,9 @@ import { slog } from "../slog";
 import { ModelChannel } from "./channel";
 import { getModel } from "./model";
 import { WorkspaceResponse } from "../../types/workspaceResponse";
-import { getDatabasePath, validateChannelResponse, validateGetDocumentsResponse } from "./utils";
+import { getDatabasePath, validateChannelResponse, validateGetChannelsResponse } from "./utils";
 import { ChannelResponse } from "../../types/channelResponse";
-import { GetDocumentsResponse } from "../../types/getDocumentsResponse";
+import { GetChannelsResponse } from "../../types/getChannelsResponse";
 
 // got rid of typed fetch from imports in utils
 
@@ -44,12 +44,12 @@ export class ModelWorkspace {
     if (!this.subscribedToChannels) {
       this.channels = new Map<string, ModelChannel>();
       slog.info("getAllChannels", ["this.path", `${this.path}`]);
-      let db_channels = await getModel().typedModelFetch<GetDocumentsResponse>(
+      let db_channels = await getModel().typedModelFetch<GetChannelsResponse>(
         `${this.path}/channels/`
       );
-      const valid = validateGetDocumentsResponse(db_channels);
+      const valid = validateGetChannelsResponse(db_channels);
       if (!valid) {
-        slog.error("getAllChannels", ["invalid all channels response", `${validateGetDocumentsResponse.errors}`]);
+        slog.error("getAllChannels", ["invalid all channels response", `${validateGetChannelsResponse.errors}`]);
         throw new Error("invalid all channels response received from owldb");
       }
       db_channels.forEach((channel_response) => {

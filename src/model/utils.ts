@@ -1,6 +1,7 @@
 import Ajv from "ajv";
 import CreateResponseSchema from "../../schemas/createResponse.json";
-import GetDocumentsResponseSchema from "../../schemas/getDocumentsResponse.json";
+import GetChannelsResponseSchema from "../../schemas/getChannelsResponse.json";
+import GetWorkspacesResponseSchema from "../../schemas/getWorkspacesResponse.json";
 import LoginResponseSchema from "../../schemas/loginResponse.json";
 import PatchDocumentResponseSchema from "../../schemas/patchDocumentResponse.json";
 import PostResponseSchema from "../../schemas/postResponse.json";
@@ -84,7 +85,9 @@ const ajv = new Ajv();
 
 export const validateCreateResponse = ajv.compile(CreateResponseSchema);
 
-export const validateGetDocumentsResponse = ajv.compile(GetDocumentsResponseSchema);
+export const validateGetWorkspacesResponse = ajv.compile(GetWorkspacesResponseSchema);
+
+export const validateGetChannelsResponse = ajv.compile(GetChannelsResponseSchema);
 
 export const validateLoginResponse = ajv.compile(LoginResponseSchema);
 
