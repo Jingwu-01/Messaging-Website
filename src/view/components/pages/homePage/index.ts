@@ -11,7 +11,7 @@ class HomePage extends HTMLElement {
     if (this.shadowRoot) {
       let template = document.querySelector("#home-page-template");
       if (!(template instanceof HTMLTemplateElement)) {
-        throw new Error("Login template is not HTML template element");
+        throw new Error("home-page-template is not an HTML template element");
       } else {
         this.shadowRoot.append(template.content.cloneNode(true));
       }

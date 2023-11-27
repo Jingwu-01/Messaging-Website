@@ -40,9 +40,23 @@ export class PostComponent extends HTMLElement {
   }
 
   connectedCallback() {
+    // this.controller = new AbortController();
+    // const options = { signal: this.controller.signal };
+    // this.postBody.addEventListener("click", this.addPostEditor.bind(this), options);
+
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
-    this.postBody.addEventListener("click", this.addPostEditor.bind(this), options);
+    const replyButton = this.shadowRoot?.querySelector(
+      "reply-button-component"
+    );
+    if (!(replyButton instanceof HTMLElement)) {
+      throw new Error("reply-button-component is not an HTMLElement");
+    }
+    replyButton.addEventListener(
+      "click",
+      this.addPostEditor.bind(this),
+      options
+    );
   }
 
   disconnectedCallback() {
@@ -56,9 +70,6 @@ export class PostComponent extends HTMLElement {
     // getView().replacePostEditor(postEditor);
     // this.postBody.parentNode?.insertBefore(postEditor, this.postBody.nextSibling);
     getView().movePostEditorTo(this);
-
-    
-
   }
 
   // Sets the content of this post equal to viewPost
@@ -120,7 +131,6 @@ export class PostComponent extends HTMLElement {
   // TODO: add a private filter function on posts that can basically
   // handle filtering unstyled HTML with ** and stuff to strong and em
   // tags as needed
-
 }
 
 export default PostComponent;

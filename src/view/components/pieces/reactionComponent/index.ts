@@ -18,7 +18,6 @@ class ReactionComponent extends HTMLElement {
         this.shadowRoot.append(template.content.cloneNode(true));
       }
     }
-
   }
 
   connectedCallback(): void {
@@ -74,6 +73,8 @@ class ReactionComponent extends HTMLElement {
 
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
   }
+
+
 }
 
 export default ReactionComponent;
