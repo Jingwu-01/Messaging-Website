@@ -22,6 +22,16 @@ export class ModelPost {
     this.name = name;
     this.response = response;
     this.replies = new Map<string, ModelPost>();
+
+    if (response.doc.reactions == undefined) {
+      this.response.doc.reactions = {
+        smile: [], 
+        frown: [], 
+        like: [],
+        celebrate: [], 
+      }
+    }
+    
     if (response.doc.parent === undefined || response.doc.parent === "") {
       this.parentName = "";
     } else {

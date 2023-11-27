@@ -1,6 +1,7 @@
 import { slog } from "../../../../../slog";
 import { ViewPost } from "../../../../datatypes";
 import { getView } from "../../../../view";
+import ReactionComponent from "../../../pieces/reactionComponent/index";
 import { PostEditor } from "../postEditorComponent";
 
 export class PostComponent extends HTMLElement {
@@ -14,7 +15,6 @@ export class PostComponent extends HTMLElement {
 
   constructor() {
     super();
-
     this.attachShadow({ mode: "open" });
 
     let template = document.querySelector("#post-template");
@@ -97,6 +97,57 @@ export class PostComponent extends HTMLElement {
       postTimeLongEl.setAttribute("datetime", postTimeObj.toISOString());
       postTimeLongEl.innerHTML = postTimeObj.toString();
     }
+
+    // let smileCount, frownCount, likeCount, celebrateCount: number
+
+    // if (!(viewPost.reactions.smile) == undefined) {
+    //   smileCount = viewPost.reactions.smile.length 
+    // } else {
+    //   smileCount = 0; 
+    // }
+    
+    // if (viewPost.reactions.frown) {
+    //   frownCount = viewPost.reactions.frown.length 
+    // } else {
+    //   frownCount = 0; 
+    // }
+
+    // if (viewPost.reactions.like) {
+    //   likeCount = viewPost.reactions.like.length 
+    // } else {
+    //   likeCount = 0; 
+    // }
+
+    // if (viewPost.reactions.celebrate) {
+    //   celebrateCount = viewPost.reactions.celebrate.length 
+    // } else {
+    //   celebrateCount = 0; 
+    // }
+
+    // const smileReaction = this.shadowRoot?.querySelector("reaction-component") 
+    // console.log(smileReaction)
+    // if (!(smileReaction instanceof ReactionComponent)){
+    //   throw new Error ("smileReaction is not a ReactionComponent")
+    // }
+    // smileReaction.addReactionCount(smileCount)
+
+    // const frownReaction = this.shadowRoot?.querySelector("#frown-reaction")
+    // if (!(frownReaction instanceof ReactionComponent)){
+    //   throw new Error ("frownReaction is not a ReactionComponent")
+    // }
+    // frownReaction.addReactionCount(frownCount)
+
+    // const likeReaction = this.shadowRoot?.querySelector("#like-reaction")
+    // if (!(likeReaction instanceof ReactionComponent)){
+    //   throw new Error ("likeReaction is not a ReactionComponent")
+    // }
+    // likeReaction.addReactionCount(likeCount)
+
+    // const celebrateReaction = this.shadowRoot?.querySelector("#celebrate-reaction")
+    // if (!(celebrateReaction instanceof ReactionComponent)){
+    //   throw new Error ("celebrateReaction is not a ReactionComponent")
+    // }
+    // celebrateReaction.addReactionCount(celebrateCount)
   }
 
   // Adds childrenPosts as replies to this ViewPost.

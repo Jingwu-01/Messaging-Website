@@ -1,5 +1,3 @@
-import { ViewPost } from "../../../datatypes";
-
 type reactions = "smile" | "frown" | "like" | "celebrate";
 
 class ReactionComponent extends HTMLElement {
@@ -7,9 +5,6 @@ class ReactionComponent extends HTMLElement {
 
   private reactionName: reactions = "smile";
   private count: number = 0;
-  private isClicked: Boolean = false;
-
-  // private reactionIcon: HTMLElement;
 
   constructor() {
     super();
@@ -34,7 +29,7 @@ class ReactionComponent extends HTMLElement {
       throw new Error("reactionButton not HTML button element");
     }
     reactionButton.addEventListener("click", this.update.bind(this), options);
-    this.display();
+    this.addReactionCount(this.count);
   }
 
   disconnectedCallback(): void {
@@ -42,31 +37,20 @@ class ReactionComponent extends HTMLElement {
     this.controller = null;
   }
 
-  addReactionCount(viewPost: ViewPost): void {
-  }
-
   update() {
-    if (!this.isClicked) {
-      this.isClicked = true;
-      this.count++;
-      this.display();
-    } else {
-      this.isClicked = false;
-      this.count--;
-      this.display();
-    }
     const reactionUpdateEvent = new CustomEvent("reactionUpdateEvent", {
-      detail: { reactionName: "dummyReactionName" },
+      detail: { reactionName: `${this.reactionName}` },
     });
     document.dispatchEvent(reactionUpdateEvent);
   }
 
-  display() {
+
+    addReactionCount(count: number): void {
     const countText = this.shadowRoot?.querySelector("#count");
-    if (countText instanceof HTMLParagraphElement) {
-      countText.innerHTML = this.count.toString();
+    if (!(countText instanceof HTMLParagraphElement)) {
+      throw new Error("countText is not an HTML paragraph element");
     } else {
-      throw new Error("countText not HTML paragraph element");
+      countText.innerHTML = count.toString();
     }
   }
 
@@ -100,8 +84,6 @@ class ReactionComponent extends HTMLElement {
     iconifyIcon.id = 'reaction-icon';
     reactionButton.append(iconifyIcon) 
     }
-    
-  
 }
 
 export default ReactionComponent;

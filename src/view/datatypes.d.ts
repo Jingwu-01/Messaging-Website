@@ -29,7 +29,6 @@ export type ViewWorkspaceUpdate = {
 // This ViewPost type will effectively allow us to represent a tree of posts
 // that the view can display.
 export type ViewPost = {
-
   msg: string;
   reactions: ReactionData; 
   extensions: any; // TODO: see above for 'reactions'
