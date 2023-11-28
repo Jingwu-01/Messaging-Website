@@ -2,6 +2,7 @@ type reactions = "smile" | "frown" | "like" | "celebrate";
 
 class ReactionComponent extends HTMLElement {
   private controller: AbortController | null = null;
+  private reactionIcon: HTMLElement;
 
   private reactionName: reactions = "smile";
   private count: number = 0;
@@ -18,6 +19,12 @@ class ReactionComponent extends HTMLElement {
         this.shadowRoot.append(template.content.cloneNode(true));
       }
     }
+
+    const reactionIcon = this.shadowRoot?.querySelector("#reaction-icon");
+    if (!(reactionIcon instanceof HTMLElement)) {
+      throw new Error("smileButton is not an HTMLElement");
+    }
+    this.reactionIcon = reactionIcon;
   }
 
   connectedCallback(): void {
@@ -69,20 +76,7 @@ class ReactionComponent extends HTMLElement {
       throw new Error(newValue + " is not a valid iconify id.");
     }
 
-    const smileReaction = this.shadowRoot?.querySelector("#reaction-icon");
-    if (!(smileReaction instanceof HTMLElement)) {
-      throw new Error("smileButton is not an HTMLElement");
-    }
-    smileReaction.remove();
-
-    const reactionButton = this.shadowRoot?.querySelector("#reaction-button");
-    if (!(reactionButton instanceof HTMLButtonElement)) {
-      throw new Error("reactionButton is not an HTMLButton Element");
-    }
-    const iconifyIcon = document.createElement("iconify-icon");
-    iconifyIcon.setAttribute("icon", newValue);
-    iconifyIcon.id = "reaction-icon";
-    reactionButton.append(iconifyIcon);
+    this.reactionIcon.setAttribute("icon", newValue);
   }
 }
 

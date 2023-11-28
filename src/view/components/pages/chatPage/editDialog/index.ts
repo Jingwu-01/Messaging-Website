@@ -79,7 +79,6 @@ export class EditDialogComponent extends HTMLElement {
   }
 
   setItems(items: string[]) {
-    console.log(items);
     this.itemDisplay.innerHTML = "";
     items.forEach((item_name, index) => {
       // maybe make this an actual web component instead of what we have?
