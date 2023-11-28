@@ -2,7 +2,11 @@ import { slog } from "../slog";
 import { ModelChannel } from "./channel";
 import { getModel } from "./model";
 import { WorkspaceResponse } from "../../types/workspaceResponse";
-import { getDatabasePath, validateChannelResponse, validateGetChannelsResponse } from "./utils";
+import {
+  getDatabasePath,
+  validateChannelResponse,
+  validateGetChannelsResponse,
+} from "./utils";
 import { ChannelResponse } from "../../types/channelResponse";
 import { GetChannelsResponse } from "../../types/getChannelsResponse";
 
@@ -23,14 +27,20 @@ export class ModelWorkspace {
     if (existingChannel) {
       return existingChannel;
     } else {
-      const response = await getModel().typedModelFetch<ChannelResponse>(`${this.path}/channels/${id}`, {
-        headers: {
-          accept: "application/json",
-        },
-      });
+      const response = await getModel().typedModelFetch<ChannelResponse>(
+        `${this.path}/channels/${id}`,
+        {
+          headers: {
+            accept: "application/json",
+          },
+        }
+      );
       const valid = validateChannelResponse(response);
       if (!valid) {
-        slog.error("getChannel", ["invalid channel response", `${validateChannelResponse.errors}`]);
+        slog.error("getChannel", [
+          "invalid channel response",
+          `${validateChannelResponse.errors}`,
+        ]);
         throw new Error("invalid channel response received from owldb");
       }
       let freshChannel = new ModelChannel(response);
@@ -49,7 +59,10 @@ export class ModelWorkspace {
       );
       const valid = validateGetChannelsResponse(db_channels);
       if (!valid) {
-        slog.error("getAllChannels", ["invalid all channels response", `${validateGetChannelsResponse.errors}`]);
+        slog.error("getAllChannels", [
+          "invalid all channels response",
+          `${validateGetChannelsResponse.errors}`,
+        ]);
         throw new Error("invalid all channels response received from owldb");
       }
       db_channels.forEach((channel_response) => {
@@ -77,6 +90,7 @@ export class ModelWorkspace {
   async removeChannel(channel_name: string): Promise<void> {
     await getModel().typedModelFetch<any>(`${this.path}/${channel_name}`, {
       method: "DELETE",
+      body: JSON.stringify({}),
     });
   }
 }

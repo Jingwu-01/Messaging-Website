@@ -37,9 +37,24 @@ export class OwlDBModel {
     if (!options) {
       options = {};
     }
+    // Unless we specified a different content type,
+    // convert body from undefined to an empty JSON object.
+    // This prevents "Unexpected end of JSON object" errors.
+    if (
+      (!options.headers || "Content-Type" in options.headers) &&
+      options.body == undefined
+    ) {
+      options.body = JSON.stringify({});
+    }
+
     options.headers = {
-      ...options.headers,
+      // Default to content-type application/json
+      // and bearer authorization with our user's token.
+      "Content-Type": "application/json",
       Authorization: "Bearer " + this.token,
+      // If the caller specified different headers, then the above two
+      // headers will be overwritten.
+      ...options.headers,
     };
     console.log(`typedModelFetch: options: ${JSON.stringify(options)}`);
     console.log(`typedModelFetch: fetch path: ${getDatabasePath()}${url}`);
