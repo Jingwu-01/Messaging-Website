@@ -6,8 +6,12 @@ import {
   SelectChannelEvent,
   SelectWorkspaceEvent,
   ViewPost,
-  ReactionUpdateEvent, 
-  CreatePostEvent
+  ReactionUpdateEvent,
+  CreateWorkspaceEvent,
+  CreateChannelEvent,
+  DeleteWorkspaceEvent,
+  DeleteChannelEvent,
+  CreatePostEvent,
 } from "./view/datatypes";
 import { LoginEvent } from "./view/datatypes";
 import { initView } from "./view/init";
@@ -30,10 +34,14 @@ declare global {
   interface DocumentEventMap {
     postsEvent: CustomEvent<PostsEvent>;
     loginEvent: CustomEvent<LoginEvent>;
-    logoutEvent: CustomEvent<LogoutEvent>; 
+    logoutEvent: CustomEvent<LogoutEvent>;
     workspaceSelected: CustomEvent<SelectWorkspaceEvent>;
     channelSelected: CustomEvent<SelectChannelEvent>;
-    reactionUpdateEvent: CustomEvent<ReactionUpdateEvent>; 
+    reactionUpdateEvent: CustomEvent<ReactionUpdateEvent>;
+    workspaceCreated: CustomEvent<CreateWorkspaceEvent>;
+    channelCreated: CustomEvent<CreateChannelEvent>;
+    workspaceDeleted: CustomEvent<DeleteWorkspaceEvent>;
+    channelDeleted: CustomEvent<DeleteChannelEvent>;
     createPostEvent: CustomEvent<CreatePostEvent>;
     modelPostEvent: CustomEvent<ModelPostEvent>;
   }
@@ -120,7 +128,10 @@ function getViewPostsHelper(
   );
   for (let modelPostChild of modelPostRoots) {
     let viewPostChild = viewPostConverter(modelPostChild);
-    getViewPostsHelper(viewPostChild.children, Array.from(modelPostChild.getReplies().values()));
+    getViewPostsHelper(
+      viewPostChild.children,
+      Array.from(modelPostChild.getReplies().values())
+    );
     viewPostChildren.push(viewPostChild);
   }
 }

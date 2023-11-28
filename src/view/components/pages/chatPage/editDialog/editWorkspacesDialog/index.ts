@@ -1,5 +1,5 @@
 import EditDialogComponent from "..";
-import { ViewWorkspace } from "../../../../../datatypes";
+import { ViewWorkspace, ViewWorkspaceUpdate } from "../../../../../datatypes";
 import { getView } from "../../../../../view";
 
 // Edit-dialog that allows user to edit workspaces
@@ -16,7 +16,27 @@ export class EditWorkspacesDialogComponent extends EditDialogComponent {
 
   displayOpenWorkspace(workspace: ViewWorkspace) {}
 
-  displayWorkspaces(workspaces: Array<ViewWorkspace>) {
-    this.setItems(workspaces.map((ws) => ws.name));
+  displayWorkspaces(update: ViewWorkspaceUpdate) {
+    this.setItems(update.allWorkspaces.map((ws) => ws.name));
+  }
+
+  public onAdd(new_item_name: string): void {
+    document.dispatchEvent(
+      new CustomEvent("workspaceCreated", {
+        detail: {
+          name: new_item_name,
+        },
+      })
+    );
+  }
+
+  public onRemove(workspace_name: string): void {
+    document.dispatchEvent(
+      new CustomEvent("workspaceDeleted", {
+        detail: {
+          name: workspace_name,
+        },
+      })
+    );
   }
 }

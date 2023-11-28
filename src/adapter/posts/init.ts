@@ -31,6 +31,13 @@ export function initPosts() {
     }
   )
 
+  document.addEventListener("reactionUpdateEvent", (event: CustomEvent<ReactionUpdateEvent>) => {
+    let model = getModel(); 
+    model.updateReaction(event.detail.reactionName)
+  }
+  )
+
+
   // document.addEventListener(
   //   "reactionUpdateEvent", 
   //   function (evt: CustomEvent<ReactionUpdateEvent>) {

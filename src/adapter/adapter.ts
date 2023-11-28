@@ -3,7 +3,7 @@ import { getModel } from "../model/model";
 import { CreateResponse } from "../../types/createResponse";
 import { ModelWorkspace } from "../model/workspace";
 import { slog } from "../slog";
-import { CreatePostEvent, ViewChannel } from "../view/datatypes";
+import { CreatePostEvent } from "../view/datatypes";
 import { getView } from "../view/view";
 import { ModelPost } from "../model/post";
 import { AdapterPost } from "./adapterPost";
@@ -80,44 +80,15 @@ class Adapter {
     if (channel === null) {
       throw new Error("Cannot add a post: no open channel");
     }
-    channel.createPost(postData.msg, postData.parent, channel.path)
-    .then((result: CreateResponse) => {
-      slog.info("createPost: added to the database");
-    })
-    .catch((error: unknown) => {
-      // TODO: notify view that their post failed for whatever reason.
-      throw Error("createPost: creating the post failed");
-    });
-  }
-
-  // async reRenderWorkspaces(listener: WorkspaceListener) {
-  //   listener.displayOpenWorkspace({
-  //     name: this.openWorkspace?.path.slice(1) ?? "Select Workspace",
-  //   });
-  //   let workspaces = await getModel().getAllWorkspaces();
-  //   let viewWorkspaceArr: Array<ViewWorkspace> = new Array<ViewWorkspace>();
-  //   workspaces.forEach((workspace) => {
-  //     viewWorkspaceArr.push({
-  //       name: workspace.path.slice(1),
-  //     });
-  //   });
-  //   listener.displayWorkspaces(viewWorkspaceArr);
-  // }
-
-  async displayViewChannels() {
-    let viewChannelArr = new Array<ViewChannel>();
-    this.openWorkspace?.getAllChannels().then((modelChannels) => {
-      modelChannels.forEach((modelChannel) => {
-        slog.info("displayViewChannels", [
-          "viewChannel name",
-          modelChannel.path.split("/")[3],
-        ]);
-        viewChannelArr.push({
-          name: modelChannel.path.split("/")[3],
-        });
+    channel
+      .createPost(postData.msg, postData.parent, channel.path)
+      .then((result: CreateResponse) => {
+        slog.info("createPost: added to the database");
+      })
+      .catch((error: unknown) => {
+        // TODO: notify view that their post failed for whatever reason.
+        throw Error("createPost: creating the post failed");
       });
-      getView().displayChannels(viewChannelArr);
-    });
   }
 
   updateModelPost(modelPost: ModelPost) {

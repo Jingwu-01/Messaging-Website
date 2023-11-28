@@ -1,7 +1,14 @@
 import PostComponent from "./components/pages/chatPage/postComponent";
-import { PostEditor } from "./components/pages/chatPage/postEditorComponent";
 import M3ssagin8AppComponent from "./components/pages/m3ssagin8AppComponent";
-import { ViewChannel, ViewPost, ViewPostUpdate, ViewUser, ViewWorkspace } from "./datatypes";
+import {
+  ViewChannel,
+  ViewChannelUpdate,
+  ViewPost,
+  ViewPostUpdate,
+  ViewUser,
+  ViewWorkspace,
+  ViewWorkspaceUpdate,
+} from "./datatypes";
 
 interface PostListener {
   displayPosts(posts: ViewPostUpdate): void;
@@ -13,13 +20,17 @@ interface UserListener {
 }
 
 interface WorkspaceListener {
-  displayWorkspaces(workspaces: Array<ViewWorkspace>): void;
+  displayWorkspaces(update: ViewWorkspaceUpdate): void;
   displayOpenWorkspace(open_workspace: ViewWorkspace | null): void;
 }
 
 interface ChannelListener {
-  displayChannels(channels: Array<ViewChannel>): void;
+  displayChannels(update: ViewChannelUpdate): void;
   displayOpenChannel(open_channel: ViewChannel | null): void;
+}
+
+interface EventCompletedListener {
+  onEventCompleted(id: number, message: string): void;
 }
 
 interface Dialog {
@@ -49,6 +60,8 @@ export class View {
   private channelListeners: Array<ChannelListener> =
     new Array<ChannelListener>();
 
+  private eventCompletedListeners: Array<EventCompletedListener> = new Array<EventCompletedListener>();
+
   private workspaces = new Array<ViewWorkspace>();
 
   private openWorkspace: ViewWorkspace | null = null;
@@ -60,6 +73,8 @@ export class View {
   private openChannel: ViewChannel | null = null;
 
   private m3ssag1n8AppComponent: M3ssagin8AppComponent | null = null;
+
+  private errors = new Array<string>();
 
   constructor() {
     let m3ssag1n8AppComponent = document.querySelector(
@@ -86,7 +101,6 @@ export class View {
     this.m3ssag1n8AppComponent?.setHomePage();
   }
 
-  
   addPostListener(listener: PostListener) {
     this.postListeners.push(listener);
     // TODO: change this, is just a placeholder for now.
@@ -94,7 +108,7 @@ export class View {
       allPosts: this.posts,
       op: "add",
       affectedPosts: new Array<ViewPost>(),
-    }
+    };
     listener.displayPosts(viewPostUpdate);
   }
 
@@ -131,14 +145,19 @@ export class View {
 
   addWorkspaceListener(listener: WorkspaceListener) {
     this.workspaceListeners.push(listener);
-    listener.displayWorkspaces(this.workspaces);
+    listener.displayWorkspaces({
+      allWorkspaces: this.workspaces,
+      op: "add",
+      affectedWorkspaces: this.workspaces,
+      cause: new Event("listenerAdded"),
+    });
     listener.displayOpenWorkspace(this.openWorkspace);
   }
 
-  displayWorkspaces(workspaces: Array<ViewWorkspace>) {
-    this.workspaces = workspaces;
+  displayWorkspaces(update: ViewWorkspaceUpdate) {
+    this.workspaces = update.allWorkspaces;
     this.workspaceListeners.forEach((listener) => {
-      listener.displayWorkspaces(workspaces);
+      listener.displayWorkspaces(update);
     });
   }
 
@@ -151,14 +170,19 @@ export class View {
 
   addChannelListener(listener: ChannelListener) {
     this.channelListeners.push(listener);
-    listener.displayChannels(this.channels);
+    listener.displayChannels({
+      allChannels: this.channels,
+      op: "add",
+      affectedChannels: this.channels,
+      cause: new Event("listenerAdded"),
+    });
     listener.displayOpenChannel(this.openChannel);
   }
 
-  displayChannels(channels: Array<ViewChannel>) {
-    this.channels = channels;
+  displayChannels(update: ViewChannelUpdate) {
+    this.channels = update.allChannels;
     this.channelListeners.forEach((listener) => {
-      listener.displayChannels(channels);
+      listener.displayChannels(update);
     });
   }
 
@@ -167,6 +191,16 @@ export class View {
     this.channelListeners.forEach((listener) => {
       listener.displayOpenChannel(channel);
     });
+  }
+
+  completeEvent(id: number, message: string) {
+    this.eventCompletedListeners.forEach((listener) => {
+      listener.onEventCompleted(id, message)
+    })
+  }
+
+  displayError(message: string) {
+    this.errors.push(message)
   }
 
   // Opens the dialog with the given ID.

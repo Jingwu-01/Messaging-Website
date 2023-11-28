@@ -1,5 +1,10 @@
 import { slog } from "../../../../../slog";
-import { ViewChannel, ViewWorkspace } from "../../../../datatypes";
+import {
+  ViewChannel,
+  ViewChannelUpdate,
+  ViewWorkspace,
+  ViewWorkspaceUpdate,
+} from "../../../../datatypes";
 import { getView } from "../../../../view";
 
 export class ChannelSidebar extends HTMLElement {
@@ -91,7 +96,8 @@ export class ChannelSidebar extends HTMLElement {
     selectedChannelEl.classList.add("selected-channel");
   }
 
-  displayChannels(channels: Array<ViewChannel>) {
+  displayChannels(update: ViewChannelUpdate) {
+    const channels = update.allChannels;
     slog.info("displayChannels", ["channels", `${JSON.stringify(channels)}`]);
     this.channelList.innerHTML = "";
     channels.forEach((channel, idx) => {
@@ -124,5 +130,5 @@ export class ChannelSidebar extends HTMLElement {
   }
 
   // We don't care about the actual workspaces.
-  displayWorkspaces(workspaces: Array<ViewWorkspace>) {}
+  displayWorkspaces(update: ViewWorkspaceUpdate) {}
 }

@@ -17,6 +17,7 @@ import replyButtonComponentInit from "./components/pieces/replyButtonComponent/i
 import reactionComponentInit from "./components/pieces/reactionComponent/init";
 
 export function initView() {
+  reactionComponentInit();
   popoverComponentInit();
   menuComponentInit();
   userMenuComponentInit();
@@ -33,5 +34,4 @@ export function initView() {
   editDialogComponentInit();
   openDialogButtonComponentInit();
   replyButtonComponentInit();
-  reactionComponentInit();
 }

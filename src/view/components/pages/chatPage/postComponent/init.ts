@@ -42,13 +42,15 @@ export default function postComponentInit() {
                 </hover-component>
             </div>
         </header>
-        <p id="post-body">    
+        <div id="post-body">    
             <!-- TODO: can also add additional HTML element(s) for buttons (reactions, replies)-->
-        </p>
+        </div>
         <section id="buttons"> 
         <reply-button-component></reply-button-component> 
-        <reaction-component icon="">
-        </reaction-component> 
+        <reaction-component id="smile-reaction"></reaction-component>
+        <reaction-component icon="lucide:frown" id="frown-reaction"></reaction-component> 
+        <reaction-component icon="mdi:like-outline" id="like-reaction"></reaction-component> 
+        <reaction-component icon="mingcute:celebrate-line" id="celebrate-reaction"></reaction-component> 
         </section> 
         <div id="post-child-container">
         </div>

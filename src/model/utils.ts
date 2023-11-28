@@ -39,6 +39,7 @@ export function typedFetch<T>(url: string, options?: RequestInit): Promise<T> {
   });
 }
 
+
 export function emptyFetch(url: string, options?: RequestInit): Promise<void> {
   return fetch(url, options).then((response: Response) => {
     if (!response.ok) {

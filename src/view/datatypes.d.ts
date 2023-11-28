@@ -1,35 +1,12 @@
-interface User {
-  name: string;
-}
-
-interface Channel {
-  name: string;
-}
-
-interface Workspace {
-  name: string;
-}
-
-// interface Post {
-//   text: string
-//   createdAt: number
-// }
-
-
 export type ViewPostUpdate = {
-  allPosts: Array<ViewPost>
-  op: "add" | "modify"
-  affectedPosts: Array<ViewPost>
-}
-
-export type ViewWorkspaceUpdate = {
-  allWorkspaces: Array<ViewWorkspace>
-}
+  allPosts: Array<ViewPost>;
+  op: "add" | "modify";
+  affectedPosts: Array<ViewPost>;
+};
 
 // This ViewPost type will effectively allow us to represent a tree of posts
 // that the view can display.
 export type ViewPost = {
-
   msg: string;
   reactions: ReactionData | undefined; // TODO: should be an array of strings? or custom reactions objects based on what we want?
   extensions: any; // TODO: see above for 'reactions'
@@ -40,12 +17,28 @@ export type ViewPost = {
   parent: string | undefined;
 };
 
+export type ViewWorkspaceUpdate = {
+  allWorkspaces: Array<ViewWorkspace>;
+  op: "add" | "remove" | "replace";
+  // NOTE: deltas aren't implemented yet, so this won't contain accurate data
+  affectedWorkspaces: Array<ViewWorkspace>;
+  cause: Event;
+};
+
+export type ViewChannelUpdate = {
+  allChannels: Array<ViewChannel>;
+  op: "add" | "remove" | "replace";
+  // NOTE: deltas aren't implemented yet, so this won't contain accurate data
+  affectedChannels: Array<ViewWorkspace>;
+  cause: Event;
+};
+
 export type ReactionData = {
-  smile: string[]; 
-  frown: string[]; 
-  like: string[]; 
-  celebrate: string[]; 
-} 
+  smile: string[];
+  frown: string[];
+  like: string[];
+  celebrate: string[];
+};
 
 export type ViewUser = {
   username: string;
@@ -90,10 +83,10 @@ export type DeleteChannelEvent = {
 };
 
 export type ReactionUpdateEvent = {
-  reactionName: string; 
-}
+  reactionName: string;
+};
 
 export type CreatePostEvent = {
-  msg: string,
-  parent: string
-}
+  msg: string;
+  parent: string;
+};
