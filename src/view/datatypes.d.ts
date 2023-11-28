@@ -8,11 +8,7 @@ export type ViewPostUpdate = {
 // that the view can display.
 export type ViewPost = {
   msg: string;
-<<<<<<< HEAD
-  reactions: ReactionData;
-=======
   reactions: ReactionData | undefined; // TODO: should be an array of strings? or custom reactions objects based on what we want?
->>>>>>> feature/schemaValidation
   extensions: any; // TODO: see above for 'reactions'
   createdUser: string;
   postTime: number;
