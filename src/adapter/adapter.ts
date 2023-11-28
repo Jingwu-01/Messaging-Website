@@ -3,10 +3,12 @@ import { getModel } from "../model/model";
 import { CreateResponse } from "../../types/createResponse";
 import { ModelWorkspace } from "../model/workspace";
 import { slog } from "../slog";
-import { CreatePostEvent } from "../view/datatypes";
+import { CreatePostEvent, ViewPostUpdate } from "../view/datatypes";
 import { getView } from "../view/view";
 import { ModelPost } from "../model/post";
 import { AdapterPost } from "./adapterPost";
+import { insertPostSorted } from "./handleSortingPosts";
+import { adapterViewPostConverter } from "./init";
 
 // The Adapter has functions that the view can use to manipulate
 // the state of the application.
@@ -104,16 +106,29 @@ class Adapter {
 
   insertAdapterPost(adapterPost: AdapterPost) {
     let parentPost = this.adapterPosts.get(adapterPost.getParentName());
+    let insertedIdx = -1;
     if (parentPost !== undefined) {
-      parentPost.addChildPost(adapterPost);
+      insertedIdx = parentPost.addChildPost(adapterPost);
     } else {
-      this.insertRootAdapterPost(adapterPost);
+      insertedIdx = this.insertRootAdapterPost(adapterPost);
+    }
+    if (insertedIdx === -1) {
+      slog.error("insertAdapterPost", ["insertedIdx is -1", `${insertedIdx}`])
     }
     this.adapterPosts.set(adapterPost.getName(), adapterPost);
+    adapterPost.setPostIndex(insertedIdx);
+    let viewPost = adapterViewPostConverter(adapterPost);
+    let updatedPost: ViewPostUpdate = {
+      allPosts: [],
+      op: "insert",
+      affectedPosts: [viewPost]
+    }
+    getView().displayPosts(updatedPost);
   }
 
   insertRootAdapterPost(adapterPost: AdapterPost) {
     // binary search
+    return insertPostSorted(this.rootAdapterPosts, adapterPost);
   }
 }
 

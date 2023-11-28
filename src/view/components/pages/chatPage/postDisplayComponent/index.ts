@@ -1,3 +1,4 @@
+import { slog } from "../../../../../slog";
 import { ViewPost, ViewPostUpdate } from "../../../../datatypes";
 import { getView } from "../../../../view";
 import { PostComponent } from "../postComponent";
@@ -67,23 +68,64 @@ export class PostDisplay extends HTMLElement {
 
   displayPosts(update: ViewPostUpdate): void {
     this.postsContainer.innerHTML = "";
-    if (update.op == "modify") {
+    if (update.op === "modify") {
       // get the post that's affected
       // add the reaction
     }
-    for (let viewPost of update.allPosts) {
-      let postEl = new PostComponent();
-      postEl.addPostContent(viewPost);
-      let postPathArr = viewPost.path.split("/");
+    if (update.op === "insert") {
+      let postToInsert = update.affectedPosts[0];
+      let postComp = new PostComponent();
+      postComp.addPostContent(postToInsert);
+      let postChildren: NodeListOf<Element> | undefined;
+      let parentEl: HTMLElement;
+      if (postToInsert.postIdx === undefined) {
+        slog.error("displayPosts", ["postToInsert.postIdx is undefined but should not be", `${postToInsert.postIdx}`]);
+        throw new Error("postToInsert.postIdx is undefined but should not be");
+      }
+      if (postToInsert.parent === undefined || this.postToHTMLChildren.get(postToInsert.parent) === undefined) {
+        postChildren = this.postsContainer.querySelectorAll(":scope > post-component");
+        parentEl = this.postsContainer;
+      } else {
+        let potentialParentEl = this.postToHTMLChildren.get(postToInsert.parent)
+        if (potentialParentEl === undefined) {
+          slog.error("displayPosts", ["potentialParentEl is undefined", `${potentialParentEl}`]);
+          throw new Error("this.postToHTMLChildren.get(postToInsert.parent) is undefined");
+        }
+        parentEl = potentialParentEl;
+        postChildren = parentEl.querySelectorAll(":scope > post-component");
+      }
+      if (postChildren.length === 0) {
+        parentEl.append(postComp);
+      } else if (postToInsert.postIdx === 0) {
+        let firstChild = postChildren[0];
+        firstChild.parentNode?.insertBefore(postComp, firstChild);
+      } else {
+        let childNode = postChildren[postToInsert.postIdx - 1];
+        childNode.parentNode?.insertBefore(postComp, childNode.nextSibling);
+      }
+      let postPathArr = postToInsert.path.split("/");
       if (postPathArr.length !== 6) {
         throw Error("displayPosts: postPathArr is not of length 6");
       }
       let childrenContainer = document.createElement("section");
       childrenContainer.classList.add("post-children");
       this.postToHTMLChildren.set(postPathArr[5], childrenContainer);
-      this.postsContainer.append(postEl);
-      postEl.parentNode?.insertBefore(childrenContainer, postEl.nextSibling);
-      this.displayPostsHelper(postEl, viewPost.children, childrenContainer);
+      postComp.parentNode?.insertBefore(childrenContainer, postComp.nextSibling);
+    } else {
+      for (let viewPost of update.allPosts) {
+        let postEl = new PostComponent();
+        postEl.addPostContent(viewPost);
+        let postPathArr = viewPost.path.split("/");
+        if (postPathArr.length !== 6) {
+          throw Error("displayPosts: postPathArr is not of length 6");
+        }
+        let childrenContainer = document.createElement("section");
+        childrenContainer.classList.add("post-children");
+        this.postToHTMLChildren.set(postPathArr[5], childrenContainer);
+        this.postsContainer.append(postEl);
+        postEl.parentNode?.insertBefore(childrenContainer, postEl.nextSibling);
+        this.displayPostsHelper(postEl, viewPost.children, childrenContainer);
+      }
     }
   }
 

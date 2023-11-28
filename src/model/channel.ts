@@ -88,6 +88,10 @@ export class ModelChannel {
       this.postRoots.push(newPost);
       this.postMap.set(postName, newPost);
       this.addPendingPosts(postName, newPost);
+      const modelPostEvent = new CustomEvent("modelPostEvent", {
+        detail: {post: newPost}
+      });
+      document.dispatchEvent(modelPostEvent);
       return true;
     }
     let parentPathArr = parentPath.split("/");
@@ -119,6 +123,10 @@ export class ModelChannel {
     }
     if (parentPost.addChildPost(newPost)) {
       this.postMap.set(postName, newPost);
+      const modelPostEvent = new CustomEvent("modelPostEvent", {
+        detail: {post: newPost}
+      });
+      document.dispatchEvent(modelPostEvent);
       this.addPendingPosts(postName, newPost);
     }
     return true;
@@ -132,6 +140,10 @@ export class ModelChannel {
     parentPendingPosts.forEach((pendingPost: ModelPost) => {
       addedPost.addChildPost(pendingPost);
       this.postMap.set(pendingPost.getName(), pendingPost);
+      const modelPostEvent = new CustomEvent("modelPostEvent", {
+        detail: {post: addedPost}
+      });
+      document.dispatchEvent(modelPostEvent);
       this.addPendingPosts(pendingPost.getName(), pendingPost);
     });
     this.pendingPosts.delete(addedPostName);

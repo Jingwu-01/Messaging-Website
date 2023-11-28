@@ -1,13 +1,18 @@
 import { PostResponse } from "../../types/postResponse";
+import { insertPostSorted } from "./handleSortingPosts";
 
 export class AdapterPost {
     private name: string;
 
+    private createdTime: number;
+
     private response: PostResponse;
 
-    private replies: Map<string, AdapterPost> = new Map<string, AdapterPost>();
+    private replies: Array<AdapterPost> = new Array<AdapterPost>();
 
     private parentName: string;
+
+    private postIndex: number | undefined;
 
     constructor(response: PostResponse) {
         // TODO: add more robust error handling here.
@@ -20,6 +25,7 @@ export class AdapterPost {
         }
         this.name = name;
         this.response = response;
+        this.createdTime = response.meta.createdAt;
         if (response.doc.parent === undefined || response.doc.parent === "") {
             this.parentName = "";
         } else {
@@ -44,6 +50,22 @@ export class AdapterPost {
     }
 
     addChildPost(postChild: AdapterPost) {
-        // binary search
+        return insertPostSorted(this.replies, postChild);
+    }
+
+    getCreatedTime() {
+        return this.createdTime;
+    }
+
+    getResponse() {
+        return this.response;
+    }
+
+    setPostIndex(postIndex: number) {
+        this.postIndex = postIndex;
+    }
+
+    getPostIndex() {
+        return this.postIndex;
     }
 }

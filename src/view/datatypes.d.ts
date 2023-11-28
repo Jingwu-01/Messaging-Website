@@ -1,6 +1,6 @@
 export type ViewPostUpdate = {
   allPosts: Array<ViewPost>;
-  op: "add" | "modify";
+  op: "add" | "modify" | "insert";
   affectedPosts: Array<ViewPost>;
 };
 
@@ -15,6 +15,7 @@ export type ViewPost = {
   children: Array<ViewPost>;
   path: string;
   parent: string | undefined;
+  postIdx: number | undefined;
 };
 
 export type ViewWorkspaceUpdate = {
