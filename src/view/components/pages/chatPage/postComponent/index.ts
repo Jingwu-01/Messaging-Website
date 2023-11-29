@@ -196,7 +196,6 @@ export class PostComponent extends HTMLElement {
       bold: /\*\*(.*?)\*\*/g,
       italic: /\*(.*?)\*/g,
       link: /\[(.*?)\]\((.*?)\)/g,
-      icon: /:(.*?):/g,
     };
 
     // Replace the markdown with corresponding HTML elements
@@ -205,8 +204,16 @@ export class PostComponent extends HTMLElement {
       .replace(patterns.italic, (_, i) => `<em>${i}</em>`)
       .replace(patterns.link, (_, text, url) => `<a href="${url}">${text}</a>`)
       .replace(
-        patterns.icon,
-        (_, iconName) => `<iconify-icon icon="${iconName}"></iconify-icon>`
+        /:smile:/g, `<iconify-icon icon="lucide:smile"></iconify-icon>`
+      )
+      .replace(
+        /:frown:/g, `<iconify-icon icon="lucide:frown"></iconify-icon>`
+      )
+      .replace(
+        /:like:/g, `<iconify-icon icon="mdi:like-outline"></iconify-icon>`
+      )
+      .replace(
+        /:celebrate:/g, `<iconify-icon icon="mingcute:celebrate-line"></iconify-icon>`
       )
       .replace(/\n/g, "<br>");
 
