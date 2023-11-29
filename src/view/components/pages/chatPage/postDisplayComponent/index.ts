@@ -68,6 +68,7 @@ export class PostDisplay extends HTMLElement {
 
   displayPosts(update: ViewPostUpdate): void {
     this.postsContainer.innerHTML = "";
+    slog.info("postDisplay displayPosts: was called");
     if (update.op === "modify") {
       // get the post that's affected
       // add the reaction
@@ -83,6 +84,7 @@ export class PostDisplay extends HTMLElement {
         throw new Error("postToInsert.postIdx is undefined but should not be");
       }
       if (postToInsert.parent === undefined || this.postToHTMLChildren.get(postToInsert.parent) === undefined) {
+        slog.info("displayPosts: postToInsert.parent is undefined");
         postChildren = this.postsContainer.querySelectorAll(":scope > post-component");
         parentEl = this.postsContainer;
       } else {
@@ -94,8 +96,11 @@ export class PostDisplay extends HTMLElement {
         parentEl = potentialParentEl;
         postChildren = parentEl.querySelectorAll(":scope > post-component");
       }
+      slog.info("displayPosts", ["postChildren", postChildren], ["parentEl", parentEl], ["postComp", postComp]);
       if (postChildren.length === 0) {
+        slog.info("displayPosts: postChildren length is 0");
         parentEl.append(postComp);
+        slog.info("displayPosts, after appending to parentEl", ["parentEl", parentEl]);
       } else if (postToInsert.postIdx === 0) {
         let firstChild = postChildren[0];
         firstChild.parentNode?.insertBefore(postComp, firstChild);
@@ -111,6 +116,7 @@ export class PostDisplay extends HTMLElement {
       childrenContainer.classList.add("post-children");
       this.postToHTMLChildren.set(postPathArr[5], childrenContainer);
       postComp.parentNode?.insertBefore(childrenContainer, postComp.nextSibling);
+      slog.info("displayPosts", ["postComp.parentNode?", postComp.parentNode]);
     } else {
       for (let viewPost of update.allPosts) {
         let postEl = new PostComponent();

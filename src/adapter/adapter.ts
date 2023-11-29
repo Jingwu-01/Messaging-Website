@@ -103,6 +103,7 @@ class Adapter {
       let newAdapterPost = new AdapterPost(modelPost.getResponse());
       this.insertAdapterPost(newAdapterPost);
     }
+    slog.info("updateModelPost: bottom of func call", ["this.adapterPosts", `${JSON.stringify(Object.fromEntries(this.adapterPosts))}`], ["this.rootAdapterPosts", `${JSON.stringify(this.rootAdapterPosts)}`]);
   }
 
   insertAdapterPost(adapterPost: AdapterPost) {
