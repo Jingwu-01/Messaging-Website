@@ -13,6 +13,16 @@ export class PostComponent extends HTMLElement {
 
   private controller: AbortController | null = null;
 
+  private smileReaction: HTMLElement;
+  
+  private likeReaction: HTMLElement;
+
+  private frownReaction: HTMLElement;
+
+  private celebrateReaction: HTMLElement;
+
+  private replyButton: HTMLElement;
+
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -27,6 +37,11 @@ export class PostComponent extends HTMLElement {
     this.shadowRoot.append(template.content.cloneNode(true));
     let postHeader = this.shadowRoot.querySelector("#post-header");
     let postBody = this.shadowRoot.querySelector("#post-body");
+    let smileReaction = this.shadowRoot.querySelector("#smile-reaction");
+    let likeReaction = this.shadowRoot.querySelector("#like-reaction");
+    let frownReaction = this.shadowRoot.querySelector("#frown-reaction");
+    let celebrateReaction = this.shadowRoot.querySelector("#celebrate-reaction");
+    let replyButton = this.shadowRoot.querySelector("reply-button-component");
 
     if (!(postHeader instanceof HTMLElement)) {
       throw Error("Could not find an element with the post-header class");
@@ -35,20 +50,39 @@ export class PostComponent extends HTMLElement {
       throw Error("Could not find an element with the post-body class");
     }
 
+    if (!(smileReaction instanceof HTMLElement)) {
+      throw Error("Could not find an element with id #smile-reaction");
+    }
+
+    if (!(likeReaction instanceof HTMLElement)) {
+      throw Error("Could not find an element with id #like-reaction");
+    }
+
+    if (!(frownReaction instanceof HTMLElement)) {
+      throw Error("Could not find an element with id #frown-reaction");
+    }
+
+    if (!(celebrateReaction instanceof HTMLElement)) {
+      throw Error("Could not find an element with id #smile-reaction");
+    }
+
+    if (!(replyButton instanceof HTMLElement)) {
+      throw Error("Could not find a reply-button-component element");
+    }
+
     this.postHeader = postHeader;
     this.postBody = postBody;
+    this.smileReaction = smileReaction;
+    this.likeReaction = likeReaction;
+    this.frownReaction = frownReaction;
+    this.celebrateReaction = celebrateReaction;
+    this.replyButton = replyButton;
   }
 
   connectedCallback() {
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
-    const replyButton = this.shadowRoot?.querySelector(
-      "reply-button-component"
-    );
-    if (!(replyButton instanceof HTMLElement)) {
-      throw new Error("reply-button-component is not an HTMLElement");
-    }
-    replyButton.addEventListener(
+    this.replyButton.addEventListener(
       "click",
       this.addPostEditor.bind(this),
       options
@@ -103,6 +137,15 @@ export class PostComponent extends HTMLElement {
 
     let smileCount, frownCount, likeCount, celebrateCount: number;
 
+    let currentUsername: string
+    let currentUser = getView().getUser();
+    if (currentUser === null) {
+      // this is the case where we're logged out but dealing with this event.
+      slog.info("addPostContent: trying to add a post when a user is logged out, dead request");
+      return;
+    }
+    currentUsername = currentUser.username;
+
     if (viewPost.reactions === undefined) {
       slog.info("addPostContent", ["viewPost.reactions is undefined", viewPost]);
       return;
@@ -110,24 +153,36 @@ export class PostComponent extends HTMLElement {
 
     if (viewPost.reactions.smile !== undefined) {
       smileCount = viewPost.reactions.smile.length;
+      if (viewPost.reactions.smile.includes(currentUsername)) {
+        this.smileReaction.classList.add("reacted");
+      }
     } else {
       smileCount = 0; 
     }
     
-    if (viewPost.reactions.frown) {
+    if (viewPost.reactions.frown !== undefined) {
       frownCount = viewPost.reactions.frown.length;
+      if (viewPost.reactions.frown.includes(currentUsername)) {
+        this.frownReaction.classList.add("reacted");
+      }
     } else {
       frownCount = 0; 
     }
 
-    if (viewPost.reactions.like) {
+    if (viewPost.reactions.like !== undefined) {
       likeCount = viewPost.reactions.like.length;
+      if (viewPost.reactions.like.includes(currentUsername)) {
+        this.likeReaction.classList.add("reacted");
+      }
     } else {
       likeCount = 0; 
     }
 
-    if (viewPost.reactions.celebrate) {
+    if (viewPost.reactions.celebrate !== undefined) {
       celebrateCount = viewPost.reactions.celebrate.length;
+      if (viewPost.reactions.celebrate.includes(currentUsername)) {
+        this.celebrateReaction.classList.add("reacted");
+      }
     } else {
       celebrateCount = 0; 
     }
