@@ -45,9 +45,26 @@ export class OwlDBModel {
       // headers will be overwritten.
       ...options.headers,
     };
-    console.log(`typedModelFetch: options: ${JSON.stringify(options)}`);
-    console.log(`typedModelFetch: fetch path: ${getDatabasePath()}${url}`);
     return typedFetch<T>(`${getDatabasePath()}${url}`, options);
+  }
+
+  // Wrapper around utils.emptyFetch
+  // adds the Authorization header based on the logged-in user
+  // and the database path before the url
+  async emptyModelFetch(url: string, options?: RequestInit): Promise<void> {
+    // console.log(`typedModelFetch: this.token: ${this.token}`)
+    if (!options) {
+      options = {};
+    }
+
+    options.headers = {
+      // Default to bearer authorization with our user's token.
+      Authorization: "Bearer " + this.token,
+      // If the caller specified different headers, then the above
+      // headers will be overwritten.
+      ...options.headers,
+    };
+    return emptyFetch(`${getDatabasePath()}${url}`, options);
   }
 
   async login(username: string): Promise<LoginResponse> {
@@ -182,7 +199,7 @@ export class OwlDBModel {
   }
 
   async removeWorkspace(workspace_name: string): Promise<void> {
-    await this.typedModelFetch<any>(`/${workspace_name}`, {
+    await this.emptyModelFetch(`/${workspace_name}`, {
       method: "DELETE",
     });
   }

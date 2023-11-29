@@ -1,7 +1,9 @@
+import { EventWithId } from "../../../../datatypes";
+
 // An EditDialog is a dialog that allows for the creation or deletion of channels or workspaces.
 export class EditDialogComponent extends HTMLElement {
-  public onAdd(new_item_name: string) {}
-  public onRemove(item_id: string) {}
+  public getAddEvent(new_item_name: string): EventWithId | void {}
+  public getRemoveEvent(item_id: string): EventWithId | void {}
 
   protected addItemButton: HTMLElement;
   protected addItemInput: HTMLInputElement;
@@ -62,7 +64,15 @@ export class EditDialogComponent extends HTMLElement {
 
   connectedCallback(): void {
     this.addItemButton.addEventListener("click", () => {
-      this.onAdd(this.addItemInput.value);
+      const event = this.getAddEvent(this.addItemInput.value);
+      if (event) {
+        this.addItemButton.setAttribute("loading-until-event", event.detail.id);
+        this.saveAndCloseButton.setAttribute(
+          "disabled-until-event",
+          event.detail.id
+        );
+        document.dispatchEvent(event);
+      }
     });
 
     this.saveAndCloseButton.addEventListener("click", () => {
@@ -85,17 +95,37 @@ export class EditDialogComponent extends HTMLElement {
       let new_item_element = document.createElement("div");
       new_item_element.innerHTML = `
         <p>${item_name}</p>
-        <iconify-icon icon="material-symbols:delete" id="remove-item-${index}"></iconify-icon>
+        <loading-button-component id="remove-item-${index}">
+          <iconify-icon icon="material-symbols:delete" slot="content"></iconify-icon>
+        </loading-button-component>
       `;
       new_item_element.classList.add("item");
-      // if the remove button is presssed, then call our handleRemove() function on that item.
-      // NOTE: doing things this way means that, if the onRemove() function changes after the
-      // setItems() function is called, the rendered items will still be using the old function.
-      new_item_element
-        .querySelector(`#remove-item-${index}`)
-        ?.addEventListener("click", () => {
-          this.onRemove(item_name);
-        });
+      // query the remove button
+      const remove_button = new_item_element.querySelector(
+        `#remove-item-${index}`
+      );
+      if (!remove_button) {
+        throw new Error("Failed to add remove button for new item");
+      }
+      remove_button.addEventListener("click", () => {
+        // get the event we want to send to the adapter
+        const event = this.getRemoveEvent(item_name);
+        if (event) {
+          console.log(event);
+          // disable buttons to handle concurrency.
+          this.addItemButton.setAttribute(
+            "disabled-until-event",
+            event.detail.id
+          );
+          this.saveAndCloseButton.setAttribute(
+            "disabled-until-event",
+            event.detail.id
+          );
+          remove_button.setAttribute("loading-until-event", event.detail.id);
+          // dispatch the event.
+          document.dispatchEvent(event);
+        }
+      });
       this.itemDisplay.appendChild(new_item_element);
     });
   }

@@ -108,9 +108,12 @@ export class ModelWorkspace {
   }
 
   async removeChannel(channel_name: string): Promise<void> {
-    await getModel().typedModelFetch<any>(`${this.path}/${channel_name}`, {
+    await getModel().emptyModelFetch(`${this.path}/channels/${channel_name}`, {
       method: "DELETE",
-      body: JSON.stringify({}),
     });
+  }
+
+  getName() {
+    return this.path.slice(1);
   }
 }

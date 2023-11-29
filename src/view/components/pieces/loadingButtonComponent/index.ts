@@ -72,7 +72,6 @@ class LoadingButtonComponent extends HTMLElement {
     oldValue: string,
     newValue: string
   ): void {
-    console.log("attribute set", name);
     // Disable button
     if (name == "disabled-until-event") {
       this.disabledUntilEvent = newValue;

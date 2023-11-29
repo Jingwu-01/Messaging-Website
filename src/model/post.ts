@@ -1,7 +1,6 @@
 import { PostResponse } from "../../types/postResponse";
 
 export class ModelPost {
-  
   private name: string;
 
   private response: PostResponse;
@@ -13,11 +12,19 @@ export class ModelPost {
   constructor(response: PostResponse) {
     // TODO: add more robust error handling here.
     console.log(`Post constructor: response.path: ${response.path}`);
-    console.log(`Post constructor: response.path.split("/"): ${response.path.split("/")}`);
-    console.log(`Post constructor: response.path.split("/").pop(): ${response.path.split("/").pop()}`);
-    let name = response.path.split("/").pop()
+    console.log(
+      `Post constructor: response.path.split("/"): ${response.path.split("/")}`
+    );
+    console.log(
+      `Post constructor: response.path.split("/").pop(): ${response.path
+        .split("/")
+        .pop()}`
+    );
+    let name = response.path.split("/").pop();
     if (name === undefined) {
-      throw Error("ModelPost constructor: internal server error; path is an empty string");
+      throw Error(
+        "ModelPost constructor: internal server error; path is an empty string"
+      );
     }
     this.name = name;
     this.response = response;
@@ -25,27 +32,30 @@ export class ModelPost {
 
     if (response.doc.reactions == undefined) {
       this.response.doc.reactions = {
-        smile: [], 
-        frown: [], 
+        smile: [],
+        frown: [],
         like: [],
-        celebrate: [], 
-      }
+        celebrate: [],
+      };
     }
-    
+
     if (response.doc.parent === undefined || response.doc.parent === "") {
       this.parentName = "";
     } else {
       let parentPathArr = response.doc.parent.split("/");
       if (parentPathArr.length !== 6) {
-        throw new Error("model post constructor: parentPathArr is not of the correct length");
+        throw new Error(
+          "model post constructor: parentPathArr is not of the correct length"
+        );
       }
       let parentName = parentPathArr.pop();
       if (parentName === undefined) {
-        throw new Error("model post constructor: internal server error (last element of parentPathArr is undefined)");
+        throw new Error(
+          "model post constructor: internal server error (last element of parentPathArr is undefined)"
+        );
       }
       this.parentName = parentName;
     }
-
   }
 
   getResponse(): PostResponse {

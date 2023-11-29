@@ -69,6 +69,7 @@ export type SelectWorkspaceEvent = {
 
 export type DeleteWorkspaceEvent = {
   name: string;
+  id: string;
 };
 
 export type CreateChannelEvent = {
@@ -82,6 +83,7 @@ export type SelectChannelEvent = {
 
 export type DeleteChannelEvent = {
   name: string;
+  id: string;
 };
 
 export type ReactionUpdateEvent = {
