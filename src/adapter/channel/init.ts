@@ -37,6 +37,7 @@ export function initChannels() {
         affectedChannels: modelToViewChannels(channels),
         cause: evt,
       });
+      getView().completeEvent(evt);
     }
   );
 
@@ -45,6 +46,10 @@ export function initChannels() {
     "channelDeleted",
     async (evt: CustomEvent<DeleteChannelEvent>) => {
       slog.info(`Channel Deleted: ${evt.detail.name}`);
+      // Close the open channel if we're removing it.
+      if (evt.detail.name == getAdapter().getOpenChannel()?.getName()) {
+        getAdapter().setOpenChannel(null);
+      }
       // TODO handle promise rejection
       await getAdapter().getOpenWorkspace()?.removeChannel(evt.detail.name);
       const channels = await getAdapter().getOpenWorkspace()?.getAllChannels();
@@ -59,6 +64,7 @@ export function initChannels() {
         affectedChannels: modelToViewChannels(channels),
         cause: evt,
       });
+      getView().completeEvent(evt);
     }
   );
 }

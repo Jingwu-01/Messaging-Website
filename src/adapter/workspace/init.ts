@@ -56,6 +56,7 @@ export function initWorkspaces() {
         affectedWorkspaces: modelToViewWorkspaces(workspaces),
         cause: evt,
       });
+      getView().completeEvent(evt);
     }
   );
 
@@ -64,6 +65,10 @@ export function initWorkspaces() {
     "workspaceDeleted",
     async (evt: CustomEvent<DeleteWorkspaceEvent>) => {
       slog.info(`Workspace deleted: ${evt.detail.name}`);
+      // If we're deleting the open workspace, then close it.
+      if (evt.detail.name == getAdapter().getOpenWorkspace()?.getName()) {
+        getAdapter().setOpenWorkspace(null);
+      }
       // TODO handle promise rejection
       await getModel().removeWorkspace(evt.detail.name);
       const workspaces = await getModel().getAllWorkspaces();
@@ -73,6 +78,7 @@ export function initWorkspaces() {
         affectedWorkspaces: modelToViewWorkspaces(workspaces),
         cause: evt,
       });
+      getView().completeEvent(evt);
     }
   );
 }

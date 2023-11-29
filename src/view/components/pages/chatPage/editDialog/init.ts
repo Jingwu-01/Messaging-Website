@@ -29,9 +29,19 @@ export default function editDialogComponentInit() {
       <div id="item-display"></div>
       <div id="add-item-form">
         <input type="text" id="add-item-input" />
-        <button id="add-item-button">Add</button>
+        <loading-button-component 
+          id="add-item-button"
+        >
+          <span slot="content">
+            Add
+          </span>
+        </loading-button-component>
       </div>
-      <button id="save-and-close-button">Save and Close</button>
+      <loading-button-component id="save-and-close-button">
+        <span slot="content">
+          Save and Close
+        </span>
+      </loading-button-component>
     </div>
   </dialog>
 </template>

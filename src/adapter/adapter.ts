@@ -17,24 +17,27 @@ class Adapter {
     return this.openWorkspace;
   }
 
-  async setOpenWorkspace(workspaceName: string): Promise<ModelWorkspace> {
+  async setOpenWorkspace(
+    workspaceName: string | null
+  ): Promise<ModelWorkspace | null> {
+    // open
+    if (workspaceName == null) {
+      this.openWorkspace = null;
+      await this.setOpenChannel(null);
+      getView().displayOpenWorkspace(null);
+      return null;
+    }
     // Don't do anything if it's the same workspace.
-    if (this.openWorkspace?.path.slice(1) === workspaceName) {
+    if (this.openWorkspace?.getName() === workspaceName) {
       return this.openWorkspace;
     }
-    if (this.openWorkspace != null) {
-      // TODO unsubscribe from old workspace
-      // this.openWorkspace.unsubscribe()
-    }
     this.openWorkspace = await getModel().getWorkspace(workspaceName);
-    // TODO: subscribe to this workspace
-    // this.openWorkspace.subscribe()
+    // Un-select the open channel.
+    await this.setOpenChannel(null);
     // Display the new open workspace.
     getView().displayOpenWorkspace({
       name: this.openWorkspace.path.slice(1),
     });
-    // Un-select the open channel.
-    this.setOpenChannel(null);
     return this.openWorkspace;
   }
 
@@ -45,8 +48,8 @@ class Adapter {
   async setOpenChannel(
     channelName: string | null
   ): Promise<ModelChannel | null> {
+    // Unsub from old channel
     if (this.openChannel != null) {
-      // TODO unsubscribe from old channel
       this.openChannel.unsubscribe();
     }
     if (channelName == null) {
@@ -57,10 +60,9 @@ class Adapter {
     let ws = this.getOpenWorkspace();
     if (ws != null) {
       this.openChannel = await ws.getChannel(channelName);
-      // TODO: subscribe to this channel
       this.openChannel.subscribeToPosts();
       getView().displayOpenChannel({
-        name: this.openChannel.path.split("/")[3],
+        name: this.openChannel.getName(),
       });
       return this.openChannel;
     } else {

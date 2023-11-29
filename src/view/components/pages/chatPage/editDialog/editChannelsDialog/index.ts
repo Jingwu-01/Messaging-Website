@@ -1,5 +1,9 @@
 import EditDialogComponent from "..";
-import { ViewChannel, ViewChannelUpdate } from "../../../../../datatypes";
+import {
+  EventWithId,
+  ViewChannel,
+  ViewChannelUpdate,
+} from "../../../../../datatypes";
 import { getView } from "../../../../../view";
 
 // Edit-dialog that allows user to edit workspaces
@@ -20,23 +24,23 @@ export class EditChannelsDialogComponent extends EditDialogComponent {
     this.setItems(update.allChannels.map((ch) => ch.name));
   }
 
-  public onAdd(new_item_name: string): void {
-    document.dispatchEvent(
-      new CustomEvent("channelCreated", {
-        detail: {
-          name: new_item_name,
-        },
-      })
-    );
+  public getAddEvent(new_item_name: string): EventWithId {
+    let event_id = String(Date.now());
+    return new CustomEvent("channelCreated", {
+      detail: {
+        name: new_item_name,
+        id: event_id,
+      },
+    });
   }
 
-  public onRemove(channel_name: string): void {
-    document.dispatchEvent(
-      new CustomEvent("channelDeleted", {
-        detail: {
-          name: channel_name,
-        },
-      })
-    );
+  public getRemoveEvent(channel_name: string) {
+    let event_id = String(Date.now());
+    return new CustomEvent("channelDeleted", {
+      detail: {
+        name: channel_name,
+        id: event_id,
+      },
+    });
   }
 }

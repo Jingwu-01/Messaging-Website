@@ -8,11 +8,7 @@ export type ViewPostUpdate = {
 // that the view can display.
 export type ViewPost = {
   msg: string;
-<<<<<<< HEAD
-  reactions: ReactionData;
-=======
   reactions: ReactionData | undefined; // TODO: should be an array of strings? or custom reactions objects based on what we want?
->>>>>>> feature/schemaValidation
   extensions: any; // TODO: see above for 'reactions'
   createdUser: string;
   postTime: number;
@@ -64,6 +60,7 @@ export type LogoutEvent = {};
 
 export type CreateWorkspaceEvent = {
   name: string;
+  id: string;
 };
 
 export type SelectWorkspaceEvent = {
@@ -72,10 +69,12 @@ export type SelectWorkspaceEvent = {
 
 export type DeleteWorkspaceEvent = {
   name: string;
+  id: string;
 };
 
 export type CreateChannelEvent = {
   name: string;
+  id: string;
 };
 
 export type SelectChannelEvent = {
@@ -84,6 +83,7 @@ export type SelectChannelEvent = {
 
 export type DeleteChannelEvent = {
   name: string;
+  id: string;
 };
 
 export type ReactionUpdateEvent = {
@@ -94,3 +94,10 @@ export type CreatePostEvent = {
   msg: string;
   parent: string;
 };
+
+export interface EventWithId extends CustomEvent {
+  detail: {
+    id: string;
+    [key: string]: any;
+  };
+}

@@ -9,10 +9,10 @@ export default function modelToViewChannels(
   modelChannels.forEach((modelChannel) => {
     slog.info("displayViewChannels", [
       "viewChannel name",
-      modelChannel.path.split("/")[3],
+      modelChannel.getName(),
     ]);
     viewChannelArr.push({
-      name: modelChannel.path.split("/")[3],
+      name: modelChannel.getName(),
     });
   });
   return viewChannelArr;

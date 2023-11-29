@@ -1,6 +1,7 @@
 import PostComponent from "./components/pages/chatPage/postComponent";
 import M3ssagin8AppComponent from "./components/pages/m3ssagin8AppComponent";
 import {
+  EventWithId,
   ViewChannel,
   ViewChannelUpdate,
   ViewPost,
@@ -27,6 +28,10 @@ interface WorkspaceListener {
 interface ChannelListener {
   displayChannels(update: ViewChannelUpdate): void;
   displayOpenChannel(open_channel: ViewChannel | null): void;
+}
+
+interface EventCompletedListener {
+  onEventCompleted(event: EventWithId, message?: string): void;
 }
 
 interface Dialog {
@@ -56,6 +61,9 @@ export class View {
   private channelListeners: Array<ChannelListener> =
     new Array<ChannelListener>();
 
+  private eventCompletedListeners: Array<EventCompletedListener> =
+    new Array<EventCompletedListener>();
+
   private workspaces = new Array<ViewWorkspace>();
 
   private openWorkspace: ViewWorkspace | null = null;
@@ -67,6 +75,8 @@ export class View {
   private openChannel: ViewChannel | null = null;
 
   private m3ssag1n8AppComponent: M3ssagin8AppComponent | null = null;
+
+  private errors = new Array<string>();
 
   constructor() {
     let m3ssag1n8AppComponent = document.querySelector(
@@ -163,9 +173,9 @@ export class View {
   addChannelListener(listener: ChannelListener) {
     this.channelListeners.push(listener);
     listener.displayChannels({
-      allChannels: this.workspaces,
+      allChannels: this.channels,
       op: "add",
-      affectedChannels: this.workspaces,
+      affectedChannels: this.channels,
       cause: new Event("listenerAdded"),
     });
     listener.displayOpenChannel(this.openChannel);
@@ -183,6 +193,20 @@ export class View {
     this.channelListeners.forEach((listener) => {
       listener.displayOpenChannel(channel);
     });
+  }
+
+  addEventCompletedListener(listener: EventCompletedListener) {
+    this.eventCompletedListeners.push(listener);
+  }
+
+  completeEvent(event: EventWithId, message?: string) {
+    this.eventCompletedListeners.forEach((listener) => {
+      listener.onEventCompleted(event, message);
+    });
+  }
+
+  displayError(message: string) {
+    this.errors.push(message);
   }
 
   // Opens the dialog with the given ID.
