@@ -94,6 +94,7 @@ class Adapter {
   }
 
   updateModelPost(modelPost: ModelPost) {
+    slog.info("updateModelPost: top of func call", ["this.adapterPosts", `${JSON.stringify(Object.fromEntries(this.adapterPosts))}`], ["this.rootAdapterPosts", `${JSON.stringify(this.rootAdapterPosts)}`]);
     let postName = modelPost.getName();
     let existingAdapterPost = this.adapterPosts.get(postName);
     if (existingAdapterPost !== undefined) {
