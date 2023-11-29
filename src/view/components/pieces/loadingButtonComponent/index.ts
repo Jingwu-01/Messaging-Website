@@ -1,6 +1,10 @@
 import { EventWithId } from "../../../datatypes";
 import { getView } from "../../../view";
 
+// The Loading Button component can disable itself or display the "loading..."
+// text until it receives an event ID.
+// Set the disabled-until-event attribute and pass it an event ID in order to disable the button.
+// Set the loading-until-event attribute and pass it an event ID in order to make the button say "loading..."
 class LoadingButtonComponent extends HTMLElement {
   private loadingUntilEvent: string | null = null;
   private disabledUntilEvent: string | null = null;
