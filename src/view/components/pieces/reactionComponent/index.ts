@@ -20,7 +20,7 @@ class ReactionComponent extends HTMLElement {
       }
     }
 
-    const reactionIcon = this.shadowRoot?.querySelector("#reaction-icon");
+    const reactionIcon = this.shadowRoot?.querySelector("#smile-reaction");
     if (!(reactionIcon instanceof HTMLElement)) {
       throw new Error("smileButton is not an HTMLElement");
     }
@@ -53,7 +53,7 @@ class ReactionComponent extends HTMLElement {
   }
 
   addReactionCount(count: number): void {
-    const countText = this.shadowRoot?.querySelector("#count");
+    const countText = this.shadowRoot?.querySelector("#reaction-count");
     if (!(countText instanceof HTMLParagraphElement)) {
       throw new Error("countText is not an HTML paragraph element");
     } else {
