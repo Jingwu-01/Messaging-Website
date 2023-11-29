@@ -6,12 +6,15 @@ import {
   validateLoginResponse,
   validateWorkspaceResponse,
   validateGetWorkspacesResponse,
+  validatePatchDocumentResponse,
 } from "./utils";
 import { ModelWorkspace } from "./workspace";
 import { WorkspaceResponse } from "../../types/workspaceResponse";
+import { PatchDocumentResponse } from "../../types/patchDocumentResponse";
 import { slog } from "../slog";
 import { LoginResponse } from "../../types/loginResponse";
 import { GetWorkspacesResponse } from "../../types/getWorkspacesResponse";
+import { ModelReactionUpdate, PatchBody } from "./modelTypes";
 
 // Class representing our model interfacing with OwlDB.
 export class OwlDBModel {
@@ -170,14 +173,44 @@ export class OwlDBModel {
     });
   }
 
-  async updateReaction(reactionName: string): Promise<void> {
+  async updateReaction(reactionUpdate: ModelReactionUpdate): Promise<PatchDocumentResponse> {
+    let patches = new Array<PatchBody>();
+    let addReactionArray: PatchBody = {
+      path: "/reactions",
+      op: "ObjectAdd",
+      value: []
+    }
+    patches.push(addReactionArray);
+    let op: "ArrayAdd" | "ArrayRemove";
+    if (reactionUpdate.add) {
+      op = "ArrayAdd"
+    } else {
+      op = "ArrayRemove"
+    }
+    let addReaction: PatchBody = {
+      path: "/reactions",
+      op: op,
+      value: reactionUpdate.userName
+    }
+    patches.push(addReaction);
     const options = {
       method: "PATCH",
       headers: {
-        Authorization: "Bearer " + this.token,
-        Accept: "application/json",
+        "accept": "application/json",
+        "Content-Type": "application/json"
       },
+      body: JSON.stringify(patches)
     };
+    // TODO: add a catch handler
+    return getModel().typedModelFetch<PatchDocumentResponse>(`${reactionUpdate.postPath}`, options).then((response) => {
+      const valid = validatePatchDocumentResponse(response);
+      if (!valid) {
+        slog.error("validating patch doc response", ["invalid patch doc response:", `${validateGetWorkspacesResponse.errors}`]);
+        throw new Error("invalid patch document response");
+      }
+      return response;
+    });
+    ;
   }
 
   /* Getter function that returns the token. */
