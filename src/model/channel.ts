@@ -12,7 +12,7 @@ export class ModelChannel {
 
   private postMap: Map<string, ModelPost> = new Map<string, ModelPost>();
 
-  private postRoots: Array<ModelPost> = new Array<ModelPost>();
+  private postRoots: Map<string, ModelPost> = new Map<string, ModelPost>();
 
   private pendingPosts: Map<string, Array<ModelPost>> = new Map<string, Array<ModelPost>>();
 
@@ -55,7 +55,7 @@ export class ModelChannel {
               const postsEvent = new CustomEvent("postsEvent", {
                 // NOTE: we are passing by reference here. so mutations will be seen.
                 // however, with kill and fill and queueing of events, this may not be an issue
-                detail: { postRoots: thisChannel.postRoots },
+                detail: { postRoots: Array.from(thisChannel.postRoots.values()) },
               });
               document.dispatchEvent(postsEvent);
               // TODO: does TS use these 'break' statements
@@ -83,9 +83,15 @@ export class ModelChannel {
         "addPost: internal server error: post has an empty path string"
       );
     }
+    if (this.postMap.get(postName) !== undefined) {
+      this.postMap.set(postName, newPost);
+      if (this.postRoots.get(postName) !== undefined) {
+        this.postRoots.set(postName, newPost);
+      }
+    }
     console.log(`addPost: postName: ${postName}`);
     if (parentPath === "" || parentPath === undefined) {
-      this.postRoots.push(newPost);
+      this.postRoots.set(postName, newPost);
       this.postMap.set(postName, newPost);
       this.addPendingPosts(postName, newPost);
       return true;

@@ -51,6 +51,7 @@ export function initPosts() {
         // slog.error("reactionUpdateEvent listener", ["patchFailed", ""]);
       } else {
         // return 
+        // somehow notify the view? nothing to notify the view here; it's all subscriptions.
       }
     })
     .catch((error: Error) => {

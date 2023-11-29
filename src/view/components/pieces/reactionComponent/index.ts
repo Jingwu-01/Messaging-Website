@@ -1,3 +1,5 @@
+import { slog } from "../../../../slog";
+
 type reactions = "smile" | "frown" | "like" | "celebrate";
 
 class ReactionComponent extends HTMLElement {
@@ -46,43 +48,55 @@ class ReactionComponent extends HTMLElement {
   }
 
   addReactionCount(count: number): void {
+    slog.info("addReactionCount: before setting count", ["count", count]);
     const countText = this.shadowRoot?.querySelector("#count");
     if (!(countText instanceof HTMLParagraphElement)) {
       throw new Error("countText is not an HTML paragraph element");
     } else {
       countText.innerHTML = count.toString();
+      slog.info("addReactionCount: set count", ["countText.innerHTML", countText.innerHTML]);
     }
+    slog.info("addReactionCount: after setting count", ["countText", countText]);
   }
 
   static get observedAttributes(): string[] {
-    return ["icon"];
+    return ["icon", "reaction-count"];
   }
 
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-    if (newValue == "lucide:frown") {
-      this.reactionName = "frown";
-    } else if (newValue == "mdi:like-outline") {
-      this.reactionName = "like";
-    } else if (newValue == "mingcute:celebrate-line") {
-      this.reactionName = "celebrate";
-    } else {
-      throw new Error(newValue + " is not a valid iconify id.");
+    if (name === "icon") {
+      if (newValue == "lucide:frown") {
+        this.reactionName = "frown";
+      } else if (newValue == "mdi:like-outline") {
+        this.reactionName = "like";
+      } else if (newValue == "mingcute:celebrate-line") {
+        this.reactionName = "celebrate";
+      } else {
+        // TODO: don't throw an error; do something more graceful. just ignore it
+        throw new Error(newValue + " is not a valid iconify id.");
+      }
+  
+      const smileReaction = this.shadowRoot?.querySelector("#reaction-icon");
+      if (!(smileReaction instanceof HTMLElement)) {
+        throw new Error("smileButton is not an HTMLElement");
+      }
+      smileReaction.remove();
+  
+      const reactionButton = this.shadowRoot?.querySelector("#reaction-button");
+      if (!(reactionButton instanceof HTMLButtonElement)) {
+        throw new Error("reactionButton is not an HTMLButton Element");
+      }
+      const iconifyIcon = document.createElement("iconify-icon");
+      iconifyIcon.setAttribute("icon", newValue);
+      iconifyIcon.id = "reaction-icon";
+      reactionButton.append(iconifyIcon);
+    } else if (name === "reaction-count") {
+      slog.info("attributeChangedCallback: reaction-count");
+      let numReactionCount = parseInt(newValue);
+      this.count = numReactionCount;
+      this.addReactionCount(numReactionCount);
     }
 
-    const smileReaction = this.shadowRoot?.querySelector("#reaction-icon");
-    if (!(smileReaction instanceof HTMLElement)) {
-      throw new Error("smileButton is not an HTMLElement");
-    }
-    smileReaction.remove();
-
-    const reactionButton = this.shadowRoot?.querySelector("#reaction-button");
-    if (!(reactionButton instanceof HTMLButtonElement)) {
-      throw new Error("reactionButton is not an HTMLButton Element");
-    }
-    const iconifyIcon = document.createElement("iconify-icon");
-    iconifyIcon.setAttribute("icon", newValue);
-    iconifyIcon.id = "reaction-icon";
-    reactionButton.append(iconifyIcon);
   }
 }
 
