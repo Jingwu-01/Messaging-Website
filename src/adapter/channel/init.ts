@@ -37,6 +37,7 @@ export function initChannels() {
         affectedChannels: modelToViewChannels(channels),
         cause: evt,
       });
+      getView().completeEvent(evt);
     }
   );
 

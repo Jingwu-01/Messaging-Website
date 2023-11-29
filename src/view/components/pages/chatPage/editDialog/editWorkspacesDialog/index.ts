@@ -21,13 +21,17 @@ export class EditWorkspacesDialogComponent extends EditDialogComponent {
   }
 
   public onAdd(new_item_name: string): void {
+    let event_id = String(Date.now());
     document.dispatchEvent(
       new CustomEvent("workspaceCreated", {
         detail: {
           name: new_item_name,
+          id: event_id,
         },
       })
     );
+    this.addItemButton.setAttribute("loading-until-event", event_id);
+    this.saveAndCloseButton.setAttribute("disabled-until-event", event_id);
   }
 
   public onRemove(workspace_name: string): void {

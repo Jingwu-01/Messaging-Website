@@ -60,6 +60,7 @@ export type LogoutEvent = {};
 
 export type CreateWorkspaceEvent = {
   name: string;
+  id: string;
 };
 
 export type SelectWorkspaceEvent = {
@@ -72,6 +73,7 @@ export type DeleteWorkspaceEvent = {
 
 export type CreateChannelEvent = {
   name: string;
+  id: string;
 };
 
 export type SelectChannelEvent = {
@@ -90,3 +92,10 @@ export type CreatePostEvent = {
   msg: string;
   parent: string;
 };
+
+export interface EventWithId extends CustomEvent {
+  detail: {
+    id: string;
+    [key: string]: any;
+  };
+}

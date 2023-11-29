@@ -56,6 +56,7 @@ export function initWorkspaces() {
         affectedWorkspaces: modelToViewWorkspaces(workspaces),
         cause: evt,
       });
+      getView().completeEvent(evt);
     }
   );
 

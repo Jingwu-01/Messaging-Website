@@ -21,13 +21,17 @@ export class EditChannelsDialogComponent extends EditDialogComponent {
   }
 
   public onAdd(new_item_name: string): void {
+    let event_id = String(Date.now());
     document.dispatchEvent(
       new CustomEvent("channelCreated", {
         detail: {
           name: new_item_name,
+          id: event_id,
         },
       })
     );
+    this.addItemButton.setAttribute("loading-until-event", event_id);
+    this.saveAndCloseButton.setAttribute("disabled-until-event", event_id);
   }
 
   public onRemove(channel_name: string): void {

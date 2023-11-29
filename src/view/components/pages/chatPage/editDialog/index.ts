@@ -3,11 +3,11 @@ export class EditDialogComponent extends HTMLElement {
   public onAdd(new_item_name: string) {}
   public onRemove(item_id: string) {}
 
-  private addItemButton: HTMLElement;
-  private addItemInput: HTMLInputElement;
-  private itemDisplay: HTMLDivElement;
-  private dialog: HTMLDialogElement;
-  private saveAndCloseButton: HTMLButtonElement;
+  protected addItemButton: HTMLElement;
+  protected addItemInput: HTMLInputElement;
+  protected itemDisplay: HTMLDivElement;
+  protected dialog: HTMLDialogElement;
+  protected saveAndCloseButton: HTMLElement;
 
   constructor() {
     super();
@@ -54,7 +54,7 @@ export class EditDialogComponent extends HTMLElement {
     let save_and_close_button_query = this.shadowRoot?.querySelector(
       "#save-and-close-button"
     );
-    if (!(save_and_close_button_query instanceof HTMLButtonElement)) {
+    if (!(save_and_close_button_query instanceof HTMLElement)) {
       throw Error("Could not find a save and close button");
     }
     this.saveAndCloseButton = save_and_close_button_query;

@@ -37,22 +37,11 @@ export class OwlDBModel {
     if (!options) {
       options = {};
     }
-    // Unless we specified a different content type,
-    // convert body from undefined to an empty JSON object.
-    // This prevents "Unexpected end of JSON object" errors.
-    if (
-      (!options.headers || "Content-Type" in options.headers) &&
-      options.body == undefined
-    ) {
-      options.body = JSON.stringify({});
-    }
 
     options.headers = {
-      // Default to content-type application/json
-      // and bearer authorization with our user's token.
-      "Content-Type": "application/json",
+      // Default to bearer authorization with our user's token.
       Authorization: "Bearer " + this.token,
-      // If the caller specified different headers, then the above two
+      // If the caller specified different headers, then the above
       // headers will be overwritten.
       ...options.headers,
     };
@@ -170,8 +159,21 @@ export class OwlDBModel {
     // Add this workspace to the API
     await this.typedModelFetch<any>(`/${workspace_name}`, {
       method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        timestamp: 0,
+      }),
     });
-    // TODO: Figure out how to make the workspace not overwrite.
+    // Give it a "channels" collection
+    await this.typedModelFetch<any>(`/${workspace_name}/channels/`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    });
     // Now, either:
     // 1. we are subscribed to workspaces, so OWLDB will send back a message which updates the state
     // or:

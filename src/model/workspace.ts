@@ -77,9 +77,29 @@ export class ModelWorkspace {
 
   async addChannel(channel_name: string): Promise<void> {
     // Add this channel under this workspace to the API
-    await getModel().typedModelFetch<any>(`${this.path}/${channel_name}`, {
-      method: "PUT",
-    });
+    await getModel().typedModelFetch<any>(
+      `${this.path}/channels/${channel_name}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          timestamp: 0,
+        }),
+      }
+    );
+    // Give it a "posts" collection
+    await getModel().typedModelFetch<any>(
+      `${this.path}/channels/${channel_name}/posts/`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}),
+      }
+    );
     // Now, either:
     // 1. we are subscribed to channels, so OWLDB will send back a message which updates the state
     // or:

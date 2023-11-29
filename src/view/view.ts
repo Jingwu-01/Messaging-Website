@@ -1,6 +1,7 @@
 import PostComponent from "./components/pages/chatPage/postComponent";
 import M3ssagin8AppComponent from "./components/pages/m3ssagin8AppComponent";
 import {
+  EventWithId,
   ViewChannel,
   ViewChannelUpdate,
   ViewPost,
@@ -30,7 +31,7 @@ interface ChannelListener {
 }
 
 interface EventCompletedListener {
-  onEventCompleted(id: number, message: string): void;
+  onEventCompleted(event: EventWithId, message?: string): void;
 }
 
 interface Dialog {
@@ -60,7 +61,8 @@ export class View {
   private channelListeners: Array<ChannelListener> =
     new Array<ChannelListener>();
 
-  private eventCompletedListeners: Array<EventCompletedListener> = new Array<EventCompletedListener>();
+  private eventCompletedListeners: Array<EventCompletedListener> =
+    new Array<EventCompletedListener>();
 
   private workspaces = new Array<ViewWorkspace>();
 
@@ -193,14 +195,18 @@ export class View {
     });
   }
 
-  completeEvent(id: number, message: string) {
+  addEventCompletedListener(listener: EventCompletedListener) {
+    this.eventCompletedListeners.push(listener);
+  }
+
+  completeEvent(event: EventWithId, message?: string) {
     this.eventCompletedListeners.forEach((listener) => {
-      listener.onEventCompleted(id, message)
-    })
+      listener.onEventCompleted(event, message);
+    });
   }
 
   displayError(message: string) {
-    this.errors.push(message)
+    this.errors.push(message);
   }
 
   // Opens the dialog with the given ID.
