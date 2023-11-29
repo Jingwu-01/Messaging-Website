@@ -18,9 +18,8 @@ class UserMenuComponent extends HTMLElement {
     this.shadowRoot?.append(template.content.cloneNode(true));
   }
 
+  // When UserMenuComponent is added to a document, this is called.
   connectedCallback(): void {
-    // The browser calls this when the element is added to a document.
-
     // Tell the view that this component wants to listen to user updates
     getView().addUserListener(this);
 
@@ -38,7 +37,8 @@ class UserMenuComponent extends HTMLElement {
     );
   }
 
-  handleLogout(event: Event) {
+  // Handles the logout request by sending a logout event. 
+  handleLogout(event: MouseEvent) {
     event.preventDefault();
     const logoutEvent = new CustomEvent("logoutEvent", {
       detail: {},
@@ -49,6 +49,7 @@ class UserMenuComponent extends HTMLElement {
   disconnectedCallback(): void {
     // The browser calls this when the element is removed from a document.
   }
+
   static get observedAttributes(): Array<string> {
     // Attributes to observe
     return [];

@@ -11,8 +11,6 @@ export class PostComponent extends HTMLElement {
 
   private postPath: string | undefined;
 
-  private smileReactionComponent: ReactionComponent;
-
   private controller: AbortController | null = null;
 
   constructor() {
@@ -29,9 +27,6 @@ export class PostComponent extends HTMLElement {
     this.shadowRoot.append(template.content.cloneNode(true));
     let postHeader = this.shadowRoot.querySelector("#post-header");
     let postBody = this.shadowRoot.querySelector("#post-body");
-    let smileReactionComponent =
-      this.shadowRoot.querySelector("#smile-reaction");
-
     if (!(postHeader instanceof HTMLElement)) {
       throw Error("Could not find an element with the post-header class");
     }
@@ -186,10 +181,12 @@ export class PostComponent extends HTMLElement {
   //   // then add the reactio if it's a "modify"
   // }
 
-  // TODO: add a private filter function on posts that can basically
-  // handle filtering unstyled HTML with ** and stuff to strong and em
-  // tags as needed
-
+  /* Convert the input string to their corresponding HTML elements based on the markdown patterns and append them to the input HTML container element. Mark down patterns: 
+  1. Text surrounded by single * symbols rendered in italics using <em>; 
+  2. Text surrounded by double * symbols rendered in bold using <strong>;
+  3. Text and a URL surrounded by []() rendered as links using <a>;
+  4. Reaction names like :smile: must be rendered as their associated emoji using <iconify>. 
+  5. Other text rendered as plain text using <p> */
   appendFormattedText(text: string, container: HTMLElement): void {
     // Regular expressions for different markdown patterns
     const patterns = {
@@ -203,17 +200,15 @@ export class PostComponent extends HTMLElement {
       .replace(patterns.bold, (_, b) => `<strong>${b}</strong>`)
       .replace(patterns.italic, (_, i) => `<em>${i}</em>`)
       .replace(patterns.link, (_, text, url) => `<a href="${url}">${text}</a>`)
+      .replace(/:smile:/g, `<iconify-icon icon="lucide:smile"></iconify-icon>`)
+      .replace(/:frown:/g, `<iconify-icon icon="lucide:frown"></iconify-icon>`)
       .replace(
-        /:smile:/g, `<iconify-icon icon="lucide:smile"></iconify-icon>`
+        /:like:/g,
+        `<iconify-icon icon="mdi:like-outline"></iconify-icon>`
       )
       .replace(
-        /:frown:/g, `<iconify-icon icon="lucide:frown"></iconify-icon>`
-      )
-      .replace(
-        /:like:/g, `<iconify-icon icon="mdi:like-outline"></iconify-icon>`
-      )
-      .replace(
-        /:celebrate:/g, `<iconify-icon icon="mingcute:celebrate-line"></iconify-icon>`
+        /:celebrate:/g,
+        `<iconify-icon icon="mingcute:celebrate-line"></iconify-icon>`
       )
       .replace(/\n/g, "<br>");
 
