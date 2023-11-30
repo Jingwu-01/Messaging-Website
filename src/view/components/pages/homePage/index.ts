@@ -45,6 +45,7 @@ class HomePage extends HTMLElement {
     this.controller = null;
   }
 
+  /* Retrieves the username input from modal dialog box and dispatches login custom event to adapter. */
   private handleSubmit(event: SubmitEvent) {
     event.preventDefault();
     const usernameInput = this.shadowRoot?.querySelector("#username-input");
@@ -63,7 +64,7 @@ class HomePage extends HTMLElement {
     }
   }
 
-  // Deals with keyboard events, including esc and enter. 
+  /* Deals with keyboard events, including esc and enter. */ 
   private keyDown(event: KeyboardEvent) {
     // Prevents the default action of closing the dialog by ESC.
     if (event.key === "Escape") {
