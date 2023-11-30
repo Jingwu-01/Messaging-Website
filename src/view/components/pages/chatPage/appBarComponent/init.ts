@@ -20,6 +20,9 @@ export default function appBarComponentInit() {
       display: inline-block;
       color: white;
     }
+    p{
+      font-size: 20px;
+    }
     #title-wrapper{
       display: flex;
       align-items: center;
@@ -28,7 +31,7 @@ export default function appBarComponentInit() {
   <div id="app-bar-wrapper">
     <div id="title-wrapper">
       <span>
-        <iconify-icon id="owl-icon" icon="noto-v1:owl" aria-label="m3ssag1ng owl"></iconify-icon>
+        <iconify-icon id="owl-icon" icon="noto-v1:owl" aria-label="m3ssag1ng owl" role="img"></iconify-icon>
       </span>
       <h2>Messaging</h2>
     </div>

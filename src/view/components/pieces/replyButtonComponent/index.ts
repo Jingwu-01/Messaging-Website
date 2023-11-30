@@ -1,38 +1,32 @@
+/* Defines the custom element for ReplyButtonComponent, which will be used as a reply button web component. */
 class ReplyButtonComponent extends HTMLElement {
-    private controller: AbortController | null = null;
-    
-    constructor() {
-      super();
-      this.attachShadow({ mode: "open" });
-  
-      if (this.shadowRoot) {
-        let template = document.querySelector("#reply-button-component-template");
-        if (!(template instanceof HTMLTemplateElement)) {
-          throw new Error("reply button template is not HTML template element");
-        } else {
-          this.shadowRoot.append(template.content.cloneNode(true));
-        }
+  private controller: AbortController | null = null;
+
+  // Constructor for the ReplyButtonComponent
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+
+    // Deep clone the reply button HTML template for later use.
+    if (this.shadowRoot) {
+      let template = document.querySelector("#reply-button-component-template");
+      if (!(template instanceof HTMLTemplateElement)) {
+        throw new Error("reply button template is not HTML template element");
       }
+      this.shadowRoot.append(template.content.cloneNode(true));
     }
-  
-    connectedCallback(): void {
-      this.controller = new AbortController();
-      // const options = { signal: this.controller.signal };
-  
-      // const replyButton = this.shadowRoot?.querySelector("#reply-button");
-      // if (!(replyButton instanceof HTMLButtonElement)) {
-      //   throw new Error("replyButton not HTML button element");
-      // }
-      // replyButton.addEventListener("click", this.addPostEditor.bind(this), options); 
-    }
-  
-    disconnectedCallback(): void {
-      this.controller?.abort();
-      this.controller = null;
-    } 
-
-    
-
   }
-  export default ReplyButtonComponent; 
-  
+
+  // When connected, create and assign a new AbortController.
+  connectedCallback(): void {
+    this.controller = new AbortController();
+  }
+
+  // When disconnected, abort the AbortController.
+  disconnectedCallback(): void {
+    this.controller?.abort();
+    this.controller = null;
+  }
+}
+
+export default ReplyButtonComponent;

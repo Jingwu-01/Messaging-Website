@@ -23,13 +23,16 @@ export default function editDialogComponentInit() {
       align-items: center;
       gap: 10px;
     }
+    iconify-icon[icon="material-symbols:delete"]:hover {
+      color: #26667C;
+    }
   </style>
   <dialog id="dialog">
     <div id="dialog-content">
       <h2 id="dialog-title"></h2>
       <div id="item-display"></div>
       <div id="add-item-form">
-        <input type="text" id="add-item-input" />
+        <input type="text" id="add-item-input" arial-label="Your input"/>
         <loading-button-component 
           id="add-item-button"
         >

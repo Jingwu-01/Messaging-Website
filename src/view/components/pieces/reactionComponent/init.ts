@@ -5,29 +5,35 @@ export default function reactionComponentInit() {
     "beforeend",
     `
     <template id="reaction-component-template">
-    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <style>
-      #wrapper {
+      #reaction-container {
         display: flex;
-        margin-left: 10px; 
+        margin-left: 10px;
       }
       #reaction-button {
         width: 30px;
         height: 30px;
+        border-radius: 3px 3px 3px 3px;
       }
-      #count {
+      #reaction-count {
         margin-left: 10px;
         margin-top: 7px;
       }
+      #reaction-button:hover{
+        background-color: #818589;
+      }
+      #reaction-button:active {
+        background-color: #5a5a5a;
+      }
     </style>
-    <div id="wrapper">
-      <button id="reaction-button">
-        <iconify-icon icon="lucide:smile" id="reaction-icon"></iconify-icon>
+    <div id="reaction-container">
+      <button id="reaction-button" aria-label="smile reaction">
+        <iconify-icon icon="lucide:smile" id="smile-reaction"></iconify-icon>
       </button>
-      <p id="count"></p>
+      <p id="reaction-count"></p>
     </div>
   </template>
-
+  
 `
   );
 

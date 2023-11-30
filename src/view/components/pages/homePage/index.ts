@@ -12,17 +12,17 @@ class HomePage extends HTMLElement {
     this.attachShadow({ mode: "open" });
 
     if (this.shadowRoot) {
-      let template = document.querySelector("#home-page-template");
+      let template = document?.querySelector("#home-page-template");
       if (!(template instanceof HTMLTemplateElement)) {
-        throw new Error("home-page-template is not an HTML template element");
+        throw new Error("#home-page-template is not an HTML template element");
       } else {
         this.shadowRoot.append(template.content.cloneNode(true));
       }
     }
 
-    let dialog = this.shadowRoot?.querySelector("dialog");
+    let dialog = this.shadowRoot?.querySelector("#login-dialog");
     if (!(dialog instanceof HTMLDialogElement)) {
-      throw Error("Could not find a dialog element");
+      throw Error("#login dialog is not a HTMLDialog element");
     }
     this.dialog = dialog;
 
@@ -41,14 +41,18 @@ class HomePage extends HTMLElement {
     // These allow snackbars to render when this dialog is open.
     this.addEventListener = this.dialog.addEventListener;
     this.appendChild = this.dialog.appendChild;
+
   }
 
   connectedCallback(): void {
-    this.dialog.showModal();
+    // Show the login modal dialog
+    this.dialog?.showModal();
 
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
     this.form.addEventListener("submit", this.handleSubmit.bind(this), options);
+    
+    this.dialog?.addEventListener("keydown", this.keyDown.bind(this));
   }
 
   disconnectedCallback(): void {
@@ -56,7 +60,8 @@ class HomePage extends HTMLElement {
     this.controller = null;
   }
 
-  handleSubmit(event: SubmitEvent) {
+  /* Retrieves the username input from modal dialog box and dispatches login custom event to adapter. */
+  private handleSubmit(event: SubmitEvent) {
     event.preventDefault();
     const usernameInput = this.shadowRoot?.querySelector("#username-input");
     if (usernameInput instanceof HTMLInputElement) {
@@ -68,6 +73,7 @@ class HomePage extends HTMLElement {
       });
       slog.info(`User submitted login ${username}`);
       document.dispatchEvent(loginEvent);
+
       // Disable the form while we wait to log in.
       this.submitButton.setAttribute("disabled", "");
       // When login is successful, re-enable the form and close this dialog.
@@ -75,10 +81,24 @@ class HomePage extends HTMLElement {
         this.dialog.close();
         this.submitButton.removeAttribute("disabled");
       });
+
     } else {
       throw new Error(
         "Element with id #username-input is not a HTMLInputElement"
       );
+    }
+  }
+
+  /* Deals with keyboard events, including esc and enter. */ 
+  private keyDown(event: KeyboardEvent) {
+    // Prevents the default action of closing the dialog by ESC.
+    if (event.key === "Escape") {
+      event.preventDefault();
+    }
+
+    // When enter is hit, submit the login request. 
+    if (event.key === "Enter" && this.dialog?.open) {
+      this.handleSubmit.bind(this);
     }
   }
 }
