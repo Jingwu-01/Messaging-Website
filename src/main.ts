@@ -17,6 +17,7 @@ import { LoginEvent } from "./view/datatypes";
 import { initView } from "./view/init";
 import { PostsEvent } from "./model/modelTypes";
 import { getView } from "./view/view";
+import setupTestDb from "./tests/setup-test-db";
 
 /**
  * Declare names and types of environment variables.
@@ -76,17 +77,15 @@ function main(): void {
   // const model = getModel();
   // testUpdatePosts(model);
 
-  // *Placeholder, testing code to ensure that we are listening for posts
-  // correctly.*
+  // Set up test DB.
+  // TODO: Remove before submitting
+  setupTestDb();
+
   initAdapter();
   initView();
 
   getView().setHomePage();
   getView().setChatPage();
-
-  // Redirect to homepage, if we just type in the URL
-  // example for how to use OOP model for posts
-  // getModel().getWorkspace("this_workspace").getChannel("channel").getPost("")
 }
 
 function viewPostConverter(modelPost: ModelPost): ViewPost {

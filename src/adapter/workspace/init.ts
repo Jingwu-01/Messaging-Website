@@ -8,54 +8,50 @@ import {
 } from "../../view/datatypes";
 import { getView } from "../../view/view";
 import getAdapter from "../adapter";
-import modelToViewChannels from "../channel/modelToViewChannels";
+import refreshChannels from "../channel/refreshChannels";
 import modelToViewWorkspaces from "./modelToViewWorkspaces";
+import refreshWorkspaces from "./refreshWorkspaces";
 
 export function initWorkspaces() {
   document.addEventListener(
     "workspaceSelected",
-    function (evt: CustomEvent<SelectWorkspaceEvent>) {
+    async function (evt: CustomEvent<SelectWorkspaceEvent>) {
       slog.info(`Workspace selected: ${evt.detail.name}`);
-      getAdapter()
-        .setOpenWorkspace(evt.detail.name)
-        .then(() => {
-          slog.info("initWorkspaces", [
-            "Opened Channel displaying view channels",
-            "",
-          ]);
-          getAdapter()
-            .getOpenWorkspace()
-            ?.getAllChannels()
-            .then((modelChannels) => {
-              getView().displayChannels({
-                allChannels: modelToViewChannels(modelChannels),
-                op: "replace",
-                affectedChannels: modelToViewChannels(modelChannels),
-                cause: evt,
-              });
-            });
-          let viewPostUpdate: ViewPostUpdate = {
-            allPosts: [],
-            op: "add",
-            affectedPosts: [],
-          };
-          getView().displayPosts(viewPostUpdate);
-        });
+
+      // Set the open workspace
+      try {
+        await getAdapter().setOpenWorkspace(evt.detail.name);
+      } catch (err) {
+        getView().displayError("Failed to select workspace");
+      }
+      slog.info("initWorkspaces", [
+        "Opened Channel displaying view channels",
+        "",
+      ]);
+      await refreshChannels(evt);
+      // De-render the posts from the old channel.
+      let viewPostUpdate: ViewPostUpdate = {
+        allPosts: [],
+        op: "add",
+        affectedPosts: [],
+      };
+      getView().displayPosts(viewPostUpdate);
     }
   );
   document.addEventListener(
     "workspaceCreated",
     async (evt: CustomEvent<CreateWorkspaceEvent>) => {
       slog.info(`Workspace added: ${evt.detail.name}`);
-      // TODO handle error if workspace wasn't added
-      await getModel().addWorkspace(evt.detail.name);
-      const workspaces = await getModel().getAllWorkspaces();
-      getView().displayWorkspaces({
-        allWorkspaces: modelToViewWorkspaces(workspaces),
-        op: "replace",
-        affectedWorkspaces: modelToViewWorkspaces(workspaces),
-        cause: evt,
-      });
+
+      // Try to create the workspace
+      try {
+        await getModel().addWorkspace(evt.detail.name);
+      } catch (err) {
+        getView().displayError("Failed to add workspace");
+      }
+
+      await refreshWorkspaces(evt);
+      getView().completeEvent(evt);
     }
   );
 
@@ -64,6 +60,10 @@ export function initWorkspaces() {
     "workspaceDeleted",
     async (evt: CustomEvent<DeleteWorkspaceEvent>) => {
       slog.info(`Workspace deleted: ${evt.detail.name}`);
+      // If we're deleting the open workspace, then close it.
+      if (evt.detail.name == getAdapter().getOpenWorkspace()?.getName()) {
+        getAdapter().setOpenWorkspace(null);
+      }
       // TODO handle promise rejection
       await getModel().removeWorkspace(evt.detail.name);
       const workspaces = await getModel().getAllWorkspaces();
@@ -73,6 +73,7 @@ export function initWorkspaces() {
         affectedWorkspaces: modelToViewWorkspaces(workspaces),
         cause: evt,
       });
+      getView().completeEvent(evt);
     }
   );
 }

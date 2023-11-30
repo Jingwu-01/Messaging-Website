@@ -2,7 +2,7 @@ import HomePage from ".";
 
 /* Initializes the HomePage by inserting its html to the document and defining the home-page custom element. */
 export default function homePageInit() {
-  // Insert the html of HomePage to the document. 
+  // Insert the html of HomePage to the document.
   document.body.insertAdjacentHTML(
     "beforeend",
     `
@@ -103,7 +103,7 @@ export default function homePageInit() {
             placeholder="Your username..."
             arial-label="Your username"
           />
-          <button type="submit" aria-label="Submit">
+          <button type="submit" aria-label="Submit" id="submit-button" >
             <iconify-icon
               icon="ic:baseline-login"
               id="username-submit"
@@ -117,6 +117,6 @@ export default function homePageInit() {
 `
   );
 
-  // Define the custom element of home-page. 
+  // Define the custom element of home-page.
   customElements.define("home-page", HomePage);
 }

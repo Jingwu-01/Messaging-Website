@@ -15,6 +15,8 @@ import editDialogComponentInit from "./components/pages/chatPage/editDialog/init
 import { openDialogButtonComponentInit } from "./components/pieces/openDialogButtonComponent/init";
 import replyButtonComponentInit from "./components/pieces/replyButtonComponent/init";
 import reactionComponentInit from "./components/pieces/reactionComponent/init";
+import loadingButtonComponentInit from "./components/pieces/loadingButtonComponent/init";
+import snackbarInit from "./components/pieces/snackbarComponent/init";
 
 export function initView() {
   reactionComponentInit();
@@ -34,4 +36,6 @@ export function initView() {
   editDialogComponentInit();
   openDialogButtonComponentInit();
   replyButtonComponentInit();
+  loadingButtonComponentInit();
+  snackbarInit();
 }

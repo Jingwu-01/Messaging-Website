@@ -21,6 +21,7 @@ export default function editDialogComponentInit() {
       display: flex;
       flex-direction: column;
       align-items: center;
+      gap: 10px;
     }
     iconify-icon[icon="material-symbols:delete"]:hover {
       color: #26667C;
@@ -31,10 +32,20 @@ export default function editDialogComponentInit() {
       <h2 id="dialog-title"></h2>
       <div id="item-display"></div>
       <div id="add-item-form">
-        <input type="text" id="add-item-input" aria-label="Your input"/>
-        <button id="add-item-button">Add</button>
+        <input type="text" id="add-item-input" arial-label="Your input"/>
+        <loading-button-component 
+          id="add-item-button"
+        >
+          <span slot="content">
+            Add
+          </span>
+        </loading-button-component>
       </div>
-      <button id="save-and-close-button">Save and Close</button>
+      <loading-button-component id="save-and-close-button">
+        <span slot="content">
+          Save and Close
+        </span>
+      </loading-button-component>
     </div>
   </dialog>
 </template>

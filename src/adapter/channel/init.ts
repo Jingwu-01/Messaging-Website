@@ -6,7 +6,7 @@ import {
 } from "../../view/datatypes";
 import { getView } from "../../view/view";
 import getAdapter from "../adapter";
-import modelToViewChannels from "./modelToViewChannels";
+import refreshChannels from "./refreshChannels";
 
 export function initChannels() {
   // Handle channel select
@@ -23,20 +23,16 @@ export function initChannels() {
     "channelCreated",
     async (evt: CustomEvent<CreateChannelEvent>) => {
       slog.info(`Channel Created: ${evt.detail.name}`);
-      // TODO handle promise rejection
-      await getAdapter().getOpenWorkspace()?.addChannel(evt.detail.name);
-      const channels = await getAdapter().getOpenWorkspace()?.getAllChannels();
-      if (!channels) {
-        throw new Error(
-          "Tried to add a channel without a workspace currently open"
-        );
+
+      // Add the channel
+      try {
+        await getAdapter().getOpenWorkspace()?.addChannel(evt.detail.name);
+      } catch {
+        getView().displayError("Failed to add channel");
       }
-      getView().displayChannels({
-        allChannels: modelToViewChannels(channels),
-        op: "replace",
-        affectedChannels: modelToViewChannels(channels),
-        cause: evt,
-      });
+
+      await refreshChannels(evt);
+      getView().completeEvent(evt);
     }
   );
 
@@ -45,20 +41,22 @@ export function initChannels() {
     "channelDeleted",
     async (evt: CustomEvent<DeleteChannelEvent>) => {
       slog.info(`Channel Deleted: ${evt.detail.name}`);
-      // TODO handle promise rejection
-      await getAdapter().getOpenWorkspace()?.removeChannel(evt.detail.name);
-      const channels = await getAdapter().getOpenWorkspace()?.getAllChannels();
-      if (!channels) {
-        throw new Error(
-          "Tried to remove a channel without a workspace currently open"
-        );
+      // Close the open channel if we're removing it.
+      if (evt.detail.name == getAdapter().getOpenChannel()?.getName()) {
+        getAdapter().setOpenChannel(null);
       }
-      getView().displayChannels({
-        allChannels: modelToViewChannels(channels),
-        op: "replace",
-        affectedChannels: modelToViewChannels(channels),
-        cause: evt,
-      });
+
+      // Try to remove the channel
+      try {
+        await getAdapter().getOpenWorkspace()?.removeChannel(evt.detail.name);
+      } catch (err) {
+        if (err instanceof Error) {
+          getView().displayError("Failed to remove channel");
+        }
+      }
+
+      await refreshChannels(evt);
+      getView().completeEvent(evt);
     }
   );
 }

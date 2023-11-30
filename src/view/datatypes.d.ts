@@ -54,12 +54,14 @@ export type ViewChannel = {
 
 export type LoginEvent = {
   username: string;
+  id: string;
 };
 
 export type LogoutEvent = {};
 
 export type CreateWorkspaceEvent = {
   name: string;
+  id: string;
 };
 
 export type SelectWorkspaceEvent = {
@@ -68,10 +70,12 @@ export type SelectWorkspaceEvent = {
 
 export type DeleteWorkspaceEvent = {
   name: string;
+  id: string;
 };
 
 export type CreateChannelEvent = {
   name: string;
+  id: string;
 };
 
 export type SelectChannelEvent = {
@@ -80,6 +84,7 @@ export type SelectChannelEvent = {
 
 export type DeleteChannelEvent = {
   name: string;
+  id: string;
 };
 
 export type ReactionUpdateEvent = {
@@ -90,3 +95,10 @@ export type CreatePostEvent = {
   msg: string;
   parent: string;
 };
+
+export interface EventWithId extends CustomEvent {
+  detail: {
+    id: string;
+    [key: string]: any;
+  };
+}
