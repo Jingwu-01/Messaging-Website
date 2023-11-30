@@ -6,9 +6,10 @@ import { slog } from "../slog";
 import { CreatePostEvent } from "../view/datatypes";
 import { getView } from "../view/view";
 
-// The Adapter has functions that the view can use to manipulate
-// the state of the application.
-class Adapter {
+// The state manager stores the state of the application
+// and has functions that the adapter can call to manipulate that state.
+// It interfaces with the Model.
+class StateManager {
   private openWorkspace: ModelWorkspace | null = null;
 
   private openChannel: ModelChannel | null = null;
@@ -69,29 +70,12 @@ class Adapter {
       throw new Error("Cannot get open channel: no open workspace");
     }
   }
-
-  createPost(postData: CreatePostEvent) {
-    // TODO: consider if we want to enforce that a channel are open in order to send a message?
-    let channel = this.getOpenChannel();
-    if (channel === null) {
-      throw new Error("Cannot add a post: no open channel");
-    }
-    channel
-      .createPost(postData.msg, postData.parent, channel.path)
-      .then((result: CreateResponse) => {
-        slog.info("createPost: added to the database");
-      })
-      .catch((error: unknown) => {
-        // TODO: notify view that their post failed for whatever reason.
-        throw Error("createPost: creating the post failed");
-      });
-  }
 }
 
-// adapter singleton
-let adapter = new Adapter();
-function getAdapter() {
-  return adapter;
+// state manager
+let stateManager = new StateManager();
+function getStateManager() {
+  return stateManager;
 }
 
-export default getAdapter;
+export default getStateManager;

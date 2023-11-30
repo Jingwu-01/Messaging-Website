@@ -7,7 +7,7 @@ import {
   ViewPostUpdate,
 } from "../../view/datatypes";
 import { getView } from "../../view/view";
-import getAdapter from "../adapter";
+import getStateManager from "../../state-manager";
 import refreshChannels from "../channel/refreshChannels";
 import modelToViewWorkspaces from "./modelToViewWorkspaces";
 import refreshWorkspaces from "./refreshWorkspaces";
@@ -20,7 +20,7 @@ export function initWorkspaces() {
 
       // Set the open workspace
       try {
-        await getAdapter().setOpenWorkspace(evt.detail.name);
+        await getStateManager().setOpenWorkspace(evt.detail.name);
       } catch (err) {
         getView().displayError("Failed to select workspace");
       }
@@ -61,8 +61,8 @@ export function initWorkspaces() {
     async (evt: CustomEvent<DeleteWorkspaceEvent>) => {
       slog.info(`Workspace deleted: ${evt.detail.name}`);
       // If we're deleting the open workspace, then close it.
-      if (evt.detail.name == getAdapter().getOpenWorkspace()?.getName()) {
-        getAdapter().setOpenWorkspace(null);
+      if (evt.detail.name == getStateManager().getOpenWorkspace()?.getName()) {
+        getStateManager().setOpenWorkspace(null);
       }
       // TODO handle promise rejection
       await getModel().removeWorkspace(evt.detail.name);

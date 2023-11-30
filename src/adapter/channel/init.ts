@@ -5,7 +5,7 @@ import {
   SelectChannelEvent,
 } from "../../view/datatypes";
 import { getView } from "../../view/view";
-import getAdapter from "../adapter";
+import getStateManager from "../../state-manager";
 import refreshChannels from "./refreshChannels";
 
 export function initChannels() {
@@ -14,7 +14,7 @@ export function initChannels() {
     "channelSelected",
     function (evt: CustomEvent<SelectChannelEvent>) {
       slog.info("initChannels", ["Channel Selected", `${evt.detail.name}`]);
-      getAdapter().setOpenChannel(evt.detail.name);
+      getStateManager().setOpenChannel(evt.detail.name);
     }
   );
 
@@ -26,7 +26,7 @@ export function initChannels() {
 
       // Add the channel
       try {
-        await getAdapter().getOpenWorkspace()?.addChannel(evt.detail.name);
+        await getStateManager().getOpenWorkspace()?.addChannel(evt.detail.name);
       } catch {
         getView().displayError("Failed to add channel");
       }
@@ -42,13 +42,15 @@ export function initChannels() {
     async (evt: CustomEvent<DeleteChannelEvent>) => {
       slog.info(`Channel Deleted: ${evt.detail.name}`);
       // Close the open channel if we're removing it.
-      if (evt.detail.name == getAdapter().getOpenChannel()?.getName()) {
-        getAdapter().setOpenChannel(null);
+      if (evt.detail.name == getStateManager().getOpenChannel()?.getName()) {
+        getStateManager().setOpenChannel(null);
       }
 
       // Try to remove the channel
       try {
-        await getAdapter().getOpenWorkspace()?.removeChannel(evt.detail.name);
+        await getStateManager()
+          .getOpenWorkspace()
+          ?.removeChannel(evt.detail.name);
       } catch (err) {
         if (err instanceof Error) {
           getView().displayError("Failed to remove channel");
