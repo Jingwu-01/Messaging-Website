@@ -6,9 +6,7 @@ import LoginResponseSchema from "../../schemas/loginResponse.json";
 import PatchDocumentResponseSchema from "../../schemas/patchDocumentResponse.json";
 import PostResponseSchema from "../../schemas/postResponse.json";
 import WorkspaceResponseSchema from "../../schemas/workspaceResponse.json";
-import ChannelResponseSchema from "../../schemas/channelResponse.json"
-
-type ValidationFunction = (data: any) => boolean | Promise<any>
+import ChannelResponseSchema from "../../schemas/channelResponse.json";
 
 /**
  * Wrapper around fetch to return a Promise that resolves to the desired
@@ -39,7 +37,6 @@ export function typedFetch<T>(url: string, options?: RequestInit): Promise<T> {
   });
 }
 
-
 export function emptyFetch(url: string, options?: RequestInit): Promise<void> {
   return fetch(url, options).then((response: Response) => {
     if (!response.ok) {
@@ -58,25 +55,23 @@ export function emptyFetch(url: string, options?: RequestInit): Promise<void> {
   });
 }
 
-
 // Method to return the path to the database used.
 export function getDatabasePath(): string {
-      if (process.env.DATABASE_HOST === undefined) {
-          throw new Error("Database host is undefined");
-      }
-      if (process.env.DATABASE_PATH === undefined) {
-          throw new Error("Database path is undefined")
-      }
-      return process.env.DATABASE_HOST + process.env.DATABASE_PATH;
+  if (process.env.DATABASE_HOST === undefined) {
+    throw new Error("Database host is undefined");
   }
+  if (process.env.DATABASE_PATH === undefined) {
+    throw new Error("Database path is undefined");
+  }
+  return process.env.DATABASE_HOST + process.env.DATABASE_PATH;
+}
 
 export function getAuthPath(): string {
-    if (process.env.DATABASE_HOST === undefined) {
-      throw new Error("Database host is undefined");
-    }
-    return process.env.DATABASE_HOST + "/auth";
+  if (process.env.DATABASE_HOST === undefined) {
+    throw new Error("Database host is undefined");
   }
-
+  return process.env.DATABASE_HOST + "/auth";
+}
 
 // Data validation
 
@@ -86,13 +81,19 @@ const ajv = new Ajv();
 
 export const validateCreateResponse = ajv.compile(CreateResponseSchema);
 
-export const validateGetWorkspacesResponse = ajv.compile(GetWorkspacesResponseSchema);
+export const validateGetWorkspacesResponse = ajv.compile(
+  GetWorkspacesResponseSchema
+);
 
-export const validateGetChannelsResponse = ajv.compile(GetChannelsResponseSchema);
+export const validateGetChannelsResponse = ajv.compile(
+  GetChannelsResponseSchema
+);
 
 export const validateLoginResponse = ajv.compile(LoginResponseSchema);
 
-export const validatePatchDocumentResponse = ajv.compile(PatchDocumentResponseSchema);
+export const validatePatchDocumentResponse = ajv.compile(
+  PatchDocumentResponseSchema
+);
 
 export const validatePostResponse = ajv.compile(PostResponseSchema);
 
