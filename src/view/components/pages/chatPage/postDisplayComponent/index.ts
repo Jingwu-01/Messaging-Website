@@ -160,8 +160,6 @@ export class PostDisplay extends HTMLElement {
     this.postEditor.setParentPath(postPath);
   }
 
-  insert
-
 }
 
 export default PostDisplay;
