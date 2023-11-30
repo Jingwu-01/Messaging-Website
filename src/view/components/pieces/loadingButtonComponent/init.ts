@@ -6,10 +6,16 @@ export default function loadingButtonComponentInit() {
     `
 <template id="loading-button-component-template">
   <style>
+  button {
+    background-color: #add8e6;
+    border-radius: 15px;
+  }
   </style>
   <button id="outer-button">
     <slot id="content" name="content"></slot>
-    <span id="loading-text" hidden>Loading...</span>
+    <div id="loading-text" hidden>
+      <iconify-icon icon="svg-spinners:180-ring-with-bg" aria-label="Loading..."></iconify-icon>
+    </div>
   </button>
 </template>
 `

@@ -31,10 +31,6 @@ interface ChannelListener {
   displayOpenChannel(open_channel: ViewChannel | null): void;
 }
 
-interface EventCompletedListener {
-  onEventCompleted(event: EventWithId, message?: string): void;
-}
-
 interface Dialog extends HTMLElement {
   showModal(): void;
   close(): void;
@@ -62,8 +58,10 @@ export class View {
   private channelListeners: Array<ChannelListener> =
     new Array<ChannelListener>();
 
-  private eventCompletedListeners: Array<EventCompletedListener> =
-    new Array<EventCompletedListener>();
+  private eventCompletedListeners = new Map<
+    string,
+    Array<(event: EventWithId) => void>
+  >();
 
   private workspaces = new Array<ViewWorkspace>();
 
@@ -203,13 +201,21 @@ export class View {
     });
   }
 
-  addEventCompletedListener(listener: EventCompletedListener) {
-    this.eventCompletedListeners.push(listener);
+  // When the Adapter calls .completeEvent(event),
+  // callback will be called.
+  waitForEvent(id: string, callback: (event: EventWithId) => void) {
+    let arr = this.eventCompletedListeners.get(id);
+    if (!arr) {
+      arr = [];
+      this.eventCompletedListeners.set(id, arr);
+    }
+    arr.push(callback);
   }
 
-  completeEvent(event: EventWithId, message?: string) {
-    this.eventCompletedListeners.forEach((listener) => {
-      listener.onEventCompleted(event, message);
+  // The Adapter should call this when an event passed to it by the View is completed.
+  completeEvent(event: EventWithId) {
+    this.eventCompletedListeners.get(event.detail.id)?.forEach((callback) => {
+      callback(event);
     });
   }
 

@@ -1,4 +1,3 @@
-import { EventWithId } from "../../../datatypes";
 import { getView } from "../../../view";
 
 // The Loading Button component can disable itself or display the "loading..."
@@ -6,9 +5,6 @@ import { getView } from "../../../view";
 // Set the disabled-until-event attribute and pass it an event ID in order to disable the button.
 // Set the loading-until-event attribute and pass it an event ID in order to make the button say "loading..."
 class LoadingButtonComponent extends HTMLElement {
-  private loadingUntilEvent: string | null = null;
-  private disabledUntilEvent: string | null = null;
-
   private loadingText: HTMLElement;
   private content: HTMLElement;
   private button: HTMLElement;
@@ -44,25 +40,6 @@ class LoadingButtonComponent extends HTMLElement {
     this.button = button_query;
   }
 
-  connectedCallback(): void {
-    getView().addEventCompletedListener(this);
-  }
-
-  onEventCompleted(event: EventWithId, message?: string) {
-    // Remove "Loading..." text
-    if (event.detail.id == this.loadingUntilEvent) {
-      this.button.removeAttribute("disabled");
-      this.loadingText.setAttribute("hidden", "");
-      this.content.removeAttribute("hidden");
-      this.loadingUntilEvent = null;
-    }
-    // Remove disabled button
-    if (event.detail.id == this.disabledUntilEvent) {
-      this.button.removeAttribute("disabled");
-      this.disabledUntilEvent = null;
-    }
-  }
-
   disconnectedCallback(): void {
     // The browser calls this when the element is removed from a document.
   }
@@ -77,15 +54,21 @@ class LoadingButtonComponent extends HTMLElement {
   ): void {
     // Disable button
     if (name == "disabled-until-event") {
-      this.disabledUntilEvent = newValue;
       this.button.setAttribute("disabled", "");
+      getView().waitForEvent(newValue, () => {
+        this.button.removeAttribute("disabled");
+      });
     }
     // Add "Loading..." text
-    if (name == "loading-until-event") {
-      this.loadingUntilEvent = newValue;
+    else if (name == "loading-until-event") {
       this.button.setAttribute("disabled", "");
       this.content.setAttribute("hidden", "");
       this.loadingText.removeAttribute("hidden");
+      getView().waitForEvent(newValue, () => {
+        this.button.removeAttribute("disabled");
+        this.loadingText.setAttribute("hidden", "");
+        this.content.removeAttribute("hidden");
+      });
     }
   }
 }

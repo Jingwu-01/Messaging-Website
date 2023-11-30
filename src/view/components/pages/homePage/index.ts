@@ -1,8 +1,11 @@
 import { slog } from "../../../../slog";
+import { getView } from "../../../view";
 
 class HomePage extends HTMLElement {
   private controller: AbortController | null = null;
-  private dialog: HTMLDialogElement; 
+  private dialog: HTMLDialogElement;
+  private form: HTMLFormElement;
+  private submitButton: HTMLElement;
 
   constructor() {
     super();
@@ -21,19 +24,31 @@ class HomePage extends HTMLElement {
     if (!(dialog instanceof HTMLDialogElement)) {
       throw Error("Could not find a dialog element");
     }
-    this.dialog = dialog; 
+    this.dialog = dialog;
+
+    let form = this.shadowRoot?.querySelector("#username-form");
+    if (!(form instanceof HTMLFormElement)) {
+      throw new Error("form not found");
+    }
+    this.form = form;
+
+    let submit_button = this.shadowRoot?.querySelector("#submit-button");
+    if (!(submit_button instanceof HTMLElement)) {
+      throw new Error("button not found");
+    }
+    this.submitButton = submit_button;
+
+    // These allow snackbars to render when this dialog is open.
+    this.addEventListener = this.dialog.addEventListener;
+    this.appendChild = this.dialog.appendChild;
   }
 
   connectedCallback(): void {
     this.dialog.showModal();
 
-    const form = this.shadowRoot?.querySelector("#username-form");
-    if (!(form instanceof HTMLFormElement)) {
-      throw new Error("form not found");
-    }
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
-    form.addEventListener("submit", this.handleSubmit.bind(this), options);
+    this.form.addEventListener("submit", this.handleSubmit.bind(this), options);
   }
 
   disconnectedCallback(): void {
@@ -46,12 +61,20 @@ class HomePage extends HTMLElement {
     const usernameInput = this.shadowRoot?.querySelector("#username-input");
     if (usernameInput instanceof HTMLInputElement) {
       const username = usernameInput.value;
+      // Create and send off event to adapter
+      const event_id = String(Date.now());
       const loginEvent = new CustomEvent("loginEvent", {
-        detail: { username: username },
+        detail: { username: username, id: event_id },
       });
       slog.info(`User submitted login ${username}`);
       document.dispatchEvent(loginEvent);
-      this.dialog.close(); 
+      // Disable the form while we wait to log in.
+      this.submitButton.setAttribute("disabled", "");
+      // When login is successful, re-enable the form and close this dialog.
+      getView().waitForEvent(event_id, () => {
+        this.dialog.close();
+        this.submitButton.removeAttribute("disabled");
+      });
     } else {
       throw new Error(
         "Element with id #username-input is not a HTMLInputElement"

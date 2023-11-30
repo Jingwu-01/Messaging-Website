@@ -54,6 +54,7 @@ export type ViewChannel = {
 
 export type LoginEvent = {
   username: string;
+  id: string;
 };
 
 export type LogoutEvent = {};
