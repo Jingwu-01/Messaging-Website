@@ -11,7 +11,16 @@ export default function replyButtonComponentInit() {
       #reply-button {
         width: 30px;
         height: 30px;
+        border-radius: 3px 3px 3px 3px;
+        margin-right: 10px; 
       }
+      button:hover{
+        background-color: #818589;
+      }
+      button:active {
+        background-color: #5a5a5a;
+      }
+
     </style>
     <button id="reply-button">
       <iconify-icon icon="material-symbols:reply" aria-label="reply"></iconify-icon>

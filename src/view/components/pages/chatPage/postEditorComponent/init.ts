@@ -51,6 +51,19 @@ export default function postEditorInit() {
         #post-operations iconify-icon {
             font-size: 1.5em;
         }
+        li:hover {
+            background-color: #26667C;
+        }
+        li:active {
+            background-color: #163d4a; 
+        }
+        #post-submit:hover {
+            background-color: #163d4a; 
+        }
+        #post-submit:active{
+            background-color: #0f2831; 
+        }
+        
 
     </style>
 

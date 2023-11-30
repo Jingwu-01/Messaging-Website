@@ -13,10 +13,17 @@ export default function reactionComponentInit() {
       #reaction-button {
         width: 30px;
         height: 30px;
+        border-radius: 3px 3px 3px 3px;
       }
       #reaction-count {
         margin-left: 10px;
         margin-top: 7px;
+      }
+      #reaction-button:hover{
+        background-color: #818589;
+      }
+      #reaction-button:active {
+        background-color: #5a5a5a;
       }
     </style>
     <div id="reaction-container">

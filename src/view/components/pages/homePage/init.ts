@@ -6,7 +6,7 @@ export default function homePageInit() {
   document.body.insertAdjacentHTML(
     "beforeend",
     `
-    <template id="home-page-template">
+<template id="home-page-template">
   <style>
     dialog {
       background-color: #add8e6;
@@ -114,8 +114,6 @@ export default function homePageInit() {
     </header>
   </dialog>
 </template>
-
-
 `
   );
 

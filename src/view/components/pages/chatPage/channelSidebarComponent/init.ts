@@ -32,6 +32,21 @@ export default function channelSidebarComponentInit() {
         color: white;
         padding: 0 10px;
     }
+    #edit-channels-button-content:hover{
+        background-color: #163d4a; 
+    }
+    #edit-channels-button-content:active{
+        background-color: #0f2831; 
+    }
+    li {
+        border-radius: 5px 5px 5px 5px;
+    }
+    li:hover {
+        background-color: #26667C;
+    }
+    li:active {
+        background-color: #163d4a; 
+    }
     </style>
     <ul id="channel-list">
     </ul>
