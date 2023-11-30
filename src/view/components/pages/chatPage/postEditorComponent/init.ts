@@ -65,7 +65,7 @@ export default function postEditorInit() {
             <li id="celebrate-reaction"><iconify-icon icon="mingcute:celebrate-line" aria-label="celebrate"></iconify-icon></li>
         </ul>
         <form id="post-form">
-            <textarea id="post-input" name="post_input"></textarea>
+            <textarea id="post-input" name="post_input" aria-label="Type your post input"></textarea>
             <button type="submit" id="post-submit">Send<iconify-icon id="send-icon" icon="tabler:send" aria-label="send"></iconify-icon>
         </form>
     </section>

@@ -85,8 +85,9 @@ export default function homePageInit() {
             id="username-input"
             name="text_field"
             placeholder="Your username..."
+            arial-label="Your username" 
           />
-          <button type="submit">
+          <button type="submit" aria-label="Submit">
             <iconify-icon
               icon="ic:baseline-login"
               id="username-submit"

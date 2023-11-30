@@ -21,7 +21,7 @@ export default function reactionComponentInit() {
     </style>
     <div id="reaction-container">
       <button id="reaction-button">
-        <iconify-icon icon="lucide:smile" id="smile-reaction"></iconify-icon>
+        <iconify-icon icon="lucide:smile" id="smile-reaction" aria-label="smile reaction"></iconify-icon>
       </button>
       <p id="reaction-count"></p>
     </div>

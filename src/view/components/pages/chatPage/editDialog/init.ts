@@ -28,7 +28,7 @@ export default function editDialogComponentInit() {
       <h2 id="dialog-title"></h2>
       <div id="item-display"></div>
       <div id="add-item-form">
-        <input type="text" id="add-item-input" />
+        <input type="text" id="add-item-input" aria-label="Your input"/>
         <button id="add-item-button">Add</button>
       </div>
       <button id="save-and-close-button">Save and Close</button>
