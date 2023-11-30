@@ -15,7 +15,7 @@ export default function init() {
       align-items: center;
     }
     #user-menu-dropdown p:hover{
-      background-color: #3896b7; 
+      background-color: #2e809c;
       border-radius: 5px 5px 5px 5px;
     }
     #user-menu-dropdown p:active{
@@ -27,7 +27,7 @@ export default function init() {
   </style>
   <menu-component>
     <div id="user-menu-anchor" slot="anchor-el" display="inline-block">
-      <iconify-icon icon="carbon:user-avatar-filled" aria-label="user avatar"></iconify-icon>
+      <iconify-icon icon="carbon:user-avatar-filled" aria-label="user avatar" role="img"></iconify-icon>
       <p id="user-text"></p>
     </div>
     <div slot="menu-items" id="user-menu-dropdown">

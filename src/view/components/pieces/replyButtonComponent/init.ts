@@ -22,8 +22,8 @@ export default function replyButtonComponentInit() {
       }
 
     </style>
-    <button id="reply-button">
-      <iconify-icon icon="material-symbols:reply" aria-label="reply"></iconify-icon>
+    <button id="reply-button" aria-label="reply">
+      <iconify-icon icon="material-symbols:reply"></iconify-icon>
     </button>
   </template>
 

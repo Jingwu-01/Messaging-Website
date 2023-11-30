@@ -47,7 +47,7 @@ export default function workspaceMenuComponentInit() {
   <menu-component>
     <div id="workspace-menu-anchor" slot="anchor-el" display="inline-block">
       <p id="open-workspace-text">Select Workspace</p>
-      <iconify-icon id="dropdown-icon" icon="gridicons:dropdown" aria-label="open select workspace menu"></iconify-icon>
+      <iconify-icon id="dropdown-icon" icon="gridicons:dropdown" aria-label="open select workspace menu" role="button"></iconify-icon>
     </div>
     <div slot="menu-items" id="menu-items-wrapper">
       <div id="workspace-menu-items">

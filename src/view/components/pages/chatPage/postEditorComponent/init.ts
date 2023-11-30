@@ -69,17 +69,17 @@ export default function postEditorInit() {
 
     <section id="post-editor-wrapper">
         <ul id="post-operations">
-            <li id="bold-text"><iconify-icon icon="octicon:bold-16" aria-label="bold"></iconify-icon></li>
-            <li id="italicize-text"><iconify-icon icon="mingcute:italic-fill" aria-label="italicize"></iconify-icon></li>
-            <li id="link-text"><iconify-icon icon="material-symbols:link" aria-label="link"></iconify-icon></li>
-            <li id="smile-reaction"><iconify-icon icon="lucide:smile" aria-label="smile"></iconify-icon></li>
-            <li id="frown-reaction"><iconify-icon icon="lucide:frown" aria-label="frown"></iconify-icon></li>
-            <li id="like-reaction"><iconify-icon icon="mdi:like-outline" aria-label="like"></iconify-icon></li>
-            <li id="celebrate-reaction"><iconify-icon icon="mingcute:celebrate-line" aria-label="celebrate"></iconify-icon></li>
+            <li id="bold-text" aria-label="bold"><iconify-icon icon="octicon:bold-16"></iconify-icon></li>
+            <li id="italicize-text" aria-label="italicize"><iconify-icon icon="mingcute:italic-fill"></iconify-icon></li>
+            <li id="link-text" aria-label="link"><iconify-icon icon="material-symbols:link"></iconify-icon></li>
+            <li id="smile-reaction" aria-label="smile"><iconify-icon icon="lucide:smile"></iconify-icon></li>
+            <li id="frown-reaction" aria-label="frown"><iconify-icon icon="lucide:frown" ></iconify-icon></li>
+            <li id="like-reaction" aria-label="like"><iconify-icon icon="mdi:like-outline"></iconify-icon></li>
+            <li id="celebrate-reaction" aria-label="celebrate"><iconify-icon icon="mingcute:celebrate-line"></iconify-icon></li>
         </ul>
         <form id="post-form">
             <textarea id="post-input" name="post_input" aria-label="Type your post input"></textarea>
-            <button type="submit" id="post-submit">Send<iconify-icon id="send-icon" icon="tabler:send" aria-label="send"></iconify-icon>
+            <button type="submit" id="post-submit" aria-label="send">Send<iconify-icon id="send-icon" icon="tabler:send"></iconify-icon>
         </form>
     </section>
 </template>

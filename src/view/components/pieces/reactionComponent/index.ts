@@ -70,13 +70,13 @@ class ReactionComponent extends HTMLElement {
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     // Adjust the corresponding arial-labels and reactionName correctly. 
     if (newValue == "lucide:frown") {
-      this.reactionIcon.setAttribute("aria-label", "frown reaction")
+      this.reactionButton.setAttribute("aria-label", "frown reaction")
       this.reactionName = "frown";
     } else if (newValue == "mdi:like-outline") {
-      this.reactionIcon.setAttribute("aria-label", "like reaction")
+      this.reactionButton.setAttribute("aria-label", "like reaction")
       this.reactionName = "like";
     } else if (newValue == "mingcute:celebrate-line") {
-      this.reactionIcon.setAttribute("aria-label", "celebrate reaction")
+      this.reactionButton.setAttribute("aria-label", "celebrate reaction")
       this.reactionName = "celebrate";
     } else {
       throw new Error(newValue + " is not a valid iconify id.");
