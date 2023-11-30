@@ -28,6 +28,21 @@ export default function workspaceMenuComponentInit() {
       background-color: black;
       margin: 0 auto;
     }
+    edit-dialog-component:hover {
+      background-color: #3896b7; 
+    }
+    edit-dialog-component:active {
+      background-color: #0f2831; 
+    }
+    p:hover {
+      background-color: #3896b7; 
+      border-radius: 5px 5px 5px 5px;
+    }
+    p:active {
+      background-color: #0f2831; 
+    }
+
+    }
   </style>
   <menu-component>
     <div id="workspace-menu-anchor" slot="anchor-el" display="inline-block">
@@ -36,7 +51,6 @@ export default function workspaceMenuComponentInit() {
     </div>
     <div slot="menu-items" id="menu-items-wrapper">
       <div id="workspace-menu-items">
-
       </div>
       <div class="divider"></div>
       <open-dialog-button-component dialog="edit-workspaces-dialog">

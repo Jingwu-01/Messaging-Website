@@ -39,10 +39,11 @@ export default function channelSidebarComponentInit() {
         background-color: #0f2831; 
     }
     li {
+        font-size: 17px;
         border-radius: 5px 5px 5px 5px;
     }
     li:hover {
-        background-color: #26667C;
+        background-color: #3896b7; 
     }
     li:active {
         background-color: #163d4a; 

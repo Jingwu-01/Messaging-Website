@@ -20,6 +20,9 @@ export default function appBarComponentInit() {
       display: inline-block;
       color: white;
     }
+    p{
+      font-size: 20px;
+    }
     #title-wrapper{
       display: flex;
       align-items: center;

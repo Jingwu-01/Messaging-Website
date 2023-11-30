@@ -52,7 +52,7 @@ export default function postEditorInit() {
             font-size: 1.5em;
         }
         li:hover {
-            background-color: #26667C;
+            background-color: #3896b7; 
         }
         li:active {
             background-color: #163d4a; 

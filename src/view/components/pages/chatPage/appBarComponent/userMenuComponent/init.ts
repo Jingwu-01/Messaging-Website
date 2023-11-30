@@ -8,10 +8,21 @@ export default function init() {
   <style>
     iconify-icon{
       font-size: 48px;
+      color: #11303b;
     }
     #user-menu-anchor{
       display: flex;
       align-items: center;
+    }
+    #user-menu-dropdown p:hover{
+      background-color: #3896b7; 
+      border-radius: 5px 5px 5px 5px;
+    }
+    #user-menu-dropdown p:active{
+      background-color: #0f2831; 
+    }
+    iconify-icon:hover {
+      color: black;
     }
   </style>
   <menu-component>
@@ -19,7 +30,7 @@ export default function init() {
       <iconify-icon icon="carbon:user-avatar-filled" aria-label="user avatar"></iconify-icon>
       <p id="user-text"></p>
     </div>
-    <div slot="menu-items">
+    <div slot="menu-items" id="user-menu-dropdown">
       <p id="logout-button">Log Out</p>
     </div>
   </menu-component>
