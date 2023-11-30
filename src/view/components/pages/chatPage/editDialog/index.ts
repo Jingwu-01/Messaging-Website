@@ -52,6 +52,13 @@ export class EditDialogComponent extends HTMLElement {
     }
     this.dialog = dialog_query;
 
+    // Override the addEventListener method so that event listeners are added to the dialog.
+    // This is so that other elements can listen to close events on this dialog.
+    this.addEventListener = this.dialog.addEventListener.bind(this.dialog);
+    // Override the default appendChild method so that the child gets added to our dialog.
+    // This is so that the snackbar display can get moved into here.
+    this.appendChild = this.dialog.appendChild.bind(this.dialog);
+
     // Set up save and close button
     let save_and_close_button_query = this.shadowRoot?.querySelector(
       "#save-and-close-button"

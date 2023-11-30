@@ -16,6 +16,7 @@ import { openDialogButtonComponentInit } from "./components/pieces/openDialogBut
 import replyButtonComponentInit from "./components/pieces/replyButtonComponent/init";
 import reactionComponentInit from "./components/pieces/reactionComponent/init";
 import loadingButtonComponentInit from "./components/pieces/loadingButtonComponent/init";
+import snackbarInit from "./components/pieces/snackbarComponent/init";
 
 export function initView() {
   reactionComponentInit();
@@ -36,4 +37,5 @@ export function initView() {
   openDialogButtonComponentInit();
   replyButtonComponentInit();
   loadingButtonComponentInit();
+  snackbarInit();
 }

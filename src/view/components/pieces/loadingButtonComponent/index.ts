@@ -49,7 +49,6 @@ class LoadingButtonComponent extends HTMLElement {
   }
 
   onEventCompleted(event: EventWithId, message?: string) {
-    console.log("Detected event completed", event);
     // Remove "Loading..." text
     if (event.detail.id == this.loadingUntilEvent) {
       this.button.removeAttribute("disabled");
