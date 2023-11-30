@@ -18,5 +18,24 @@
     <edit-channels-dialog-component
       id="edit-channels-dialog"
     ></edit-channels-dialog-component>
+    <!--
+    Each time a snackbar is opened, it will go to this div. 
+    If a dialog gets opened, it will move into that dialog
+    so that it will render on the top layer.
+    Using inline styles so that the snackbar display can be moved to a different
+    DOM and keep the same styles.
+    -->
+    <div
+      id="snackbar-display"
+      style="
+        position: fixed;
+        right: 3vw;
+        bottom: 3vh;
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 1vh;
+        animation: none;
+      "
+    ></div>
   </body>
 </html>

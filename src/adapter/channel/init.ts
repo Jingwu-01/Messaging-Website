@@ -50,8 +50,17 @@ export function initChannels() {
       if (evt.detail.name == getAdapter().getOpenChannel()?.getName()) {
         getAdapter().setOpenChannel(null);
       }
-      // TODO handle promise rejection
-      await getAdapter().getOpenWorkspace()?.removeChannel(evt.detail.name);
+
+      // Try to remove the channel
+      try {
+        await getAdapter().getOpenWorkspace()?.removeChannel(evt.detail.name);
+      } catch (err) {
+        if (err instanceof Error) {
+          getView().displayError(err.message);
+        }
+      }
+
+      // Now that we've deleted the channel, get the updated list of channels.
       const channels = await getAdapter().getOpenWorkspace()?.getAllChannels();
       if (!channels) {
         throw new Error(
@@ -64,6 +73,7 @@ export function initChannels() {
         affectedChannels: modelToViewChannels(channels),
         cause: evt,
       });
+
       getView().completeEvent(evt);
     }
   );

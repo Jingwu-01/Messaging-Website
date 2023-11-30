@@ -47,8 +47,14 @@ export function initWorkspaces() {
     "workspaceCreated",
     async (evt: CustomEvent<CreateWorkspaceEvent>) => {
       slog.info(`Workspace added: ${evt.detail.name}`);
-      // TODO handle error if workspace wasn't added
-      await getModel().addWorkspace(evt.detail.name);
+
+      // Try to create the workspace
+      try {
+        await getModel().addWorkspace(evt.detail.name);
+      } catch (err) {
+        getView().displayError("Failed to add workspace");
+      }
+
       const workspaces = await getModel().getAllWorkspaces();
       getView().displayWorkspaces({
         allWorkspaces: modelToViewWorkspaces(workspaces),
