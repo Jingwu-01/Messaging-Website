@@ -59,17 +59,21 @@ export class ModelChannel {
                 JSON.stringify(response),
               ]);
               thisChannel.addPost(response);
+              const modelPostEvent = new CustomEvent("modelPostEvent", {
+                detail: { post: response }
+              });
+              document.dispatchEvent(modelPostEvent);
               slog.info(
                 "subscribeToPosts",
                 ["thisChannel.postMap", `${thisChannel.postMap}`],
                 ["thisChannel.postRoots", `${thisChannel.postRoots}`]
               );
-              const postsEvent = new CustomEvent("postsEvent", {
-                // NOTE: we are passing by reference here. so mutations will be seen.
-                // however, with kill and fill and queueing of events, this may not be an issue
-                detail: { postRoots: thisChannel.postRoots },
-              });
-              document.dispatchEvent(postsEvent);
+              // const postsEvent = new CustomEvent("postsEvent", {
+              //   // NOTE: we are passing by reference here. so mutations will be seen.
+              //   // however, with kill and fill and queueing of events, this may not be an issue
+              //   detail: { postRoots: thisChannel.postRoots },
+              // });
+              // document.dispatchEvent(postsEvent);
               // TODO: does TS use these 'break' statements
               // like are conventionally used?
             }
@@ -99,6 +103,11 @@ export class ModelChannel {
     if (parentPath === "" || parentPath === undefined) {
       this.postRoots.push(newPost);
       this.postMap.set(postName, newPost);
+      let modelPostEvent = new CustomEvent("modelPostEvent", {
+        detail: {post: newPost}
+      });
+      slog.info("addPost: root post event", ["modelPostEvent", modelPostEvent]);
+      document.dispatchEvent(modelPostEvent);
       this.addPendingPosts(postName, newPost);
       return true;
     }
@@ -141,12 +150,18 @@ export class ModelChannel {
     }
     if (parentPost.addChildPost(newPost)) {
       this.postMap.set(postName, newPost);
+      let modelPostEvent = new CustomEvent("modelPostEvent", {
+        detail: {post: newPost}
+      });
+      slog.info("addPost: child post event", ["modelPostEvent", modelPostEvent]);
+      document.dispatchEvent(modelPostEvent);
       this.addPendingPosts(postName, newPost);
     }
     return true;
   }
 
   addPendingPosts(addedPostName: string, addedPost: ModelPost): void {
+    slog.info("addPendingPosts: called", ["addedPostName", addedPostName], ["addedPost", addedPost]);
     let parentPendingPosts = this.pendingPosts.get(addedPostName);
     if (parentPendingPosts === undefined) {
       return;
@@ -154,6 +169,11 @@ export class ModelChannel {
     parentPendingPosts.forEach((pendingPost: ModelPost) => {
       addedPost.addChildPost(pendingPost);
       this.postMap.set(pendingPost.getName(), pendingPost);
+      let modelPostEvent = new CustomEvent("modelPostEvent", {
+        detail: {post: pendingPost}
+      });
+      slog.info("addPost: pending post event", ["modelPostEvent", modelPostEvent]);
+      document.dispatchEvent(modelPostEvent);
       this.addPendingPosts(pendingPost.getName(), pendingPost);
     });
     this.pendingPosts.delete(addedPostName);

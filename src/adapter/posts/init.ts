@@ -1,5 +1,5 @@
 import { getViewPosts } from "../../main";
-import { PostsEvent } from "../../model/modelTypes";
+import { ModelPostEvent, PostsEvent } from "../../model/modelTypes";
 import { slog } from "../../slog";
 import {
   CreatePostEvent,
@@ -13,25 +13,25 @@ import getStateManager from "../../state-manager";
 import createPost from "./createPost";
 
 export function initPosts() {
-  document.addEventListener(
-    "postsEvent",
-    function (evt: CustomEvent<PostsEvent>) {
-      // TODO: change console.log to slog
-      slog.info(
-        "postsEvent",
-        ["posts", `${JSON.stringify(evt.detail.postRoots)}`],
-        ["number of post roots", `${evt.detail.postRoots.length}`]
-      );
-      let viewPosts = getViewPosts(evt.detail.postRoots);
-      // TODO: change this, is just a placeholder
-      let viewPostUpdate: ViewPostUpdate = {
-        allPosts: viewPosts,
-        op: "add",
-        affectedPosts: new Array<ViewPost>(),
-      };
-      getView().displayPosts(viewPostUpdate);
-    }
-  );
+  // document.addEventListener(
+  //   "postsEvent",
+  //   function (evt: CustomEvent<PostsEvent>) {
+  //     // TODO: change console.log to slog
+  //     slog.info(
+  //       "postsEvent",
+  //       ["posts", `${JSON.stringify(evt.detail.postRoots)}`],
+  //       ["number of post roots", `${evt.detail.postRoots.length}`]
+  //     );
+  //     let viewPosts = getViewPosts(evt.detail.postRoots);
+  //     // TODO: change this, is just a placeholder
+  //     let viewPostUpdate: ViewPostUpdate = {
+  //       allPosts: viewPosts,
+  //       op: "add",
+  //       affectedPosts: new Array<ViewPost>(),
+  //     };
+  //     getView().displayPosts(viewPostUpdate);
+  //   }
+  // );
 
   document.addEventListener(
     "createPostEvent",
@@ -61,4 +61,12 @@ export function initPosts() {
 
   //   }
   // );
+
+
+  document.addEventListener("modelPostEvent", 
+  function(evt: CustomEvent<ModelPostEvent>) {
+    slog.info("modelPostEvent listener: received modelPostEvent", ["modelPostEvent.detail", `${JSON.stringify(evt.detail)}`]);
+      getAdapter().serializePostResponse(evt.detail.post);
+      // TODO: call serializePostResponse, and throw an error on the view if there's any error with the corresponding error message
+  })
 }

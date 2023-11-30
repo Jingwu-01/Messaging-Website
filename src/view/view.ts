@@ -133,10 +133,14 @@ export class View {
   displayPosts(posts: ViewPostUpdate) {
     // add a function call to modify this.posts to contain the new post
     // do the listener thing
-    this.posts = posts.allPosts;
+    // temporary check for testing
+    if (posts.op !== "insert") {
+      this.posts = posts.allPosts;
+    }
     this.postListeners.forEach((listener) => {
       listener.displayPosts(posts);
     });
+
   }
 
   addUserListener(listener: UserListener) {
