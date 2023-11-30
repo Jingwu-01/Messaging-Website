@@ -73,7 +73,7 @@ export default function homePageInit() {
           width: 2em;
       }
     </style>
-    <dialog id="dialog">
+    <dialog id="login-dialog">
     <div id="flex-container1">
       <h1>Messaging</h1>
       <p id="subtitle">A Messaging App for All Your Groups</p>

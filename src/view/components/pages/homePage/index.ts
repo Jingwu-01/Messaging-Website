@@ -2,37 +2,41 @@ import { slog } from "../../../../slog";
 
 class HomePage extends HTMLElement {
   private controller: AbortController | null = null;
-  private dialog: HTMLDialogElement; 
+  private dialog: HTMLDialogElement | null;
 
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
 
     if (this.shadowRoot) {
-      let template = document.querySelector("#home-page-template");
+      let template = document?.querySelector("#home-page-template");
       if (!(template instanceof HTMLTemplateElement)) {
-        throw new Error("home-page-template is not an HTML template element");
+        throw new Error("#home-page-template is not an HTML template element");
       } else {
         this.shadowRoot.append(template.content.cloneNode(true));
       }
     }
 
-    let dialog = this.shadowRoot?.querySelector("dialog");
+    let dialog = this.shadowRoot?.querySelector("#login-dialog");
     if (!(dialog instanceof HTMLDialogElement)) {
-      throw Error("Could not find a dialog element");
+      throw Error("#login dialog is not a HTMLDialog element");
     }
-    this.dialog = dialog; 
+    this.dialog = dialog;
+
+    this.dialog?.addEventListener("keydown", this.keyDown.bind(this));
   }
 
   connectedCallback(): void {
-    this.dialog.showModal();
+    // Show the login modal dialog
+    this.dialog?.showModal();
+
+    this.controller = new AbortController();
+    const options = { signal: this.controller.signal };
 
     const form = this.shadowRoot?.querySelector("#username-form");
     if (!(form instanceof HTMLFormElement)) {
       throw new Error("form not found");
     }
-    this.controller = new AbortController();
-    const options = { signal: this.controller.signal };
     form.addEventListener("submit", this.handleSubmit.bind(this), options);
   }
 
@@ -41,7 +45,7 @@ class HomePage extends HTMLElement {
     this.controller = null;
   }
 
-  handleSubmit(event: SubmitEvent) {
+  private handleSubmit(event: SubmitEvent) {
     event.preventDefault();
     const usernameInput = this.shadowRoot?.querySelector("#username-input");
     if (usernameInput instanceof HTMLInputElement) {
@@ -51,11 +55,24 @@ class HomePage extends HTMLElement {
       });
       slog.info(`User submitted login ${username}`);
       document.dispatchEvent(loginEvent);
-      this.dialog.close(); 
+      this.dialog?.close();
     } else {
       throw new Error(
         "Element with id #username-input is not a HTMLInputElement"
       );
+    }
+  }
+
+  // Deals with keyboard events, including esc and enter. 
+  private keyDown(event: KeyboardEvent) {
+    // Prevents the default action of closing the dialog by ESC.
+    if (event.key === "Escape") {
+      event.preventDefault();
+    }
+
+    // When enter is hit, submit the login request. 
+    if (event.key === "Enter" && this.dialog?.open) {
+      this.handleSubmit.bind(this);
     }
   }
 }
