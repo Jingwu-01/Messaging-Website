@@ -12,9 +12,9 @@ export class ModelPost {
 
   constructor(response: PostResponse) {
     // TODO: add more robust error handling here.
-    console.log(`Post constructor: response.path: ${response.path}`);
-    console.log(`Post constructor: response.path.split("/"): ${response.path.split("/")}`);
-    console.log(`Post constructor: response.path.split("/").pop(): ${response.path.split("/").pop()}`);
+    console.log(`ModelPost constructor: response.path: ${response.path}`);
+    console.log(`ModelPost constructor: response.path.split("/"): ${response.path.split("/")}`);
+    console.log(`ModelPost constructor: response.path.split("/").pop(): ${response.path.split("/").pop()}`);
     let name = response.path.split("/").pop()
     if (name === undefined) {
       throw Error("ModelPost constructor: internal server error; path is an empty string");

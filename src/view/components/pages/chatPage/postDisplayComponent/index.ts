@@ -71,8 +71,7 @@ export class PostDisplay extends HTMLElement {
     if (update.op === "modify") {
       // get the post that's affected
       // add the reaction
-    }
-    if (update.op === "insert") {
+    } else if (update.op === "insert") {
       let postToInsert = update.affectedPosts[0];
       let postComp = new PostComponent();
       postComp.addPostContent(postToInsert);

@@ -52,6 +52,7 @@ export function initPosts() {
   document.addEventListener("modelPostEvent", 
   function(evt: CustomEvent<ModelPostEvent>) {
     slog.info("modelPostEvent listener: received modelPostEvent", ["modelPostEvent.detail", `${JSON.stringify(evt.detail)}`]);
-      getAdapter().updateModelPost(evt.detail.post);
+      getAdapter().serializePostResponse(evt.detail.post);
+      // TODO: call serializePostResponse, and throw an error on the view if there's any error with the corresponding error message
   })
 }

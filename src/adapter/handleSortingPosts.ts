@@ -2,7 +2,7 @@ import { slog } from "../slog";
 import { AdapterPost } from "./adapterPost";
 
 // can have this take in a custom comparison function if you want.
-export function insertPostSorted(postList: Array<AdapterPost>, newPost: AdapterPost): number {
+export function insertPostSorted(postList: Array<AdapterPost>, newPost: AdapterPost, exists: boolean): number {
 
   let idx: number;
   slog.info("insertPostSorted", ["postList", postList], ["newPost", newPost]);
@@ -12,7 +12,15 @@ export function insertPostSorted(postList: Array<AdapterPost>, newPost: AdapterP
     }
   }
   slog.info("insertPostSorted: found idx", ["idx", idx]);
-  postList.splice(idx, 0, newPost);
+  if (exists) {
+    if (postList[idx].getName() !== newPost.getName()) {
+      throw new Error("couldn't find a post with the same name as the post already exists");
+    }
+    newPost.setReplies(postList[idx]);
+    postList[idx] = newPost;
+  } else {
+    postList.splice(idx, 0, newPost);
+  }
   return idx;
 
 

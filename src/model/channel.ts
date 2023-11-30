@@ -51,13 +51,17 @@ export class ModelChannel {
               // slog.info("subscribeToPosts", ["event.data", `${JSON.stringify(event.data)}`]);
               slog.info("update event for post", ["incoming post", JSON.stringify(response)]);
               thisChannel.addPost(response);
-              slog.info("subscribeToPosts", ["thisChannel.postMap", `${thisChannel.postMap}`], ["thisChannel.postRoots", `${thisChannel.postRoots}`]);
-              const postsEvent = new CustomEvent("postsEvent", {
-                // NOTE: we are passing by reference here. so mutations will be seen.
-                // however, with kill and fill and queueing of events, this may not be an issue
-                detail: { postRoots: thisChannel.postRoots },
+              const modelPostEvent = new CustomEvent("modelPostEvent", {
+                detail: { post: response }
               });
-              document.dispatchEvent(postsEvent);
+              document.dispatchEvent(modelPostEvent);
+              slog.info("subscribeToPosts", ["thisChannel.postMap", `${thisChannel.postMap}`], ["thisChannel.postRoots", `${thisChannel.postRoots}`]);
+              // const postsEvent = new CustomEvent("postsEvent", {
+              //   // NOTE: we are passing by reference here. so mutations will be seen.
+              //   // however, with kill and fill and queueing of events, this may not be an issue
+              //   detail: { postRoots: thisChannel.postRoots },
+              // });
+              // document.dispatchEvent(postsEvent);
               // TODO: does TS use these 'break' statements
               // like are conventionally used?
               }
