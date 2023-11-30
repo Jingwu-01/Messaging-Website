@@ -22,6 +22,9 @@ export default function editDialogComponentInit() {
       flex-direction: column;
       align-items: center;
     }
+    iconify-icon[icon="material-symbols:delete"]:hover {
+      color: #26667C;
+    }
   </style>
   <dialog id="dialog">
     <div id="dialog-content">

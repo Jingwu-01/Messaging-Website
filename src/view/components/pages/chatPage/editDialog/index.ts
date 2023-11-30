@@ -68,6 +68,12 @@ export class EditDialogComponent extends HTMLElement {
     this.saveAndCloseButton.addEventListener("click", () => {
       this.close();
     });
+
+    this.dialog?.addEventListener('keydown', (event) => {
+      if (event.key === "Enter" && this.dialog?.open) {
+        this.onAdd(this.addItemInput.value);
+      }
+    });
   }
 
   showModal() {
