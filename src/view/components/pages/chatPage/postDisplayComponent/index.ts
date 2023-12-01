@@ -8,7 +8,6 @@ import { PostEditor } from "../postEditorComponent";
 import ReplyButtonComponent from "../../../pieces/replyButtonComponent";
 
 export class PostDisplay extends HTMLElement {
-
   private postsContainer: HTMLElement;
 
   private postEditor: PostEditor;
@@ -36,7 +35,9 @@ export class PostDisplay extends HTMLElement {
     this.shadowRoot.append(template.content.cloneNode(true));
 
     let postsContainer = this.shadowRoot.querySelector("#posts-container");
-    let postDisplayWrapper = this.shadowRoot.querySelector("#postdisplay-wrapper");
+    let postDisplayWrapper = this.shadowRoot.querySelector(
+      "#postdisplay-wrapper"
+    );
 
     if (!(postsContainer instanceof HTMLElement)) {
       throw Error("Could not find an element with the posts-container id");
@@ -230,7 +231,7 @@ export class PostDisplay extends HTMLElement {
 
   moveEditPostEditorTo(postEl: PostComponent) {
     this.moveReplyPostEditorTo(postEl);
-    let postText = postEl.getPostText(); 
+    let postText = postEl.getPostText();
     if (postText) {
       this.postEditor.setText(postText);
     }

@@ -1,6 +1,8 @@
 import { slog } from "../../../../slog";
 import { getView } from "../../../view";
 
+// This component was formerly a page, but is now a dialog.
+// Prompts the user to log in.
 class HomePage extends HTMLElement {
   private controller: AbortController | null = null;
   private dialog: HTMLDialogElement;
@@ -39,8 +41,8 @@ class HomePage extends HTMLElement {
     this.submitButton = submit_button;
 
     // These allow snackbars to render when this dialog is open.
-    this.addEventListener = this.dialog.addEventListener;
-    this.appendChild = this.dialog.appendChild;
+    this.addEventListener = this.dialog.addEventListener.bind(this.dialog);
+    this.appendChild = this.dialog.appendChild.bind(this.dialog);
   }
 
   connectedCallback(): void {
@@ -76,13 +78,15 @@ class HomePage extends HTMLElement {
       // Disable the form while we wait to log in.
       this.submitButton.setAttribute("disabled", "");
       // When login is successful, re-enable the form and close this dialog.
-      getView().waitForEvent(event_id, () => {
-        this.dialog.close();
+      getView().waitForEvent(event_id, (event, error) => {
+        if (!error) {
+          this.dialog.close();
+        }
         this.submitButton.removeAttribute("disabled");
       });
     } else {
       throw new Error(
-        "Element with id #username-input is not a HTMLInputElement",
+        "Element with id #username-input is not a HTMLInputElement"
       );
     }
   }
@@ -98,6 +102,14 @@ class HomePage extends HTMLElement {
     if (event.key === "Enter" && this.dialog?.open) {
       this.handleSubmit.bind(this);
     }
+  }
+
+  showModal() {
+    this.dialog.showModal();
+  }
+
+  close() {
+    this.dialog.close();
   }
 }
 

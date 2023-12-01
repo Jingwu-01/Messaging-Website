@@ -21,7 +21,7 @@ interface PostDisplayListener {
 interface PostListener {
   displayPosts(posts: ViewPostUpdate): void;
   moveReplyPostEditorTo(postEl: PostComponent): void;
-  moveEditPostEditorTo(postEl: PostComponent): void; 
+  moveEditPostEditorTo(postEl: PostComponent): void;
 }
 
 interface UserListener {
@@ -65,11 +65,12 @@ export class View {
   private channelListeners: Array<ChannelListener> =
     new Array<ChannelListener>();
 
-  private postDisplayListeners: Array<PostDisplayListener> = new Array<PostDisplayListener>();
+  private postDisplayListeners: Array<PostDisplayListener> =
+    new Array<PostDisplayListener>();
 
   private eventCompletedListeners = new Map<
     string,
-    Array<(event: EventWithId) => void>
+    Array<(event: EventWithId, error_message?: string) => void>
   >();
 
   private workspaces = new Array<ViewWorkspace>();
@@ -82,20 +83,10 @@ export class View {
 
   private openChannel: ViewChannel | null = null;
 
-  private m3ssag1n8AppComponent: M3ssagin8AppComponent;
-
   // Snackbars will render into this component
   private snackbarDisplay: HTMLElement;
 
   constructor() {
-    let m3ssag1n8AppComponent = document.querySelector(
-      "m3ssagin8-app-component",
-    );
-    if (!(m3ssag1n8AppComponent instanceof M3ssagin8AppComponent)) {
-      throw Error("main(): could not find a m3ssagin8-app-component element");
-    }
-    this.m3ssag1n8AppComponent = m3ssag1n8AppComponent;
-
     let snackbarDisplay = document.querySelector("#snackbar-display");
     if (!(snackbarDisplay instanceof HTMLElement)) {
       throw new Error("main(): could not find a #snackbar-display div");
@@ -116,14 +107,6 @@ export class View {
     });
   }
 
-  setChatPage() {
-    this.m3ssag1n8AppComponent?.setChatPage();
-  }
-
-  setHomePage() {
-    this.m3ssag1n8AppComponent?.setHomePage();
-  }
-
   addPostListener(listener: PostListener) {
     this.postListeners.push(listener);
     // TODO: change this, is just a placeholder for now.
@@ -139,7 +122,7 @@ export class View {
     let index = this.postListeners.indexOf(listener);
     if (index < 0) {
       throw new ReferenceError(
-        "Attempted to remove a post listener that was not subscribed",
+        "Attempted to remove a post listener that was not subscribed"
       );
     }
     this.postListeners.splice(index, 1);
@@ -221,19 +204,30 @@ export class View {
 
   addPostDisplayListener(listener: PostDisplayListener) {
     this.postDisplayListeners.push(listener);
-    slog.info("View: addPostDisplayListener", ["listener", listener], ["this.postDisplayListeners", this.postDisplayListeners]);
+    slog.info(
+      "View: addPostDisplayListener",
+      ["listener", listener],
+      ["this.postDisplayListeners", this.postDisplayListeners]
+    );
   }
 
   removePostDisplayListener(listener: PostDisplayListener) {
     let index = this.postDisplayListeners.indexOf(listener);
-    slog.info("View: removePostDisplayListener", ["listener", listener], ["index", index]);
+    slog.info(
+      "View: removePostDisplayListener",
+      ["listener", listener],
+      ["index", index]
+    );
     if (index < 0) {
       throw new ReferenceError(
-        "Attempted to remove a post display listener that was not subscribed",
+        "Attempted to remove a post display listener that was not subscribed"
       );
     }
     this.postDisplayListeners.splice(index, 1);
-    slog.info("View: removePostDisplayListener, after removing listener", ["this.postDisplayListeners", this.postDisplayListeners]);
+    slog.info("View: removePostDisplayListener, after removing listener", [
+      "this.postDisplayListeners",
+      this.postDisplayListeners,
+    ]);
   }
 
   displayPostDisplay() {
@@ -246,12 +240,15 @@ export class View {
   removePostDisplay() {
     this.postDisplayListeners.forEach((listener) => {
       listener.removePostDisplay();
-    })
+    });
   }
 
   // When the Adapter calls .completeEvent(event),
   // callback will be called.
-  waitForEvent(id: string, callback: (event: EventWithId) => void) {
+  waitForEvent(
+    id: string,
+    callback: (event: EventWithId, error?: string) => void
+  ) {
     let arr = this.eventCompletedListeners.get(id);
     if (!arr) {
       arr = [];
@@ -264,6 +261,14 @@ export class View {
   completeEvent(event: EventWithId) {
     this.eventCompletedListeners.get(event.detail.id)?.forEach((callback) => {
       callback(event);
+    });
+  }
+
+  // The Adapter should call this when an event passed to it by the View results in an error.
+  failEvent(event: EventWithId, error_message: string) {
+    this.displayError(error_message);
+    this.eventCompletedListeners.get(event.detail.id)?.forEach((callback) => {
+      callback(event, error_message);
     });
   }
 

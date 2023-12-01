@@ -10,6 +10,11 @@ export default function workspaceMenuComponentInit() {
       font-size: 48px;
       color: white;
     }
+    #workspace-menu-items{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
     #workspace-menu-anchor{
       display: flex;
       align-items: center;
@@ -41,10 +46,8 @@ export default function workspaceMenuComponentInit() {
     p:active {
       background-color: #0f2831; 
     }
-
-    }
   </style>
-  <menu-component>
+  <menu-component id="menu">
     <div id="workspace-menu-anchor" slot="anchor-el" display="inline-block">
       <p id="open-workspace-text">Select Workspace</p>
       <iconify-icon id="dropdown-icon" icon="gridicons:dropdown" aria-label="open select workspace menu" role="button"></iconify-icon>

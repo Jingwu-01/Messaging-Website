@@ -45,7 +45,7 @@ class LoadingButtonComponent extends HTMLElement {
   }
   static get observedAttributes(): Array<string> {
     // Attributes to observe
-    return ["disabled-until-event", "loading-until-event"];
+    return ["disabled-until-event", "loading-until-event", "style"];
   }
   attributeChangedCallback(
     name: string,
@@ -69,6 +69,10 @@ class LoadingButtonComponent extends HTMLElement {
         this.loadingText.setAttribute("hidden", "");
         this.content.removeAttribute("hidden");
       });
+    }
+    // Pass button styles to child
+    else if (name == "style") {
+      this.button.setAttribute("style", newValue);
     }
   }
 }

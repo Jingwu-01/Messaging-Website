@@ -25,7 +25,7 @@ export default function postDisplayComponentInit() {
       </section>
     </section>
 </template>
-`,
+`
   );
 
   customElements.define("post-display-component", PostDisplay);

@@ -16,7 +16,7 @@ export class EditDialogComponent extends HTMLElement {
 
     this.attachShadow({ mode: "open" });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#edit-dialog-component-template",
+      "#edit-dialog-component-template"
     );
     if (!template) {
       throw Error("Could not find template #edit-dialog-component-template");
@@ -61,7 +61,7 @@ export class EditDialogComponent extends HTMLElement {
 
     // Set up save and close button
     let save_and_close_button_query = this.shadowRoot?.querySelector(
-      "#save-and-close-button",
+      "#save-and-close-button"
     );
     if (!(save_and_close_button_query instanceof HTMLElement)) {
       throw Error("Could not find a save and close button");
@@ -71,22 +71,15 @@ export class EditDialogComponent extends HTMLElement {
 
   connectedCallback(): void {
     this.addItemButton.addEventListener("click", () => {
-      const event = this.getAddEvent(this.addItemInput.value);
-      if (event) {
-        this.addItemButton.setAttribute("loading-until-event", event.detail.id);
-        this.saveAndCloseButton.setAttribute(
-          "disabled-until-event",
-          event.detail.id,
-        );
-        document.dispatchEvent(event);
-      }
+      this.onAdd(this.addItemInput.value);
     });
 
     this.saveAndCloseButton.addEventListener("click", () => {
       this.close();
     });
 
-    this.dialog?.addEventListener("keydown", (event) => {
+    // TODO improve accessibility so that remove can be accessed with keyboard
+    this.dialog.addEventListener("keydown", (event) => {
       if (event.key === "Enter" && this.dialog?.open) {
         this.onAdd(this.addItemInput.value);
       }
@@ -95,6 +88,7 @@ export class EditDialogComponent extends HTMLElement {
 
   showModal() {
     this.dialog.showModal();
+    this.addItemInput.focus();
   }
 
   close() {
@@ -115,7 +109,7 @@ export class EditDialogComponent extends HTMLElement {
       new_item_element.classList.add("item");
       // query the remove button
       const remove_button = new_item_element.querySelector(
-        `#remove-item-${index}`,
+        `#remove-item-${index}`
       );
       if (!remove_button) {
         throw new Error("Failed to add remove button for new item");
@@ -124,15 +118,14 @@ export class EditDialogComponent extends HTMLElement {
         // get the event we want to send to the adapter
         const event = this.getRemoveEvent(item_name);
         if (event) {
-          console.log(event);
           // disable buttons to handle concurrency.
           this.addItemButton.setAttribute(
             "disabled-until-event",
-            event.detail.id,
+            event.detail.id
           );
           this.saveAndCloseButton.setAttribute(
             "disabled-until-event",
-            event.detail.id,
+            event.detail.id
           );
           remove_button.setAttribute("loading-until-event", event.detail.id);
           // dispatch the event.
@@ -141,6 +134,18 @@ export class EditDialogComponent extends HTMLElement {
       });
       this.itemDisplay.appendChild(new_item_element);
     });
+  }
+
+  onAdd(new_item_name: string) {
+    const event = this.getAddEvent(new_item_name);
+    if (event) {
+      this.addItemButton.setAttribute("loading-until-event", event.detail.id);
+      this.saveAndCloseButton.setAttribute(
+        "disabled-until-event",
+        event.detail.id
+      );
+      document.dispatchEvent(event);
+    }
   }
 }
 
