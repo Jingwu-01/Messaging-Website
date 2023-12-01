@@ -45,6 +45,7 @@ export class ModelChannel {
           // When we receive a new post, add it to our internal array
           // and send an event with all the posts.
           case "update":
+            slog.info("subscribeToPosts", ["event.data", event.data]);
             const response = JSON.parse(event.data) as PostResponse;
             const valid = validatePostResponse(response);
             if (!valid) {

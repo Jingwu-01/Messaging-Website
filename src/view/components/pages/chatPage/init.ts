@@ -30,7 +30,6 @@ export default function chatPageInit() {
     <app-bar-component></app-bar-component>
     <main>
       <channel-sidebar-component></channel-sidebar-component>
-      <post-display-component></post-display-component>
     </main>
   </div>
 </template>

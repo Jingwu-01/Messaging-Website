@@ -6,6 +6,13 @@ export default function postEditorInit() {
     `
 <template id="post-editor-template">
     <style>
+        #post-editor-header {
+            display: flex;
+            flex-direction: row;
+        }
+        .editor-op--end {
+            margin-left: auto;
+        }
         #post-operations li {
             display: inline-block;
         }
@@ -63,20 +70,21 @@ export default function postEditorInit() {
         #post-submit:active{
             background-color: #0f2831; 
         }
-        
-
     </style>
 
     <section id="post-editor-wrapper">
-        <ul id="post-operations">
-            <li id="bold-text" aria-label="bold"><iconify-icon icon="octicon:bold-16"></iconify-icon></li>
-            <li id="italicize-text" aria-label="italicize"><iconify-icon icon="mingcute:italic-fill"></iconify-icon></li>
-            <li id="link-text" aria-label="link"><iconify-icon icon="material-symbols:link"></iconify-icon></li>
-            <li id="smile-reaction" aria-label="smile"><iconify-icon icon="lucide:smile"></iconify-icon></li>
-            <li id="frown-reaction" aria-label="frown"><iconify-icon icon="lucide:frown" ></iconify-icon></li>
-            <li id="like-reaction" aria-label="like"><iconify-icon icon="mdi:like-outline"></iconify-icon></li>
-            <li id="celebrate-reaction" aria-label="celebrate"><iconify-icon icon="mingcute:celebrate-line"></iconify-icon></li>
-        </ul>
+        <section id="post-editor-header">
+            <ul id="post-operations">
+                <li id="bold-text" aria-label="bold"><iconify-icon icon="octicon:bold-16"></iconify-icon></li>
+                <li id="italicize-text" aria-label="italicize"><iconify-icon icon="mingcute:italic-fill"></iconify-icon></li>
+                <li id="link-text" aria-label="link"><iconify-icon icon="material-symbols:link"></iconify-icon></li>
+                <li id="smile-reaction" aria-label="smile"><iconify-icon icon="lucide:smile"></iconify-icon></li>
+                <li id="frown-reaction" aria-label="frown"><iconify-icon icon="lucide:frown" ></iconify-icon></li>
+                <li id="like-reaction" aria-label="like"><iconify-icon icon="mdi:like-outline"></iconify-icon></li>
+                <li id="celebrate-reaction" aria-label="celebrate"><iconify-icon icon="mingcute:celebrate-line"></iconify-icon></li>
+            </ul>
+            <button id="cancel-reply" class="editor-op--end"><iconify-icon icon="octicon:x-12"></iconify-icon></button>
+        </section>
         <form id="post-form">
             <textarea id="post-input" name="post_input" aria-label="Type your post input"></textarea>
             <button type="submit" id="post-submit" aria-label="send">Send<iconify-icon id="send-icon" icon="tabler:send"></iconify-icon>
