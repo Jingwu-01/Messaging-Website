@@ -7,12 +7,15 @@ export default function snackbarInit() {
     <template id="snackbar-component-template">
       <style>
         #wrapper{
+          animation: fade-in 0.5s;
+          position: relative;
+          display: inline-block;
+        }
+        #snackbar-content {
           display: flex;
           padding: 0px 20px;
           gap: 10px;
           align-items: center;
-          animation: fade-in 0.5s;
-          position: relative;
         }
         
         @keyframes fade-in {
@@ -27,10 +30,12 @@ export default function snackbarInit() {
         }
       </style>
       <div id="wrapper">
-        <slot name="content"></slot>
-        <button id="close-button">
-          <iconify-icon icon="material-symbols:close" aria-label="close"></iconify-icon>
-        </button>
+        <div id="snackbar-content">
+          <slot name="content"></slot>
+          <button id="close-button">
+            <iconify-icon icon="material-symbols:close" aria-label="close"></iconify-icon>
+          </button>
+        </div>
       </div>
     </template>
     `

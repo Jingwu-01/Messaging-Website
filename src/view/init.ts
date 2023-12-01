@@ -17,8 +17,12 @@ import replyButtonComponentInit from "./components/pieces/replyButtonComponent/i
 import reactionComponentInit from "./components/pieces/reactionComponent/init";
 import loadingButtonComponentInit from "./components/pieces/loadingButtonComponent/init";
 import snackbarInit from "./components/pieces/snackbarComponent/init";
+import { getView } from "./view";
+import snackbarDisplayInit from "./components/pieces/snackbarDisplayComponent/init";
 
+// Called when main.ts initializes the view. Used for setup.
 export function initView() {
+  // Initialize / register components.
   reactionComponentInit();
   popoverComponentInit();
   menuComponentInit();
@@ -38,4 +42,8 @@ export function initView() {
   replyButtonComponentInit();
   loadingButtonComponentInit();
   snackbarInit();
+  snackbarDisplayInit();
+
+  // Open the login dialog on page load.
+  getView().openDialog("login-dialog");
 }

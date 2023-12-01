@@ -14,7 +14,12 @@ export function initChannels() {
     "channelSelected",
     function (evt: CustomEvent<SelectChannelEvent>) {
       slog.info("initChannels", ["Channel Selected", `${evt.detail.name}`]);
-      getStateManager().setOpenChannel(evt.detail.name);
+      try {
+        getStateManager().setOpenChannel(evt.detail.name);
+      } catch (err) {
+        getView().failEvent(evt, "Failed to select channel");
+      }
+      getView().completeEvent(evt);
     }
   );
 
@@ -28,10 +33,16 @@ export function initChannels() {
       try {
         await getStateManager().getOpenWorkspace()?.addChannel(evt.detail.name);
       } catch {
-        getView().displayError("Failed to add channel");
+        getView().failEvent(evt, "Failed to add channel");
+        return;
       }
 
-      await refreshChannels(evt);
+      try {
+        await refreshChannels(evt);
+      } catch (err) {
+        getView().failEvent(evt, "Failed to refresh channels");
+        return;
+      }
       getView().completeEvent(evt);
     }
   );
@@ -52,12 +63,15 @@ export function initChannels() {
           .getOpenWorkspace()
           ?.removeChannel(evt.detail.name);
       } catch (err) {
-        if (err instanceof Error) {
-          getView().displayError("Failed to remove channel");
-        }
+        getView().failEvent(evt, "Failed to remove channel");
+        return;
       }
-
-      await refreshChannels(evt);
+      try {
+        await refreshChannels(evt);
+      } catch (err) {
+        getView().failEvent(evt, "Failed to refresh channels");
+        return;
+      }
       getView().completeEvent(evt);
     }
   );

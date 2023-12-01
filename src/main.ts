@@ -83,9 +83,6 @@ function main(): void {
 
   initAdapter();
   initView();
-
-  getView().setHomePage();
-  getView().setChatPage();
 }
 
 function viewPostConverter(modelPost: ModelPost): ViewPost {

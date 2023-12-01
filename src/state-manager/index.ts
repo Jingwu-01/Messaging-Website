@@ -21,7 +21,7 @@ class StateManager {
   async setOpenWorkspace(
     workspaceName: string | null
   ): Promise<ModelWorkspace | null> {
-    // open
+    // Close workspace if we passed a null.
     if (workspaceName == null) {
       this.openWorkspace = null;
       await this.setOpenChannel(null);
@@ -37,7 +37,7 @@ class StateManager {
     await this.setOpenChannel(null);
     // Display the new open workspace.
     getView().displayOpenWorkspace({
-      name: this.openWorkspace.path.slice(1),
+      name: this.openWorkspace.getName(),
     });
     return this.openWorkspace;
   }

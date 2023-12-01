@@ -17,18 +17,23 @@ export function initWorkspaces() {
     "workspaceSelected",
     async function (evt: CustomEvent<SelectWorkspaceEvent>) {
       slog.info(`Workspace selected: ${evt.detail.name}`);
-
       // Set the open workspace
       try {
         await getStateManager().setOpenWorkspace(evt.detail.name);
       } catch (err) {
-        getView().displayError("Failed to select workspace");
+        getView().failEvent(evt, "Failed to select workspace");
+        return;
       }
       slog.info("initWorkspaces", [
         "Opened Channel displaying view channels",
         "",
       ]);
-      await refreshChannels(evt);
+      try {
+        await refreshChannels(evt);
+      } catch (err) {
+        getView().failEvent(evt, "Failed to refresh channels");
+        return;
+      }
       // De-render the posts from the old channel.
       let viewPostUpdate: ViewPostUpdate = {
         allPosts: [],
@@ -36,6 +41,7 @@ export function initWorkspaces() {
         affectedPosts: [],
       };
       getView().displayPosts(viewPostUpdate);
+      getView().completeEvent(evt);
     }
   );
   document.addEventListener(
@@ -47,10 +53,17 @@ export function initWorkspaces() {
       try {
         await getModel().addWorkspace(evt.detail.name);
       } catch (err) {
-        getView().displayError("Failed to add workspace");
+        getView().failEvent(evt, "Failed to add workspace");
+        return;
       }
 
-      await refreshWorkspaces(evt);
+      try {
+        await refreshWorkspaces(evt);
+      } catch (error) {
+        getView().failEvent(evt, "Failed to refresh workspaces");
+        return;
+      }
+
       getView().completeEvent(evt);
     }
   );

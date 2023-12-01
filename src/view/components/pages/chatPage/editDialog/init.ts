@@ -26,6 +26,13 @@ export default function editDialogComponentInit() {
     iconify-icon[icon="material-symbols:delete"]:hover {
       color: #26667C;
     }
+    dialog {
+      background-color: #add8e6;
+      text-align: center;
+      border: none;
+      box-shadow: #00000029 2px 2px 5px 2px;
+      border-radius: 10px;
+    }
   </style>
   <dialog id="dialog">
     <div id="dialog-content">

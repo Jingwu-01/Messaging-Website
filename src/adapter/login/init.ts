@@ -16,7 +16,8 @@ export function initLogin() {
         // Log in with the input username and then display it
         await model.login(event.detail.username);
       } catch (err) {
-        getView().displayError("Failed to log in");
+        getView().failEvent(event, "Failed to log in");
+        return;
       }
 
       view.displayUser({
@@ -24,7 +25,12 @@ export function initLogin() {
       });
 
       // Display the open workspaces.
-      await refreshWorkspaces(event);
+      try {
+        await refreshWorkspaces(event);
+      } catch (error) {
+        getView().failEvent(event, "Failed to refresh workspaces");
+        return;
+      }
       getView().completeEvent(event);
     }
   );

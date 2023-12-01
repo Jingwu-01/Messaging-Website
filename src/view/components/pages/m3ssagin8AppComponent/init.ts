@@ -6,6 +6,7 @@ function m3ssagin8AppComponentInit() {
     `
     <template id="m3ssagin8-app-template">
       <div id="app">
+        <chat-page></chat-page>
       </div>
     </template>
     `

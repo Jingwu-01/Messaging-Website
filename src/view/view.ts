@@ -60,7 +60,7 @@ export class View {
 
   private eventCompletedListeners = new Map<
     string,
-    Array<(event: EventWithId) => void>
+    Array<(event: EventWithId, error_message?: string) => void>
   >();
 
   private workspaces = new Array<ViewWorkspace>();
@@ -73,20 +73,10 @@ export class View {
 
   private openChannel: ViewChannel | null = null;
 
-  private m3ssag1n8AppComponent: M3ssagin8AppComponent;
-
   // Snackbars will render into this component
   private snackbarDisplay: HTMLElement;
 
   constructor() {
-    let m3ssag1n8AppComponent = document.querySelector(
-      "m3ssagin8-app-component"
-    );
-    if (!(m3ssag1n8AppComponent instanceof M3ssagin8AppComponent)) {
-      throw Error("main(): could not find a m3ssagin8-app-component element");
-    }
-    this.m3ssag1n8AppComponent = m3ssag1n8AppComponent;
-
     let snackbarDisplay = document.querySelector("#snackbar-display");
     if (!(snackbarDisplay instanceof HTMLElement)) {
       throw new Error("main(): could not find a #snackbar-display div");
@@ -99,14 +89,6 @@ export class View {
     this.postListeners.forEach((listener) => {
       listener.movePostEditorTo(postElement);
     });
-  }
-
-  setChatPage() {
-    this.m3ssag1n8AppComponent?.setChatPage();
-  }
-
-  setHomePage() {
-    this.m3ssag1n8AppComponent?.setHomePage();
   }
 
   addPostListener(listener: PostListener) {
@@ -203,7 +185,10 @@ export class View {
 
   // When the Adapter calls .completeEvent(event),
   // callback will be called.
-  waitForEvent(id: string, callback: (event: EventWithId) => void) {
+  waitForEvent(
+    id: string,
+    callback: (event: EventWithId, error?: string) => void
+  ) {
     let arr = this.eventCompletedListeners.get(id);
     if (!arr) {
       arr = [];
@@ -216,6 +201,14 @@ export class View {
   completeEvent(event: EventWithId) {
     this.eventCompletedListeners.get(event.detail.id)?.forEach((callback) => {
       callback(event);
+    });
+  }
+
+  // The Adapter should call this when an event passed to it by the View results in an error.
+  failEvent(event: EventWithId, error_message: string) {
+    this.displayError(error_message);
+    this.eventCompletedListeners.get(event.detail.id)?.forEach((callback) => {
+      callback(event, error_message);
     });
   }
 

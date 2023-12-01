@@ -10,7 +10,10 @@ export class PostDisplay extends HTMLElement {
 
   private postEditor: PostEditor;
 
-  private postToHTMLChildren: Map<string, HTMLElement> = new Map<string, HTMLElement>();
+  private postToHTMLChildren: Map<string, HTMLElement> = new Map<
+    string,
+    HTMLElement
+  >();
 
   constructor() {
     super();
@@ -31,7 +34,7 @@ export class PostDisplay extends HTMLElement {
 
     let channelHeader = this.shadowRoot.querySelector("#channel-name");
     let postsContainer = this.shadowRoot.querySelector("#posts-container");
-    let postEditor = this.shadowRoot.querySelector("post-editor-component");
+    let postEditor = this.shadowRoot.querySelector("#post-editor");
 
     if (!(channelHeader instanceof HTMLElement)) {
       throw Error("Could not find an element with the channel-name id");
@@ -87,7 +90,11 @@ export class PostDisplay extends HTMLElement {
     }
   }
 
-  displayPostsHelper(postEl: PostComponent, childrenPosts: Array<ViewPost>, childrenContainer: HTMLElement) {
+  displayPostsHelper(
+    postEl: PostComponent,
+    childrenPosts: Array<ViewPost>,
+    childrenContainer: HTMLElement
+  ) {
     for (let childPost of childrenPosts) {
       let childPostEl = new PostComponent();
       childPostEl.addPostContent(childPost);
@@ -99,8 +106,15 @@ export class PostDisplay extends HTMLElement {
       let nextChildContainer = document.createElement("section");
       nextChildContainer.classList.add("post-children");
       this.postToHTMLChildren.set(childPostPathArr[5], nextChildContainer);
-      childPostEl.parentNode?.insertBefore(nextChildContainer, childPostEl.nextSibling);
-      this.displayPostsHelper(childPostEl, childPost.children, nextChildContainer);
+      childPostEl.parentNode?.insertBefore(
+        nextChildContainer,
+        childPostEl.nextSibling
+      );
+      this.displayPostsHelper(
+        childPostEl,
+        childPost.children,
+        nextChildContainer
+      );
     }
   }
 
@@ -112,7 +126,6 @@ export class PostDisplay extends HTMLElement {
     }
     this.postEditor.setParentPath(postPath);
   }
-
 }
 
 export default PostDisplay;

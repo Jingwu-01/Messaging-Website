@@ -18,5 +18,6 @@ export default async function createPost(postData: CreatePostEvent) {
     })
     .catch(() => {
       getView().displayError("Failed to create post");
+      return;
     });
 }
