@@ -78,6 +78,7 @@ export type ViewChannelUpdate = {
   cause: Event;
 };
 
+/* ReactionData is have fields including smiles, frown, like and celebrate*/ 
 export type ReactionData = {
   smile: string[];
   frown: string[];

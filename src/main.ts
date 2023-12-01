@@ -29,6 +29,7 @@ declare const process: {
 };
 
 // TODO: can you declare a global in both the model AND the view?
+/* Defines all the customEvents. */
 declare global {
   interface DocumentEventMap {
     postsEvent: CustomEvent<PostsEvent>;

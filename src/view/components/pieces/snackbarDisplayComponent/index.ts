@@ -2,6 +2,7 @@
 class SnackbarDisplayComponent extends HTMLElement {
   private display: HTMLElement;
 
+  // Constructor for snack bar. 
   constructor() {
     super();
 
