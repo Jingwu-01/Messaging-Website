@@ -2,11 +2,7 @@ import { slog } from "../slog";
 import { ModelChannel } from "./channel";
 import { getModel } from "./model";
 import { WorkspaceResponse } from "../../types/workspaceResponse";
-import {
-  getDatabasePath,
-  validateChannelResponse,
-  validateGetChannelsResponse,
-} from "./utils";
+import { validateChannelResponse, validateGetChannelsResponse } from "./utils";
 import { ChannelResponse } from "../../types/channelResponse";
 import { GetChannelsResponse } from "../../types/getChannelsResponse";
 
@@ -33,7 +29,7 @@ export class ModelWorkspace {
           headers: {
             accept: "application/json",
           },
-        },
+        }
       );
       const valid = validateChannelResponse(response);
       if (!valid) {
@@ -55,7 +51,7 @@ export class ModelWorkspace {
       this.channels = new Map<string, ModelChannel>();
       slog.info("getAllChannels", ["this.path", `${this.path}`]);
       let db_channels = await getModel().typedModelFetch<GetChannelsResponse>(
-        `${this.path}/channels/`,
+        `${this.path}/channels/`
       );
       const valid = validateGetChannelsResponse(db_channels);
       if (!valid) {
@@ -78,16 +74,14 @@ export class ModelWorkspace {
   async addChannel(channel_name: string): Promise<void> {
     // Add this channel under this workspace to the API
     await getModel().typedModelFetch<any>(
-      `${this.path}/channels/${channel_name}`,
+      `${this.path}/channels/${channel_name}?timestamp=0`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          timestamp: 0,
-        }),
-      },
+        body: JSON.stringify({}),
+      }
     );
     // Give it a "posts" collection
     await getModel().typedModelFetch<any>(
@@ -98,7 +92,7 @@ export class ModelWorkspace {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({}),
-      },
+      }
     );
     // Now, either:
     // 1. we are subscribed to channels, so OWLDB will send back a message which updates the state
