@@ -149,73 +149,37 @@ export class PostComponent extends HTMLElement {
     }
     currentUsername = currentUser.username;
 
-    if (viewPost.reactions === undefined) {
-      slog.info("addPostContent", ["viewPost.reactions is undefined", viewPost]);
-      return;
-    }
-
-    if (viewPost.reactions.smile !== undefined) {
-      smileCount = viewPost.reactions.smile.length;
-      if (viewPost.reactions.smile.includes(currentUsername)) {
-        this.smileReaction.classList.add("reacted");
-      }
-    } else {
-      smileCount = 0; 
+    smileCount = viewPost.reactions.smile.length;
+    if (viewPost.reactions.smile.includes(currentUsername)) {
+      this.smileReaction.classList.add("reacted");
     }
     
-    if (viewPost.reactions.frown !== undefined) {
-      frownCount = viewPost.reactions.frown.length;
-      if (viewPost.reactions.frown.includes(currentUsername)) {
-        this.frownReaction.classList.add("reacted");
-      }
-    } else {
-      frownCount = 0; 
+    frownCount = viewPost.reactions.frown.length;
+    if (viewPost.reactions.frown.includes(currentUsername)) {
+      this.frownReaction.classList.add("reacted");
     }
 
-    if (viewPost.reactions.like !== undefined) {
-      likeCount = viewPost.reactions.like.length;
-      if (viewPost.reactions.like.includes(currentUsername)) {
-        this.likeReaction.classList.add("reacted");
-      }
-    } else {
-      likeCount = 0; 
+    likeCount = viewPost.reactions.like.length;
+    if (viewPost.reactions.like.includes(currentUsername)) {
+      this.likeReaction.classList.add("reacted");
     }
 
-    if (viewPost.reactions.celebrate !== undefined) {
-      celebrateCount = viewPost.reactions.celebrate.length;
-      if (viewPost.reactions.celebrate.includes(currentUsername)) {
-        this.celebrateReaction.classList.add("reacted");
-      }
-    } else {
-      celebrateCount = 0; 
+    celebrateCount = viewPost.reactions.celebrate.length;
+    if (viewPost.reactions.celebrate.includes(currentUsername)) {
+      this.celebrateReaction.classList.add("reacted");
     }
 
     slog.info("addPostContent", ["smileCount", smileCount], ["frownCount", frownCount], ["likeCount", likeCount], ["celebrateCount", celebrateCount]);
 
-    const smileReaction = this.shadowRoot?.querySelector("reaction-component");
-    slog.info("addPostContent", ["smileReaction", smileReaction?.cloneNode(true)], ["typeof smileReaction", typeof smileReaction], ["smileReaction instanceof ReactionComponent", smileReaction instanceof ReactionComponent]);
-    if (!(smileReaction instanceof HTMLElement)){
-      throw new Error ("smileReaction is not a ReactionComponent");
-    }
-    smileReaction.setAttribute("reaction-count", smileCount.toString());
+    // const smileReaction = this.shadowRoot?.querySelector("reaction-component");
+    // slog.info("addPostContent", ["smileReaction", smileReaction?.cloneNode(true)], ["typeof smileReaction", typeof smileReaction], ["smileReaction instanceof ReactionComponent", smileReaction instanceof ReactionComponent]);
+    this.smileReaction.setAttribute("reaction-count", smileCount.toString());
 
-    const frownReaction = this.shadowRoot?.querySelector("#frown-reaction");
-    if (!(frownReaction instanceof HTMLElement)){
-      throw new Error ("frownReaction is not a ReactionComponent");
-    }
-    frownReaction.setAttribute("reaction-count", frownCount.toString());
+    this.frownReaction.setAttribute("reaction-count", frownCount.toString());
 
-    const likeReaction = this.shadowRoot?.querySelector("#like-reaction");
-    if (!(likeReaction instanceof HTMLElement)){
-      throw new Error ("likeReaction is not a ReactionComponent");
-    }
-    likeReaction.setAttribute("reaction-count", likeCount.toString());
+    this.likeReaction.setAttribute("reaction-count", likeCount.toString());
 
-    const celebrateReaction = this.shadowRoot?.querySelector("#celebrate-reaction");
-    if (!(celebrateReaction instanceof HTMLElement)){
-      throw new Error ("celebrateReaction is not a ReactionComponent");
-    }
-    celebrateReaction.setAttribute("reaction-count", celebrateCount.toString());
+    this.celebrateReaction.setAttribute("reaction-count", celebrateCount.toString());
   }
 
   // Adds childrenPosts as replies to this ViewPost.
