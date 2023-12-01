@@ -48,7 +48,10 @@ export class OwlDBModel {
       // headers will be overwritten.
       ...options.headers,
     };
-    slog.info("typedModelFetch", ["getDatabasePath()${url}", `${getDatabasePath()}${url}`]);
+    slog.info("typedModelFetch", [
+      "getDatabasePath()${url}",
+      `${getDatabasePath()}${url}`,
+    ]);
     return typedFetch<T>(`${getDatabasePath()}${url}`, options);
   }
 
@@ -159,7 +162,7 @@ export class OwlDBModel {
         ]);
         // TODO: make a custom login error class so we can gracefully handle this situation by notifying the user.
         throw new Error(
-          "invalid getting all workspaces response received from owldb",
+          "invalid getting all workspaces response received from owldb"
         );
       }
       db_workspaces.forEach((workspace_response) => {
@@ -167,7 +170,7 @@ export class OwlDBModel {
         let workspace_name = split_path[split_path.length - 1];
         this.workspaces.set(
           workspace_name,
-          new ModelWorkspace(workspace_response),
+          new ModelWorkspace(workspace_response)
         );
       });
     }
@@ -178,14 +181,12 @@ export class OwlDBModel {
   // Will not overwrite an existing workspace.
   async addWorkspace(workspace_name: string): Promise<void> {
     // Add this workspace to the API
-    await this.typedModelFetch<any>(`/${workspace_name}`, {
+    await this.typedModelFetch<any>(`/${workspace_name}?timestamp=0`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        timestamp: 0,
-      }),
+      body: JSON.stringify({}),
     });
     // Give it a "channels" collection
     await this.typedModelFetch<any>(`/${workspace_name}/channels/`, {
@@ -209,7 +210,7 @@ export class OwlDBModel {
   }
 
   async updateReaction(
-    reactionUpdate: ModelReactionUpdate,
+    reactionUpdate: ModelReactionUpdate
   ): Promise<PatchDocumentResponse> {
     let patches = new Array<PatchBody>();
     let addReactionObject: PatchBody = {
@@ -222,7 +223,7 @@ export class OwlDBModel {
       path: `/reactions/${reactionUpdate.reactionName}`,
       op: "ObjectAdd",
       value: [],
-    }
+    };
     patches.push(addReactionArray);
     let op: "ArrayAdd" | "ArrayRemove";
     if (reactionUpdate.add) {
@@ -249,7 +250,7 @@ export class OwlDBModel {
     return getModel()
       .typedModelFetch<PatchDocumentResponse>(
         `${reactionUpdate.postPath}`,
-        options,
+        options
       )
       .then((response) => {
         slog.info("updateReaction", ["response", response]);

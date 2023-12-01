@@ -1,11 +1,8 @@
-import { react } from "@babel/types";
 import { slog } from "../../../../../slog";
 import { ViewPost, ViewPostUpdate } from "../../../../datatypes";
 import { getView } from "../../../../view";
-import ReactionComponent from "../../../pieces/reactionComponent";
 import { PostComponent } from "../postComponent";
 import { PostEditor } from "../postEditorComponent";
-import ReplyButtonComponent from "../../../pieces/replyButtonComponent";
 
 export class PostDisplay extends HTMLElement {
   private postsContainer: HTMLElement;

@@ -1,5 +1,5 @@
 import { PostResponse } from "../../../types/postResponse";
-import { PostReactions, ReactionData, ViewPost } from "../../view/datatypes";
+import { ReactionData, ViewPost } from "../../view/datatypes";
 import { AdapterPost } from "./adapterPost";
 
 function convertReactions(postResponse: PostResponse): ReactionData {

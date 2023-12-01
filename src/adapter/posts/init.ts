@@ -1,17 +1,6 @@
-import { getViewPosts } from "../../main";
-import {
-  ModelPostEvent,
-  ModelReactionUpdate,
-  PostsEvent,
-} from "../../model/modelTypes";
+import { ModelPostEvent, ModelReactionUpdate } from "../../model/modelTypes";
 import { slog } from "../../slog";
-import {
-  CreatePostEvent,
-  ReactionUpdateEvent,
-  ViewPost,
-  ViewPostUpdate,
-} from "../../view/datatypes";
-import { getView } from "../../view/view";
+import { CreatePostEvent, ReactionUpdateEvent } from "../../view/datatypes";
 import { getModel } from "../../model/model";
 import getStateManager from "../../state-manager";
 import createPost from "./createPost";
@@ -45,7 +34,7 @@ export function initPosts() {
         `${JSON.stringify(evt.detail)}`,
       ]);
       createPost(evt.detail);
-    },
+    }
   );
 
   document.addEventListener(
@@ -88,7 +77,7 @@ export function initPosts() {
             `${JSON.stringify(error)}`,
           ]);
         });
-    },
+    }
   );
 
   // document.addEventListener(
@@ -110,6 +99,6 @@ export function initPosts() {
       ]);
       getStateManager().serializePostResponse(evt.detail.post);
       // TODO: call serializePostResponse, and throw an error on the view if there's any error with the corresponding error message
-    },
+    }
   );
 }
