@@ -1,4 +1,4 @@
-import { typedFetch } from "../model/utils";
+import { typedFetch } from "../src/model/utils";
 
 export async function setupBasicApp() {
   const { token } = await typedFetch<{
