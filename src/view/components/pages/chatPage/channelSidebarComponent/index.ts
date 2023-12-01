@@ -20,16 +20,16 @@ export class ChannelSidebar extends HTMLElement {
     this.attachShadow({ mode: "open" });
 
     let template = document.querySelector(
-      "#channel-sidebar-component-template"
+      "#channel-sidebar-component-template",
     );
     if (!(template instanceof HTMLTemplateElement)) {
       throw Error(
-        "element with id #channel-sidebar-component-template was not found"
+        "element with id #channel-sidebar-component-template was not found",
       );
     }
     if (this.shadowRoot === null) {
       throw Error(
-        "could not find shadow DOM root for channeldisplay element in constructor"
+        "could not find shadow DOM root for channeldisplay element in constructor",
       );
     }
 
@@ -44,12 +44,12 @@ export class ChannelSidebar extends HTMLElement {
     this.channelList = channelList;
 
     let edit_channels_button_wrapper_query = this.shadowRoot.querySelector(
-      "#edit-channels-button-wrapper"
+      "#edit-channels-button-wrapper",
     );
 
     if (!(edit_channels_button_wrapper_query instanceof HTMLElement)) {
       throw Error(
-        "Could not find an element with the edit-channels-button-wrapper id"
+        "Could not find an element with the edit-channels-button-wrapper id",
       );
     }
 
@@ -82,15 +82,15 @@ export class ChannelSidebar extends HTMLElement {
     if (channelIdx === undefined) {
       // TODO: test to reproduce this error
       throw Error(
-        "displayOpenChannel: trying to display a channel that doesn't exist on the view"
+        "displayOpenChannel: trying to display a channel that doesn't exist on the view",
       );
     }
     let selectedChannelEl = this.shadowRoot?.querySelector(
-      "#channel-select-" + channelIdx
+      "#channel-select-" + channelIdx,
     );
     if (!(selectedChannelEl instanceof HTMLElement)) {
       throw Error(
-        `displayOpenChannel: selected element with ID #channel-select-${channel.name} is not an HTML element`
+        `displayOpenChannel: selected element with ID #channel-select-${channel.name} is not an HTML element`,
       );
     }
     selectedChannelEl.classList.add("selected-channel");
@@ -114,7 +114,7 @@ export class ChannelSidebar extends HTMLElement {
         document.dispatchEvent(
           new CustomEvent("channelSelected", {
             detail: { name: channel.name },
-          })
+          }),
         );
       });
     });

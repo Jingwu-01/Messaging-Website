@@ -60,7 +60,7 @@ export default function channelSidebarComponentInit() {
         </open-dialog-button-component>
     </div>
 </template>
-`
+`,
   );
   // an example channel element looks like:
   // <li id="channel-select-{channel-name}">{channel-name}</li>
