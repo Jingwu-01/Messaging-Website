@@ -1,5 +1,6 @@
 import MenuComponent from ".";
 
+/* Initializes the HTML template for menu component and register the menu  custom element. */
 export default function init() {
   document.body.insertAdjacentHTML(
     "beforeend",

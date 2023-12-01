@@ -1,5 +1,6 @@
 import SnackbarComponent from ".";
 
+/* Initializes the HTML template for snack bar and register the snack bar custom element. */
 export default function snackbarInit() {
   document.body.insertAdjacentHTML(
     "beforeend",

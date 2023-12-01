@@ -1,3 +1,4 @@
+/* Defines the custom element for MenuComponent, which will be used as a menu component web component. */
 class MenuComponent extends HTMLElement {
   private popoverElement: HTMLElement;
 

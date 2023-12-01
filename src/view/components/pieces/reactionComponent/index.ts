@@ -2,8 +2,10 @@ import { slog } from "../../../../slog";
 import { ReactionUpdateEvent } from "../../../datatypes";
 import { getView } from "../../../view";
 
+// Reactions could be only one of the four defined reactions types. 
 type reactions = "smile" | "frown" | "like" | "celebrate";
 
+/* Defines the custom element for ReactionComponent, which will be used as a reaction component web component. */
 class ReactionComponent extends HTMLElement {
   private controller: AbortController | null = null;
   private reactionIcon: HTMLElement;

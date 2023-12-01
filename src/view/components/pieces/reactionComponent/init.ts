@@ -1,3 +1,4 @@
+/* Initializes the HTML template for reaction component and register the reaction component custom element. */
 import ReactionComponent from ".";
 
 export default function reactionComponentInit() {

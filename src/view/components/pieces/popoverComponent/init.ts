@@ -1,3 +1,4 @@
+/* Initializes the HTML template for popover component and register the popover component custom element. */
 import PopoverComponent from ".";
 
 export default function init() {

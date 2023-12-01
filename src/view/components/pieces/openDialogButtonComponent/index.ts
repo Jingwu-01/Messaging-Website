@@ -1,5 +1,6 @@
 import { getView } from "../../../view";
 
+/* Defines the custom element for OpenDialogButtonComponent, which will be used as a openDialogbutton component web component. */
 export class OpenDialogButtonComponent extends HTMLElement {
   dialog_id: string = "";
 

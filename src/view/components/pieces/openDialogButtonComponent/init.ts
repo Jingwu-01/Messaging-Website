@@ -1,5 +1,6 @@
 import OpenDialogButtonComponent from ".";
 
+/* Initializes the HTML template for open dialog component and register the open dialog component custom element. */
 export function openDialogButtonComponentInit() {
   document.body.insertAdjacentHTML(
     "beforeend",

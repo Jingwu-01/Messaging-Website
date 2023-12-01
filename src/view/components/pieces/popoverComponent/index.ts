@@ -1,3 +1,4 @@
+/* Defines the custom element for PopoverComponent, which will be used as a popover component web component. */
 class PopoverComponent extends HTMLElement {
   constructor() {
     super();

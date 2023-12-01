@@ -1,5 +1,6 @@
 import HoverComponent from ".";
 
+/* Initializes the HTML template for hover component and register the hover component custom element. */
 export default function hoverComponentInit() {
   document.body.insertAdjacentHTML(
     "beforeend",

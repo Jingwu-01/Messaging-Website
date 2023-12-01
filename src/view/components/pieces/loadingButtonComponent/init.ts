@@ -1,5 +1,6 @@
 import LoadingButtonComponent from ".";
 
+/* Initializes the HTML template for loading button and register loading button custom element. */
 export default function loadingButtonComponentInit() {
   document.body.insertAdjacentHTML(
     "beforeend",

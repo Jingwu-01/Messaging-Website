@@ -1,3 +1,4 @@
+/* Defines the custom element for HoverComponent, which will be used as a hover web component. */
 class HoverComponent extends HTMLElement {
   constructor() {
     super();
