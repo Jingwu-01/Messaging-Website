@@ -45,7 +45,7 @@ export type ReactionData = {
 
 export type PostReactions = {
   [k: string]: string[];
-}
+};
 
 export type ViewUser = {
   username: string;

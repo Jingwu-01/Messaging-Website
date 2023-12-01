@@ -66,9 +66,15 @@ class ReactionComponent extends HTMLElement {
       throw new Error("countText is not an HTML paragraph element");
     } else {
       countText.innerHTML = count.toString();
-      slog.info("addReactionCount: set count", ["countText.innerHTML", countText.innerHTML]);
+      slog.info("addReactionCount: set count", [
+        "countText.innerHTML",
+        countText.innerHTML,
+      ]);
     }
-    slog.info("addReactionCount: after setting count", ["countText", countText]);
+    slog.info("addReactionCount: after setting count", [
+      "countText",
+      countText,
+    ]);
   }
 
   static get observedAttributes(): string[] {
@@ -99,7 +105,6 @@ class ReactionComponent extends HTMLElement {
       this.count = numReactionCount;
       this.addReactionCount(numReactionCount);
     }
-
   }
 }
 

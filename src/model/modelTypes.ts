@@ -10,16 +10,15 @@ export type ModelPostEvent = {
   post: PostResponse;
 };
 
-
 export type ModelReactionUpdate = {
-    reactionName: string;
-    userName: string;
-    postPath: string;
-    add: boolean;
-}
+  reactionName: string;
+  userName: string;
+  postPath: string;
+  add: boolean;
+};
 
 export type PatchBody = {
-    op: "ArrayAdd" | "ArrayRemove" | "ObjectAdd";
-    path: string;
-    value: any;
-}
+  op: "ArrayAdd" | "ArrayRemove" | "ObjectAdd";
+  path: string;
+  value: any;
+};

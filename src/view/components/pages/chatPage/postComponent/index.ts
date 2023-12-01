@@ -16,7 +16,7 @@ export class PostComponent extends HTMLElement {
   private postMsg: string | undefined;
 
   private smileReaction: HTMLElement;
-  
+
   private frownReaction: HTMLElement;
 
   private likeReaction: HTMLElement;
@@ -42,7 +42,9 @@ export class PostComponent extends HTMLElement {
     let smileReaction = this.shadowRoot.querySelector("#smile-reaction");
     let likeReaction = this.shadowRoot.querySelector("#like-reaction");
     let frownReaction = this.shadowRoot.querySelector("#frown-reaction");
-    let celebrateReaction = this.shadowRoot.querySelector("#celebrate-reaction");
+    let celebrateReaction = this.shadowRoot.querySelector(
+      "#celebrate-reaction",
+    );
     let replyButton = this.shadowRoot.querySelector("reply-button-component");
 
     if (!(postHeader instanceof HTMLElement)) {
@@ -140,11 +142,13 @@ export class PostComponent extends HTMLElement {
 
     let smileCount, frownCount, likeCount, celebrateCount: number;
 
-    let currentUsername: string
+    let currentUsername: string;
     let currentUser = getView().getUser();
     if (currentUser === null) {
       // this is the case where we're logged out but dealing with this event.
-      slog.info("addPostContent: trying to add a post when a user is logged out, dead request");
+      slog.info(
+        "addPostContent: trying to add a post when a user is logged out, dead request",
+      );
       return;
     }
     currentUsername = currentUser.username;
@@ -153,7 +157,7 @@ export class PostComponent extends HTMLElement {
     if (viewPost.reactions.smile.includes(currentUsername)) {
       this.smileReaction.classList.add("reacted");
     }
-    
+
     frownCount = viewPost.reactions.frown.length;
     if (viewPost.reactions.frown.includes(currentUsername)) {
       this.frownReaction.classList.add("reacted");
@@ -169,7 +173,13 @@ export class PostComponent extends HTMLElement {
       this.celebrateReaction.classList.add("reacted");
     }
 
-    slog.info("addPostContent", ["smileCount", smileCount], ["frownCount", frownCount], ["likeCount", likeCount], ["celebrateCount", celebrateCount]);
+    slog.info(
+      "addPostContent",
+      ["smileCount", smileCount],
+      ["frownCount", frownCount],
+      ["likeCount", likeCount],
+      ["celebrateCount", celebrateCount],
+    );
 
     // const smileReaction = this.shadowRoot?.querySelector("reaction-component");
     // slog.info("addPostContent", ["smileReaction", smileReaction?.cloneNode(true)], ["typeof smileReaction", typeof smileReaction], ["smileReaction instanceof ReactionComponent", smileReaction instanceof ReactionComponent]);
@@ -179,7 +189,10 @@ export class PostComponent extends HTMLElement {
 
     this.likeReaction.setAttribute("reaction-count", likeCount.toString());
 
-    this.celebrateReaction.setAttribute("reaction-count", celebrateCount.toString());
+    this.celebrateReaction.setAttribute(
+      "reaction-count",
+      celebrateCount.toString(),
+    );
   }
 
   // Adds childrenPosts as replies to this ViewPost.
@@ -250,7 +263,6 @@ export class PostComponent extends HTMLElement {
     if (viewPost.msg !== this.postMsg) {
       this.appendFormattedText(viewPost.msg, this.postBody);
     }
-    
   }
 }
 

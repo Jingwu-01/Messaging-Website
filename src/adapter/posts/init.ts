@@ -1,5 +1,9 @@
 import { getViewPosts } from "../../main";
-import { ModelPostEvent, ModelReactionUpdate, PostsEvent } from "../../model/modelTypes";
+import {
+  ModelPostEvent,
+  ModelReactionUpdate,
+  PostsEvent,
+} from "../../model/modelTypes";
 import { slog } from "../../slog";
 import {
   CreatePostEvent,
@@ -44,36 +48,48 @@ export function initPosts() {
     },
   );
 
-  document.addEventListener("reactionUpdateEvent", (event: CustomEvent<ReactionUpdateEvent>) => {
-    let model = getModel();
-    if (event.detail.userName === undefined) {
-      // this corresponds to the case where we forget to remove the event handler, and it still handles the event when there is no username.
-      slog.error("reactionUpdateEvent listener", ["user name is undefined", `${event.detail.userName}`]);
-      return;
-    }
-    let modelUpdate: ModelReactionUpdate = {
-      reactionName: event.detail.reactionName,
-      userName: event.detail.userName,
-      postPath: event.detail.postPath,
-      add: event.detail.add
-    }
-    model.updateReaction(modelUpdate).then((response) => {
-      slog.info("reactionUpdateEvent listener", ["update reaction request went through", `${JSON.stringify(response)}`]);
-      if (response.patchFailed) {
-        // // TODO: display an error on the view, the patch failed
-        // slog.error("reactionUpdateEvent listener", ["patchFailed", ""]);
-      } else {
-        // return 
-        // somehow notify the view? nothing to notify the view here; it's all subscriptions.
+  document.addEventListener(
+    "reactionUpdateEvent",
+    (event: CustomEvent<ReactionUpdateEvent>) => {
+      let model = getModel();
+      if (event.detail.userName === undefined) {
+        // this corresponds to the case where we forget to remove the event handler, and it still handles the event when there is no username.
+        slog.error("reactionUpdateEvent listener", [
+          "user name is undefined",
+          `${event.detail.userName}`,
+        ]);
+        return;
       }
-    })
-    .catch((error: Error) => {
-      // TODO: what if it's just a schema error?
-      slog.error("reactionUpdateEvent listener", ["error from model.updateReaction", `${JSON.stringify(error)}`]);
-    });
-  }
-  )
-
+      let modelUpdate: ModelReactionUpdate = {
+        reactionName: event.detail.reactionName,
+        userName: event.detail.userName,
+        postPath: event.detail.postPath,
+        add: event.detail.add,
+      };
+      model
+        .updateReaction(modelUpdate)
+        .then((response) => {
+          slog.info("reactionUpdateEvent listener", [
+            "update reaction request went through",
+            `${JSON.stringify(response)}`,
+          ]);
+          if (response.patchFailed) {
+            // // TODO: display an error on the view, the patch failed
+            // slog.error("reactionUpdateEvent listener", ["patchFailed", ""]);
+          } else {
+            // return
+            // somehow notify the view? nothing to notify the view here; it's all subscriptions.
+          }
+        })
+        .catch((error: Error) => {
+          // TODO: what if it's just a schema error?
+          slog.error("reactionUpdateEvent listener", [
+            "error from model.updateReaction",
+            `${JSON.stringify(error)}`,
+          ]);
+        });
+    },
+  );
 
   // document.addEventListener(
   //   "reactionUpdateEvent",

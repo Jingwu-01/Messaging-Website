@@ -3,22 +3,22 @@ import { PostReactions, ReactionData, ViewPost } from "../../view/datatypes";
 import { AdapterPost } from "./adapterPost";
 
 function convertReactions(postResponse: PostResponse): ReactionData {
-    if (postResponse.doc.reactions === undefined) {
-        return {
-            smile: [],
-            frown: [],
-            like: [],
-            celebrate: []
-        }
-    } else {
-        return {
-            smile: [],
-            frown: [],
-            like: [],
-            celebrate: [],
-            ...postResponse.doc.reactions
-        }
-    }
+  if (postResponse.doc.reactions === undefined) {
+    return {
+      smile: [],
+      frown: [],
+      like: [],
+      celebrate: [],
+    };
+  } else {
+    return {
+      smile: [],
+      frown: [],
+      like: [],
+      celebrate: [],
+      ...postResponse.doc.reactions,
+    };
+  }
 }
 
 export function adapterViewPostConverter(adapterPost: AdapterPost): ViewPost {

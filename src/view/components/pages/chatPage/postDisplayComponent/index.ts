@@ -78,7 +78,7 @@ export class PostDisplay extends HTMLElement {
       slog.info(
         "displayPosts: insert",
         ["postToUpsert.parent", postToUpsert.parent],
-        ["postToUpsert", postToUpsert]
+        ["postToUpsert", postToUpsert],
       );
       let postChildren: NodeListOf<Element> | undefined;
       let parentEl: HTMLElement;
@@ -131,7 +131,7 @@ export class PostDisplay extends HTMLElement {
         ["postToUpsert.postIdx", postToUpsert.postIdx],
         ["postChildren", postChildren],
         ["postChildren.length", postChildren.length],
-        ["postComp", postComp]
+        ["postComp", postComp],
       );
       if (opString === "modify") {
         postComp.modifyPostContent(postToUpsert);
@@ -165,7 +165,10 @@ export class PostDisplay extends HTMLElement {
           childrenContainer,
           postComp.nextSibling,
         );
-        slog.info("displayPosts", ["postComp.parentNode?", postComp.parentNode]);
+        slog.info("displayPosts", [
+          "postComp.parentNode?",
+          postComp.parentNode,
+        ]);
       }
     } else {
       this.postsContainer.innerHTML = "";
