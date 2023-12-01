@@ -12,7 +12,9 @@ export class PostComponent extends HTMLElement {
 
   private controller: AbortController | null = null;
 
-  postMsg: string | undefined;
+  private postMsg: string | undefined;
+
+  private postUser: string | undefined;
 
   private smileReaction: HTMLElement;
 
@@ -140,6 +142,7 @@ export class PostComponent extends HTMLElement {
     if (postUserText != null) {
       postUserText.innerHTML = viewPost.createdUser;
     }
+    this.postUser = viewPost.createdUser; 
     // assumed that time is in ms
     let postTimeObj = new Date(viewPost.postTime);
     let postTimeShortEl = this.postHeader.querySelector("#post-time-short");
@@ -213,6 +216,12 @@ export class PostComponent extends HTMLElement {
       "reaction-count",
       celebrateCount.toString(),
     );
+    
+    let loggedinUser = getView().getUser()?.username
+    if (!(loggedinUser === this.postUser)){
+      this.editPostButton.setAttribute("data-visible", "false")
+    }
+
   }
 
   // Adds childrenPosts as replies to this ViewPost.
@@ -283,6 +292,10 @@ export class PostComponent extends HTMLElement {
     if (viewPost.msg !== this.postMsg) {
       this.appendFormattedText(viewPost.msg, this.postBody);
     }
+  }
+
+  getPostText(){
+    return this.postMsg
   }
 }
 

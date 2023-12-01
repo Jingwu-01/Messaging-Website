@@ -34,6 +34,12 @@ export default function postComponentInit() {
         .reacted {
             border: solid;
         }
+        edit-post-button-component[data-visible="true"]{
+            display: inline-block
+        }
+        edit-post-button-component[data-visible="false"]{
+            display: none
+        }
     </style>
     <section>
         <header id="post-header">
@@ -54,7 +60,7 @@ export default function postComponentInit() {
             <reaction-component icon="lucide:frown" id="frown-reaction"></reaction-component> 
             <reaction-component icon="mdi:like-outline" id="like-reaction"></reaction-component> 
             <reaction-component icon="mingcute:celebrate-line" id="celebrate-reaction"></reaction-component> 
-            <edit-post-button-component></edit-post-button-component>
+            <edit-post-button-component data-visible="true"></edit-post-button-component>
         </section> 
         <div id="post-child-container">
         </div>
