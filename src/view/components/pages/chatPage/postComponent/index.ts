@@ -1,6 +1,7 @@
 import { slog } from "../../../../../slog";
 import { ReactionData, ViewPost } from "../../../../datatypes";
 import { getView } from "../../../../view";
+import EditPostButtonComponent from "../../../pieces/editComponent";
 import ReactionComponent from "../../../pieces/reactionComponent";
 import ReplyButtonComponent from "../../../pieces/replyButtonComponent";
 import { PostEditor } from "../postEditorComponent";
@@ -16,8 +17,6 @@ export class PostComponent extends HTMLElement {
 
   private postUser: string | undefined;
 
-  private smileReaction: HTMLElement;
-
   private replyButton: ReplyButtonComponent;
 
   private reactionButtons: Map<string, ReactionComponent> = new Map<string, ReactionComponent>();
@@ -26,7 +25,7 @@ export class PostComponent extends HTMLElement {
 
   private postMsg: string | undefined;
 
-  private editPostButton : HTMLElement; 
+  private editPostButton: EditPostButtonComponent; 
 
   constructor() {
     super();
@@ -42,14 +41,6 @@ export class PostComponent extends HTMLElement {
     this.shadowRoot.append(template.content.cloneNode(true));
     let postHeader = this.shadowRoot.querySelector("#post-header");
     let postBody = this.shadowRoot.querySelector("#post-body");
-    let smileReaction = this.shadowRoot.querySelector("#smile-reaction");
-    let likeReaction = this.shadowRoot.querySelector("#like-reaction");
-    let frownReaction = this.shadowRoot.querySelector("#frown-reaction");
-    let celebrateReaction = this.shadowRoot.querySelector(
-      "#celebrate-reaction",
-    );
-    let replyButton = this.shadowRoot.querySelector("reply-button-component");
-    let editPostButton = this.shadowRoot.querySelector("edit-post-button-component")
     let postButtons = this.shadowRoot.querySelector("#post-buttons");
 
     if (!(postHeader instanceof HTMLElement)) {
@@ -59,11 +50,7 @@ export class PostComponent extends HTMLElement {
       throw new Error("Could not find an element with the #post-body id");
     }
     if (!(postButtons instanceof HTMLElement)) {
-      throw new Error("Could not find an elmenet with the #post-buttons id")
-    }
-
-    if (!(editPostButton instanceof HTMLElement)) {
-      throw Error("Could not find a edit-post-button-component element")
+      throw new Error("Could not find an element with the #post-buttons id")
     }
 
     this.postHeader = postHeader;
@@ -78,9 +65,11 @@ export class PostComponent extends HTMLElement {
       "celebrate": "mingcute:celebrate-line"
     }
     let replyButton = new ReplyButtonComponent();
+    let editPostButton = new EditPostButtonComponent();
     this.postButtons.append(replyButton);
+    this.postButtons.append(editPostButton);
     this.replyButton = replyButton;
-    this.editPostButton = editPostButton
+    this.editPostButton = editPostButton;
 
     for (const [reactionName, reactionIcon] of Object.entries(reactions)) {
       let reactionComp = new ReactionComponent();
@@ -186,33 +175,11 @@ export class PostComponent extends HTMLElement {
       reactionButton.setAttribute("reaction-count", reactionCount.toString());
       reactionButton.setParentPath(viewPost.path);
     }
-
-    slog.info(
-      "addPostContent",
-      ["smileCount", smileCount],
-      ["frownCount", frownCount],
-      ["likeCount", likeCount],
-      ["celebrateCount", celebrateCount],
-    );
-
-    // const smileReaction = this.shadowRoot?.querySelector("reaction-component");
-    // slog.info("addPostContent", ["smileReaction", smileReaction?.cloneNode(true)], ["typeof smileReaction", typeof smileReaction], ["smileReaction instanceof ReactionComponent", smileReaction instanceof ReactionComponent]);
-    this.smileReaction.setAttribute("reaction-count", smileCount.toString());
-
-    this.frownReaction.setAttribute("reaction-count", frownCount.toString());
-
-    this.likeReaction.setAttribute("reaction-count", likeCount.toString());
-
-    this.celebrateReaction.setAttribute(
-      "reaction-count",
-      celebrateCount.toString(),
-    );
     
     let loggedinUser = getView().getUser()?.username
     if (!(loggedinUser === this.postUser)){
       this.editPostButton.setAttribute("data-visible", "false")
     }
-
   }
 
   // Adds childrenPosts as replies to this ViewPost.
@@ -315,7 +282,7 @@ export class PostComponent extends HTMLElement {
   }
 
   getPostText(){
-    return this.postMsg
+    return this.postMsg;
   }
 }
 
