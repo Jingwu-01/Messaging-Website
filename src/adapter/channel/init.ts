@@ -2,6 +2,7 @@ import { slog } from "../../slog";
 import {
   CreateChannelEvent,
   DeleteChannelEvent,
+  RefreshChannelsEvent,
   SelectChannelEvent,
 } from "../../view/datatypes";
 import { getView } from "../../view/view";
@@ -12,10 +13,10 @@ export function initChannels() {
   // Handle channel select
   document.addEventListener(
     "channelSelected",
-    function (evt: CustomEvent<SelectChannelEvent>) {
+    async function (evt: CustomEvent<SelectChannelEvent>) {
       slog.info("initChannels", ["Channel Selected", `${evt.detail.name}`]);
       try {
-        getStateManager().setOpenChannel(evt.detail.name);
+        await getStateManager().setOpenChannel(evt.detail.name);
       } catch (err) {
         getView().failEvent(evt, "Failed to select channel");
       }
@@ -69,6 +70,22 @@ export function initChannels() {
       try {
         await refreshChannels(evt);
       } catch (err) {
+        getView().failEvent(evt, "Failed to refresh channels");
+        return;
+      }
+      getView().completeEvent(evt);
+    }
+  );
+
+  //Handle channel refresh
+  document.addEventListener(
+    "refreshChannels",
+    async (evt: CustomEvent<RefreshChannelsEvent>) => {
+      slog.info(`Workspaces refreshed`);
+
+      try {
+        await refreshChannels(evt);
+      } catch (error) {
         getView().failEvent(evt, "Failed to refresh channels");
         return;
       }

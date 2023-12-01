@@ -108,6 +108,14 @@ export type CreatePostEvent = {
   parent: string;
 };
 
+export type RefreshWorkspacesEvent = {
+  id: string;
+};
+
+export type RefreshChannelsEvent = {
+  id: string;
+};
+
 export interface EventWithId extends CustomEvent {
   detail: {
     id: string;
