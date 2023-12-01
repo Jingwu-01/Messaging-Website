@@ -1,3 +1,7 @@
+/**
+ * An interface used for the model, for later encapsulation.
+ */
+
 interface Model {
   // login
   // logout
