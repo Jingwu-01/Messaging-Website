@@ -13,6 +13,18 @@ export class PostComponent extends HTMLElement {
 
   private controller: AbortController | null = null;
 
+  private postMsg: string | undefined;
+
+  private smileReaction: HTMLElement;
+  
+  private frownReaction: HTMLElement;
+
+  private likeReaction: HTMLElement;
+
+  private celebrateReaction: HTMLElement;
+
+  private replyButton: HTMLElement;
+
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -27,27 +39,46 @@ export class PostComponent extends HTMLElement {
     this.shadowRoot.append(template.content.cloneNode(true));
     let postHeader = this.shadowRoot.querySelector("#post-header");
     let postBody = this.shadowRoot.querySelector("#post-body");
+    let smileReaction = this.shadowRoot.querySelector("#smile-reaction");
+    let likeReaction = this.shadowRoot.querySelector("#like-reaction");
+    let celebrateReaction = this.shadowRoot.querySelector("celebrate-reaction");
+    let frownReaction = this.shadowRoot.querySelector("#frown-reaction");
+    let replyButton = this.shadowRoot.querySelector("reply-button-component");
     if (!(postHeader instanceof HTMLElement)) {
       throw Error("Could not find an element with the post-header class");
     }
     if (!(postBody instanceof HTMLElement)) {
       throw Error("Could not find an element with the post-body class");
     }
+    if (!(smileReaction instanceof HTMLElement)) {
+      throw new Error("Could not find an element with the smile-reaction id");
+    }
+    if (!(likeReaction instanceof HTMLElement)) {
+      throw new Error("Could not find an element with the like-reaction id");
+    }
+    if (!(celebrateReaction instanceof HTMLElement)) {
+      throw new Error("Could not find an element with the celebrate-reaction id");
+    }
+    if (!(frownReaction instanceof HTMLElement)) {
+      throw new Error("Could not find an element with the frown-reaction id");
+    }
+    if (!(replyButton instanceof HTMLElement)) {
+      throw new Error("Could not find a reply-button-component element");
+    }
 
     this.postHeader = postHeader;
     this.postBody = postBody;
+    this.smileReaction = smileReaction;
+    this.likeReaction = likeReaction;
+    this.celebrateReaction = celebrateReaction;
+    this.frownReaction = frownReaction;
+    this.replyButton = replyButton;
   }
 
   connectedCallback() {
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
-    const replyButton = this.shadowRoot?.querySelector(
-      "reply-button-component",
-    );
-    if (!(replyButton instanceof HTMLElement)) {
-      throw new Error("reply-button-component is not an HTMLElement");
-    }
-    replyButton.addEventListener(
+    this.replyButton.addEventListener(
       "click",
       this.addPostEditor.bind(this),
       options,
@@ -74,6 +105,7 @@ export class PostComponent extends HTMLElement {
     console.log("Posting the msg: " + viewPost.msg);
     // this.postBody.innerText = this.formatText(viewPost.msg)
     this.appendFormattedText(viewPost.msg, this.postBody);
+    this.postMsg = viewPost.msg;
     let postUserText = this.postHeader.querySelector("#post-user-text");
     // TODO handle error better
     if (postUserText != null) {
@@ -99,57 +131,43 @@ export class PostComponent extends HTMLElement {
       postTimeLongEl.innerHTML = postTimeObj.toString();
     }
 
-    // let smileCount, frownCount, likeCount, celebrateCount: number
+    let smileCount, frownCount, likeCount, celebrateCount: number
 
-    // if (!(viewPost.reactions.smile) == undefined) {
-    //   smileCount = viewPost.reactions.smile.length
-    // } else {
-    //   smileCount = 0;
-    // }
+    let currentUsername: string;
 
-    // if (viewPost.reactions.frown) {
-    //   frownCount = viewPost.reactions.frown.length
-    // } else {
-    //   frownCount = 0;
-    // }
+    smileCount = viewPost.reactions.smile.length;
 
-    // if (viewPost.reactions.like) {
-    //   likeCount = viewPost.reactions.like.length
-    // } else {
-    //   likeCount = 0;
-    // }
+    frownCount = viewPost.reactions.frown.length;
 
-    // if (viewPost.reactions.celebrate) {
-    //   celebrateCount = viewPost.reactions.celebrate.length
-    // } else {
-    //   celebrateCount = 0;
-    // }
+    likeCount = viewPost.reactions.like.length;
 
-    // const smileReaction = this.shadowRoot?.querySelector("reaction-component")
-    // console.log(smileReaction)
-    // console.log(smileReaction instanceof HTMLElement);
-    // if (!(smileReaction instanceof ReactionComponent)){
-    //   throw new Error ("smileReaction is not a ReactionComponent")
-    // }
-    // smileReaction.addReactionCount(smileCount)
+    celebrateCount = viewPost.reactions.celebrate.length;
 
-    // const frownReaction = this.shadowRoot?.querySelector("#frown-reaction")
-    // if (!(frownReaction instanceof ReactionComponent)){
-    //   throw new Error ("frownReaction is not a ReactionComponent")
-    // }
-    // frownReaction.addReactionCount(frownCount)
+    const smileReaction = this.shadowRoot?.querySelector("#smile-reaction")
+    console.log(smileReaction)
+    console.log(smileReaction instanceof HTMLElement);
+    if (!(smileReaction instanceof ReactionComponent)){
+      throw new Error ("smileReaction is not a ReactionComponent")
+    }
+    smileReaction.addReactionCount(smileCount)
 
-    // const likeReaction = this.shadowRoot?.querySelector("#like-reaction")
-    // if (!(likeReaction instanceof ReactionComponent)){
-    //   throw new Error ("likeReaction is not a ReactionComponent")
-    // }
-    // likeReaction.addReactionCount(likeCount)
+    const frownReaction = this.shadowRoot?.querySelector("#frown-reaction")
+    if (!(frownReaction instanceof ReactionComponent)){
+      throw new Error ("frownReaction is not a ReactionComponent")
+    }
+    frownReaction.addReactionCount(frownCount)
 
-    // const celebrateReaction = this.shadowRoot?.querySelector("#celebrate-reaction")
-    // if (!(celebrateReaction instanceof ReactionComponent)){
-    //   throw new Error ("celebrateReaction is not a ReactionComponent")
-    // }
-    // celebrateReaction.addReactionCount(celebrateCount)
+    const likeReaction = this.shadowRoot?.querySelector("#like-reaction")
+    if (!(likeReaction instanceof ReactionComponent)){
+      throw new Error ("likeReaction is not a ReactionComponent")
+    }
+    likeReaction.addReactionCount(likeCount)
+
+    const celebrateReaction = this.shadowRoot?.querySelector("#celebrate-reaction")
+    if (!(celebrateReaction instanceof ReactionComponent)){
+      throw new Error ("celebrateReaction is not a ReactionComponent")
+    }
+    celebrateReaction.addReactionCount(celebrateCount)
   }
 
   // Adds childrenPosts as replies to this ViewPost.
@@ -214,6 +232,13 @@ export class PostComponent extends HTMLElement {
       paragraph.innerHTML = paragraphText;
       container.appendChild(paragraph);
     });
+  }
+
+  modifyPostContent(viewPost: ViewPost) {
+    if (viewPost.msg !== this.postMsg) {
+      this.appendFormattedText(viewPost.msg, this.postBody);
+    }
+    
   }
 }
 
