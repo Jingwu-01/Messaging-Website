@@ -212,6 +212,7 @@ export class PostEditor extends HTMLElement {
 
   replyToTopLevel(event: MouseEvent) {
     this.topReplyEl?.append(this);
+    this.parentPath = "";
   }
 
   printParentEl() {
