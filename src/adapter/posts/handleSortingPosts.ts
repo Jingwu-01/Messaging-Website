@@ -1,4 +1,4 @@
-import { slog } from "../slog";
+import { slog } from "../../slog";
 import { AdapterPost } from "./adapterPost";
 
 // can have this take in a custom comparison function if you want.

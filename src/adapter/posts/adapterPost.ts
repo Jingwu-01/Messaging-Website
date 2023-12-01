@@ -1,4 +1,4 @@
-import { PostResponse } from "../../types/postResponse";
+import { PostResponse } from "../../../types/postResponse";
 import { insertPostSorted } from "./handleSortingPosts";
 
 export class AdapterPost {

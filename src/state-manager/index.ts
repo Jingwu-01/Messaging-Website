@@ -14,6 +14,10 @@ class StateManager {
 
   private openChannel: ModelChannel | null = null;
 
+  private openWorkspaceName: string | null = null;
+
+  private openChannelName: string | null = null;
+
   getOpenWorkspace(): ModelWorkspace | null {
     return this.openWorkspace;
   }
@@ -33,6 +37,7 @@ class StateManager {
       return this.openWorkspace;
     }
     this.openWorkspace = await getModel().getWorkspace(workspaceName);
+    this.openWorkspaceName = workspaceName;
     // Un-select the open channel.
     await this.setOpenChannel(null);
     // Display the new open workspace.
@@ -55,6 +60,7 @@ class StateManager {
     }
     if (channelName == null) {
       this.openChannel = null;
+      this.openChannelName = null;
       getView().displayOpenChannel(null);
       return null;
     }
@@ -62,6 +68,7 @@ class StateManager {
     if (ws != null) {
       this.openChannel = await ws.getChannel(channelName);
       this.openChannel.subscribeToPosts();
+      this.openChannelName = channelName;
       getView().displayOpenChannel({
         name: this.openChannel.getName(),
       });
@@ -86,6 +93,14 @@ class StateManager {
         // TODO: notify view that their post failed for whatever reason.
         throw Error("createPost: creating the post failed");
       });
+  }
+
+  getOpenWorkspaceName() {
+    return this.openWorkspaceName;
+  }
+
+  getOpenChannelName() {
+    return this.openChannelName;
   }
 }
 
