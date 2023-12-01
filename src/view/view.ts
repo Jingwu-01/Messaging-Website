@@ -101,6 +101,12 @@ export class View {
     });
   }
 
+  moveEditPostEditorTo(postElement: PostComponent, message: string) {
+    this.postListeners.forEach((listener) => {
+      listener.moveEditPostEditorTo(postElement, message);
+    });
+  }
+
   setChatPage() {
     this.m3ssag1n8AppComponent?.setChatPage();
   }

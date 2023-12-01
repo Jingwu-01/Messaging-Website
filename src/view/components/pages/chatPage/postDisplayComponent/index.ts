@@ -225,6 +225,13 @@ export class PostDisplay extends HTMLElement {
     }
     this.postEditor.setParentPath(postPath);
   }
+
+  moveEditPostEditorTo(text: string, postEl: PostComponent) {
+    this.movePostEditorTo(postEl); 
+    this.postEditor.setText(text)
+  }
+
+
 }
 
 export default PostDisplay;

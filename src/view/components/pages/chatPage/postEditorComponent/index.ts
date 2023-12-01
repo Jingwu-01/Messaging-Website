@@ -196,4 +196,8 @@ export class PostEditor extends HTMLElement {
       ["postEditor", `${JSON.stringify(this)}`],
     );
   }
+
+  setText(text: string){
+    this.postInput.value = text;
+  }
 }

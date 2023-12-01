@@ -12,7 +12,7 @@ export default function editPostButtonComponentInit() {
         width: 30px;
         height: 30px;
         border-radius: 3px 3px 3px 3px;
-        margin-right: 10px;
+        margin-left: 10px;
       }
       button:hover {
         background-color: #818589;

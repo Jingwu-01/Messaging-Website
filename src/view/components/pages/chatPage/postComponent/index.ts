@@ -1,7 +1,6 @@
 import { slog } from "../../../../../slog";
 import { ViewPost } from "../../../../datatypes";
 import { getView } from "../../../../view";
-import ReactionComponent from "../../../pieces/reactionComponent";
 import { PostEditor } from "../postEditorComponent";
 
 export class PostComponent extends HTMLElement {
@@ -25,6 +24,8 @@ export class PostComponent extends HTMLElement {
 
   private replyButton: HTMLElement;
 
+  private editPostButton : HTMLElement; 
+
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -46,6 +47,7 @@ export class PostComponent extends HTMLElement {
       "#celebrate-reaction",
     );
     let replyButton = this.shadowRoot.querySelector("reply-button-component");
+    let editPostButton = this.shadowRoot.querySelector("edit-post-button-component")
 
     if (!(postHeader instanceof HTMLElement)) {
       throw Error("Could not find an element with the post-header class");
@@ -74,6 +76,10 @@ export class PostComponent extends HTMLElement {
       throw Error("Could not find a reply-button-component element");
     }
 
+    if (!(editPostButton instanceof HTMLElement)) {
+      throw Error("Could not find a edit-post-button-component element")
+    }
+
     this.postHeader = postHeader;
     this.postBody = postBody;
     this.smileReaction = smileReaction;
@@ -81,14 +87,24 @@ export class PostComponent extends HTMLElement {
     this.frownReaction = frownReaction;
     this.celebrateReaction = celebrateReaction;
     this.replyButton = replyButton;
+    this.editPostButton = editPostButton
   }
 
   connectedCallback() {
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
+
+    // Add click event listener for reply button
     this.replyButton.addEventListener(
       "click",
-      this.addPostEditor.bind(this),
+      this.addReplyPostEditor.bind(this),
+      options,
+    );
+
+    // Add click event listener for edit post button
+     this.editPostButton.addEventListener(
+      "click",
+      this.addEditPostEditor.bind(this),
       options,
     );
   }
@@ -98,13 +114,19 @@ export class PostComponent extends HTMLElement {
     this.controller = null;
   }
 
-  addPostEditor(event: MouseEvent) {
+  addReplyPostEditor(event: MouseEvent) {
     // let postEditor = new PostEditor();
     // // this call should technically be before the previous one
     // getView().replacePostEditor(postEditor);
     // this.postBody.parentNode?.insertBefore(postEditor, this.postBody.nextSibling);
     getView().movePostEditorTo(this);
   }
+
+  addEditPostEditor(event: MouseEvent) {
+    getView().movePostEditorTo(this, this.postMsg);
+  }
+ 
+  
 
   // Sets the content of this post equal to viewPost
   addPostContent(viewPost: ViewPost): void {

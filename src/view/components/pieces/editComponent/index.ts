@@ -48,7 +48,7 @@ class EditPostButtonComponent extends HTMLElement {
   }
 
   private editPost(event: MouseEvent) {
-
+    
   }
 }
 
