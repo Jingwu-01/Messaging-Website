@@ -12,7 +12,7 @@ export class ModelChannel {
 
   private postMap: Map<string, ModelPost> = new Map<string, ModelPost>();
 
-  private postRoots: Array<ModelPost> = new Array<ModelPost>();
+  private postRoots: Map<string, ModelPost> = new Map<string, ModelPost>();
 
   private pendingPosts: Map<string, Array<ModelPost>> = new Map<
     string,
@@ -99,9 +99,15 @@ export class ModelChannel {
         "addPost: internal server error: post has an empty path string",
       );
     }
+    if (this.postMap.get(postName) !== undefined) {
+      this.postMap.set(postName, newPost);
+      if (this.postRoots.get(postName) !== undefined) {
+        this.postRoots.set(postName, newPost);
+      }
+    }
     console.log(`addPost: postName: ${postName}`);
     if (parentPath === "" || parentPath === undefined) {
-      this.postRoots.push(newPost);
+      this.postRoots.set(postName, newPost);
       this.postMap.set(postName, newPost);
       let modelPostEvent = new CustomEvent("modelPostEvent", {
         detail: { post: newPost },

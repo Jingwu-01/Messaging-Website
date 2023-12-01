@@ -31,6 +31,9 @@ export default function postComponentInit() {
         #buttons{
             display: flex; 
         }
+        .reacted {
+            border: solid;
+        }
     </style>
     <section>
         <header id="post-header">

@@ -96,6 +96,9 @@ export type DeleteChannelEvent = {
 
 export type ReactionUpdateEvent = {
   reactionName: string;
+  userName: string | undefined;
+  postPath: string;
+  add: boolean;
 };
 
 export type CreatePostEvent = {

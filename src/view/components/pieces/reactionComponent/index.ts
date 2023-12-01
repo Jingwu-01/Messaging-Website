@@ -1,3 +1,5 @@
+import { slog } from "../../../../slog";
+
 type reactions = "smile" | "frown" | "like" | "celebrate";
 
 class ReactionComponent extends HTMLElement {
@@ -64,30 +66,40 @@ class ReactionComponent extends HTMLElement {
       throw new Error("countText is not an HTML paragraph element");
     } else {
       countText.innerHTML = count.toString();
+      slog.info("addReactionCount: set count", ["countText.innerHTML", countText.innerHTML]);
     }
+    slog.info("addReactionCount: after setting count", ["countText", countText]);
   }
 
   static get observedAttributes(): string[] {
-    return ["icon"];
+    return ["icon", "reaction-count"];
   }
 
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-    // Adjust the corresponding arial-labels and reactionName correctly.
-    if (newValue == "lucide:frown") {
-      this.reactionButton.setAttribute("aria-label", "frown reaction");
-      this.reactionName = "frown";
-    } else if (newValue == "mdi:like-outline") {
-      this.reactionButton.setAttribute("aria-label", "like reaction");
-      this.reactionName = "like";
-    } else if (newValue == "mingcute:celebrate-line") {
-      this.reactionButton.setAttribute("aria-label", "celebrate reaction");
-      this.reactionName = "celebrate";
-    } else {
-      throw new Error(newValue + " is not a valid iconify id.");
+    if (name === "icon") {
+      // Adjust the corresponding arial-labels and reactionName correctly.
+      if (newValue == "lucide:frown") {
+        this.reactionButton.setAttribute("aria-label", "frown reaction");
+        this.reactionName = "frown";
+      } else if (newValue == "mdi:like-outline") {
+        this.reactionButton.setAttribute("aria-label", "like reaction");
+        this.reactionName = "like";
+      } else if (newValue == "mingcute:celebrate-line") {
+        this.reactionButton.setAttribute("aria-label", "celebrate reaction");
+        this.reactionName = "celebrate";
+      } else {
+        throw new Error(newValue + " is not a valid iconify id.");
+      }
+
+      // Adjust the icon attribute to the newValue so that the appropriate iconify icon would be displayed.
+      this.reactionIcon.setAttribute("icon", newValue);
+    } else if (name === "reaction-count") {
+      slog.info("attributeChangedCallback: reaction-count");
+      let numReactionCount = parseInt(newValue);
+      this.count = numReactionCount;
+      this.addReactionCount(numReactionCount);
     }
 
-    // Adjust the icon attribute to the newValue so that the appropriate iconify icon would be displayed.
-    this.reactionIcon.setAttribute("icon", newValue);
   }
 }
 
