@@ -16,6 +16,7 @@ class ReactionComponent extends HTMLElement {
   private parentPath: string | undefined;
   private curReacted: boolean = false;
 
+  /*Constructor for the reaction custom element */
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -45,6 +46,7 @@ class ReactionComponent extends HTMLElement {
     this.reactionButton = reactionButton;
   }
 
+  // When the element is connected, add a click listener for the reaction button. 
   connectedCallback(): void {
     this.addReactionCount(this.count);
 
@@ -57,11 +59,13 @@ class ReactionComponent extends HTMLElement {
     );
   }
 
+  // When the element is disconnected, remove the controller. 
   disconnectedCallback(): void {
     this.controller?.abort();
     this.controller = null;
   }
 
+  // Dispatch an reaction update event to the adapter 
   update() {
     let user = getView().getUser();
     let postPath = this.parentPath;
@@ -81,6 +85,7 @@ class ReactionComponent extends HTMLElement {
     document.dispatchEvent(reactionUpdateEvent);
   }
 
+  // Display the count of the reaction 
   addReactionCount(count: number): void {
     const countText = this.shadowRoot?.querySelector("#reaction-count");
     if (!(countText instanceof HTMLParagraphElement)) {
@@ -98,10 +103,12 @@ class ReactionComponent extends HTMLElement {
     ]);
   }
 
+  // Observe the attribute icon, reaction-button, and reacted. 
   static get observedAttributes(): string[] {
     return ["icon", "reaction-count", "reacted"];
   }
 
+  // When the observed attributes are changed, adjust arial-labels and display the correct iconify icons. 
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     if (name === "icon") {
       // Adjust the corresponding arial-labels and reactionName correctly.
