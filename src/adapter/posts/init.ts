@@ -1,3 +1,7 @@
+/**
+ * Functions for handling events related to posts from both the view and adapter.
+ */
+
 import {
   ModelPostEvent,
   ModelReactionUpdate,
@@ -10,28 +14,12 @@ import {
 import { getModel } from "../../model/model";
 import getStateManager from "../../state-manager";
 import createPost from "./createPost";
+import { getView } from "../../view/view";
 
+/**
+ * Handles events for post creation.
+ */
 export function initPosts() {
-  // document.addEventListener(
-  //   "postsEvent",
-  //   function (evt: CustomEvent<PostsEvent>) {
-  //     // TODO: change console.log to slog
-  //     slog.info(
-  //       "postsEvent",
-  //       ["posts", `${JSON.stringify(evt.detail.postRoots)}`],
-  //       ["number of post roots", `${evt.detail.postRoots.length}`]
-  //     );
-  //     let viewPosts = getViewPosts(evt.detail.postRoots);
-  //     // TODO: change this, is just a placeholder
-  //     let viewPostUpdate: ViewPostUpdate = {
-  //       allPosts: viewPosts,
-  //       op: "add",
-  //       affectedPosts: new Array<ViewPost>(),
-  //     };
-  //     getView().displayPosts(viewPostUpdate);
-  //   }
-  // );
-
   document.addEventListener(
     "createPostEvent",
     function (evt: CustomEvent<CreatePostEvent>) {
@@ -43,6 +31,9 @@ export function initPosts() {
     },
   );
 
+  /**
+   * Handles events for reaction updates.
+   */
   document.addEventListener(
     "reactionUpdateEvent",
     (event: CustomEvent<ReactionUpdateEvent>) => {
@@ -71,6 +62,7 @@ export function initPosts() {
           if (response.patchFailed) {
             // // TODO: display an error on the view, the patch failed
             // slog.error("reactionUpdateEvent listener", ["patchFailed", ""]);
+            getView().displayError("error displaying reactions");
           } else {
             // return
             // somehow notify the view? nothing to notify the view here; it's all subscriptions.
@@ -86,16 +78,9 @@ export function initPosts() {
     },
   );
 
-  // document.addEventListener(
-  //   "reactionUpdateEvent",
-  //   function (evt: CustomEvent<ReactionUpdateEvent>) {
-  //     let model = getModel();
-  //     // Todo: I need the actual name of the reaction as an input
-  //     model.updateReaction("dummyReaction")
-
-  //   }
-  // );
-
+  /**
+   * Handles new model posts from the model.
+   */
   document.addEventListener(
     "modelPostEvent",
     function (evt: CustomEvent<ModelPostEvent>) {
@@ -103,8 +88,10 @@ export function initPosts() {
         "modelPostEvent.detail",
         `${JSON.stringify(evt.detail)}`,
       ]);
-      getStateManager().serializePostResponse(evt.detail.post);
-      // TODO: call serializePostResponse, and throw an error on the view if there's any error with the corresponding error message
+      let result = getStateManager().serializePostResponse(evt.detail.post);
+      if (!result[0]) {
+        getView().displayError(`${result[1]}`);
+      }
     },
   );
 }

@@ -112,7 +112,7 @@ class StateManager {
   }
 
   serializePostResponse(response: PostResponse) {
-    this.postsManager.serializePostResponse(response);
+    return this.postsManager.serializePostResponse(response);
   }
 
   resetPostsManager() {
