@@ -20,13 +20,10 @@ export default function channelSidebarComponentInit() {
         margin-top: 1em;
         margin-bottom: 1em;
     }
-    #button-wrapper{
-        display: flex;
-        align-items: center;
-        flex-direction: column; 
-        gap: 10px;
+    #edit-channels-button-wrapper{
+        text-align: center;
     }
-    .button-content{
+    #edit-channels-button-content{
         display: flex;
         align-items: center;
         gap: 10px;
@@ -35,10 +32,10 @@ export default function channelSidebarComponentInit() {
         color: white;
         padding: 0 10px;
     }
-    .button-content:hover{
+    #edit-channels-button-content:hover{
         background-color: #163d4a; 
     }
-    .button-content:active{
+    #edit-channels-button-content:active{
         background-color: #0f2831; 
     }
     li {
@@ -54,22 +51,16 @@ export default function channelSidebarComponentInit() {
     </style>
     <ul id="channel-list">
     </ul>
-    <div id="button-wrapper">
-        <loading-button-component id="refresh-channels-button" style="background: none; border: none">
-            <div slot="content" class="button-content">
-                <p>Refresh Channels</p>
-                <iconify-icon icon="material-symbols:refresh" aria-label="Refresh Channels"></iconify-icon>
-            </div>
-        </loading-button-component>
-        <open-dialog-button-component dialog="edit-channels-dialog" style="border: none; background: none;">
-            <div slot="button-content" id="edit-channels-button-content" class="button-content">
+    <div id="edit-channels-button-wrapper">
+        <open-dialog-button-component dialog="edit-channels-dialog">
+            <div slot="button-content" id="edit-channels-button-content">
                 <p>Edit Channels</p>
-                <iconify-icon icon="material-symbols:edit" aria-label="Edit Channels"></iconify-icon>
+                <iconify-icon icon="material-symbols:edit"></iconify-icon>
             </div>
         </open-dialog-button-component>
     </div>
 </template>
-`,
+`
   );
   // an example channel element looks like:
   // <li id="channel-select-{channel-name}">{channel-name}</li>
