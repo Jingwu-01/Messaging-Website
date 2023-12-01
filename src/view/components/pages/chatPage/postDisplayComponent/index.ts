@@ -1,8 +1,11 @@
+import { react } from "@babel/types";
 import { slog } from "../../../../../slog";
 import { ViewPost, ViewPostUpdate } from "../../../../datatypes";
 import { getView } from "../../../../view";
+import ReactionComponent from "../../../pieces/reactionComponent";
 import { PostComponent } from "../postComponent";
 import { PostEditor } from "../postEditorComponent";
+import ReplyButtonComponent from "../../../pieces/replyButtonComponent";
 
 export class PostDisplay extends HTMLElement {
   private channelHeader: HTMLElement;
@@ -71,92 +74,105 @@ export class PostDisplay extends HTMLElement {
 
   displayPosts(update: ViewPostUpdate): void {
     slog.info("postDisplay displayPosts: was called");
-    if (update.op === "modify") {
-      // get the post that's affected
-      // add the reaction
-    } else if (update.op === "insert") {
-      let postToInsert = update.affectedPosts[0];
-      let postComp = new PostComponent();
-      postComp.addPostContent(postToInsert);
+    if (update.op === "modify" || update.op === "insert") {
+      let opString = update.op;
+      let postToUpsert = update.affectedPosts[0];
+      let postComp: PostComponent;
       slog.info(
         "displayPosts: insert",
-        ["postToInsert.parent", postToInsert.parent],
-        ["postToInsert", postToInsert],
-        ["postComp", postComp],
+        ["postToUpsert.parent", postToUpsert.parent],
+        ["postToUpsert", postToUpsert],
       );
       let postChildren: NodeListOf<Element> | undefined;
       let parentEl: HTMLElement;
-      if (postToInsert.postIdx === undefined) {
+      if (postToUpsert.postIdx === undefined) {
         slog.error("displayPosts", [
-          "postToInsert.postIdx is undefined but should not be",
-          `${postToInsert.postIdx}`,
+          "postToUpsert.postIdx is undefined but should not be",
+          `${postToUpsert.postIdx}`,
         ]);
-        throw new Error("postToInsert.postIdx is undefined but should not be");
+        throw new Error("postToUpsert.postIdx is undefined but should not be");
       }
-      slog.info("displayPosts", ["postToInsert.postIdx", postToInsert.postIdx]);
-      if (postToInsert.parent === undefined || postToInsert.parent === "") {
-        slog.info("displayPosts: postToInsert.parent is undefined");
+      slog.info("displayPosts", ["postToUpsert.postIdx", postToUpsert.postIdx]);
+      if (postToUpsert.parent === undefined || postToUpsert.parent === "") {
+        slog.info("displayPosts: postToUpsert.parent is undefined");
         postChildren = this.postsContainer.querySelectorAll(
           ":scope > post-component",
         );
         parentEl = this.postsContainer;
       } else {
         let potentialParentEl = this.postToHTMLChildren.get(
-          postToInsert.parent,
+          postToUpsert.parent,
         );
         if (potentialParentEl === undefined) {
           slog.error(
             "displayPosts",
-            ["postToInsert.parent", postToInsert.parent],
+            ["postToUpsert.parent", postToUpsert.parent],
             ["potentialParentEl is undefined", potentialParentEl],
             ["this.postToHTMLChildren", this.postToHTMLChildren],
           );
           throw new Error(
-            "this.postToHTMLChildren.get(postToInsert.parent) is undefined",
+            "this.postToHTMLChildren.get(postToUpsert.parent) is undefined",
           );
         }
         parentEl = potentialParentEl;
         postChildren = parentEl.querySelectorAll(":scope > post-component");
       }
+      if (opString === "modify") {
+        let potentialPostComp = postChildren[postToUpsert.postIdx];
+        if (!(potentialPostComp instanceof PostComponent)) {
+          throw new Error("potentialPostComp is not a post component");
+        }
+        postComp = potentialPostComp;
+      } else {
+        postComp = new PostComponent();
+        postComp.addPostContent(postToUpsert);
+      }
       slog.info(
         "displayPosts",
         ["postChildren", postChildren],
         ["parentEl", parentEl],
-        ["postComp", postComp],
-        ["postToInsert.postIdx", postToInsert.postIdx],
+        ["postToUpsert.postIdx", postToUpsert.postIdx],
         ["postChildren", postChildren],
         ["postChildren.length", postChildren.length],
+        ["postComp", postComp],
       );
-      if (
-        postChildren.length === 0 ||
-        postToInsert.postIdx === postChildren.length
-      ) {
-        slog.info(
-          "displayPosts: no children OR postToInsert.postIdx is at the end",
-          ["postToInsert.postIdx", postToInsert.postIdx],
-          ["postChildren.length", postChildren.length],
-        );
-        parentEl.append(postComp);
-        slog.info("displayPosts, after appending to parentEl", [
-          "parentEl",
-          parentEl,
-        ]);
+      if (opString === "modify") {
+        postComp.modifyPostContent(postToUpsert);
       } else {
-        let childNode = postChildren[postToInsert.postIdx];
-        childNode.parentNode?.insertBefore(postComp, childNode);
+        if (
+          postChildren.length === 0 ||
+          postToUpsert.postIdx === postChildren.length
+        ) {
+          slog.info(
+            "displayPosts: no children OR postToUpsert.postIdx is at the end",
+            ["postToUpsert.postIdx", postToUpsert.postIdx],
+            ["postChildren.length", postChildren.length],
+          );
+          parentEl.append(postComp);
+          slog.info("displayPosts, after appending to parentEl", [
+            "parentEl",
+            parentEl,
+          ]);
+        } else {
+          let childNode = postChildren[postToUpsert.postIdx];
+          childNode.parentNode?.insertBefore(postComp, childNode);
+        }
+        let postPathArr = postToUpsert.path.split("/");
+        if (postPathArr.length !== 6) {
+          throw Error("displayPosts: postPathArr is not of length 6");
+        }
+        let childrenContainer = document.createElement("section");
+        childrenContainer.classList.add("post-children");
+        this.postToHTMLChildren.set(postPathArr[5], childrenContainer);
+        postComp.parentNode?.insertBefore(
+          childrenContainer,
+          postComp.nextSibling,
+        );
+        slog.info("displayPosts", [
+          "postComp.parentNode?",
+          postComp.parentNode,
+        ]);
       }
-      let postPathArr = postToInsert.path.split("/");
-      if (postPathArr.length !== 6) {
-        throw Error("displayPosts: postPathArr is not of length 6");
-      }
-      let childrenContainer = document.createElement("section");
-      childrenContainer.classList.add("post-children");
-      this.postToHTMLChildren.set(postPathArr[5], childrenContainer);
-      postComp.parentNode?.insertBefore(
-        childrenContainer,
-        postComp.nextSibling,
-      );
-      slog.info("displayPosts", ["postComp.parentNode?", postComp.parentNode]);
     } else {
       this.postsContainer.innerHTML = "";
       for (let viewPost of update.allPosts) {

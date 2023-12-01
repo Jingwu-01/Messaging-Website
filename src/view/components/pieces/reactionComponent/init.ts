@@ -25,6 +25,9 @@ export default function reactionComponentInit() {
       #reaction-button:active {
         background-color: #5a5a5a;
       }
+      .reacted {
+        background-color: #add8e6
+      }
     </style>
     <div id="reaction-container">
       <button id="reaction-button" aria-label="smile reaction">

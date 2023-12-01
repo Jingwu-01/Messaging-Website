@@ -1,7 +1,8 @@
 import { slog } from "../../../../../slog";
-import { ViewPost } from "../../../../datatypes";
+import { ReactionData, ViewPost } from "../../../../datatypes";
 import { getView } from "../../../../view";
 import ReactionComponent from "../../../pieces/reactionComponent";
+import ReplyButtonComponent from "../../../pieces/replyButtonComponent";
 import { PostEditor } from "../postEditorComponent";
 
 export class PostComponent extends HTMLElement {
@@ -11,7 +12,15 @@ export class PostComponent extends HTMLElement {
 
   private postPath: string | undefined;
 
+  private postButtons: HTMLElement;
+
+  private replyButton: ReplyButtonComponent;
+
+  private reactionButtons: Map<string, ReactionComponent> = new Map<string, ReactionComponent>();
+
   private controller: AbortController | null = null;
+
+  private postMsg: string | undefined;
 
   constructor() {
     super();
@@ -27,27 +36,47 @@ export class PostComponent extends HTMLElement {
     this.shadowRoot.append(template.content.cloneNode(true));
     let postHeader = this.shadowRoot.querySelector("#post-header");
     let postBody = this.shadowRoot.querySelector("#post-body");
+    let postButtons = this.shadowRoot.querySelector("#post-buttons");
+    
+
     if (!(postHeader instanceof HTMLElement)) {
-      throw Error("Could not find an element with the post-header class");
+      throw new Error("Could not find an element with the #post-header id");
     }
     if (!(postBody instanceof HTMLElement)) {
-      throw Error("Could not find an element with the post-body class");
+      throw new Error("Could not find an element with the #post-body id");
+    }
+    if (!(postButtons instanceof HTMLElement)) {
+      throw new Error("Could not find an elmenet with the #post-buttons id")
     }
 
     this.postHeader = postHeader;
     this.postBody = postBody;
+    this.postButtons = postButtons;
+
+    // add buttons
+    let reactions = {
+      "smile": "lucide:smile",
+      "frown": "lucide:frown",
+      "like": "mdi:like-outline",
+      "celebrate": "mingcute:celebrate-line"
+    }
+    let replyButton = new ReplyButtonComponent();
+    this.postButtons.append(replyButton);
+    this.replyButton = replyButton;
+    for (const [reactionName, reactionIcon] of Object.entries(reactions)) {
+      let reactionComp = new ReactionComponent();
+      this.postButtons.append(reactionComp);
+      reactionComp.setAttribute("icon", reactionIcon);
+      reactionComp.setAttribute("reacted", "false");
+      reactionComp.id = `${reactionName}-reaction`;
+      this.reactionButtons.set(reactionName, reactionComp);
+    }
   }
 
   connectedCallback() {
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
-    const replyButton = this.shadowRoot?.querySelector(
-      "reply-button-component",
-    );
-    if (!(replyButton instanceof HTMLElement)) {
-      throw new Error("reply-button-component is not an HTMLElement");
-    }
-    replyButton.addEventListener(
+    this.replyButton.addEventListener(
       "click",
       this.addPostEditor.bind(this),
       options,
@@ -70,10 +99,12 @@ export class PostComponent extends HTMLElement {
   // Sets the content of this post equal to viewPost
   addPostContent(viewPost: ViewPost): void {
     // TODO: obviously can add more functionality here later as needed.
+    slog.info("addPostContent: top of func call", ["viewPost", viewPost]);
     this.postPath = viewPost.path;
     console.log("Posting the msg: " + viewPost.msg);
     // this.postBody.innerText = this.formatText(viewPost.msg)
     this.appendFormattedText(viewPost.msg, this.postBody);
+    this.postMsg = viewPost.msg;
     let postUserText = this.postHeader.querySelector("#post-user-text");
     // TODO handle error better
     if (postUserText != null) {
@@ -99,57 +130,28 @@ export class PostComponent extends HTMLElement {
       postTimeLongEl.innerHTML = postTimeObj.toString();
     }
 
-    // let smileCount, frownCount, likeCount, celebrateCount: number
+    let currentUsername: string;
+    let currentUser = getView().getUser();
+    if (currentUser === null) {
+      // this is the case where we're logged out but dealing with this event.
+      slog.info(
+        "addPostContent: trying to add a post when a user is logged out, dead request",
+      );
+      return;
+    }
+    currentUsername = currentUser.username;
 
-    // if (!(viewPost.reactions.smile) == undefined) {
-    //   smileCount = viewPost.reactions.smile.length
-    // } else {
-    //   smileCount = 0;
-    // }
-
-    // if (viewPost.reactions.frown) {
-    //   frownCount = viewPost.reactions.frown.length
-    // } else {
-    //   frownCount = 0;
-    // }
-
-    // if (viewPost.reactions.like) {
-    //   likeCount = viewPost.reactions.like.length
-    // } else {
-    //   likeCount = 0;
-    // }
-
-    // if (viewPost.reactions.celebrate) {
-    //   celebrateCount = viewPost.reactions.celebrate.length
-    // } else {
-    //   celebrateCount = 0;
-    // }
-
-    // const smileReaction = this.shadowRoot?.querySelector("reaction-component")
-    // console.log(smileReaction)
-    // console.log(smileReaction instanceof HTMLElement);
-    // if (!(smileReaction instanceof ReactionComponent)){
-    //   throw new Error ("smileReaction is not a ReactionComponent")
-    // }
-    // smileReaction.addReactionCount(smileCount)
-
-    // const frownReaction = this.shadowRoot?.querySelector("#frown-reaction")
-    // if (!(frownReaction instanceof ReactionComponent)){
-    //   throw new Error ("frownReaction is not a ReactionComponent")
-    // }
-    // frownReaction.addReactionCount(frownCount)
-
-    // const likeReaction = this.shadowRoot?.querySelector("#like-reaction")
-    // if (!(likeReaction instanceof ReactionComponent)){
-    //   throw new Error ("likeReaction is not a ReactionComponent")
-    // }
-    // likeReaction.addReactionCount(likeCount)
-
-    // const celebrateReaction = this.shadowRoot?.querySelector("#celebrate-reaction")
-    // if (!(celebrateReaction instanceof ReactionComponent)){
-    //   throw new Error ("celebrateReaction is not a ReactionComponent")
-    // }
-    // celebrateReaction.addReactionCount(celebrateCount)
+    for (let [reactionName, reactionButton] of this.reactionButtons) {
+      let reactionCount = viewPost.reactions[reactionName].length;
+      if (viewPost.reactions[reactionName].includes(currentUsername)) {
+        reactionButton.setAttribute("reacted", "true");
+      } else {
+        reactionButton.setAttribute("reacted", "false");
+      }
+      slog.info("addPostContent: reaction loop", ["reactionName", reactionName], ["reactionCount", reactionCount]);
+      reactionButton.setAttribute("reaction-count", reactionCount.toString());
+      reactionButton.setParentPath(viewPost.path);
+    }
   }
 
   // Adds childrenPosts as replies to this ViewPost.
@@ -214,6 +216,41 @@ export class PostComponent extends HTMLElement {
       paragraph.innerHTML = paragraphText;
       container.appendChild(paragraph);
     });
+  }
+
+  modifyPostContent(viewPost: ViewPost) {
+    if (viewPost.msg !== this.postMsg) {
+      this.appendFormattedText(viewPost.msg, this.postBody);
+    }
+    let reactionData = viewPost.reactions;
+    this.updateReactions(reactionData);
+  }
+
+  updateReactions(reactionData: ReactionData) {
+    let currentUsername: string;
+    let currentUser = getView().getUser();
+    if (currentUser === null) {
+      // this is the case where we're logged out but dealing with this event.
+      slog.info(
+        "addPostContent: trying to add a post when a user is logged out, dead request",
+      );
+      return;
+    }
+    currentUsername = currentUser.username;
+
+    for (const [reactionName, reactionArray] of Object.entries(reactionData)) {
+      let reactionButton = this.reactionButtons.get(reactionName);
+      if (reactionButton !== undefined) {
+        let reactionCount = reactionArray.length;
+        if (reactionArray.includes(currentUsername)) {
+          reactionButton.setAttribute("reacted", "true");
+        } else {
+          reactionButton.setAttribute("reacted", "false");
+        }
+        slog.info("addPostContent: reaction loop", ["reactionName", reactionName], ["reactionCount", reactionCount]);
+        reactionButton.setAttribute("reaction-count", reactionCount.toString());
+      }
+    }
   }
 }
 

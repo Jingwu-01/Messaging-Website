@@ -268,6 +268,10 @@ export class View {
   //     throw Error(`No dialog with ID ${dialog_id}`);
   //   }
   // }
+
+  getUser() {
+    return this.user;
+  }
 }
 
 // view singleton

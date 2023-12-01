@@ -8,7 +8,7 @@ export type ViewPostUpdate = {
 // that the view can display.
 export type ViewPost = {
   msg: string;
-  reactions: ReactionData | undefined; // TODO: should be an array of strings? or custom reactions objects based on what we want?
+  reactions: ReactionData; // TODO: should be an array of strings? or custom reactions objects based on what we want?
   extensions: any; // TODO: see above for 'reactions'
   createdUser: string;
   postTime: number;
@@ -16,6 +16,7 @@ export type ViewPost = {
   path: string;
   parent: string | undefined;
   postIdx: number | undefined;
+  name: string;
 };
 
 export type ViewWorkspaceUpdate = {
@@ -39,6 +40,11 @@ export type ReactionData = {
   frown: string[];
   like: string[];
   celebrate: string[];
+  [k: string]: string[];
+};
+
+export type PostReactions = {
+  [k: string]: string[];
 };
 
 export type ViewUser = {
@@ -90,6 +96,9 @@ export type DeleteChannelEvent = {
 
 export type ReactionUpdateEvent = {
   reactionName: string;
+  userName: string | undefined;
+  postPath: string;
+  add: boolean;
 };
 
 export type CreatePostEvent = {
