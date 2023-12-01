@@ -1,3 +1,7 @@
+/**
+ * A class encapsulating logic for channels stored in the model.
+ */
+
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { ModelPost } from "./post";
 import { CreateResponse } from "../../types/createResponse";
@@ -7,27 +11,36 @@ import { slog } from "../slog";
 import { PostResponse } from "../../types/postResponse";
 import { ChannelResponse } from "../../types/channelResponse";
 
+/**
+ * A data representation of a channel in the model. Allows us to control connection requests related to specific channels.
+ */
 export class ModelChannel {
+  // The path corresponding to this channel
   path: string;
 
+  // A map containing all of our model posts.
   private postMap: Map<string, ModelPost> = new Map<string, ModelPost>();
 
+  // A map containing the roots for the posts.
   private postRoots: Map<string, ModelPost> = new Map<string, ModelPost>();
 
+  // A map of post names to an array of model posts for which the posts are pending.
   private pendingPosts: Map<string, Array<ModelPost>> = new Map<
     string,
     Array<ModelPost>
   >();
 
+  // A controller for cancelling subscription connections.
   private controller = new AbortController();
 
   constructor(res: ChannelResponse) {
     this.path = res.path;
   }
 
-  // Subscribes to all posts in a particular workspace and collection.
-  async subscribeToPosts(): Promise<void> {
-    // TODO: is there a better way to do this? bind isn't working
+  /**
+   * Subscribes to all posts in a particular channel.
+   */
+  subscribeToPosts(): void {
     let thisChannel = this;
     const options = {
       Authorization: "Bearer " + getModel().getToken(),
@@ -89,6 +102,11 @@ export class ModelChannel {
     });
   }
 
+  /**
+   * Adds a ModelPost to this channel.
+   * @param newPostResponse a JSON object representing the response from the post event.
+   * @returns a boolean representing whether or not the post was successfully added to the model.
+   */
   addPost(newPostResponse: PostResponse): Boolean {
     console.log("addPost: was called");
     let newPost = new ModelPost(newPostResponse);
@@ -170,6 +188,12 @@ export class ModelChannel {
     return true;
   }
 
+  /**
+   * Adds all pending posts for this particular post that was added.
+   * @param addedPostName a string representing the name of the post that was added
+   * @param addedPost a ModelPost object representing the ModelPost that was added
+   * @returns nothing
+   */
   addPendingPosts(addedPostName: string, addedPost: ModelPost): void {
     slog.info(
       "addPendingPosts: called",
@@ -217,6 +241,7 @@ export class ModelChannel {
 
   unsubscribe() {
     this.controller.abort();
+    this.controller = new AbortController();
   }
 
   getName() {

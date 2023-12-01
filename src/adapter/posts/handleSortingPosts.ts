@@ -1,7 +1,17 @@
+/**
+ * Helper functions for sorting posts.
+ */
+
 import { slog } from "../../slog";
 import { AdapterPost } from "./adapterPost";
 
-// can have this take in a custom comparison function if you want.
+/**
+ * Function that upserts a post into an array of posts, with a boolean indicating whether the post exists or not.
+ * @param postList An array of adapterpost to insert into.
+ * @param newPost An adapterpost to insert into the array.
+ * @param exists A boolean indicating whether the posts currently exists in the array or not, to upsert.
+ * @returns the index that newPost is located in postList
+ */
 export function insertPostSorted(
   postList: Array<AdapterPost>,
   newPost: AdapterPost,

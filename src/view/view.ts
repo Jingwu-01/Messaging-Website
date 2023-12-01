@@ -440,6 +440,10 @@ export class View {
   getUser() {
     return this.user;
   }
+
+  setHomePage() {
+    // TODO: erroneous; just need it for compiler checks
+  }
 }
 
 // view singleton

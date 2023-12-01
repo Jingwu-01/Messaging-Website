@@ -1,3 +1,7 @@
+/**
+ * A class represeting the model for our application, holding necessary state for our application.
+ */
+
 import {
   typedFetch,
   emptyFetch,
@@ -16,7 +20,9 @@ import { LoginResponse } from "../../types/loginResponse";
 import { GetWorkspacesResponse } from "../../types/getWorkspacesResponse";
 import { ModelReactionUpdate, PatchBody } from "./modelTypes";
 
-// Class representing our model interfacing with OwlDB.
+/**
+ * A class representing the model we use for interfacing with OwlDB.
+ */
 export class OwlDBModel {
   private username: string;
   private token: string;
@@ -32,9 +38,14 @@ export class OwlDBModel {
     this.token = "";
   }
 
-  // Wrapper around utils.typedFetch that
-  // adds the Authorization header based on the logged-in user
-  // and the database path before the url
+  /**
+   * Wrapper around utils.typedFetch that
+   * adds the Authorization header based on the logged-in user
+   * and the database path before the url
+   * @param url a string representing the URL to make the fetch call to
+   * @param options an object containing configuration options for the fetch call
+   * @returns a Promise resolving to requested datatype T
+   */
   async typedModelFetch<T>(url: string, options?: RequestInit): Promise<T> {
     // console.log(`typedModelFetch: this.token: ${this.token}`)
     if (!options) {
@@ -55,9 +66,14 @@ export class OwlDBModel {
     return typedFetch<T>(`${getDatabasePath()}${url}`, options);
   }
 
-  // Wrapper around utils.emptyFetch
-  // adds the Authorization header based on the logged-in user
-  // and the database path before the url
+  /**
+   * Wrapper around utils.emptyFetch
+   * adds the Authorization header based on the logged-in user
+   * and the database path before the url
+   * @param url a string representing the URL to be make a request for
+   * @param options an object containing configuration options for fetch
+   * @returns an empty Promise
+   */
   async emptyModelFetch(url: string, options?: RequestInit): Promise<void> {
     // console.log(`typedModelFetch: this.token: ${this.token}`)
     if (!options) {
@@ -74,6 +90,11 @@ export class OwlDBModel {
     return emptyFetch(`${getDatabasePath()}${url}`, options);
   }
 
+  /**
+   * A function that makes a call to log the user in to the database.
+   * @param username 
+   * @returns a Promise containing a LoginResponse, representing the received JSON.
+   */
   async login(username: string): Promise<LoginResponse> {
     const options = {
       method: "POST",
@@ -106,7 +127,10 @@ export class OwlDBModel {
     return typedFetch<LoginResponse>(getAuthPath(), options);
   }
 
-  /* async function that logs out the current user. It sends a DELETE request to log out and returns a void promise. */
+  /**
+   * A function that logs the current user out with the current authorization token.
+   * @returns an empty Promise, resolving to indicate that the logout request was successful.
+   */
   async logout(): Promise<void> {
     // Send a DELETE request to OwlDB to log out.
     const options = {
@@ -122,6 +146,11 @@ export class OwlDBModel {
     return emptyFetch(getAuthPath(), options);
   }
 
+  /**
+   * Retrieves a workspace from the model.
+   * @param id a string representing the identifier for the workspace
+   * @returns a Promise resolving to a ModelWorkspace, used by our application
+   */
   async getWorkspace(id: string): Promise<ModelWorkspace> {
     // Get logged in user
     let existingWorkspace = this.workspaces.get(id);
@@ -148,6 +177,10 @@ export class OwlDBModel {
     }
   }
 
+  /**
+   * A function to retrieve all workspaces in the given database.
+   * @returns A promise mapping the names of workspaces to the corresponding ModelWorkspace objects.
+   */
   async getAllWorkspaces(): Promise<Map<string, ModelWorkspace>> {
     // Update workspaces, if we aren't subscribed
     if (!this.subscribedToWorkspaces) {
@@ -177,8 +210,10 @@ export class OwlDBModel {
     return this.workspaces;
   }
 
-  // Adds the workspace with name workspaceName to OwlDB.
-  // Will not overwrite an existing workspace.
+  /**
+   * A function that adds a workspace with a given name to the database.
+   * @param workspace_name a string representing the identifier for the workspace.
+   */
   async addWorkspace(workspace_name: string): Promise<void> {
     // Add this workspace to the API
     await this.typedModelFetch<any>(`/${workspace_name}?timestamp=0`, {
@@ -203,12 +238,21 @@ export class OwlDBModel {
     // Either way, we don't have to do anything else.
   }
 
+  /**
+   * A function that deletes a workspace with the given name from the database.
+   * @param workspace_name a string representing the identifier for the workspace.
+   */
   async removeWorkspace(workspace_name: string): Promise<void> {
     await this.emptyModelFetch(`/${workspace_name}`, {
       method: "DELETE",
     });
   }
 
+  /**
+   * A function that updates a specific post by adding a reaction.
+   * @param reactionUpdate an object representing the reaction update data to send to the model.
+   * @returns a Promise that resolves to the patch response received from the database.
+   */
   async updateReaction(
     reactionUpdate: ModelReactionUpdate
   ): Promise<PatchDocumentResponse> {
@@ -266,13 +310,24 @@ export class OwlDBModel {
       });
   }
 
-  /* Getter function that returns the token. */
+  /**
+   * A function that returns the token that identifies the currently logged in user.
+   * @returns a string representing the token
+   */
   getToken(): string {
     return this.token;
   }
+
+  /**
+   * Returns the string representing the username for the user.
+   * @returns 
+   */
+  getUsername() {
+    return this.username;
+  }
 }
 
-// Model singleton
+// A model singleton used by the application.
 let modelSingleton = new OwlDBModel();
 export function getModel() {
   return modelSingleton;

@@ -2,7 +2,10 @@ import { slog } from "../slog";
 import { ModelChannel } from "./channel";
 import { getModel } from "./model";
 import { WorkspaceResponse } from "../../types/workspaceResponse";
-import { validateChannelResponse, validateGetChannelsResponse } from "./utils";
+import {
+  validateChannelResponse,
+  validateGetChannelsResponse,
+} from "./utils";
 import { ChannelResponse } from "../../types/channelResponse";
 import { GetChannelsResponse } from "../../types/getChannelsResponse";
 
