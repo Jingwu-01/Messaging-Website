@@ -327,7 +327,9 @@ export class OwlDBModel {
   }
 }
 
-// A model singleton used by the application.
+/**
+ * A model singleton used by the application.
+ */
 let modelSingleton = new OwlDBModel();
 export function getModel() {
   return modelSingleton;

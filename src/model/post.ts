@@ -1,12 +1,23 @@
+/**
+ * The model's representation of a post.
+ */
+
 import { PostResponse } from "../../types/postResponse";
 
 export class ModelPost {
+  // The name of the post.
   private name: string;
 
+  // The response that this post encapsulates.
   private response: PostResponse;
 
+  // The replies of this post, mapping from strings to ModelPosts.
   private replies: Map<string, ModelPost>;
 
+  // The string name of the parent for this post.
+  private parentName: string;
+
+  // A constructor to create a post in the model.
   constructor(response: PostResponse) {
     // TODO: add more robust error handling here.
     console.log(`ModelPost constructor: response.path: ${response.path}`);
@@ -58,6 +69,7 @@ export class ModelPost {
     }
   }
 
+  // The JSON object representing the post response for this 
   getResponse(): PostResponse {
     return this.response;
   }
