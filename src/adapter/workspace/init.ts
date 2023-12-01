@@ -22,14 +22,14 @@ export function initWorkspaces() {
       try {
         await getStateManager().setOpenWorkspace(evt.detail.name);
       } catch (err) {
-        getView().removePostDisplay();
+        // getView().removePostDisplay();
         getView().displayError("Failed to select workspace");
       }
       slog.info("initWorkspaces", [
         "Opened Channel displaying view channels",
         "",
       ]);
-      getView().removePostDisplay();
+      // getView().removePostDisplay();
       await refreshChannels(evt);
       // De-render the posts from the old channel.
     },

@@ -42,6 +42,8 @@ export class PostsManager {
     slog.info(
       "serializePostResponse",
       ["this.adapterPosts", this.adapterPosts],
+      ["this.rootAdapterPosts", this.rootAdapterPosts],
+      ["this.pendingPosts", this.pendingPosts],
       ["response", response],
     );
     let newPost: AdapterPost;
