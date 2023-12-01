@@ -1,6 +1,5 @@
 import { slog } from "../slog";
 import PostComponent from "./components/pages/chatPage/postComponent";
-import M3ssagin8AppComponent from "./components/pages/m3ssagin8AppComponent";
 import SnackbarComponent from "./components/pieces/snackbarComponent";
 import {
   EventWithId,
@@ -18,31 +17,80 @@ interface PostDisplayListener {
   removePostDisplay(): void;
 }
 
+/**
+ * Interface for post listeners
+ * A component that is a PostListener will receive
+ * updates when the Adapter changes what posts should be displayed
+ */
 interface PostListener {
+  /**
+   * Called by the view when there is an update to the posts that should be displayed
+   * @param posts Contains info about the new posts that need displaying.
+   */
   displayPosts(posts: ViewPostUpdate): void;
   moveReplyPostEditorTo(postEl: PostComponent): void;
   moveEditPostEditorTo(postEl: PostComponent): void;
 }
 
+/**
+ * Interface for user listeners.
+ * A component that is a UserListener will receive updates
+ * when the Adapter changes what user should be rendered.
+ */
 interface UserListener {
   displayUser(user: ViewUser | null): void;
 }
 
+/**
+ * Interface for workspace listeners.
+ * A component that is a WorkspaceListener will receive updates
+ * when the Adapter changes what workspaces should be displayed
+ */
 interface WorkspaceListener {
+  /**
+   * Called by the view when there is an update to the workspaces that should be displayed
+   * @param update Info about what changed
+   */
   displayWorkspaces(update: ViewWorkspaceUpdate): void;
+  /**
+   * Called by the view when the open workspace changes.
+   * @param open_workspace The new open workspace, or null if there is no open workspace.
+   */
   displayOpenWorkspace(open_workspace: ViewWorkspace | null): void;
 }
 
+/**
+ * Interface for channel listeners.
+ * A component that is a ChannelListener will receive updates
+ * when the Adapter changes what channels should be displayed.
+ */
 interface ChannelListener {
+  /**
+   * Called by the view when there is an update to the channels that should be displayed
+   * @param update The new open workspace, or null if there is no open workspace.
+   */
   displayChannels(update: ViewChannelUpdate): void;
+  /**
+   * Called by the view when the open workspace changes.
+   * @param open_channel The new open channel, or null if there is no open channel.
+   */
   displayOpenChannel(open_channel: ViewChannel | null): void;
 }
 
+/**
+ * Interface for HTML Dialog elements.
+ * Used so that we can open dialogs from the root of the app.
+ */
 interface Dialog extends HTMLElement {
   showModal(): void;
   close(): void;
 }
 
+/**
+ * Returns True if the element is a Dialog.
+ * @param element Element to check
+ * @returns If the Element is a Dialog.
+ */
 function isDialog(element: any): element is Dialog {
   return (
     element &&
@@ -51,39 +99,80 @@ function isDialog(element: any): element is Dialog {
   );
 }
 
-// TODO: think about how to consoldiate all functionality in the view?
+/**
+ * The View manages the app's user-interface.
+ */
 export class View {
+  /**
+   * The currently logged-in user
+   */
   private user: ViewUser | null = null;
 
+  /**
+   * A list of components that should receive updates when user changes.
+   */
   private userListeners: Array<UserListener> = new Array<UserListener>();
 
+  /**
+   * A list of components that should receive updates when the posts change.
+   */
   private postListeners: Array<PostListener> = new Array<PostListener>();
 
+  /**
+   * A list of components that should receive updates when the workspaces change.
+   */
   private workspaceListeners: Array<WorkspaceListener> =
     new Array<WorkspaceListener>();
 
+  /**
+   * A list of components that should receive update when the channels change.
+   */
   private channelListeners: Array<ChannelListener> =
     new Array<ChannelListener>();
 
+  /**
+   * A list of components that should receive updates when the posts change.
+   */
   private postDisplayListeners: Array<PostDisplayListener> =
     new Array<PostDisplayListener>();
 
+  /**
+   * A 2D map, where every function in eventCompletedListeners.get(event_id)
+   * should get called when the Adapter finishes handling the event with event_id.
+   */
   private eventCompletedListeners = new Map<
     string,
     Array<(event: EventWithId, error_message?: string) => void>
   >();
 
+  /**
+   * The workspaces that are currently rendered
+   */
   private workspaces = new Array<ViewWorkspace>();
 
+  /**
+   * The workspace that is open.
+   */
   private openWorkspace: ViewWorkspace | null = null;
 
+  /**
+   * The posts that are currently rendered
+   */
   private posts = new Array<ViewPost>();
 
+  /**
+   * The channels that are currently rendered
+   */
   private channels = new Array<ViewChannel>();
 
+  /**
+   * The channel that is open
+   */
   private openChannel: ViewChannel | null = null;
 
-  // Snackbars will render into this component
+  /**
+   * Snackbars will render into this component.
+   */
   private snackbarDisplay: HTMLElement;
 
   constructor() {
@@ -107,6 +196,9 @@ export class View {
     });
   }
 
+  /**
+   * @param listener Will receive updates when posts change
+   */
   addPostListener(listener: PostListener) {
     this.postListeners.push(listener);
     // TODO: change this, is just a placeholder for now.
@@ -118,6 +210,9 @@ export class View {
     listener.displayPosts(viewPostUpdate);
   }
 
+  /**
+   * @param listener Will no longer receive updates when posts change
+   */
   removePostListener(listener: PostListener) {
     let index = this.postListeners.indexOf(listener);
     if (index < 0) {
@@ -128,6 +223,10 @@ export class View {
     this.postListeners.splice(index, 1);
   }
 
+  /**
+   * Tells the View to change which posts are rendered.
+   * @param posts See documentation for ViewPostUpdate. Details about what posts changed.
+   */
   displayPosts(posts: ViewPostUpdate) {
     // add a function call to modify this.posts to contain the new post
     // do the listener thing
@@ -140,11 +239,18 @@ export class View {
     });
   }
 
+  /**
+   * @param listener Will receive updates when the displayed User changes.
+   */
   addUserListener(listener: UserListener) {
     this.userListeners.push(listener);
     listener.displayUser(this.user);
   }
 
+  /**
+   * Change the logged-in user that appears on-screen.
+   * @param user The new user, or null if the user is logged out.
+   */
   displayUser(user: ViewUser | null) {
     this.user = user;
     this.userListeners.forEach((listener) => {
@@ -152,6 +258,9 @@ export class View {
     });
   }
 
+  /**
+   * @param listener Will receive updates when the displayed workspaces change.
+   */
   addWorkspaceListener(listener: WorkspaceListener) {
     this.workspaceListeners.push(listener);
     listener.displayWorkspaces({
@@ -163,6 +272,10 @@ export class View {
     listener.displayOpenWorkspace(this.openWorkspace);
   }
 
+  /**
+   * Change which workspaces are being displayed on screen.
+   * @param update See ViewWorkspaceUpdate documentation for details.
+   */
   displayWorkspaces(update: ViewWorkspaceUpdate) {
     this.workspaces = update.allWorkspaces;
     this.workspaceListeners.forEach((listener) => {
@@ -170,6 +283,10 @@ export class View {
     });
   }
 
+  /**
+   * Change which workspace is open on-screen.
+   * @param workspace The open workspace, or null if no workspace is open.
+   */
   displayOpenWorkspace(workspace: ViewWorkspace | null) {
     this.openWorkspace = workspace;
     this.workspaceListeners.forEach((listener) => {
@@ -177,6 +294,9 @@ export class View {
     });
   }
 
+  /**
+   * @param listener Will receive updates when the displayed Channels are changed.
+   */
   addChannelListener(listener: ChannelListener) {
     this.channelListeners.push(listener);
     listener.displayChannels({
@@ -188,6 +308,9 @@ export class View {
     listener.displayOpenChannel(this.openChannel);
   }
 
+  /**
+   * Change which channels are displayed on-screen.
+   */
   displayChannels(update: ViewChannelUpdate) {
     this.channels = update.allChannels;
     this.channelListeners.forEach((listener) => {
@@ -195,6 +318,10 @@ export class View {
     });
   }
 
+  /**
+   * Change which channel is currently open on-screen
+   * @param channel The channel that should be displayed
+   */
   displayOpenChannel(channel: ViewChannel | null) {
     this.openChannel = channel;
     this.channelListeners.forEach((listener) => {
@@ -243,8 +370,9 @@ export class View {
     });
   }
 
-  // When the Adapter calls .completeEvent(event),
-  // callback will be called.
+  /**
+   * When the Adapter calls .completeEvent(event), callback will be called.
+   */
   waitForEvent(
     id: string,
     callback: (event: EventWithId, error?: string) => void
@@ -257,14 +385,14 @@ export class View {
     arr.push(callback);
   }
 
-  // The Adapter should call this when an event passed to it by the View is completed.
+  /** The Adapter should call this when an event passed to it by the View is completed. */
   completeEvent(event: EventWithId) {
     this.eventCompletedListeners.get(event.detail.id)?.forEach((callback) => {
       callback(event);
     });
   }
 
-  // The Adapter should call this when an event passed to it by the View results in an error.
+  /** The Adapter should call this when an event passed to it by the View results in an error. */
   failEvent(event: EventWithId, error_message: string) {
     this.displayError(error_message);
     this.eventCompletedListeners.get(event.detail.id)?.forEach((callback) => {
@@ -272,13 +400,13 @@ export class View {
     });
   }
 
-  // Displays the given error message to the user.
+  /** Displays the given error message to the user. */
   displayError(message: string) {
     // Display a snackbar
     this.openSnackbar("error", message);
   }
 
-  // Opens a snackbar with the given level and message.
+  /** Opens a snackbar with the given level and message.  */
   openSnackbar(level: string, message: string) {
     const snackbarEl = new SnackbarComponent();
     snackbarEl.innerHTML = `<p slot="content">${message}</p>`;
@@ -286,12 +414,13 @@ export class View {
     this.snackbarDisplay.appendChild(snackbarEl);
   }
 
-  // Opens the dialog with the given ID.
   // Unfortunately, we have to do it this way since dialogs need
   // to be at the root of the application to work properly. This is because
   // they should render on top of everything else, and, if they're nested in a parent component,
   // they might be affected by the styles of that parent. E.G if parent has "display: none",
   // then the dialog won't ever render.
+
+  /** Opens the dialog with the given ID. */
   openDialog(dialog_id: string) {
     let dialog_query = document.querySelector(`#${dialog_id}`);
     if (isDialog(dialog_query)) {
@@ -308,17 +437,6 @@ export class View {
     }
   }
 
-  // Closes the dialog with the given ID
-  // closeDialog(dialog_id: string) {
-  //   let dialog_query = document.querySelector(`#${dialog_id}`);
-  //   if (isDialog(dialog_query)) {
-  //     this.currentlyOpenDialog = null;
-  //     dialog_query.close();
-  //   } else {
-  //     throw Error(`No dialog with ID ${dialog_id}`);
-  //   }
-  // }
-
   getUser() {
     return this.user;
   }
@@ -327,6 +445,8 @@ export class View {
 // view singleton
 let lazyView: View | null = null;
 // NOTE: this is a LAZY view now
+
+/** Gets the view singleton object */
 export function getView() {
   if (lazyView === null) {
     lazyView = new View();

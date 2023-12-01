@@ -61,7 +61,7 @@ export default function workspaceMenuComponentInit() {
         <p slot="content">Refresh Workspaces</p>
         <iconify-icon icon="material-symbols:refresh" aria-label="Refresh Workspaces"></iconify-icon>
       </loading-button-component>
-      <open-dialog-button-component dialog="edit-workspaces-dialog">
+      <open-dialog-button-component dialog="edit-workspaces-dialog" style="border: none; background: none;">
         <div slot="button-content" id="edit-workspaces-button">
           <p>Edit Workspaces</p>
           <iconify-icon icon="material-symbols:edit" aria-label="Edit Workspaces"></iconify-icon>

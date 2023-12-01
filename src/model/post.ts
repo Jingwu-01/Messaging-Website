@@ -7,25 +7,23 @@ export class ModelPost {
 
   private replies: Map<string, ModelPost>;
 
-  private parentName: string;
-
   constructor(response: PostResponse) {
     // TODO: add more robust error handling here.
     console.log(`ModelPost constructor: response.path: ${response.path}`);
     console.log(
       `ModelPost constructor: response.path.split("/"): ${response.path.split(
-        "/",
-      )}`,
+        "/"
+      )}`
     );
     console.log(
       `ModelPost constructor: response.path.split("/").pop(): ${response.path
         .split("/")
-        .pop()}`,
+        .pop()}`
     );
     let name = response.path.split("/").pop();
     if (name === undefined) {
       throw Error(
-        "ModelPost constructor: internal server error; path is an empty string",
+        "ModelPost constructor: internal server error; path is an empty string"
       );
     }
     this.name = name;
@@ -47,13 +45,13 @@ export class ModelPost {
       let parentPathArr = response.doc.parent.split("/");
       if (parentPathArr.length !== 6) {
         throw new Error(
-          "model post constructor: parentPathArr is not of the correct length",
+          "model post constructor: parentPathArr is not of the correct length"
         );
       }
       let parentName = parentPathArr.pop();
       if (parentName === undefined) {
         throw new Error(
-          "model post constructor: internal server error (last element of parentPathArr is undefined)",
+          "model post constructor: internal server error (last element of parentPathArr is undefined)"
         );
       }
       this.parentName = parentName;

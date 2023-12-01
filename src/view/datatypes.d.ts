@@ -1,11 +1,22 @@
+/**
+ * Update sent by the Adapter to the view when the posts change
+ */
 export type ViewPostUpdate = {
+  /**
+   * List of all posts that should be displayed
+   */
   allPosts: Array<ViewPost>;
+  /**
+   * "insert" = a new post was added
+   * "modify" = something changed about a post
+   */
   op: "add" | "modify" | "insert";
+  /** A list of the posts that were affected by this update */
   affectedPosts: Array<ViewPost>;
 };
 
-// This ViewPost type will effectively allow us to represent a tree of posts
-// that the view can display.
+/** This ViewPost type will effectively allow us to represent a tree of posts
+that the view can display. */
 export type ViewPost = {
   msg: string;
   reactions: ReactionData; // TODO: should be an array of strings? or custom reactions objects based on what we want?
@@ -19,19 +30,51 @@ export type ViewPost = {
   name: string;
 };
 
+/**
+ * Update sent by the Adapter to the view when the workspaces change
+ */
 export type ViewWorkspaceUpdate = {
+  /**
+   * List of all workspaces that should be displayed
+   */
   allWorkspaces: Array<ViewWorkspace>;
+  /**
+   * "add" = a new workspace was added
+   * "remove" = a workspace was removed
+   * "replace" = the old workspaces are being completely replaced with affectedWorkspaces
+   */
   op: "add" | "remove" | "replace";
-  // NOTE: deltas aren't implemented yet, so this won't contain accurate data
+  /**
+   * List of all workspaces affected by this update
+   */
   affectedWorkspaces: Array<ViewWorkspace>;
+  /**
+   * The event that caused this update to be sent.
+   */
   cause: Event;
 };
 
+/**
+ * Update sent by the Adapter to the view when a channel changes.
+ */
 export type ViewChannelUpdate = {
+  /**
+   * List of all channels that should be displayed
+   */
   allChannels: Array<ViewChannel>;
+  /**
+   * "add" = a new channel was added
+   * "remove" = a channel was removed
+   * "replace" = the old channels are being completely replaced with affectedChannels
+   */
   op: "add" | "remove" | "replace";
-  // NOTE: deltas aren't implemented yet, so this won't contain accurate data
+  /**
+   * List of all channels affected by this update
+   */
   affectedChannels: Array<ViewWorkspace>;
+  /**
+   * The event that caused this update to be sent.
+   */
   cause: Event;
 };
 
@@ -47,55 +90,91 @@ export type PostReactions = {
   [k: string]: string[];
 };
 
+/**
+ * A user that can be displayed by the view
+ */
 export type ViewUser = {
   username: string;
 };
 
+/**
+ * A workspace that can be displayed by the view
+ */
 export type ViewWorkspace = {
   name: string;
 };
 
+/**
+ * A channel that can be displayed by the view
+ */
 export type ViewChannel = {
   name: string;
 };
 
+/**
+ * Sent to the Adapter when the login button is pressed
+ */
 export type LoginEvent = {
   username: string;
   id: string;
 };
 
+/**
+ * Sent to the Adapter when the logout button is pressed
+ */
 export type LogoutEvent = {};
 
+/**
+ * Sent to the Adapter when a workspace is created
+ */
 export type CreateWorkspaceEvent = {
   name: string;
   id: string;
 };
 
+/**
+ * Sent to the Adapter when a workspace is selected
+ */
 export type SelectWorkspaceEvent = {
   name: string;
   id: string;
 };
 
+/**
+ * Sent to the Adapter when a workspace is deleted
+ */
 export type DeleteWorkspaceEvent = {
   name: string;
   id: string;
 };
 
+/**
+ * Sent to the Adapter when a channel is created
+ */
 export type CreateChannelEvent = {
   name: string;
   id: string;
 };
 
+/**
+ * Sent to the Adapter when a channel is selected
+ */
 export type SelectChannelEvent = {
   name: string;
   id: string;
 };
 
+/**
+ * Sent to the Adapter when a channel is deleted
+ */
 export type DeleteChannelEvent = {
   name: string;
   id: string;
 };
 
+/**
+ * Sent to the Adapter when a post is reacted to
+ */
 export type ReactionUpdateEvent = {
   reactionName: string;
   userName: string | undefined;
@@ -103,19 +182,31 @@ export type ReactionUpdateEvent = {
   add: boolean;
 };
 
+/**
+ * Sent to the Adapter when a post is created
+ */
 export type CreatePostEvent = {
   msg: string;
   parent: string;
 };
 
+/**
+ * Sent to the Adapter when the "refresh workspaces" button is pressed
+ */
 export type RefreshWorkspacesEvent = {
   id: string;
 };
 
+/**
+ * Sent to the Adapter when the "refresh channels" button is pressed
+ */
 export type RefreshChannelsEvent = {
   id: string;
 };
 
+/**
+ * Interface for any CustomEvent that has an ID property
+ */
 export interface EventWithId extends CustomEvent {
   detail: {
     id: string;
