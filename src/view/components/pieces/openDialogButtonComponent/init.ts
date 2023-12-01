@@ -6,19 +6,20 @@ export function openDialogButtonComponentInit() {
     `
 <template id="open-dialog-button-component-template">
   <style>
-    #wrapper {
-      display: inline-block
+    button {
+      background-color: #add8e6;
+      border-radius: 15px;
     }
   </style>
-  <div id="wrapper">
+  <button id="outer-button">
     <slot name="button-content"></slot>
-  </div>
+  </button>
 </template>
-`,
+`
   );
 
   customElements.define(
     "open-dialog-button-component",
-    OpenDialogButtonComponent,
+    OpenDialogButtonComponent
   );
 }

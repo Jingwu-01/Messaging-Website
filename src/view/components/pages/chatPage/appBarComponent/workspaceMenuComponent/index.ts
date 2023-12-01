@@ -5,6 +5,8 @@ import { getView } from "../../../../../view";
 class WorkspaceMenuComponent extends HTMLElement {
   private menu: HTMLElement;
 
+  private refreshWorkspacesButton: HTMLElement;
+
   constructor() {
     super();
 
@@ -22,10 +24,33 @@ class WorkspaceMenuComponent extends HTMLElement {
       throw Error("Could not find element #menu");
     }
     this.menu = menu_query;
+
+    let refresh_workspaces_button_query = this.shadowRoot?.querySelector(
+      "#refresh-workspaces-button"
+    );
+    if (!(refresh_workspaces_button_query instanceof HTMLElement)) {
+      throw Error("Could not find element #refresh-workspaces-button");
+    }
+    this.refreshWorkspacesButton = refresh_workspaces_button_query;
   }
 
   connectedCallback(): void {
     // The browser calls this when the element is added to a document.
+    // Set up the "Refresh Workspaces" button
+    this.refreshWorkspacesButton.addEventListener("click", () => {
+      let event_id = String(Date.now());
+      this.refreshWorkspacesButton.setAttribute(
+        "loading-until-event",
+        event_id
+      );
+      document.dispatchEvent(
+        new CustomEvent("refreshWorkspaces", {
+          detail: {
+            id: event_id,
+          },
+        })
+      );
+    });
 
     // Tell the view that this component wants to listen to workspace updates
     getView().addWorkspaceListener(this);
@@ -60,13 +85,17 @@ class WorkspaceMenuComponent extends HTMLElement {
     if (workspace_menu_items_el instanceof HTMLElement) {
       // loop through, creating a new HTML element to display each workspace
       let new_inner_html = "";
-      workspaces.forEach((workspace, i) => {
-        new_inner_html += `
-        <loading-button-component id="workspace-select-${i}" class="workspace-select" style="background: none; border: none;">
-          <p slot="content">${workspace.name}</p>
-        </loading-button-component>
-        `;
-      });
+      if (update.allWorkspaces.length == 0) {
+        new_inner_html = `No workspaces yet. Click "Edit Workspaces" to add one!`;
+      } else {
+        workspaces.forEach((workspace, i) => {
+          new_inner_html += `
+          <loading-button-component id="workspace-select-${i}" class="workspace-select" style="background: none; border: none;">
+            <p slot="content">${workspace.name}</p>
+          </loading-button-component>
+          `;
+        });
+      }
       // update the document
       workspace_menu_items_el.innerHTML = new_inner_html;
       // give every element we just added a click listener

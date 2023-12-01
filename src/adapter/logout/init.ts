@@ -11,8 +11,8 @@ export function initLogout() {
       let view = getView();
       // Log out the current user and reset to the HomePage that requires login.
       model.logout().then(() => {
-        view.setHomePage();
+        view.displayUser(null);
       });
-    },
+    }
   );
 }

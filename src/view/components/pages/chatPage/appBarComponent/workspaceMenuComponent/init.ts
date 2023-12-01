@@ -54,12 +54,17 @@ export default function workspaceMenuComponentInit() {
     </div>
     <div slot="menu-items" id="menu-items-wrapper">
       <div id="workspace-menu-items">
+        No workspaces yet. Click "Edit Workspaces" to add one!
       </div>
       <div class="divider"></div>
+      <loading-button-component id="refresh-workspaces-button" style="border: none; background: none;">
+        <p slot="content">Refresh Workspaces</p>
+        <iconify-icon icon="material-symbols:refresh" aria-label="Refresh Workspaces"></iconify-icon>
+      </loading-button-component>
       <open-dialog-button-component dialog="edit-workspaces-dialog">
         <div slot="button-content" id="edit-workspaces-button">
           <p>Edit Workspaces</p>
-          <iconify-icon icon="material-symbols:edit"></iconify-icon>
+          <iconify-icon icon="material-symbols:edit" aria-label="Edit Workspaces"></iconify-icon>
         </div>
       </open-dialog-button-component>
     </div>
@@ -68,7 +73,7 @@ export default function workspaceMenuComponentInit() {
     <span slot="title">Edit Workspaces</span>
   </edit-dialog-component>
 </template>
-`,
+`
   );
 
   customElements.define("workspace-menu-component", WorkspaceMenuComponent);

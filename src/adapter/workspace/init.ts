@@ -4,11 +4,11 @@ import {
   SelectWorkspaceEvent,
   CreateWorkspaceEvent,
   DeleteWorkspaceEvent,
+  RefreshWorkspacesEvent,
 } from "../../view/datatypes";
 import { getView } from "../../view/view";
 import getStateManager from "../../state-manager";
 import refreshChannels from "../channel/refreshChannels";
-import modelToViewWorkspaces from "./modelToViewWorkspaces";
 import refreshWorkspaces from "./refreshWorkspaces";
 
 export function initWorkspaces() {
@@ -71,15 +71,35 @@ export function initWorkspaces() {
       if (evt.detail.name == getStateManager().getOpenWorkspace()?.getName()) {
         getStateManager().setOpenWorkspace(null);
       }
-      // TODO handle promise rejection
-      await getModel().removeWorkspace(evt.detail.name);
-      const workspaces = await getModel().getAllWorkspaces();
-      getView().displayWorkspaces({
-        allWorkspaces: modelToViewWorkspaces(workspaces),
-        op: "replace",
-        affectedWorkspaces: modelToViewWorkspaces(workspaces),
-        cause: evt,
-      });
+      try {
+        await getModel().removeWorkspace(evt.detail.name);
+      } catch (error) {
+        getView().failEvent(evt, "Failed to delete workspace");
+      }
+
+      try {
+        await refreshWorkspaces(evt);
+      } catch (error) {
+        getView().failEvent(evt, "Failed to refresh workspaces");
+        return;
+      }
+
+      getView().completeEvent(evt);
+    }
+  );
+
+  //Handle workspace refresh
+  document.addEventListener(
+    "refreshWorkspaces",
+    async (evt: CustomEvent<RefreshWorkspacesEvent>) => {
+      slog.info(`Workspaces refreshed`);
+
+      try {
+        await refreshWorkspaces(evt);
+      } catch (error) {
+        getView().failEvent(evt, "Failed to refresh workspaces");
+        return;
+      }
       getView().completeEvent(evt);
     }
   );

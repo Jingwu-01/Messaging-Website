@@ -1,4 +1,5 @@
 import { slog } from "../../../../slog";
+import { ViewUser } from "../../../datatypes";
 import { getView } from "../../../view";
 
 // This component was formerly a page, but is now a dialog.
@@ -46,14 +47,12 @@ class HomePage extends HTMLElement {
   }
 
   connectedCallback(): void {
-    // Show the login modal dialog
-    this.dialog?.showModal();
-
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
     this.form.addEventListener("submit", this.handleSubmit.bind(this), options);
 
     this.dialog?.addEventListener("keydown", this.keyDown.bind(this));
+    getView().addUserListener(this);
   }
 
   disconnectedCallback(): void {
@@ -79,9 +78,6 @@ class HomePage extends HTMLElement {
       this.submitButton.setAttribute("disabled", "");
       // When login is successful, re-enable the form and close this dialog.
       getView().waitForEvent(event_id, (event, error) => {
-        if (!error) {
-          this.dialog.close();
-        }
         this.submitButton.removeAttribute("disabled");
       });
     } else {
@@ -110,6 +106,14 @@ class HomePage extends HTMLElement {
 
   close() {
     this.dialog.close();
+  }
+
+  displayUser(user: ViewUser | null) {
+    if (user == null) {
+      getView().openDialog("login-dialog");
+    } else {
+      this.dialog.close();
+    }
   }
 }
 
