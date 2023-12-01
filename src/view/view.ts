@@ -1,6 +1,5 @@
 import { slog } from "../slog";
 import PostComponent from "./components/pages/chatPage/postComponent";
-import M3ssagin8AppComponent from "./components/pages/m3ssagin8AppComponent";
 import SnackbarComponent from "./components/pieces/snackbarComponent";
 import {
   EventWithId,

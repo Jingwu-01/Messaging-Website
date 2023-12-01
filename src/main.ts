@@ -1,11 +1,9 @@
 import { initAdapter } from "./adapter/init";
-import { ModelPost } from "./model/post";
 import { slog } from "./slog";
 import {
   LogoutEvent,
   SelectChannelEvent,
   SelectWorkspaceEvent,
-  ViewPost,
   ReactionUpdateEvent,
   CreateWorkspaceEvent,
   CreateChannelEvent,
@@ -16,9 +14,6 @@ import {
 import { LoginEvent } from "./view/datatypes";
 import { initView } from "./view/init";
 import { ModelPostEvent, PostsEvent } from "./model/modelTypes";
-import { getView } from "./view/view";
-import setupTestDb from "./tests/setup-test-db";
-import { setupBasicApp } from "./tests/setup-additional-state";
 
 /**
  * Declare names and types of environment variables.

@@ -3,7 +3,6 @@ import { ModelChannel } from "./channel";
 import { getModel } from "./model";
 import { WorkspaceResponse } from "../../types/workspaceResponse";
 import {
-  getDatabasePath,
   validateChannelResponse,
   validateGetChannelsResponse,
 } from "./utils";

@@ -269,6 +269,10 @@ export class OwlDBModel {
   getToken(): string {
     return this.token;
   }
+
+  getUsername() {
+    return this.username;
+  }
 }
 
 // Model singleton
