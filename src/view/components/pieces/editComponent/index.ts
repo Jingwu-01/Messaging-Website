@@ -47,9 +47,7 @@ class EditPostButtonComponent extends HTMLElement {
     this.controller = null;
   }
 
-  private editPost(event: MouseEvent) {
-    
-  }
+  private editPost(event: MouseEvent) {}
 }
 
 export default EditPostButtonComponent;

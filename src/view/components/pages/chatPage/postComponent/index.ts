@@ -12,7 +12,7 @@ export class PostComponent extends HTMLElement {
 
   private controller: AbortController | null = null;
 
-  private postMsg: string | undefined;
+  postMsg: string | undefined;
 
   private smileReaction: HTMLElement;
 
@@ -119,15 +119,13 @@ export class PostComponent extends HTMLElement {
     // // this call should technically be before the previous one
     // getView().replacePostEditor(postEditor);
     // this.postBody.parentNode?.insertBefore(postEditor, this.postBody.nextSibling);
-    getView().movePostEditorTo(this);
+    getView().moveReplyPostEditorTo(this);
   }
 
   addEditPostEditor(event: MouseEvent) {
-    getView().movePostEditorTo(this, this.postMsg);
+    getView().moveEditPostEditorTo(this);
   }
  
-  
-
   // Sets the content of this post equal to viewPost
   addPostContent(viewPost: ViewPost): void {
     // TODO: obviously can add more functionality here later as needed.
