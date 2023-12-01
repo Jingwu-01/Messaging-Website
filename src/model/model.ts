@@ -48,6 +48,7 @@ export class OwlDBModel {
       // headers will be overwritten.
       ...options.headers,
     };
+    slog.info("typedModelFetch", ["getDatabasePath()${url}", `${getDatabasePath()}${url}`]);
     return typedFetch<T>(`${getDatabasePath()}${url}`, options);
   }
 
@@ -211,11 +212,17 @@ export class OwlDBModel {
     reactionUpdate: ModelReactionUpdate,
   ): Promise<PatchDocumentResponse> {
     let patches = new Array<PatchBody>();
-    let addReactionArray: PatchBody = {
+    let addReactionObject: PatchBody = {
       path: "/reactions",
       op: "ObjectAdd",
-      value: [],
+      value: {},
     };
+    patches.push(addReactionObject);
+    let addReactionArray: PatchBody = {
+      path: `/reactions/${reactionUpdate.reactionName}`,
+      op: "ObjectAdd",
+      value: [],
+    }
     patches.push(addReactionArray);
     let op: "ArrayAdd" | "ArrayRemove";
     if (reactionUpdate.add) {
@@ -224,7 +231,7 @@ export class OwlDBModel {
       op = "ArrayRemove";
     }
     let addReaction: PatchBody = {
-      path: "/reactions",
+      path: `/reactions/${reactionUpdate.reactionName}`,
       op: op,
       value: reactionUpdate.userName,
     };
@@ -238,12 +245,14 @@ export class OwlDBModel {
       body: JSON.stringify(patches),
     };
     // TODO: add a catch handler
+    slog.info("updateReactions", ["options", options]);
     return getModel()
       .typedModelFetch<PatchDocumentResponse>(
         `${reactionUpdate.postPath}`,
         options,
       )
       .then((response) => {
+        slog.info("updateReaction", ["response", response]);
         const valid = validatePatchDocumentResponse(response);
         if (!valid) {
           slog.error("validating patch doc response", [

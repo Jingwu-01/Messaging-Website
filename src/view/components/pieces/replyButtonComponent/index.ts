@@ -7,14 +7,16 @@ class ReplyButtonComponent extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
 
-    // Deep clone the reply button HTML template for later use.
-    if (this.shadowRoot) {
-      let template = document.querySelector("#reply-button-component-template");
-      if (!(template instanceof HTMLTemplateElement)) {
-        throw new Error("reply button template is not HTML template element");
-      }
-      this.shadowRoot.append(template.content.cloneNode(true));
+    let template = document.querySelector("#reply-button-component-template");
+    if (!(template instanceof HTMLTemplateElement)) {
+      throw Error("ReplyButtonComponent: template was not found");
     }
+
+    if (this.shadowRoot === null) {
+      throw Error("ReplyButtonComponent: no shadow root exists");
+    }
+
+    this.shadowRoot.append(template.content.cloneNode(true));
   }
 
   // When connected, create and assign a new AbortController.
