@@ -61,6 +61,7 @@ class StateManager {
     // Unsub from old channel
     if (this.openChannel != null) {
       this.openChannel.unsubscribe();
+      this.resetPostsManager();
     }
     if (channelName == null) {
       this.openChannel = null;
@@ -111,6 +112,10 @@ class StateManager {
 
   serializePostResponse(response: PostResponse) {
     this.postsManager.serializePostResponse(response);
+  }
+
+  resetPostsManager() {
+    this.postsManager = new PostsManager();
   }
 }
 
