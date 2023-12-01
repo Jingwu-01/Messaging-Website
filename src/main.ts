@@ -80,7 +80,7 @@ function main(): void {
 
   // Set up test DB.
   // TODO: Remove before submitting
-  setupTestDb();
+  // setupTestDb();
 
   initAdapter();
   initView();

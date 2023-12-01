@@ -1,7 +1,12 @@
 import getStateManager from ".";
 import { CreateResponse } from "../../types/createResponse";
+import { PostResponse } from "../../types/postResponse";
 import { AdapterPost } from "../adapter/posts/adapterPost";
-import { CreatePostEvent } from "../view/datatypes";
+import { adapterViewPostConverter } from "../adapter/posts/adapterViewPostConverter";
+import { insertPostSorted } from "../adapter/posts/handleSortingPosts";
+import { slog } from "../slog";
+import { CreatePostEvent, ViewPostUpdate } from "../view/datatypes";
+import { getView } from "../view/view";
 
 export class PostsManager {
     private adapterPosts: Map<string, AdapterPost> = new Map<string, AdapterPost>();
@@ -97,10 +102,10 @@ export class PostsManager {
     verifyAlivePost(newPost: AdapterPost): [boolean, string] {
     let postWorkspace = newPost.getWorkspaceName();
     let postChannel = newPost.getChannelName();
-    if (postWorkspace !== getAdapter().getOpenWorkspaceName()) {
+    if (postWorkspace !== getStateManager().getOpenWorkspaceName()) {
         return [false, "post workspace is invalid"];
     }
-    if (postChannel !== getAdapter().getOpenChannelName()) {
+    if (postChannel !== getStateManager().getOpenChannelName()) {
         return [false, "post channel is invalid"];
     }
     return [true, ""];

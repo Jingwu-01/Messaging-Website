@@ -5,6 +5,8 @@ import { ModelWorkspace } from "../model/workspace";
 import { slog } from "../slog";
 import { CreatePostEvent } from "../view/datatypes";
 import { getView } from "../view/view";
+import { PostsManager } from "./postsManager";
+import { PostResponse } from "../../types/postResponse";
 
 // The state manager stores the state of the application
 // and has functions that the adapter can call to manipulate that state.
@@ -17,6 +19,8 @@ class StateManager {
   private openWorkspaceName: string | null = null;
 
   private openChannelName: string | null = null;
+
+  private postsManager: PostsManager = new PostsManager();
 
   getOpenWorkspace(): ModelWorkspace | null {
     return this.openWorkspace;
@@ -101,6 +105,10 @@ class StateManager {
 
   getOpenChannelName() {
     return this.openChannelName;
+  }
+
+  serializePostResponse(response: PostResponse) {
+    this.postsManager.serializePostResponse(response);
   }
 }
 

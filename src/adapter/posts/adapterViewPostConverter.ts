@@ -1,3 +1,6 @@
+import { ViewPost } from "../../view/datatypes";
+import { AdapterPost } from "./adapterPost";
+
 export function adapterViewPostConverter(adapterPost: AdapterPost): ViewPost {
     return {
       msg: adapterPost.getResponse().doc.msg,
