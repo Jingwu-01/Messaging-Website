@@ -87,6 +87,7 @@ class StateManager {
 
   createPost(postData: CreatePostEvent) {
     // TODO: consider if we want to enforce that a channel are open in order to send a message?
+    // no, we don't, but no time.
     let channel = this.getOpenChannel();
     if (channel === null) {
       throw new Error("Cannot add a post: no open channel");

@@ -1,17 +1,12 @@
-import { getViewPosts } from "../../main";
 import {
   ModelPostEvent,
   ModelReactionUpdate,
-  PostsEvent,
 } from "../../model/modelTypes";
 import { slog } from "../../slog";
 import {
   CreatePostEvent,
   ReactionUpdateEvent,
-  ViewPost,
-  ViewPostUpdate,
 } from "../../view/datatypes";
-import { getView } from "../../view/view";
 import { getModel } from "../../model/model";
 import getStateManager from "../../state-manager";
 import createPost from "./createPost";

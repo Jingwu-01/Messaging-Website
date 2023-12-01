@@ -217,6 +217,7 @@ export class ModelChannel {
 
   unsubscribe() {
     this.controller.abort();
+    this.controller = new AbortController();
   }
 
   getName() {
