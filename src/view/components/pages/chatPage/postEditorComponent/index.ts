@@ -17,6 +17,10 @@ export class PostEditor extends HTMLElement {
 
   private parentPath: string | undefined;
 
+  private cancelReply: HTMLElement;
+
+  private topReplyEl: HTMLElement | undefined;
+
   constructor() {
     super();
 
@@ -39,6 +43,7 @@ export class PostEditor extends HTMLElement {
     let postOperations = this.shadowRoot.querySelector("#post-operations");
     let postInput = this.shadowRoot.querySelector("#post-input");
     let postForm = this.shadowRoot.querySelector("#post-form");
+    let cancelReply = this.shadowRoot.querySelector("#cancel-reply");
 
     if (!(postOperations instanceof HTMLElement)) {
       throw Error("Could not find an element with the post-operations id");
@@ -51,9 +56,14 @@ export class PostEditor extends HTMLElement {
       throw Error("Could not find an element with the post-form id");
     }
 
+    if (!(cancelReply instanceof HTMLElement)) {
+        throw Error("Could not find an elemnet with the cancel-reply id");
+    }
+
     this.postOperations = postOperations;
     this.postInput = postInput;
     this.postForm = postForm;
+    this.cancelReply = cancelReply;
   }
 
   connectedCallback() {
@@ -125,9 +135,16 @@ export class PostEditor extends HTMLElement {
       this.submitPost.bind(this),
       options,
     );
+
+    this.cancelReply.addEventListener(
+        "click",
+        this.replyToTopLevel.bind(this),
+        options
+    );
   }
 
   disconnectedCallback(): void {
+    slog.info("PostEditor: removed from the DOM");
     this.controller?.abort();
     this.controller = null;
   }
@@ -187,6 +204,14 @@ export class PostEditor extends HTMLElement {
   setParentPath(parentPath: string) {
     slog.info("setParentPath", ["parentPath", `${parentPath}`]);
     this.parentPath = parentPath;
+  }
+
+  setTopReplyEl(topReplyEl: HTMLElement) {
+    this.topReplyEl = topReplyEl;
+  }
+
+  replyToTopLevel(event: MouseEvent) {
+    this.topReplyEl?.append(this);
   }
 
   printParentEl() {

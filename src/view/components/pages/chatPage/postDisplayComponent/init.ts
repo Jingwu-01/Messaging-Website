@@ -6,6 +6,12 @@ export default function postDisplayComponentInit() {
     `
 <template id="postdisplay-template">
     <style>
+        #postdisplay-wrapper {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          height: 100%;
+        }
         #posts-container{
             padding-left: 10px;
             padding-top: 10px
@@ -14,8 +20,9 @@ export default function postDisplayComponentInit() {
           margin-left: 5em;
         }
     </style>
-    <h2 id="channel-name"></h2>
-    <section id="posts-container">
+    <section id="postdisplay-wrapper">
+      <section id="posts-container">
+      </section>
     </section>
 </template>
 `,

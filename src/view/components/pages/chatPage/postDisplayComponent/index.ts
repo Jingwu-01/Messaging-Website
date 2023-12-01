@@ -8,7 +8,6 @@ import { PostEditor } from "../postEditorComponent";
 import ReplyButtonComponent from "../../../pieces/replyButtonComponent";
 
 export class PostDisplay extends HTMLElement {
-  private channelHeader: HTMLElement;
 
   private postsContainer: HTMLElement;
 
@@ -36,28 +35,26 @@ export class PostDisplay extends HTMLElement {
 
     this.shadowRoot.append(template.content.cloneNode(true));
 
-    let channelHeader = this.shadowRoot.querySelector("#channel-name");
     let postsContainer = this.shadowRoot.querySelector("#posts-container");
-
-    if (!(channelHeader instanceof HTMLElement)) {
-      throw Error("Could not find an element with the channel-name id");
-    }
+    let postDisplayWrapper = this.shadowRoot.querySelector("#postdisplay-wrapper");
 
     if (!(postsContainer instanceof HTMLElement)) {
       throw Error("Could not find an element with the posts-container id");
     }
+    if (!(postDisplayWrapper instanceof HTMLElement)) {
+      throw Error("Could not find an element with the id postdisplay-wrapper");
+    }
 
     let postEditor = new PostEditor();
 
-    this.channelHeader = channelHeader;
     this.postsContainer = postsContainer;
     this.postsContainer.after(postEditor);
 
     this.postEditor = postEditor;
     this.postEditor.setParentPath("");
+    this.postEditor.setTopReplyEl(postDisplayWrapper);
 
     this.displayPosts.bind(this);
-    console.log(`constructor: this.channelHeader: ${this.channelHeader}`);
   }
 
   // is connected callback atomic?
