@@ -31,6 +31,16 @@ export default function postComponentInit() {
         #post-buttons{
             display: flex; 
         }
+        .reacted {
+            border: solid;
+        }
+        edit-post-button-component[data-visible="true"]{
+            display: inline-block
+        }
+        edit-post-button-component[data-visible="false"]{
+            display: none
+        }
+
     </style>
     <section>
         <header id="post-header">

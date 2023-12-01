@@ -14,6 +14,10 @@ export class PostComponent extends HTMLElement {
 
   private postButtons: HTMLElement;
 
+  private postUser: string | undefined;
+
+  private smileReaction: HTMLElement;
+
   private replyButton: ReplyButtonComponent;
 
   private reactionButtons: Map<string, ReactionComponent> = new Map<string, ReactionComponent>();
@@ -21,6 +25,8 @@ export class PostComponent extends HTMLElement {
   private controller: AbortController | null = null;
 
   private postMsg: string | undefined;
+
+  private editPostButton : HTMLElement; 
 
   constructor() {
     super();
@@ -36,8 +42,15 @@ export class PostComponent extends HTMLElement {
     this.shadowRoot.append(template.content.cloneNode(true));
     let postHeader = this.shadowRoot.querySelector("#post-header");
     let postBody = this.shadowRoot.querySelector("#post-body");
+    let smileReaction = this.shadowRoot.querySelector("#smile-reaction");
+    let likeReaction = this.shadowRoot.querySelector("#like-reaction");
+    let frownReaction = this.shadowRoot.querySelector("#frown-reaction");
+    let celebrateReaction = this.shadowRoot.querySelector(
+      "#celebrate-reaction",
+    );
+    let replyButton = this.shadowRoot.querySelector("reply-button-component");
+    let editPostButton = this.shadowRoot.querySelector("edit-post-button-component")
     let postButtons = this.shadowRoot.querySelector("#post-buttons");
-    
 
     if (!(postHeader instanceof HTMLElement)) {
       throw new Error("Could not find an element with the #post-header id");
@@ -47,6 +60,10 @@ export class PostComponent extends HTMLElement {
     }
     if (!(postButtons instanceof HTMLElement)) {
       throw new Error("Could not find an elmenet with the #post-buttons id")
+    }
+
+    if (!(editPostButton instanceof HTMLElement)) {
+      throw Error("Could not find a edit-post-button-component element")
     }
 
     this.postHeader = postHeader;
@@ -63,6 +80,8 @@ export class PostComponent extends HTMLElement {
     let replyButton = new ReplyButtonComponent();
     this.postButtons.append(replyButton);
     this.replyButton = replyButton;
+    this.editPostButton = editPostButton
+
     for (const [reactionName, reactionIcon] of Object.entries(reactions)) {
       let reactionComp = new ReactionComponent();
       this.postButtons.append(reactionComp);
@@ -71,14 +90,24 @@ export class PostComponent extends HTMLElement {
       reactionComp.id = `${reactionName}-reaction`;
       this.reactionButtons.set(reactionName, reactionComp);
     }
+
   }
 
   connectedCallback() {
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
+
+    // Add click event listener for reply button
     this.replyButton.addEventListener(
       "click",
-      this.addPostEditor.bind(this),
+      this.addReplyPostEditor.bind(this),
+      options,
+    );
+
+    // Add click event listener for edit post button
+     this.editPostButton.addEventListener(
+      "click",
+      this.addEditPostEditor.bind(this),
       options,
     );
   }
@@ -88,14 +117,18 @@ export class PostComponent extends HTMLElement {
     this.controller = null;
   }
 
-  addPostEditor(event: MouseEvent) {
+  addReplyPostEditor(event: MouseEvent) {
     // let postEditor = new PostEditor();
     // // this call should technically be before the previous one
     // getView().replacePostEditor(postEditor);
     // this.postBody.parentNode?.insertBefore(postEditor, this.postBody.nextSibling);
-    getView().movePostEditorTo(this);
+    getView().moveReplyPostEditorTo(this);
   }
 
+  addEditPostEditor(event: MouseEvent) {
+    getView().moveEditPostEditorTo(this);
+  }
+ 
   // Sets the content of this post equal to viewPost
   addPostContent(viewPost: ViewPost): void {
     // TODO: obviously can add more functionality here later as needed.
@@ -110,6 +143,7 @@ export class PostComponent extends HTMLElement {
     if (postUserText != null) {
       postUserText.innerHTML = viewPost.createdUser;
     }
+    this.postUser = viewPost.createdUser; 
     // assumed that time is in ms
     let postTimeObj = new Date(viewPost.postTime);
     let postTimeShortEl = this.postHeader.querySelector("#post-time-short");
@@ -152,6 +186,33 @@ export class PostComponent extends HTMLElement {
       reactionButton.setAttribute("reaction-count", reactionCount.toString());
       reactionButton.setParentPath(viewPost.path);
     }
+
+    slog.info(
+      "addPostContent",
+      ["smileCount", smileCount],
+      ["frownCount", frownCount],
+      ["likeCount", likeCount],
+      ["celebrateCount", celebrateCount],
+    );
+
+    // const smileReaction = this.shadowRoot?.querySelector("reaction-component");
+    // slog.info("addPostContent", ["smileReaction", smileReaction?.cloneNode(true)], ["typeof smileReaction", typeof smileReaction], ["smileReaction instanceof ReactionComponent", smileReaction instanceof ReactionComponent]);
+    this.smileReaction.setAttribute("reaction-count", smileCount.toString());
+
+    this.frownReaction.setAttribute("reaction-count", frownCount.toString());
+
+    this.likeReaction.setAttribute("reaction-count", likeCount.toString());
+
+    this.celebrateReaction.setAttribute(
+      "reaction-count",
+      celebrateCount.toString(),
+    );
+    
+    let loggedinUser = getView().getUser()?.username
+    if (!(loggedinUser === this.postUser)){
+      this.editPostButton.setAttribute("data-visible", "false")
+    }
+
   }
 
   // Adds childrenPosts as replies to this ViewPost.
@@ -251,6 +312,10 @@ export class PostComponent extends HTMLElement {
         reactionButton.setAttribute("reaction-count", reactionCount.toString());
       }
     }
+  }
+
+  getPostText(){
+    return this.postMsg
   }
 }
 

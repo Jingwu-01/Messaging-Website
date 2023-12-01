@@ -20,7 +20,8 @@ interface PostDisplayListener {
 
 interface PostListener {
   displayPosts(posts: ViewPostUpdate): void;
-  movePostEditorTo(postEl: PostComponent): void;
+  moveReplyPostEditorTo(postEl: PostComponent): void;
+  moveEditPostEditorTo(postEl: PostComponent): void; 
 }
 
 interface UserListener {
@@ -103,9 +104,15 @@ export class View {
   }
 
   // TODO: have an abstract superclass that adds a parent field.
-  movePostEditorTo(postElement: PostComponent) {
+  moveReplyPostEditorTo(postElement: PostComponent) {
     this.postListeners.forEach((listener) => {
-      listener.movePostEditorTo(postElement);
+      listener.moveReplyPostEditorTo(postElement);
+    });
+  }
+
+  moveEditPostEditorTo(postElement: PostComponent) {
+    this.postListeners.forEach((listener) => {
+      listener.moveEditPostEditorTo(postElement);
     });
   }
 

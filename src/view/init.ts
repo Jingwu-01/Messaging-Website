@@ -17,6 +17,7 @@ import replyButtonComponentInit from "./components/pieces/replyButtonComponent/i
 import reactionComponentInit from "./components/pieces/reactionComponent/init";
 import loadingButtonComponentInit from "./components/pieces/loadingButtonComponent/init";
 import snackbarInit from "./components/pieces/snackbarComponent/init";
+import editPostButtonComponentInit from "./components/pieces/editComponent/init";
 
 export function initView() {
   reactionComponentInit();
@@ -38,4 +39,5 @@ export function initView() {
   replyButtonComponentInit();
   loadingButtonComponentInit();
   snackbarInit();
+  editPostButtonComponentInit();
 }

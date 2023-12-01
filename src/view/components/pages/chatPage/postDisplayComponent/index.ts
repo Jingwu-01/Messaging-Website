@@ -29,7 +29,7 @@ export class PostDisplay extends HTMLElement {
     }
     if (this.shadowRoot === null) {
       throw Error(
-        "could not find shadow DOM root for postdisplay element in constructor",
+        "could not find shadow DOM root for postdisplay element in constructor"
       );
     }
 
@@ -79,7 +79,7 @@ export class PostDisplay extends HTMLElement {
       slog.info(
         "displayPosts: insert",
         ["postToUpsert.parent", postToUpsert.parent],
-        ["postToUpsert", postToUpsert],
+        ["postToUpsert", postToUpsert]
       );
       let postChildren: NodeListOf<Element> | undefined;
       let parentEl: HTMLElement;
@@ -94,22 +94,22 @@ export class PostDisplay extends HTMLElement {
       if (postToUpsert.parent === undefined || postToUpsert.parent === "") {
         slog.info("displayPosts: postToUpsert.parent is undefined");
         postChildren = this.postsContainer.querySelectorAll(
-          ":scope > post-component",
+          ":scope > post-component"
         );
         parentEl = this.postsContainer;
       } else {
         let potentialParentEl = this.postToHTMLChildren.get(
-          postToUpsert.parent,
+          postToUpsert.parent
         );
         if (potentialParentEl === undefined) {
           slog.error(
             "displayPosts",
             ["postToUpsert.parent", postToUpsert.parent],
             ["potentialParentEl is undefined", potentialParentEl],
-            ["this.postToHTMLChildren", this.postToHTMLChildren],
+            ["this.postToHTMLChildren", this.postToHTMLChildren]
           );
           throw new Error(
-            "this.postToHTMLChildren.get(postToUpsert.parent) is undefined",
+            "this.postToHTMLChildren.get(postToUpsert.parent) is undefined"
           );
         }
         parentEl = potentialParentEl;
@@ -132,7 +132,7 @@ export class PostDisplay extends HTMLElement {
         ["postToUpsert.postIdx", postToUpsert.postIdx],
         ["postChildren", postChildren],
         ["postChildren.length", postChildren.length],
-        ["postComp", postComp],
+        ["postComp", postComp]
       );
       if (opString === "modify") {
         postComp.modifyPostContent(postToUpsert);
@@ -144,7 +144,7 @@ export class PostDisplay extends HTMLElement {
           slog.info(
             "displayPosts: no children OR postToUpsert.postIdx is at the end",
             ["postToUpsert.postIdx", postToUpsert.postIdx],
-            ["postChildren.length", postChildren.length],
+            ["postChildren.length", postChildren.length]
           );
           parentEl.append(postComp);
           slog.info("displayPosts, after appending to parentEl", [
@@ -164,7 +164,7 @@ export class PostDisplay extends HTMLElement {
         this.postToHTMLChildren.set(postPathArr[5], childrenContainer);
         postComp.parentNode?.insertBefore(
           childrenContainer,
-          postComp.nextSibling,
+          postComp.nextSibling
         );
         slog.info("displayPosts", [
           "postComp.parentNode?",
@@ -193,7 +193,7 @@ export class PostDisplay extends HTMLElement {
   displayPostsHelper(
     postEl: PostComponent,
     childrenPosts: Array<ViewPost>,
-    childrenContainer: HTMLElement,
+    childrenContainer: HTMLElement
   ) {
     for (let childPost of childrenPosts) {
       let childPostEl = new PostComponent();
@@ -208,23 +208,32 @@ export class PostDisplay extends HTMLElement {
       this.postToHTMLChildren.set(childPostPathArr[5], nextChildContainer);
       childPostEl.parentNode?.insertBefore(
         nextChildContainer,
-        childPostEl.nextSibling,
+        childPostEl.nextSibling
       );
       this.displayPostsHelper(
         childPostEl,
         childPost.children,
-        nextChildContainer,
+        nextChildContainer
       );
     }
   }
 
-  movePostEditorTo(postEl: PostComponent) {
+  moveReplyPostEditorTo(postEl: PostComponent) {
     postEl.parentNode?.insertBefore(this.postEditor, postEl.nextSibling);
     let postPath = postEl.getPostPath();
     if (postPath === undefined) {
       throw Error("movePostEditorTo: postEl's parent path is undefined");
     }
     this.postEditor.setParentPath(postPath);
+    this.postEditor.setText("");
+  }
+
+  moveEditPostEditorTo(postEl: PostComponent) {
+    this.moveReplyPostEditorTo(postEl);
+    let postText = postEl.getPostText(); 
+    if (postText) {
+      this.postEditor.setText(postText);
+    }
   }
 }
 
