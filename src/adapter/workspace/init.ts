@@ -4,7 +4,6 @@ import {
   SelectWorkspaceEvent,
   CreateWorkspaceEvent,
   DeleteWorkspaceEvent,
-  ViewPostUpdate,
 } from "../../view/datatypes";
 import { getView } from "../../view/view";
 import getStateManager from "../../state-manager";
@@ -21,20 +20,14 @@ export function initWorkspaces() {
       try {
         await getStateManager().setOpenWorkspace(evt.detail.name);
       } catch (err) {
-<<<<<<< HEAD
         getView().removePostDisplay();
         getView().failEvent(evt, "Failed to select workspace");
         return;
-=======
-        // getView().removePostDisplay();
-        getView().displayError("Failed to select workspace");
->>>>>>> 88aaaa2bea971c444f03a980c3f0c0aae4de5dde
       }
       slog.info("initWorkspaces", [
         "Opened Channel displaying view channels",
         "",
       ]);
-<<<<<<< HEAD
       getView().removePostDisplay();
       try {
         await refreshChannels(evt);
@@ -44,12 +37,6 @@ export function initWorkspaces() {
       }
       getView().completeEvent(evt);
     }
-=======
-      // getView().removePostDisplay();
-      await refreshChannels(evt);
-      // De-render the posts from the old channel.
-    },
->>>>>>> 88aaaa2bea971c444f03a980c3f0c0aae4de5dde
   );
   document.addEventListener(
     "workspaceCreated",
