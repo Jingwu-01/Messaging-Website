@@ -1,16 +1,18 @@
+/**
+ * The model's representation of a workspace.
+ */
+
 import { slog } from "../slog";
 import { ModelChannel } from "./channel";
 import { getModel } from "./model";
 import { WorkspaceResponse } from "../../types/workspaceResponse";
-import {
-  validateChannelResponse,
-  validateGetChannelsResponse,
-} from "./utils";
+import { validateChannelResponse, validateGetChannelsResponse } from "./utils";
 import { ChannelResponse } from "../../types/channelResponse";
 import { GetChannelsResponse } from "../../types/getChannelsResponse";
 
-// got rid of typed fetch from imports in utils
-
+/**
+ * A class representing the model's representation of a workspace.
+ */
 export class ModelWorkspace {
   path: string;
   channels: Map<string, ModelChannel> = new Map<string, ModelChannel>();
@@ -20,6 +22,11 @@ export class ModelWorkspace {
     this.path = res.path;
   }
 
+  /**
+   * Gets the channel, an asynchronous operation that resolves to a ModelChannel.
+   * @param id the string id of this channel
+   * @retuns a Promise resolving to a ModelChannel
+   */
   async getChannel(id: string): Promise<ModelChannel> {
     // Get logged in user
     let existingChannel = this.channels.get(id);
@@ -48,6 +55,10 @@ export class ModelWorkspace {
     }
   }
 
+  /**
+   * Returns all channels in this workspace via a map as a promise.
+   * @returns a map of channel names to ModelChannels
+   */
   async getAllChannels(): Promise<Map<string, ModelChannel>> {
     // Update channels, if we aren't subscribed
     if (!this.subscribedToChannels) {
@@ -74,6 +85,11 @@ export class ModelWorkspace {
     return this.channels;
   }
 
+  /**
+   * Adds a channel with the specified name to the workspace.
+   * @param channel_name the string name of the channel
+   * @returns an empty promise representing the result of waiting on the database requests.
+   */
   async addChannel(channel_name: string): Promise<void> {
     // Add this channel under this workspace to the API
     await getModel().typedModelFetch<any>(
@@ -104,12 +120,21 @@ export class ModelWorkspace {
     // Either way, we don't have to do anything else.
   }
 
+  /**
+   * Deletes a channel with the specified name from the current workspace.
+   * @param channel_name the string identifier of the channel
+   * @returns an empty promise representing the asynchronous operation used to delete the channel.
+   */
   async removeChannel(channel_name: string): Promise<void> {
     await getModel().emptyModelFetch(`${this.path}/channels/${channel_name}`, {
       method: "DELETE",
     });
   }
 
+  /**
+   * Gets the name of this workspace.
+   * @returns a string representing the name of this workspace.
+   */
   getName() {
     return this.path.slice(1);
   }

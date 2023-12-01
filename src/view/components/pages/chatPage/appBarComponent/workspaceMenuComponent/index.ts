@@ -1,12 +1,17 @@
 import { ViewWorkspace, ViewWorkspaceUpdate } from "../../../../../datatypes";
 import { getView } from "../../../../../view";
 
-// Displays username, handles logout.
+/**
+ *  Displays username, handles logout.
+ */
 class WorkspaceMenuComponent extends HTMLElement {
   private menu: HTMLElement;
 
   private refreshWorkspacesButton: HTMLElement;
 
+  /**
+   * Construtor for workspace menu.
+   */
   constructor() {
     super();
 
@@ -34,6 +39,10 @@ class WorkspaceMenuComponent extends HTMLElement {
     this.refreshWorkspacesButton = refresh_workspaces_button_query;
   }
 
+  /**
+   * When connected, add event listeners for refresh button and then dispatch
+   * event.
+   */
   connectedCallback(): void {
     // The browser calls this when the element is added to a document.
     // Set up the "Refresh Workspaces" button
@@ -56,12 +65,17 @@ class WorkspaceMenuComponent extends HTMLElement {
     getView().addWorkspaceListener(this);
   }
 
+  /**
+   * When disconnected, do the following thing.
+   */
   disconnectedCallback(): void {
     // The browser calls this when the element is removed from a document.
     // TODO remove workspace listener.
   }
 
-  // called by view whenever there is a change in the open workspace
+  /**
+   * Called by view whenever there is a change in the open workspace
+   */
   displayOpenWorkspace(workspace: ViewWorkspace | null) {
     // update the displayed open workspace
     let open_workspace_el = this.shadowRoot?.querySelector(
@@ -75,8 +89,10 @@ class WorkspaceMenuComponent extends HTMLElement {
     }
   }
 
-  // called by view whenever there is a change in the workspaces
-  // create text for all of the workspaces and display them
+  /**
+   * called by view whenever there is a change in the workspaces
+   * create text for all of the workspaces and display them
+   */
   displayWorkspaces(update: ViewWorkspaceUpdate) {
     const workspaces = update.allWorkspaces;
     let workspace_menu_items_el = this.shadowRoot?.querySelector(

@@ -1,8 +1,13 @@
-/* Defines the custom element for SnackbarDisplayComponent, which will be used as a snack bar display web component. */
+/**
+ * Defines the custom element for SnackbarDisplayComponent, which will be used
+ * as a snack bar display web component.
+ * */
 class SnackbarDisplayComponent extends HTMLElement {
   private display: HTMLElement;
 
-  // Constructor for snack bar. 
+  /**
+   * Constructor for snack bar.
+   */
   constructor() {
     super();
 

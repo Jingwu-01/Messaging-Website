@@ -1,5 +1,8 @@
 import UserMenuComponent from ".";
 
+/**
+ * Initializes the userMenuComponent
+ */
 export default function init() {
   document.body.insertAdjacentHTML(
     "beforeend",
@@ -35,7 +38,7 @@ export default function init() {
     </div>
   </menu-component>
 </template>
-`,
+`
   );
 
   customElements.define("user-menu-component", UserMenuComponent);

@@ -1,3 +1,7 @@
+/**
+ * Utlity functions used by our model.
+ */
+
 import Ajv from "ajv";
 import CreateResponseSchema from "../../schemas/createResponse.json";
 import GetChannelsResponseSchema from "../../schemas/getChannelsResponse.json";
@@ -37,6 +41,12 @@ export function typedFetch<T>(url: string, options?: RequestInit): Promise<T> {
   });
 }
 
+/**
+ * A fetch function that expects an empty response.
+ * @param url a string representing the url endpoint to make the request to
+ * @param options a RequestInit object representing the options for the fetch request
+ * @returns an empty promise
+ */
 export function emptyFetch(url: string, options?: RequestInit): Promise<void> {
   return fetch(url, options).then((response: Response) => {
     if (!response.ok) {
@@ -55,7 +65,10 @@ export function emptyFetch(url: string, options?: RequestInit): Promise<void> {
   });
 }
 
-// Method to return the path to the database used.
+/**
+ * Returns a string representing the database path.
+ * @returns a string representing the database path.
+ */
 export function getDatabasePath(): string {
   if (process.env.DATABASE_HOST === undefined) {
     throw new Error("Database host is undefined");
@@ -66,6 +79,10 @@ export function getDatabasePath(): string {
   return process.env.DATABASE_HOST + process.env.DATABASE_PATH;
 }
 
+/**
+ * Returns a string that represents the authorization path.
+ * @returns a string representing the authorization path
+ */
 export function getAuthPath(): string {
   if (process.env.DATABASE_HOST === undefined) {
     throw new Error("Database host is undefined");
@@ -77,22 +94,20 @@ export function getAuthPath(): string {
 
 const ajv = new Ajv();
 
-// TODO: see if singletons are ok? if not, make these lazy and create new ones on demand?
-
 export const validateCreateResponse = ajv.compile(CreateResponseSchema);
 
 export const validateGetWorkspacesResponse = ajv.compile(
-  GetWorkspacesResponseSchema,
+  GetWorkspacesResponseSchema
 );
 
 export const validateGetChannelsResponse = ajv.compile(
-  GetChannelsResponseSchema,
+  GetChannelsResponseSchema
 );
 
 export const validateLoginResponse = ajv.compile(LoginResponseSchema);
 
 export const validatePatchDocumentResponse = ajv.compile(
-  PatchDocumentResponseSchema,
+  PatchDocumentResponseSchema
 );
 
 export const validatePostResponse = ajv.compile(PostResponseSchema);

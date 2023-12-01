@@ -1,6 +1,9 @@
 import HomePage from ".";
 
-/* Initializes the HomePage by inserting its html to the document and defining the home-page custom element. */
+/**
+ * Initializes the HomePage by inserting its html to the document and defining
+ * the home-page custom element.
+ */
 export default function homePageInit() {
   // Insert the html of HomePage to the document.
   document.body.insertAdjacentHTML(
@@ -114,7 +117,7 @@ export default function homePageInit() {
     </header>
   </dialog>
 </template>
-`,
+`
   );
 
   // Define the custom element of home-page.

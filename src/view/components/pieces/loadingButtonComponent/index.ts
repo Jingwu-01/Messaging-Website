@@ -1,14 +1,15 @@
 import { getView } from "../../../view";
 
-// The Loading Button component can disable itself or display the "loading..."
-// text until it receives an event ID.
-// Set the disabled-until-event attribute and pass it an event ID in order to disable the button.
-// Set the loading-until-event attribute and pass it an event ID in order to make the button say "loading..."
+/**
+ * The Loading Button component can disable itself or display the "loading..." text until it receives an event ID. Set the disabled-until-event attribute and pass it an event ID in order to disable the button. Set the loading-until-event attribute and pass it an event ID in order to make the button say "loading..." */
 class LoadingButtonComponent extends HTMLElement {
   private loadingText: HTMLElement;
   private content: HTMLElement;
   private button: HTMLElement;
 
+  /**
+   * Construtor for the loading button.
+   */
   constructor() {
     super();
 
@@ -40,13 +41,22 @@ class LoadingButtonComponent extends HTMLElement {
     this.button = button_query;
   }
 
-  disconnectedCallback(): void {
-    // The browser calls this when the element is removed from a document.
-  }
+  /**
+   * The browser calls this when the element is removed from a document.
+   */
+  disconnectedCallback(): void {}
+
+  /**
+   * Observe the following attributes.
+   */
   static get observedAttributes(): Array<string> {
     // Attributes to observe
     return ["disabled-until-event", "loading-until-event", "style"];
   }
+
+  /**
+   * When the attributes, disable and show loading text accordingly.
+   */
   attributeChangedCallback(
     name: string,
     oldValue: string,

@@ -2,8 +2,12 @@ import { getView } from "../../view/view";
 import getStateManager from "../../state-manager";
 import modelToViewChannels from "./modelToViewChannels";
 
+/**
+ * Re-fetches the channels from the model then updates the view
+ * @param evt The event that triggered this refresh.
+ */
 export default async function refreshChannels(evt: Event) {
-  // Refresh the channels
+  // Refresh the channels in the model
   const channels = await getStateManager().getOpenWorkspace()?.getAllChannels();
   // The user should never be able to trigger this.
   if (!channels) {

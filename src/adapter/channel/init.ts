@@ -9,6 +9,9 @@ import { getView } from "../../view/view";
 import getStateManager from "../../state-manager";
 import refreshChannels from "./refreshChannels";
 
+/**
+ * Initializes event handlers for the channels
+ */
 export function initChannels() {
   // Handle channel select
   document.addEventListener(

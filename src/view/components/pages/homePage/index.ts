@@ -46,6 +46,9 @@ class HomePage extends HTMLElement {
     this.appendChild = this.dialog.appendChild.bind(this.dialog);
   }
 
+  /**
+   * When connected, add listeners for sumbit button and keyboard events.
+   */
   connectedCallback(): void {
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
@@ -55,12 +58,17 @@ class HomePage extends HTMLElement {
     getView().addUserListener(this);
   }
 
+  /**
+   * When disconnected, remove the controller.
+   */
   disconnectedCallback(): void {
     this.controller?.abort();
     this.controller = null;
   }
 
-  /* Retrieves the username input from modal dialog box and dispatches login custom event to adapter. */
+  /**
+   * Retrieves the username input from modal dialog box and dispatches login custom event to adapter.
+   */
   private handleSubmit(event: SubmitEvent) {
     event.preventDefault();
     const usernameInput = this.shadowRoot?.querySelector("#username-input");
@@ -87,7 +95,9 @@ class HomePage extends HTMLElement {
     }
   }
 
-  /* Deals with keyboard events, including esc and enter. */
+  /**
+   * Deals with keyboard events, including esc and enter.
+   */
   private keyDown(event: KeyboardEvent) {
     // Prevents the default action of closing the dialog by ESC.
     if (event.key === "Escape") {
@@ -100,14 +110,23 @@ class HomePage extends HTMLElement {
     }
   }
 
+  /**
+   *  Show the dialog.
+   */
   showModal() {
     this.dialog.showModal();
   }
 
+  /**
+   * Close the dialog.
+   */
   close() {
     this.dialog.close();
   }
 
+  /**
+   * Based on the cuurent user, display the Login Dialog again or close the dialog
+   */
   displayUser(user: ViewUser | null) {
     if (user == null) {
       getView().openDialog("login-dialog");

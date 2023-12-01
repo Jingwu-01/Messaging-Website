@@ -2,6 +2,10 @@ import { getModel } from "../../model/model";
 import { getView } from "../../view/view";
 import modelToViewWorkspaces from "./modelToViewWorkspaces";
 
+/**
+ * Re-fetches the workspaces from the model and updates them in the view.
+ * @param evt The event which triggered this refresh
+ */
 export default async function refreshWorkspaces(evt: Event) {
   const workspaces = await getModel().getAllWorkspaces();
   getView().displayWorkspaces({

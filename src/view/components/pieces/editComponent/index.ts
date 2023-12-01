@@ -1,4 +1,6 @@
-/* Defines the custom element for EditPostButtonComponent, which will be used as a edit post button web component. */
+/**
+ * Defines the custom element for EditPostButtonComponent, which will be used
+ * as a edit post button web component. */
 class EditPostButtonComponent extends HTMLElement {
   private controller: AbortController | null = null;
   private editPostButton: HTMLButtonElement | null = null;

@@ -6,7 +6,9 @@ import {
 } from "../../../../../datatypes";
 import { getView } from "../../../../../view";
 
-// Edit-dialog that allows user to edit workspaces
+/**
+ * Edit-dialog that allows user to edit workspaces
+ */
 export class EditWorkspacesDialogComponent extends EditDialogComponent {
   connectedCallback(): void {
     super.connectedCallback();

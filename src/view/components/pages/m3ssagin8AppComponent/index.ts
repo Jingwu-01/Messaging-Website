@@ -1,6 +1,6 @@
-// Root component for the application.
-
-// Handles routing to the correct page.
+/**
+ * Root component for the application
+ */
 export default class M3ssagin8AppComponent extends HTMLElement {
   constructor() {
     super();

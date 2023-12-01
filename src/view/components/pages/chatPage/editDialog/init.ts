@@ -2,6 +2,9 @@ import EditDialogComponent from ".";
 import editChannelsDialogComponentInit from "./editChannelsDialog/init";
 import editWorkspacesDialogComponentInit from "./editWorkspacesDialog/init";
 
+/**
+ * Initializes the EditDialog component
+ */
 export default function editDialogComponentInit() {
   document.body.insertAdjacentHTML(
     "beforeend",
@@ -56,7 +59,7 @@ export default function editDialogComponentInit() {
     </div>
   </dialog>
 </template>
-`,
+`
   );
 
   customElements.define("edit-dialog-component", EditDialogComponent);

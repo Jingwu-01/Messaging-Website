@@ -1,8 +1,11 @@
 import ChatPage from ".";
 
-// TODO: add styling here. below sidebar and post display needs to be
-// in flexbox
+/**
+ * Initializes the ChatPage component
+ */
 export default function chatPageInit() {
+  // TODO: add styling here. below sidebar and post display needs to be
+  // in flexbox
   document.body.insertAdjacentHTML(
     "beforeend",
     `
@@ -33,7 +36,7 @@ export default function chatPageInit() {
     </main>
   </div>
 </template>
-`,
+`
   );
 
   customElements.define("chat-page", ChatPage);

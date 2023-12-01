@@ -1,8 +1,21 @@
 import { EventWithId } from "../../../../datatypes";
 
-// An EditDialog is a dialog that allows for the creation or deletion of channels or workspaces.
+/*
+  An EditDialog is a dialog that allows for the creation or deletion of channels or workspaces.
+*/
 export class EditDialogComponent extends HTMLElement {
+  /**
+   * Called when the "add-item" form is filled out.
+   * The returned event will be dispatched.
+   * @param new_item_name Name of new item
+   */
   public getAddEvent(new_item_name: string): EventWithId | void {}
+
+  /**
+   * Called when the "remove-item" form is filled out.
+   * The returned event will be dispatched.
+   * @param item_id Name of new item
+   */
   public getRemoveEvent(item_id: string): EventWithId | void {}
 
   protected addItemButton: HTMLElement;
@@ -86,15 +99,26 @@ export class EditDialogComponent extends HTMLElement {
     });
   }
 
+  /**
+   * Opens the edit dialog
+   */
   showModal() {
     this.dialog.showModal();
     this.addItemInput.focus();
   }
 
+  /**
+   * Closes the edit dialog
+   */
   close() {
     this.dialog.close();
   }
 
+  /**
+   * Displays each of the given items, with remove buttons next to them
+   * so that they can be deleted.
+   * @param items Items to display
+   */
   setItems(items: string[]) {
     this.itemDisplay.innerHTML = "";
     items.forEach((item_name, index) => {
@@ -136,6 +160,10 @@ export class EditDialogComponent extends HTMLElement {
     });
   }
 
+  /**
+   * Called when the add-item-form is submitted.
+   * @param new_item_name Name of the new item that was added.
+   */
   onAdd(new_item_name: string) {
     const event = this.getAddEvent(new_item_name);
     if (event) {

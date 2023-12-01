@@ -1,5 +1,8 @@
 import WorkspaceMenuComponent from ".";
 
+/**
+ * Initializes the workspace component HTML.
+ */
 export default function workspaceMenuComponentInit() {
   document.body.insertAdjacentHTML(
     "beforeend",

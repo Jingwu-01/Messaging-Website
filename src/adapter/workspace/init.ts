@@ -11,7 +11,11 @@ import getStateManager from "../../state-manager";
 import refreshChannels from "../channel/refreshChannels";
 import refreshWorkspaces from "./refreshWorkspaces";
 
+/**
+ * Initializes the event handlers for workspaces.
+ */
 export function initWorkspaces() {
+  //Handle workspace event
   document.addEventListener(
     "workspaceSelected",
     async function (evt: CustomEvent<SelectWorkspaceEvent>) {

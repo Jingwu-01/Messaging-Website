@@ -8,9 +8,11 @@ import { getView } from "../view/view";
 import { PostsManager } from "./postsManager";
 import { PostResponse } from "../../types/postResponse";
 
-// The state manager stores the state of the application
-// and has functions that the adapter can call to manipulate that state.
-// It interfaces with the Model.
+/**
+ * The state manager stores the state of the application
+ * and has functions that the adapter can call to manipulate that state.
+ * It interfaces with the Model, and has functions that are called by the Adapter.
+ */
 class StateManager {
   private openWorkspace: ModelWorkspace | null = null;
 
@@ -22,10 +24,20 @@ class StateManager {
 
   private postsManager: PostsManager = new PostsManager();
 
+  /**
+   * Gets the currently open workspace
+   * @returns a ModelWorkspace if it's open, or null if no workspace is open.
+   */
   getOpenWorkspace(): ModelWorkspace | null {
     return this.openWorkspace;
   }
 
+  /**
+   * Sets the open workspace to be the workspace with the specified name.
+   * @param workspaceName a string representing the name of the workspace to set.
+   * @returns a Promise resolving to the newly set ModelWorkspace, or null if a model workspace was
+   * not able to be set.
+   */
   async setOpenWorkspace(
     workspaceName: string | null
   ): Promise<ModelWorkspace | null> {

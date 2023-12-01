@@ -1,6 +1,8 @@
 import HoverComponent from ".";
 
-/* Initializes the HTML template for hover component and register the hover component custom element. */
+/**
+ * Initializes the HTML template for hover component and register the hover
+ * component custom element. */
 export default function hoverComponentInit() {
   document.body.insertAdjacentHTML(
     "beforeend",
@@ -17,7 +19,7 @@ export default function hoverComponentInit() {
     </div>
   </popover-component>
 </template>
-`,
+`
   );
 
   customElements.define("hover-component", HoverComponent);

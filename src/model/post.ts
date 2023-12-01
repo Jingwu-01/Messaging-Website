@@ -17,7 +17,9 @@ export class ModelPost {
   // The string name of the parent for this post.
   private parentName: string;
 
-  // A constructor to create a post in the model.
+  /**
+   * A constructor for this ModelPost.
+   */
   constructor(response: PostResponse) {
     // TODO: add more robust error handling here.
     console.log(`ModelPost constructor: response.path: ${response.path}`);
@@ -69,24 +71,41 @@ export class ModelPost {
     }
   }
 
-  // The JSON object representing the post response for this 
+  /**
+   * Returns the JSON object representing the PostResponse for this post.
+   */
   getResponse(): PostResponse {
     return this.response;
   }
 
-  getReplies(): Map<string, ModelPost> {
+  /**
+   * Returns the replies to this post in the form of a map.e
+   */
+  getReplies(): Map<string, ModelP{
     return this.replies;
   }
 
-  getName(): string {
+  
+  /**
+   * Returns the name of this post as a string.
+   */getName(): string {
     return this.name;
   }
 
-  getParentName(): string {
+  
+  /**
+   * Returns the name of the parent of this post as a string.
+   */getParentName(): string {
     return this.parentName;
   }
 
-  addReply(newPost: ModelPost, parentPath: string[]): Boolean {
+  
+  /**
+   * Adds a ModelPost with a parentPath array to this ModelPost recurisvely. Deprecated function.
+   * @param newPost a ModelPost to be added
+   * @param parentPath an array of strings representing the path to this pots
+   * @returns a boolean indicating whether or not this post was successfully added.
+   */addReply(newPost: ModelPost, parentPath: string[]): Boolean {
     if (parentPath.length === 0) {
       this.replies.set(newPost.name, newPost);
       return true;
@@ -100,7 +119,12 @@ export class ModelPost {
     return nextChild.addReply(newPost, parentPath.slice(1));
   }
 
-  addChildPost(newPost: ModelPost): Boolean {
+  
+  /**
+   * Adds a model post as a child to this post.
+   * @param newPost a ModelPost to be added as a child to this post
+   * @returns a boolean indicating whether the post was successfully added to this ModelPost
+   */addChildPost(newPost: ModelPost): Boolean {
     this.replies.set(newPost.name, newPost);
     return true;
   }

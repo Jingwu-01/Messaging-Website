@@ -1,6 +1,8 @@
 import EditPostButtonComponent from ".";
 
-/* Initializes the HTML template for edit post button and register the edit post button custom element. */
+/**
+ * Initializes the HTML template for edit post button and register the edit
+ * post button custom element. */
 export default function editPostButtonComponentInit() {
   // Add the edit post button HTML template to the document body.
   document.body.insertAdjacentHTML(

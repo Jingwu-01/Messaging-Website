@@ -1,6 +1,8 @@
 import SnackbarDisplayComponent from ".";
 
-/* Initializes the HTML template for snack bar display and register the snack bar display custom element. */
+/**
+ * Initializes the HTML template for snack bar display and register the snack bar display custom element.
+ */
 export default function snackbarDisplayInit() {
   document.body.insertAdjacentHTML(
     "beforeend",

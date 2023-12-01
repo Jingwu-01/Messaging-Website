@@ -1,7 +1,9 @@
 import { ViewUser } from "../../../../../datatypes";
 import { getView } from "../../../../../view";
 
-// Displays username, handles logout.
+/**
+ * Displays username, handles logout
+ */
 class UserMenuComponent extends HTMLElement {
   private controller: AbortController | null = null;
 
@@ -10,7 +12,7 @@ class UserMenuComponent extends HTMLElement {
 
     this.attachShadow({ mode: "open" });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#user-menu-component-template",
+      "#user-menu-component-template"
     );
     if (!template) {
       throw Error("Could not find template #user-menu-component-template");
@@ -18,7 +20,9 @@ class UserMenuComponent extends HTMLElement {
     this.shadowRoot?.append(template.content.cloneNode(true));
   }
 
-  // When UserMenuComponent is added to a document, this is called.
+  /**
+   * When UserMenuComponent is added to a document, this is called.
+   */
   connectedCallback(): void {
     // Tell the view that this component wants to listen to user updates
     getView().addUserListener(this);
@@ -33,11 +37,13 @@ class UserMenuComponent extends HTMLElement {
     logoutButton.addEventListener(
       "click",
       this.handleLogout.bind(this),
-      options,
+      options
     );
   }
 
-  // Handles the logout request by sending a logout event.
+  /**
+   * Handles the logout request by sending a logout event.
+   */
   handleLogout(event: MouseEvent) {
     event.preventDefault();
     const logoutEvent = new CustomEvent("logoutEvent", {
@@ -58,7 +64,7 @@ class UserMenuComponent extends HTMLElement {
   attributeChangedCallback(
     name: string,
     oldValue: string,
-    newValue: string,
+    newValue: string
   ): void {}
 
   // called by view whenever there is a change in the logged-in user
@@ -69,14 +75,6 @@ class UserMenuComponent extends HTMLElement {
       user_text_el.innerHTML = user?.username ?? "";
     }
   }
-  // render() {
-  //   let user = getUser()
-  //   // update the displayed username
-  //   let user_text_el = this.shadowRoot?.querySelector("#user-text");
-  //   if (user_text_el instanceof HTMLElement) {
-  //     user_text_el.innerHTML = user.username;
-  //   }
-  // }
 }
 
 export default UserMenuComponent;

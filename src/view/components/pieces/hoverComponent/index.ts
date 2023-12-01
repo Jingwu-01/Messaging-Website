@@ -1,5 +1,10 @@
-/* Defines the custom element for HoverComponent, which will be used as a hover web component. */
+/**
+ * Defines the custom element for HoverComponent, which will be used as a hover
+ * web component. */
 class HoverComponent extends HTMLElement {
+  /**
+   * Defines the construtor for HoverComponent.
+   */
   constructor() {
     super();
 
@@ -13,6 +18,8 @@ class HoverComponent extends HTMLElement {
     this.shadowRoot?.append(template.content.cloneNode(true));
   }
 
+  /**
+   * When connected, add listeners to the #popover.*/
   connectedCallback(): void {
     // The browser calls this when the element is added to a document.
 
@@ -34,15 +41,24 @@ class HoverComponent extends HTMLElement {
       });
   }
 
+  /**
+   * The browser calls this when the element is removed from a document.
+   */
   disconnectedCallback(): void {
-    // The browser calls this when the element is removed from a document.
+    // for extensibility
   }
 
+  /**
+   * Observe the align attribute.
+   */
   static get observedAttributes(): Array<string> {
     // Attributes to observe
     return ["align"];
   }
 
+  /**
+   * When the align attribute changes, display the pop over element.
+   */
   attributeChangedCallback(
     name: string,
     oldValue: string,
