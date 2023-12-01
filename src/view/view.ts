@@ -80,7 +80,7 @@ export class View {
 
   constructor() {
     let m3ssag1n8AppComponent = document.querySelector(
-      "m3ssagin8-app-component"
+      "m3ssagin8-app-component",
     );
     if (!(m3ssag1n8AppComponent instanceof M3ssagin8AppComponent)) {
       throw Error("main(): could not find a m3ssagin8-app-component element");
@@ -124,7 +124,7 @@ export class View {
     let index = this.postListeners.indexOf(listener);
     if (index < 0) {
       throw new ReferenceError(
-        "Attempted to remove a post listener that was not subscribed"
+        "Attempted to remove a post listener that was not subscribed",
       );
     }
     this.postListeners.splice(index, 1);
@@ -140,7 +140,6 @@ export class View {
     this.postListeners.forEach((listener) => {
       listener.displayPosts(posts);
     });
-
   }
 
   addUserListener(listener: UserListener) {

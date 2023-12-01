@@ -1,18 +1,18 @@
 {
-    "$id": "patchDocumentResponse.json",
-    "$schema": "http://json-schema.org/draft-07/schema",
-    "title": "PatchDocumentResponse",
-    "type": "object",
-    "required": ["uri", "patchFailed", "message"],
-    "properties": {
-        "uri": {
-            "type": "string"
-        },
-        "patchFailed": {
-            "type": "boolean"
-        },
-        "message": {
-            "type": "string"
-        }
+  "$id": "patchDocumentResponse.json",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "PatchDocumentResponse",
+  "type": "object",
+  "required": ["uri", "patchFailed", "message"],
+  "properties": {
+    "uri": {
+      "type": "string"
+    },
+    "patchFailed": {
+      "type": "boolean"
+    },
+    "message": {
+      "type": "string"
     }
+  }
 }

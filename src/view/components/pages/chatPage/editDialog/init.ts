@@ -49,7 +49,7 @@ export default function editDialogComponentInit() {
     </div>
   </dialog>
 </template>
-`
+`,
   );
 
   customElements.define("edit-dialog-component", EditDialogComponent);

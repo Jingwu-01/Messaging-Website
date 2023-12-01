@@ -41,7 +41,6 @@ class HomePage extends HTMLElement {
     // These allow snackbars to render when this dialog is open.
     this.addEventListener = this.dialog.addEventListener;
     this.appendChild = this.dialog.appendChild;
-
   }
 
   connectedCallback(): void {
@@ -51,7 +50,7 @@ class HomePage extends HTMLElement {
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
     this.form.addEventListener("submit", this.handleSubmit.bind(this), options);
-    
+
     this.dialog?.addEventListener("keydown", this.keyDown.bind(this));
   }
 
@@ -81,22 +80,21 @@ class HomePage extends HTMLElement {
         this.dialog.close();
         this.submitButton.removeAttribute("disabled");
       });
-
     } else {
       throw new Error(
-        "Element with id #username-input is not a HTMLInputElement"
+        "Element with id #username-input is not a HTMLInputElement",
       );
     }
   }
 
-  /* Deals with keyboard events, including esc and enter. */ 
+  /* Deals with keyboard events, including esc and enter. */
   private keyDown(event: KeyboardEvent) {
     // Prevents the default action of closing the dialog by ESC.
     if (event.key === "Escape") {
       event.preventDefault();
     }
 
-    // When enter is hit, submit the login request. 
+    // When enter is hit, submit the login request.
     if (event.key === "Enter" && this.dialog?.open) {
       this.handleSubmit.bind(this);
     }

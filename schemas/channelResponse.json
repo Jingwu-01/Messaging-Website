@@ -1,33 +1,38 @@
 {
-    "$id": "channelResponse.json",
-    "$schema": "http://json-schema.org/draft-07/schema",
-    "title": "channelResponse",
-    "type": "object",
-    "required": ["path", "doc", "meta"],
-    "properties": {
-        "path": {
-            "type": "string"
+  "$id": "channelResponse.json",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "channelResponse",
+  "type": "object",
+  "required": ["path", "doc", "meta"],
+  "properties": {
+    "path": {
+      "type": "string"
+    },
+    "doc": {
+      "type": "object"
+    },
+    "meta": {
+      "type": "object",
+      "required": [
+        "createdAt",
+        "createdBy",
+        "lastModifiedAt",
+        "lastModifiedBy"
+      ],
+      "properties": {
+        "createdAt": {
+          "type": "integer"
         },
-        "doc": {
-            "type": "object"
+        "createdBy": {
+          "type": "string"
         },
-        "meta": {
-            "type": "object",
-            "required": ["createdAt", "createdBy", "lastModifiedAt", "lastModifiedBy"],
-            "properties": {
-                "createdAt": {
-                    "type": "integer"
-                },
-                "createdBy": {
-                    "type": "string"
-                },
-                "lastModifiedAt": {
-                    "type": "integer"
-                },
-                "lastModifiedBy": {
-                    "type": "string"
-                }
-            }
+        "lastModifiedAt": {
+          "type": "integer"
+        },
+        "lastModifiedBy": {
+          "type": "string"
         }
+      }
     }
+  }
 }

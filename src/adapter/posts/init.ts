@@ -41,7 +41,7 @@ export function initPosts() {
         `${JSON.stringify(evt.detail)}`,
       ]);
       createPost(evt.detail);
-    }
+    },
   );
 
   document.addEventListener(
@@ -49,7 +49,7 @@ export function initPosts() {
     (event: CustomEvent<ReactionUpdateEvent>) => {
       let model = getModel();
       model.updateReaction(event.detail.reactionName);
-    }
+    },
   );
 
   // document.addEventListener(
@@ -62,11 +62,15 @@ export function initPosts() {
   //   }
   // );
 
-
-  document.addEventListener("modelPostEvent", 
-  function(evt: CustomEvent<ModelPostEvent>) {
-    slog.info("modelPostEvent listener: received modelPostEvent", ["modelPostEvent.detail", `${JSON.stringify(evt.detail)}`]);
+  document.addEventListener(
+    "modelPostEvent",
+    function (evt: CustomEvent<ModelPostEvent>) {
+      slog.info("modelPostEvent listener: received modelPostEvent", [
+        "modelPostEvent.detail",
+        `${JSON.stringify(evt.detail)}`,
+      ]);
       getStateManager().serializePostResponse(evt.detail.post);
       // TODO: call serializePostResponse, and throw an error on the view if there's any error with the corresponding error message
-  })
+    },
+  );
 }

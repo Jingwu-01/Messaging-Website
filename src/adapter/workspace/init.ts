@@ -36,7 +36,7 @@ export function initWorkspaces() {
         affectedPosts: [],
       };
       getView().displayPosts(viewPostUpdate);
-    }
+    },
   );
   document.addEventListener(
     "workspaceCreated",
@@ -52,7 +52,7 @@ export function initWorkspaces() {
 
       await refreshWorkspaces(evt);
       getView().completeEvent(evt);
-    }
+    },
   );
 
   // Handle workspace deletion
@@ -74,6 +74,6 @@ export function initWorkspaces() {
         cause: evt,
       });
       getView().completeEvent(evt);
-    }
+    },
   );
 }

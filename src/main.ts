@@ -105,7 +105,7 @@ function viewPostConverter(modelPost: ModelPost): ViewPost {
 // Function that converts a tree of modelposts into an array of Viewposts.
 // Viewposts will form a tree-like structure for posts.
 export function getViewPosts(
-  modelPostRoots: Array<ModelPost>
+  modelPostRoots: Array<ModelPost>,
 ): Array<ViewPost> {
   // let sortedPosts = modelPosts.toSorted((a, b) => a.Path.split("/")[])
   let viewPostRoots = new Array<ViewPost>();
@@ -116,20 +116,20 @@ export function getViewPosts(
 // modifies curViewPost inplace
 function getViewPostsHelper(
   viewPostChildren: Array<ViewPost>,
-  modelPostRoots: Array<ModelPost>
+  modelPostRoots: Array<ModelPost>,
 ): void {
   modelPostRoots.sort((a, b) =>
     a.getResponse().meta.createdAt < b.getResponse().meta.createdAt
       ? -1
       : a.getResponse().meta.createdAt > b.getResponse().meta.createdAt
       ? 1
-      : 0
+      : 0,
   );
   for (let modelPostChild of modelPostRoots) {
     let viewPostChild = viewPostConverter(modelPostChild);
     getViewPostsHelper(
       viewPostChild.children,
-      Array.from(modelPostChild.getReplies().values())
+      Array.from(modelPostChild.getReplies().values()),
     );
     viewPostChildren.push(viewPostChild);
   }

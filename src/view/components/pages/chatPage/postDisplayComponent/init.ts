@@ -19,7 +19,7 @@ export default function postDisplayComponentInit() {
     </section>
     <post-editor-component></post-editor-component>
 </template>
-`
+`,
   );
 
   customElements.define("post-display-component", PostDisplay);

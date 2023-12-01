@@ -11,7 +11,10 @@ export class PostDisplay extends HTMLElement {
 
   private postEditor: PostEditor;
 
-  private postToHTMLChildren: Map<string, HTMLElement> = new Map<string, HTMLElement>();
+  private postToHTMLChildren: Map<string, HTMLElement> = new Map<
+    string,
+    HTMLElement
+  >();
 
   constructor() {
     super();
@@ -24,7 +27,7 @@ export class PostDisplay extends HTMLElement {
     }
     if (this.shadowRoot === null) {
       throw Error(
-        "could not find shadow DOM root for postdisplay element in constructor"
+        "could not find shadow DOM root for postdisplay element in constructor",
       );
     }
 
@@ -75,32 +78,69 @@ export class PostDisplay extends HTMLElement {
       let postToInsert = update.affectedPosts[0];
       let postComp = new PostComponent();
       postComp.addPostContent(postToInsert);
-      slog.info("displayPosts: insert", ["postToInsert.parent", postToInsert.parent], ["postToInsert", postToInsert], ["postComp", postComp]);
+      slog.info(
+        "displayPosts: insert",
+        ["postToInsert.parent", postToInsert.parent],
+        ["postToInsert", postToInsert],
+        ["postComp", postComp],
+      );
       let postChildren: NodeListOf<Element> | undefined;
       let parentEl: HTMLElement;
       if (postToInsert.postIdx === undefined) {
-        slog.error("displayPosts", ["postToInsert.postIdx is undefined but should not be", `${postToInsert.postIdx}`]);
+        slog.error("displayPosts", [
+          "postToInsert.postIdx is undefined but should not be",
+          `${postToInsert.postIdx}`,
+        ]);
         throw new Error("postToInsert.postIdx is undefined but should not be");
       }
       slog.info("displayPosts", ["postToInsert.postIdx", postToInsert.postIdx]);
       if (postToInsert.parent === undefined || postToInsert.parent === "") {
         slog.info("displayPosts: postToInsert.parent is undefined");
-        postChildren = this.postsContainer.querySelectorAll(":scope > post-component");
+        postChildren = this.postsContainer.querySelectorAll(
+          ":scope > post-component",
+        );
         parentEl = this.postsContainer;
       } else {
-        let potentialParentEl = this.postToHTMLChildren.get(postToInsert.parent)
+        let potentialParentEl = this.postToHTMLChildren.get(
+          postToInsert.parent,
+        );
         if (potentialParentEl === undefined) {
-          slog.error("displayPosts", ["postToInsert.parent", postToInsert.parent], ["potentialParentEl is undefined", potentialParentEl], ["this.postToHTMLChildren", this.postToHTMLChildren]);
-          throw new Error("this.postToHTMLChildren.get(postToInsert.parent) is undefined");
+          slog.error(
+            "displayPosts",
+            ["postToInsert.parent", postToInsert.parent],
+            ["potentialParentEl is undefined", potentialParentEl],
+            ["this.postToHTMLChildren", this.postToHTMLChildren],
+          );
+          throw new Error(
+            "this.postToHTMLChildren.get(postToInsert.parent) is undefined",
+          );
         }
         parentEl = potentialParentEl;
         postChildren = parentEl.querySelectorAll(":scope > post-component");
       }
-      slog.info("displayPosts", ["postChildren", postChildren], ["parentEl", parentEl], ["postComp", postComp], ["postToInsert.postIdx", postToInsert.postIdx], ["postChildren", postChildren], ["postChildren.length", postChildren.length]);
-      if (postChildren.length === 0 || postToInsert.postIdx === postChildren.length) {
-        slog.info("displayPosts: no children OR postToInsert.postIdx is at the end", ["postToInsert.postIdx", postToInsert.postIdx], ["postChildren.length", postChildren.length]);
+      slog.info(
+        "displayPosts",
+        ["postChildren", postChildren],
+        ["parentEl", parentEl],
+        ["postComp", postComp],
+        ["postToInsert.postIdx", postToInsert.postIdx],
+        ["postChildren", postChildren],
+        ["postChildren.length", postChildren.length],
+      );
+      if (
+        postChildren.length === 0 ||
+        postToInsert.postIdx === postChildren.length
+      ) {
+        slog.info(
+          "displayPosts: no children OR postToInsert.postIdx is at the end",
+          ["postToInsert.postIdx", postToInsert.postIdx],
+          ["postChildren.length", postChildren.length],
+        );
         parentEl.append(postComp);
-        slog.info("displayPosts, after appending to parentEl", ["parentEl", parentEl]);
+        slog.info("displayPosts, after appending to parentEl", [
+          "parentEl",
+          parentEl,
+        ]);
       } else {
         let childNode = postChildren[postToInsert.postIdx];
         childNode.parentNode?.insertBefore(postComp, childNode);
@@ -112,7 +152,10 @@ export class PostDisplay extends HTMLElement {
       let childrenContainer = document.createElement("section");
       childrenContainer.classList.add("post-children");
       this.postToHTMLChildren.set(postPathArr[5], childrenContainer);
-      postComp.parentNode?.insertBefore(childrenContainer, postComp.nextSibling);
+      postComp.parentNode?.insertBefore(
+        childrenContainer,
+        postComp.nextSibling,
+      );
       slog.info("displayPosts", ["postComp.parentNode?", postComp.parentNode]);
     } else {
       this.postsContainer.innerHTML = "";
@@ -133,7 +176,11 @@ export class PostDisplay extends HTMLElement {
     }
   }
 
-  displayPostsHelper(postEl: PostComponent, childrenPosts: Array<ViewPost>, childrenContainer: HTMLElement) {
+  displayPostsHelper(
+    postEl: PostComponent,
+    childrenPosts: Array<ViewPost>,
+    childrenContainer: HTMLElement,
+  ) {
     for (let childPost of childrenPosts) {
       let childPostEl = new PostComponent();
       childPostEl.addPostContent(childPost);
@@ -145,8 +192,15 @@ export class PostDisplay extends HTMLElement {
       let nextChildContainer = document.createElement("section");
       nextChildContainer.classList.add("post-children");
       this.postToHTMLChildren.set(childPostPathArr[5], nextChildContainer);
-      childPostEl.parentNode?.insertBefore(nextChildContainer, childPostEl.nextSibling);
-      this.displayPostsHelper(childPostEl, childPost.children, nextChildContainer);
+      childPostEl.parentNode?.insertBefore(
+        nextChildContainer,
+        childPostEl.nextSibling,
+      );
+      this.displayPostsHelper(
+        childPostEl,
+        childPost.children,
+        nextChildContainer,
+      );
     }
   }
 
@@ -158,7 +212,6 @@ export class PostDisplay extends HTMLElement {
     }
     this.postEditor.setParentPath(postPath);
   }
-
 }
 
 export default PostDisplay;

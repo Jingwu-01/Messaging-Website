@@ -3,7 +3,7 @@ import { slog } from "../../slog";
 import { ViewChannel } from "../../view/datatypes";
 
 export default function modelToViewChannels(
-  modelChannels: Map<string, ModelChannel>
+  modelChannels: Map<string, ModelChannel>,
 ) {
   let viewChannelArr = new Array<ViewChannel>();
   modelChannels.forEach((modelChannel) => {

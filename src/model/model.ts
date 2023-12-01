@@ -155,7 +155,7 @@ export class OwlDBModel {
         ]);
         // TODO: make a custom login error class so we can gracefully handle this situation by notifying the user.
         throw new Error(
-          "invalid getting all workspaces response received from owldb"
+          "invalid getting all workspaces response received from owldb",
         );
       }
       db_workspaces.forEach((workspace_response) => {
@@ -163,7 +163,7 @@ export class OwlDBModel {
         let workspace_name = split_path[split_path.length - 1];
         this.workspaces.set(
           workspace_name,
-          new ModelWorkspace(workspace_response)
+          new ModelWorkspace(workspace_response),
         );
       });
     }

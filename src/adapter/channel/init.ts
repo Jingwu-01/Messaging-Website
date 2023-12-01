@@ -15,7 +15,7 @@ export function initChannels() {
     function (evt: CustomEvent<SelectChannelEvent>) {
       slog.info("initChannels", ["Channel Selected", `${evt.detail.name}`]);
       getStateManager().setOpenChannel(evt.detail.name);
-    }
+    },
   );
 
   // Handle channel creation
@@ -33,7 +33,7 @@ export function initChannels() {
 
       await refreshChannels(evt);
       getView().completeEvent(evt);
-    }
+    },
   );
 
   // Handle channel deletion
@@ -59,6 +59,6 @@ export function initChannels() {
 
       await refreshChannels(evt);
       getView().completeEvent(evt);
-    }
+    },
   );
 }

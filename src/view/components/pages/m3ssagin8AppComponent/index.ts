@@ -25,9 +25,11 @@ export default class M3ssagin8AppComponent extends HTMLElement {
     let app_element = this.shadowRoot?.querySelector("#app");
 
     if (!(app_element instanceof HTMLElement)) {
-      throw Error("m3ssag1n8-app-component constructor: element with id app is not an HTMLElement");
+      throw Error(
+        "m3ssag1n8-app-component constructor: element with id app is not an HTMLElement",
+      );
     }
-    
+
     this.app_element = app_element;
   }
 

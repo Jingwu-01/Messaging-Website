@@ -8,7 +8,7 @@ function m3ssagin8AppComponentInit() {
       <div id="app">
       </div>
     </template>
-    `
+    `,
   );
   customElements.define("m3ssagin8-app-component", M3ssagin8AppComponent);
 }

@@ -34,7 +34,7 @@ export default function chatPageInit() {
     </main>
   </div>
 </template>
-`
+`,
   );
 
   customElements.define("chat-page", ChatPage);

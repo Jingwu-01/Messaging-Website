@@ -9,7 +9,7 @@ import { ViewPost } from "../view/datatypes";
 export function initAdapter() {
   initPosts();
   initLogin();
-  initLogout(); 
+  initLogout();
   initWorkspaces();
   initChannels();
 }

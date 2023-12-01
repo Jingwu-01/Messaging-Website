@@ -4,7 +4,7 @@ class PopoverComponent extends HTMLElement {
 
     this.attachShadow({ mode: "open" });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#popover-component-template"
+      "#popover-component-template",
     );
     if (!template) {
       throw Error("Could not find template #popover-component-template");
@@ -26,7 +26,7 @@ class PopoverComponent extends HTMLElement {
   attributeChangedCallback(
     name: string,
     oldValue: string,
-    newValue: string
+    newValue: string,
   ): void {
     // The browser calls this when an observed attribute has been changed.
     // Open / close popover based on value of "open" attribute

@@ -39,7 +39,7 @@ export default function appBarComponentInit() {
     <user-menu-component></user-menu-component>
   </div>
 </template>
-`
+`,
   );
 
   customElements.define("app-bar-component", AppBarComponent);

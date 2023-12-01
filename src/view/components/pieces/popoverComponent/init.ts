@@ -28,7 +28,7 @@ export default function init() {
       </div>
     </div>
   </template>
-`
+`,
   );
 
   customElements.define("popover-component", PopoverComponent);

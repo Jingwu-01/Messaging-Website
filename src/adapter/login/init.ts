@@ -26,6 +26,6 @@ export function initLogin() {
       // Display the open workspaces.
       await refreshWorkspaces(event);
       getView().completeEvent(event);
-    }
+    },
   );
 }

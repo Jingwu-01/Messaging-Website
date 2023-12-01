@@ -33,7 +33,7 @@ export default function snackbarInit() {
         </button>
       </div>
     </template>
-    `
+    `,
   );
 
   customElements.define("snackbar-component", SnackbarComponent);

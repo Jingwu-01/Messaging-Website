@@ -60,13 +60,13 @@ export class ModelChannel {
               ]);
               thisChannel.addPost(response);
               const modelPostEvent = new CustomEvent("modelPostEvent", {
-                detail: { post: response }
+                detail: { post: response },
               });
               document.dispatchEvent(modelPostEvent);
               slog.info(
                 "subscribeToPosts",
                 ["thisChannel.postMap", `${thisChannel.postMap}`],
-                ["thisChannel.postRoots", `${thisChannel.postRoots}`]
+                ["thisChannel.postRoots", `${thisChannel.postRoots}`],
               );
               // const postsEvent = new CustomEvent("postsEvent", {
               //   // NOTE: we are passing by reference here. so mutations will be seen.
@@ -96,7 +96,7 @@ export class ModelChannel {
     let postName = newPostResponse.path.split("/").pop();
     if (postName === undefined) {
       throw Error(
-        "addPost: internal server error: post has an empty path string"
+        "addPost: internal server error: post has an empty path string",
       );
     }
     console.log(`addPost: postName: ${postName}`);
@@ -104,7 +104,7 @@ export class ModelChannel {
       this.postRoots.push(newPost);
       this.postMap.set(postName, newPost);
       let modelPostEvent = new CustomEvent("modelPostEvent", {
-        detail: {post: newPost}
+        detail: { post: newPost },
       });
       slog.info("addPost: root post event", ["modelPostEvent", modelPostEvent]);
       document.dispatchEvent(modelPostEvent);
@@ -116,7 +116,7 @@ export class ModelChannel {
     // to validate against what's the WS and curr open channel
     if (parentPathArr.length !== 6) {
       console.log(
-        "addPost: invalid parentPathArr: parentPathArr is not of length 6"
+        "addPost: invalid parentPathArr: parentPathArr is not of length 6",
       );
       return false;
     }
@@ -138,7 +138,7 @@ export class ModelChannel {
         "addPost",
         ["parentPost is undefined", ""],
         ["parentName", `${parentName}`],
-        ["this.postMap", `${JSON.stringify(Object.fromEntries(this.postMap))}`]
+        ["this.postMap", `${JSON.stringify(Object.fromEntries(this.postMap))}`],
       );
       let parentPendingPosts = this.pendingPosts.get(parentName);
       if (parentPendingPosts === undefined) {
@@ -151,9 +151,12 @@ export class ModelChannel {
     if (parentPost.addChildPost(newPost)) {
       this.postMap.set(postName, newPost);
       let modelPostEvent = new CustomEvent("modelPostEvent", {
-        detail: {post: newPost}
+        detail: { post: newPost },
       });
-      slog.info("addPost: child post event", ["modelPostEvent", modelPostEvent]);
+      slog.info("addPost: child post event", [
+        "modelPostEvent",
+        modelPostEvent,
+      ]);
       document.dispatchEvent(modelPostEvent);
       this.addPendingPosts(postName, newPost);
     }
@@ -161,7 +164,11 @@ export class ModelChannel {
   }
 
   addPendingPosts(addedPostName: string, addedPost: ModelPost): void {
-    slog.info("addPendingPosts: called", ["addedPostName", addedPostName], ["addedPost", addedPost]);
+    slog.info(
+      "addPendingPosts: called",
+      ["addedPostName", addedPostName],
+      ["addedPost", addedPost],
+    );
     let parentPendingPosts = this.pendingPosts.get(addedPostName);
     if (parentPendingPosts === undefined) {
       return;
@@ -170,9 +177,12 @@ export class ModelChannel {
       addedPost.addChildPost(pendingPost);
       this.postMap.set(pendingPost.getName(), pendingPost);
       let modelPostEvent = new CustomEvent("modelPostEvent", {
-        detail: {post: pendingPost}
+        detail: { post: pendingPost },
       });
-      slog.info("addPost: pending post event", ["modelPostEvent", modelPostEvent]);
+      slog.info("addPost: pending post event", [
+        "modelPostEvent",
+        modelPostEvent,
+      ]);
       document.dispatchEvent(modelPostEvent);
       this.addPendingPosts(pendingPost.getName(), pendingPost);
     });
@@ -182,7 +192,7 @@ export class ModelChannel {
   createPost(
     postContent: string,
     postParent: string,
-    channelPath: string
+    channelPath: string,
   ): Promise<CreateResponse> {
     // for now, this return type is indeed ignored. because i update from the subscription always.
     return getModel().typedModelFetch<CreateResponse>(`${channelPath}/posts/`, {

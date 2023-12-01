@@ -14,11 +14,11 @@ export function openDialogButtonComponentInit() {
     <slot name="button-content"></slot>
   </div>
 </template>
-`
+`,
   );
 
   customElements.define(
     "open-dialog-button-component",
-    OpenDialogButtonComponent
+    OpenDialogButtonComponent,
   );
 }

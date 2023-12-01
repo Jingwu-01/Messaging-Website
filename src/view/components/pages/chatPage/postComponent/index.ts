@@ -42,7 +42,7 @@ export class PostComponent extends HTMLElement {
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
     const replyButton = this.shadowRoot?.querySelector(
-      "reply-button-component"
+      "reply-button-component",
     );
     if (!(replyButton instanceof HTMLElement)) {
       throw new Error("reply-button-component is not an HTMLElement");
@@ -50,7 +50,7 @@ export class PostComponent extends HTMLElement {
     replyButton.addEventListener(
       "click",
       this.addPostEditor.bind(this),
-      options
+      options,
     );
   }
 
@@ -102,30 +102,30 @@ export class PostComponent extends HTMLElement {
     // let smileCount, frownCount, likeCount, celebrateCount: number
 
     // if (!(viewPost.reactions.smile) == undefined) {
-    //   smileCount = viewPost.reactions.smile.length 
+    //   smileCount = viewPost.reactions.smile.length
     // } else {
-    //   smileCount = 0; 
+    //   smileCount = 0;
     // }
-    
+
     // if (viewPost.reactions.frown) {
-    //   frownCount = viewPost.reactions.frown.length 
+    //   frownCount = viewPost.reactions.frown.length
     // } else {
-    //   frownCount = 0; 
+    //   frownCount = 0;
     // }
 
     // if (viewPost.reactions.like) {
-    //   likeCount = viewPost.reactions.like.length 
+    //   likeCount = viewPost.reactions.like.length
     // } else {
-    //   likeCount = 0; 
+    //   likeCount = 0;
     // }
 
     // if (viewPost.reactions.celebrate) {
-    //   celebrateCount = viewPost.reactions.celebrate.length 
+    //   celebrateCount = viewPost.reactions.celebrate.length
     // } else {
-    //   celebrateCount = 0; 
+    //   celebrateCount = 0;
     // }
 
-    // const smileReaction = this.shadowRoot?.querySelector("reaction-component") 
+    // const smileReaction = this.shadowRoot?.querySelector("reaction-component")
     // console.log(smileReaction)
     // console.log(smileReaction instanceof HTMLElement);
     // if (!(smileReaction instanceof ReactionComponent)){
@@ -200,11 +200,11 @@ export class PostComponent extends HTMLElement {
       .replace(/:frown:/g, `<iconify-icon icon="lucide:frown"></iconify-icon>`)
       .replace(
         /:like:/g,
-        `<iconify-icon icon="mdi:like-outline"></iconify-icon>`
+        `<iconify-icon icon="mdi:like-outline"></iconify-icon>`,
       )
       .replace(
         /:celebrate:/g,
-        `<iconify-icon icon="mingcute:celebrate-line"></iconify-icon>`
+        `<iconify-icon icon="mingcute:celebrate-line"></iconify-icon>`,
       )
       .replace(/\n/g, "<br>");
 

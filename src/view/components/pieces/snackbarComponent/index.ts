@@ -8,7 +8,7 @@ class SnackbarComponent extends HTMLElement {
 
     this.attachShadow({ mode: "open" });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#snackbar-component-template"
+      "#snackbar-component-template",
     );
     if (!template) {
       throw Error("Could not find template #snackbar-component-template");
@@ -63,7 +63,7 @@ class SnackbarComponent extends HTMLElement {
   attributeChangedCallback(
     name: string,
     oldValue: string,
-    newValue: string
+    newValue: string,
   ): void {
     if (name == "level") {
       switch (newValue) {

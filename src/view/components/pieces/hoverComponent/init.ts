@@ -16,7 +16,7 @@ export default function hoverComponentInit() {
     </div>
   </popover-component>
 </template>
-`
+`,
   );
 
   customElements.define("hover-component", HoverComponent);

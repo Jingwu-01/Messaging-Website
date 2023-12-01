@@ -8,7 +8,7 @@ class WorkspaceMenuComponent extends HTMLElement {
 
     this.attachShadow({ mode: "open" });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#workspace-menu-component-template"
+      "#workspace-menu-component-template",
     );
     if (!template) {
       throw Error("Could not find template #workspace-menu-component-template");
@@ -32,7 +32,7 @@ class WorkspaceMenuComponent extends HTMLElement {
   displayOpenWorkspace(workspace: ViewWorkspace | null) {
     // update the displayed open workspace
     let open_workspace_el = this.shadowRoot?.querySelector(
-      "#open-workspace-text"
+      "#open-workspace-text",
     );
     // Default to "Select Workspace" text if there is no workspace.
     if (open_workspace_el instanceof HTMLElement) {
@@ -47,7 +47,7 @@ class WorkspaceMenuComponent extends HTMLElement {
   displayWorkspaces(update: ViewWorkspaceUpdate) {
     const workspaces = update.allWorkspaces;
     let workspace_menu_items_el = this.shadowRoot?.querySelector(
-      "#workspace-menu-items"
+      "#workspace-menu-items",
     );
     if (workspace_menu_items_el instanceof HTMLElement) {
       // loop through, creating a new HTML element to display each workspace
@@ -69,7 +69,7 @@ class WorkspaceMenuComponent extends HTMLElement {
             document.dispatchEvent(
               new CustomEvent("workspaceSelected", {
                 detail: { name: workspace.name },
-              })
+              }),
             );
           });
       });

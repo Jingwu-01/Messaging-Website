@@ -8,7 +8,6 @@ interface Model {
   // create a channel-- ?
   // select a channel-- get all documents in the posts coll of the workspace
   // delete a channel-- delete this channel document
-
   // post reaction -- patch on a post
   // post creation-- POST call on a document
 }

@@ -16,7 +16,7 @@ export default function init() {
     </popover-component>
   </template>
   
-`
+`,
   );
 
   customElements.define("menu-component", MenuComponent);

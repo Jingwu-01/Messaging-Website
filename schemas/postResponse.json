@@ -1,54 +1,59 @@
 {
-    "$id": "postResponse.json",
-    "$schema": "http://json-schema.org/draft-07/schema",
-    "title": "PostResponse",
-    "type": "object",
-    "required": ["path", "doc", "meta"],
-    "properties": {
-        "path": {
-            "type": "string"
+  "$id": "postResponse.json",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "PostResponse",
+  "type": "object",
+  "required": ["path", "doc", "meta"],
+  "properties": {
+    "path": {
+      "type": "string"
+    },
+    "doc": {
+      "type": "object",
+      "required": ["msg"],
+      "properties": {
+        "msg": {
+          "type": "string"
         },
-        "doc": {
-            "type": "object",
-            "required": ["msg"],
-            "properties": {
-                "msg": {
-                    "type": "string"
-                },
-                "parent": {
-                    "type": "string"
-                },
-                "reactions": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    }
-                },
-                "extensions": {
-                    "type": "object"
-                }
-            }
+        "parent": {
+          "type": "string"
         },
-        "meta": {
-            "type": "object",
-            "required": ["createdAt", "createdBy", "lastModifiedAt", "lastModifiedBy"],
-            "properties": {
-                "createdAt": {
-                    "type": "integer"
-                },
-                "createdBy": {
-                    "type": "string"
-                },
-                "lastModifiedAt": {
-                    "type": "integer"
-                },
-                "lastModifiedBy": {
-                    "type": "string"
-                }
+        "reactions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
+          }
+        },
+        "extensions": {
+          "type": "object"
         }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "required": [
+        "createdAt",
+        "createdBy",
+        "lastModifiedAt",
+        "lastModifiedBy"
+      ],
+      "properties": {
+        "createdAt": {
+          "type": "integer"
+        },
+        "createdBy": {
+          "type": "string"
+        },
+        "lastModifiedAt": {
+          "type": "integer"
+        },
+        "lastModifiedBy": {
+          "type": "string"
+        }
+      }
     }
+  }
 }

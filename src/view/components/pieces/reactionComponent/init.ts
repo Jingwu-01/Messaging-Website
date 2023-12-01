@@ -34,7 +34,7 @@ export default function reactionComponentInit() {
     </div>
   </template>
   
-`
+`,
   );
 
   customElements.define("reaction-component", ReactionComponent);

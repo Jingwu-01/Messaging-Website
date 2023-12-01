@@ -11,7 +11,7 @@ export default async function refreshChannels(evt: Event) {
     // The user should never be able to trigger this.
     if (!channels) {
       throw new Error(
-        "Tried to add a channel without a workspace currently open"
+        "Tried to add a channel without a workspace currently open",
       );
     }
     // Tell the view that this was a success.

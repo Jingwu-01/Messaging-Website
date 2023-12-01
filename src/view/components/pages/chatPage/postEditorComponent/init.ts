@@ -1,9 +1,9 @@
 import { PostEditor } from ".";
 
 export default function postEditorInit() {
-    document.body.insertAdjacentHTML(
-        "beforeend",
-        `
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    `
 <template id="post-editor-template">
     <style>
         #post-operations li {
@@ -83,8 +83,8 @@ export default function postEditorInit() {
         </form>
     </section>
 </template>
-        `
-    );
+        `,
+  );
 
-    customElements.define("post-editor-component", PostEditor);
+  customElements.define("post-editor-component", PostEditor);
 }

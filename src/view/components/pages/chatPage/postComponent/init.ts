@@ -56,7 +56,7 @@ export default function postComponentInit() {
         </div>
     </section>
 </template>
-`
+`,
   );
 
   // a post element shuld look like

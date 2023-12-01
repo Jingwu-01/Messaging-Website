@@ -82,17 +82,17 @@ const ajv = new Ajv();
 export const validateCreateResponse = ajv.compile(CreateResponseSchema);
 
 export const validateGetWorkspacesResponse = ajv.compile(
-  GetWorkspacesResponseSchema
+  GetWorkspacesResponseSchema,
 );
 
 export const validateGetChannelsResponse = ajv.compile(
-  GetChannelsResponseSchema
+  GetChannelsResponseSchema,
 );
 
 export const validateLoginResponse = ajv.compile(LoginResponseSchema);
 
 export const validatePatchDocumentResponse = ajv.compile(
-  PatchDocumentResponseSchema
+  PatchDocumentResponseSchema,
 );
 
 export const validatePostResponse = ajv.compile(PostResponseSchema);

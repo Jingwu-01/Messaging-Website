@@ -4,7 +4,7 @@ class HoverComponent extends HTMLElement {
 
     this.attachShadow({ mode: "open" });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#hover-component-template"
+      "#hover-component-template",
     );
     if (!template) {
       throw Error("Could not find template #hover-component-template");
@@ -43,7 +43,7 @@ class HoverComponent extends HTMLElement {
   attributeChangedCallback(
     name: string,
     oldValue: string,
-    newValue: string
+    newValue: string,
   ): void {
     if (name == "align") {
       this.shadowRoot

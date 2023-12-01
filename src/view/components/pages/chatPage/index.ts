@@ -4,7 +4,7 @@ export class ChatPageComponent extends HTMLElement {
 
     this.attachShadow({ mode: "open" });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#chat-page-template"
+      "#chat-page-template",
     );
     if (!template) {
       throw Error("Could not find template #chat-page-template");

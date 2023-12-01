@@ -27,7 +27,7 @@ class StateManager {
   }
 
   async setOpenWorkspace(
-    workspaceName: string | null
+    workspaceName: string | null,
   ): Promise<ModelWorkspace | null> {
     // open
     if (workspaceName == null) {
@@ -56,7 +56,7 @@ class StateManager {
   }
 
   async setOpenChannel(
-    channelName: string | null
+    channelName: string | null,
   ): Promise<ModelChannel | null> {
     // Unsub from old channel
     if (this.openChannel != null) {
