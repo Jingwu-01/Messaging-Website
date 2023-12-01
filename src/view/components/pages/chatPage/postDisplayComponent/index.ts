@@ -225,7 +225,6 @@ export class PostDisplay extends HTMLElement {
       throw Error("movePostEditorTo: postEl's parent path is undefined");
     }
     this.postEditor.setParentPath(postPath);
-    this.postEditor.setText("");
   }
 
   moveEditPostEditorTo(postEl: PostComponent) {
