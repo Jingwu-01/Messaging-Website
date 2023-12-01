@@ -81,31 +81,28 @@ export class ModelPost {
   /**
    * Returns the replies to this post in the form of a map.e
    */
-  getReplies(): Map<string, ModelP{
+  getReplies(): Map<string, ModelPost> {
     return this.replies;
   }
 
-  
   /**
    * Returns the name of this post as a string.
-   */getName(): string {
+   */ getName(): string {
     return this.name;
   }
 
-  
   /**
    * Returns the name of the parent of this post as a string.
-   */getParentName(): string {
+   */ getParentName(): string {
     return this.parentName;
   }
 
-  
   /**
    * Adds a ModelPost with a parentPath array to this ModelPost recurisvely. Deprecated function.
    * @param newPost a ModelPost to be added
    * @param parentPath an array of strings representing the path to this pots
    * @returns a boolean indicating whether or not this post was successfully added.
-   */addReply(newPost: ModelPost, parentPath: string[]): Boolean {
+   */ addReply(newPost: ModelPost, parentPath: string[]): Boolean {
     if (parentPath.length === 0) {
       this.replies.set(newPost.name, newPost);
       return true;
@@ -119,12 +116,11 @@ export class ModelPost {
     return nextChild.addReply(newPost, parentPath.slice(1));
   }
 
-  
   /**
    * Adds a model post as a child to this post.
    * @param newPost a ModelPost to be added as a child to this post
    * @returns a boolean indicating whether the post was successfully added to this ModelPost
-   */addChildPost(newPost: ModelPost): Boolean {
+   */ addChildPost(newPost: ModelPost): Boolean {
     this.replies.set(newPost.name, newPost);
     return true;
   }

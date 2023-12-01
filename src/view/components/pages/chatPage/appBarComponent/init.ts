@@ -1,5 +1,8 @@
 import AppBarComponent from ".";
 
+/**
+ * HTML template for app bar.
+ */
 export default function appBarComponentInit() {
   document.body.insertAdjacentHTML(
     "beforeend",
@@ -39,7 +42,7 @@ export default function appBarComponentInit() {
     <user-menu-component></user-menu-component>
   </div>
 </template>
-`,
+`
   );
 
   customElements.define("app-bar-component", AppBarComponent);
