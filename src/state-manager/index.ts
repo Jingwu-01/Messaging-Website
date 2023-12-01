@@ -66,6 +66,7 @@ class StateManager {
       this.openChannel = null;
       this.openChannelName = null;
       getView().displayOpenChannel(null);
+      getView().removePostDisplay();
       return null;
     }
     let ws = this.getOpenWorkspace();
@@ -76,6 +77,7 @@ class StateManager {
       getView().displayOpenChannel({
         name: this.openChannel.getName(),
       });
+      getView().displayPostDisplay();
       return this.openChannel;
     } else {
       throw new Error("Cannot get open channel: no open workspace");

@@ -1,3 +1,4 @@
+import { slog } from "../slog";
 import PostComponent from "./components/pages/chatPage/postComponent";
 import M3ssagin8AppComponent from "./components/pages/m3ssagin8AppComponent";
 import SnackbarComponent from "./components/pieces/snackbarComponent";
@@ -11,6 +12,11 @@ import {
   ViewWorkspace,
   ViewWorkspaceUpdate,
 } from "./datatypes";
+
+interface PostDisplayListener {
+  displayPostDisplay(): void;
+  removePostDisplay(): void;
+}
 
 interface PostListener {
   displayPosts(posts: ViewPostUpdate): void;
@@ -57,6 +63,8 @@ export class View {
 
   private channelListeners: Array<ChannelListener> =
     new Array<ChannelListener>();
+
+  private postDisplayListeners: Array<PostDisplayListener> = new Array<PostDisplayListener>();
 
   private eventCompletedListeners = new Map<
     string,
@@ -202,6 +210,36 @@ export class View {
     this.channelListeners.forEach((listener) => {
       listener.displayOpenChannel(channel);
     });
+  }
+
+  addPostDisplayListener(listener: PostDisplayListener) {
+    this.postDisplayListeners.push(listener);
+    slog.info("View: addPostDisplayListener", ["listener", listener], ["this.postDisplayListeners", this.postDisplayListeners]);
+  }
+
+  removePostDisplayListener(listener: PostDisplayListener) {
+    let index = this.postDisplayListeners.indexOf(listener);
+    slog.info("View: removePostDisplayListener", ["listener", listener], ["index", index]);
+    if (index < 0) {
+      throw new ReferenceError(
+        "Attempted to remove a post display listener that was not subscribed",
+      );
+    }
+    this.postDisplayListeners.splice(index, 1);
+    slog.info("View: removePostDisplayListener, after removing listener", ["this.postDisplayListeners", this.postDisplayListeners]);
+  }
+
+  displayPostDisplay() {
+    slog.info("displayPostDisplay: was called");
+    this.postDisplayListeners.forEach((listener) => {
+      listener.displayPostDisplay();
+    });
+  }
+
+  removePostDisplay() {
+    this.postDisplayListeners.forEach((listener) => {
+      listener.removePostDisplay();
+    })
   }
 
   // When the Adapter calls .completeEvent(event),

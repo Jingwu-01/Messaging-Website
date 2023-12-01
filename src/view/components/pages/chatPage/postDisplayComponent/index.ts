@@ -38,7 +38,6 @@ export class PostDisplay extends HTMLElement {
 
     let channelHeader = this.shadowRoot.querySelector("#channel-name");
     let postsContainer = this.shadowRoot.querySelector("#posts-container");
-    let postEditor = this.shadowRoot.querySelector("post-editor-component");
 
     if (!(channelHeader instanceof HTMLElement)) {
       throw Error("Could not find an element with the channel-name id");
@@ -48,12 +47,12 @@ export class PostDisplay extends HTMLElement {
       throw Error("Could not find an element with the posts-container id");
     }
 
-    if (!(postEditor instanceof PostEditor)) {
-      throw Error("Could not find a post-editor-component element");
-    }
+    let postEditor = new PostEditor();
 
     this.channelHeader = channelHeader;
     this.postsContainer = postsContainer;
+    this.postsContainer.after(postEditor);
+
     this.postEditor = postEditor;
     this.postEditor.setParentPath("");
 
@@ -63,10 +62,12 @@ export class PostDisplay extends HTMLElement {
 
   // is connected callback atomic?
   connectedCallback() {
+    slog.info("PostDisplay: connectedCallback was called");
     getView().addPostListener(this);
   }
 
   disconnectedCallback() {
+    slog.info("PostDisplay: disconnectedCallback was called");
     getView().removePostListener(this);
   }
 
