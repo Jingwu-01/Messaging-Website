@@ -76,7 +76,7 @@ export default function workspaceMenuComponentInit() {
     <span slot="title">Edit Workspaces</span>
   </edit-dialog-component>
 </template>
-`
+`,
   );
 
   customElements.define("workspace-menu-component", WorkspaceMenuComponent);

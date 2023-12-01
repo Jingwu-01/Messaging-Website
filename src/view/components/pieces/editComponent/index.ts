@@ -13,11 +13,11 @@ class EditPostButtonComponent extends HTMLElement {
     // Deep clone the edit post button HTML template for later use.
     if (this.shadowRoot) {
       let template = document.querySelector(
-        "#edit-post-button-component-template"
+        "#edit-post-button-component-template",
       );
       if (!(template instanceof HTMLTemplateElement)) {
         throw new Error(
-          "edit post button template is not HTML template element"
+          "edit post button template is not HTML template element",
         );
       }
       this.shadowRoot.append(template.content.cloneNode(true));
@@ -38,7 +38,7 @@ class EditPostButtonComponent extends HTMLElement {
       this.editPostButton.addEventListener(
         "click",
         this.editPost.bind(this),
-        options
+        options,
       );
     }
   }

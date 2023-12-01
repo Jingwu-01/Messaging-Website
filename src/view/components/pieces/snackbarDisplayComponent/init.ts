@@ -23,7 +23,7 @@ export default function snackbarDisplayInit() {
     >
     </div>
   </template>
-  `
+  `,
   );
 
   customElements.define("snackbar-display-component", SnackbarDisplayComponent);

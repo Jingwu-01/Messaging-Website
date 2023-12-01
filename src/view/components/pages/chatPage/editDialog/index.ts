@@ -29,7 +29,7 @@ export class EditDialogComponent extends HTMLElement {
 
     this.attachShadow({ mode: "open" });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#edit-dialog-component-template"
+      "#edit-dialog-component-template",
     );
     if (!template) {
       throw Error("Could not find template #edit-dialog-component-template");
@@ -74,7 +74,7 @@ export class EditDialogComponent extends HTMLElement {
 
     // Set up save and close button
     let save_and_close_button_query = this.shadowRoot?.querySelector(
-      "#save-and-close-button"
+      "#save-and-close-button",
     );
     if (!(save_and_close_button_query instanceof HTMLElement)) {
       throw Error("Could not find a save and close button");
@@ -133,7 +133,7 @@ export class EditDialogComponent extends HTMLElement {
       new_item_element.classList.add("item");
       // query the remove button
       const remove_button = new_item_element.querySelector(
-        `#remove-item-${index}`
+        `#remove-item-${index}`,
       );
       if (!remove_button) {
         throw new Error("Failed to add remove button for new item");
@@ -145,11 +145,11 @@ export class EditDialogComponent extends HTMLElement {
           // disable buttons to handle concurrency.
           this.addItemButton.setAttribute(
             "disabled-until-event",
-            event.detail.id
+            event.detail.id,
           );
           this.saveAndCloseButton.setAttribute(
             "disabled-until-event",
-            event.detail.id
+            event.detail.id,
           );
           remove_button.setAttribute("loading-until-event", event.detail.id);
           // dispatch the event.
@@ -170,7 +170,7 @@ export class EditDialogComponent extends HTMLElement {
       this.addItemButton.setAttribute("loading-until-event", event.detail.id);
       this.saveAndCloseButton.setAttribute(
         "disabled-until-event",
-        event.detail.id
+        event.detail.id,
       );
       document.dispatchEvent(event);
     }

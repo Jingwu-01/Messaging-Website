@@ -39,7 +39,7 @@ export class ModelWorkspace {
           headers: {
             accept: "application/json",
           },
-        }
+        },
       );
       const valid = validateChannelResponse(response);
       if (!valid) {
@@ -65,7 +65,7 @@ export class ModelWorkspace {
       this.channels = new Map<string, ModelChannel>();
       slog.info("getAllChannels", ["this.path", `${this.path}`]);
       let db_channels = await getModel().typedModelFetch<GetChannelsResponse>(
-        `${this.path}/channels/`
+        `${this.path}/channels/`,
       );
       const valid = validateGetChannelsResponse(db_channels);
       if (!valid) {
@@ -100,7 +100,7 @@ export class ModelWorkspace {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({}),
-      }
+      },
     );
     // Give it a "posts" collection
     await getModel().typedModelFetch<any>(
@@ -111,7 +111,7 @@ export class ModelWorkspace {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({}),
-      }
+      },
     );
     // Now, either:
     // 1. we are subscribed to channels, so OWLDB will send back a message which updates the state

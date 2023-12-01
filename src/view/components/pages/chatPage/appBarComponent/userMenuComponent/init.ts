@@ -38,7 +38,7 @@ export default function init() {
     </div>
   </menu-component>
 </template>
-`
+`,
   );
 
   customElements.define("user-menu-component", UserMenuComponent);

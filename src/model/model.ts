@@ -92,7 +92,7 @@ export class OwlDBModel {
 
   /**
    * A function that makes a call to log the user in to the database.
-   * @param username 
+   * @param username
    * @returns a Promise containing a LoginResponse, representing the received JSON.
    */
   async login(username: string): Promise<LoginResponse> {
@@ -195,7 +195,7 @@ export class OwlDBModel {
         ]);
         // TODO: make a custom login error class so we can gracefully handle this situation by notifying the user.
         throw new Error(
-          "invalid getting all workspaces response received from owldb"
+          "invalid getting all workspaces response received from owldb",
         );
       }
       db_workspaces.forEach((workspace_response) => {
@@ -203,7 +203,7 @@ export class OwlDBModel {
         let workspace_name = split_path[split_path.length - 1];
         this.workspaces.set(
           workspace_name,
-          new ModelWorkspace(workspace_response)
+          new ModelWorkspace(workspace_response),
         );
       });
     }
@@ -254,7 +254,7 @@ export class OwlDBModel {
    * @returns a Promise that resolves to the patch response received from the database.
    */
   async updateReaction(
-    reactionUpdate: ModelReactionUpdate
+    reactionUpdate: ModelReactionUpdate,
   ): Promise<PatchDocumentResponse> {
     let patches = new Array<PatchBody>();
     let addReactionObject: PatchBody = {
@@ -294,7 +294,7 @@ export class OwlDBModel {
     return getModel()
       .typedModelFetch<PatchDocumentResponse>(
         `${reactionUpdate.postPath}`,
-        options
+        options,
       )
       .then((response) => {
         slog.info("updateReaction", ["response", response]);
@@ -320,7 +320,7 @@ export class OwlDBModel {
 
   /**
    * Returns the string representing the username for the user.
-   * @returns 
+   * @returns
    */
   getUsername() {
     return this.username;

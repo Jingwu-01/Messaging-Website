@@ -7,7 +7,7 @@ class MenuComponent extends HTMLElement {
 
     this.attachShadow({ mode: "open" });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#menu-component-template"
+      "#menu-component-template",
     );
     if (!template) {
       throw Error("Could not find template #hover-component-template");
@@ -54,7 +54,7 @@ class MenuComponent extends HTMLElement {
   attributeChangedCallback(
     name: string,
     oldValue: string,
-    newValue: string
+    newValue: string,
   ): void {
     if (name == "open") {
       this.popoverElement.setAttribute("open", newValue);

@@ -3,7 +3,7 @@ class SnackbarComponent extends HTMLElement {
   private wrapper: HTMLElement;
   private closeButton: HTMLElement;
 
-  // Constructor for the snack bar custom element 
+  // Constructor for the snack bar custom element
   constructor() {
     super();
 
@@ -52,7 +52,7 @@ class SnackbarComponent extends HTMLElement {
     // The browser calls this when the element is removed from a document.
   }
 
-  // Close the snack bar 
+  // Close the snack bar
   close() {
     this.parentNode?.removeChild(this);
     this.remove();
@@ -63,7 +63,7 @@ class SnackbarComponent extends HTMLElement {
     return ["level"];
   }
 
-  // When the level attribute changes, display the corresponding snack bar. 
+  // When the level attribute changes, display the corresponding snack bar.
   attributeChangedCallback(
     name: string,
     oldValue: string,

@@ -39,7 +39,7 @@ export function insertPostSorted(
   return idx;
 
   // Attempted binary search implementation; gave up. can always change this later.
-  
+
   // let low = 0;
   // let high = postList.length;
   // while (low < high) {

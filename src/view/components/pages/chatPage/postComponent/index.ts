@@ -92,14 +92,14 @@ export class PostComponent extends HTMLElement {
     this.replyButton.addEventListener(
       "click",
       this.addReplyPostEditor.bind(this),
-      options
+      options,
     );
 
     // Add click event listener for edit post button
     this.editPostButton.addEventListener(
       "click",
       this.addEditPostEditor.bind(this),
-      options
+      options,
     );
   }
 
@@ -160,7 +160,7 @@ export class PostComponent extends HTMLElement {
     if (currentUser === null) {
       // this is the case where we're logged out but dealing with this event.
       slog.info(
-        "addPostContent: trying to add a post when a user is logged out, dead request"
+        "addPostContent: trying to add a post when a user is logged out, dead request",
       );
       return;
     }
@@ -176,7 +176,7 @@ export class PostComponent extends HTMLElement {
       slog.info(
         "addPostContent: reaction loop",
         ["reactionName", reactionName],
-        ["reactionCount", reactionCount]
+        ["reactionCount", reactionCount],
       );
       reactionButton.setAttribute("reaction-count", reactionCount.toString());
       reactionButton.setParentPath(viewPost.path);
@@ -236,11 +236,11 @@ export class PostComponent extends HTMLElement {
       .replace(/:frown:/g, `<iconify-icon icon="lucide:frown"></iconify-icon>`)
       .replace(
         /:like:/g,
-        `<iconify-icon icon="mdi:like-outline"></iconify-icon>`
+        `<iconify-icon icon="mdi:like-outline"></iconify-icon>`,
       )
       .replace(
         /:celebrate:/g,
-        `<iconify-icon icon="mingcute:celebrate-line"></iconify-icon>`
+        `<iconify-icon icon="mingcute:celebrate-line"></iconify-icon>`,
       )
       .replace(/\n/g, "<br>");
 
@@ -266,7 +266,7 @@ export class PostComponent extends HTMLElement {
     if (currentUser === null) {
       // this is the case where we're logged out but dealing with this event.
       slog.info(
-        "addPostContent: trying to add a post when a user is logged out, dead request"
+        "addPostContent: trying to add a post when a user is logged out, dead request",
       );
       return;
     }
@@ -284,7 +284,7 @@ export class PostComponent extends HTMLElement {
         slog.info(
           "addPostContent: reaction loop",
           ["reactionName", reactionName],
-          ["reactionCount", reactionCount]
+          ["reactionCount", reactionCount],
         );
         reactionButton.setAttribute("reaction-count", reactionCount.toString());
       }

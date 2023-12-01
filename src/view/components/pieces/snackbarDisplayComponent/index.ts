@@ -13,11 +13,11 @@ class SnackbarDisplayComponent extends HTMLElement {
 
     this.attachShadow({ mode: "open" });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#snackbar-display-component-template"
+      "#snackbar-display-component-template",
     );
     if (!template) {
       throw Error(
-        "Could not find template #snackbar-display-component-template"
+        "Could not find template #snackbar-display-component-template",
       );
     }
     this.shadowRoot?.append(template.content.cloneNode(true));

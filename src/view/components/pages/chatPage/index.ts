@@ -13,7 +13,7 @@ export class ChatPageComponent extends HTMLElement {
 
     this.attachShadow({ mode: "open" });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#chat-page-template"
+      "#chat-page-template",
     );
     if (!template) {
       throw Error("Could not find template #chat-page-template");
@@ -60,14 +60,14 @@ export class ChatPageComponent extends HTMLElement {
    */
   removePostDisplay() {
     let currentPostDisplay = this.mainContainer.querySelectorAll(
-      "post-display-component"
+      "post-display-component",
     );
     for (let potentialPostDisplay of currentPostDisplay) {
       if (potentialPostDisplay instanceof PostDisplay) {
         potentialPostDisplay.remove();
         slog.info(
           "ChatPageComponent: removePostDisplay, removed current post display",
-          ["potentialPostDisplay", potentialPostDisplay]
+          ["potentialPostDisplay", potentialPostDisplay],
         );
       }
     }

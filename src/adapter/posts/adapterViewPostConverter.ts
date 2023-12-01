@@ -8,11 +8,11 @@ import { AdapterPost } from "./adapterPost";
 
 /**
  * Initializes all reactions to be empty arrays for this post.
- * @param postResponse a JSON object representing the post response received from the database. 
+ * @param postResponse a JSON object representing the post response received from the database.
  * @returns ReactionData, an object with fields representing reaction names and values which are an array of usernames.
  */
 function convertReactions(postResponse: PostResponse): ReactionData {
-    // Return empty arrays for each reaction if the reactions are undefined.
+  // Return empty arrays for each reaction if the reactions are undefined.
   if (postResponse.doc.reactions === undefined) {
     return {
       smile: [],

@@ -1,4 +1,4 @@
-import { getModel } from "../model/model";
+import { getModel } from "../src/model/model";
 
 const owldbModel = getModel();
 

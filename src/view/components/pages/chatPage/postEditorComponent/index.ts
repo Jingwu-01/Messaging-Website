@@ -57,7 +57,7 @@ export class PostEditor extends HTMLElement {
     }
 
     if (!(cancelReply instanceof HTMLElement)) {
-        throw Error("Could not find an elemnet with the cancel-reply id");
+      throw Error("Could not find an elemnet with the cancel-reply id");
     }
 
     this.postOperations = postOperations;
@@ -137,9 +137,9 @@ export class PostEditor extends HTMLElement {
     );
 
     this.cancelReply.addEventListener(
-        "click",
-        this.replyToTopLevel.bind(this),
-        options
+      "click",
+      this.replyToTopLevel.bind(this),
+      options,
     );
   }
 
@@ -223,7 +223,7 @@ export class PostEditor extends HTMLElement {
     );
   }
 
-  setText(text: string){
+  setText(text: string) {
     this.postInput.value = text;
   }
 }

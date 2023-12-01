@@ -6,7 +6,7 @@ import { ViewWorkspace } from "../../view/datatypes";
  * @param workspaces The map of workspaces to convert.
  */
 export default function modelToViewWorkspaces(
-  workspaces: Map<string, ModelWorkspace>
+  workspaces: Map<string, ModelWorkspace>,
 ): ViewWorkspace[] {
   let view_workspaces: ViewWorkspace[] = [];
   workspaces.forEach((ws) => {

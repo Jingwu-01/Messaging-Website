@@ -2,7 +2,7 @@ import { slog } from "../../../../slog";
 import { ReactionUpdateEvent } from "../../../datatypes";
 import { getView } from "../../../view";
 
-// Reactions could be only one of the four defined reactions types. 
+// Reactions could be only one of the four defined reactions types.
 type reactions = "smile" | "frown" | "like" | "celebrate";
 
 /* Defines the custom element for ReactionComponent, which will be used as a reaction component web component. */
@@ -36,7 +36,7 @@ class ReactionComponent extends HTMLElement {
     if (!(reactionButton instanceof HTMLButtonElement)) {
       throw new Error("reactionButton not HTML button element");
     }
-  
+
     const reactionIcon = this.shadowRoot?.querySelector("#smile-reaction");
     if (!(reactionIcon instanceof HTMLElement)) {
       throw new Error("smileButton is not an HTMLElement");
@@ -46,7 +46,7 @@ class ReactionComponent extends HTMLElement {
     this.reactionButton = reactionButton;
   }
 
-  // When the element is connected, add a click listener for the reaction button. 
+  // When the element is connected, add a click listener for the reaction button.
   connectedCallback(): void {
     this.addReactionCount(this.count);
 
@@ -59,13 +59,13 @@ class ReactionComponent extends HTMLElement {
     );
   }
 
-  // When the element is disconnected, remove the controller. 
+  // When the element is disconnected, remove the controller.
   disconnectedCallback(): void {
     this.controller?.abort();
     this.controller = null;
   }
 
-  // Dispatch an reaction update event to the adapter 
+  // Dispatch an reaction update event to the adapter
   update() {
     let user = getView().getUser();
     let postPath = this.parentPath;
@@ -77,15 +77,23 @@ class ReactionComponent extends HTMLElement {
       getView().displayError("reacted to a malformed post");
       return;
     }
-    let updateEventContent: ReactionUpdateEvent = { reactionName: `${this.reactionName}`, userName: user.username, postPath: postPath, add: !this.curReacted};
-    slog.info("ReactionComponent: update", ["updateEventContent", updateEventContent]);
+    let updateEventContent: ReactionUpdateEvent = {
+      reactionName: `${this.reactionName}`,
+      userName: user.username,
+      postPath: postPath,
+      add: !this.curReacted,
+    };
+    slog.info("ReactionComponent: update", [
+      "updateEventContent",
+      updateEventContent,
+    ]);
     const reactionUpdateEvent = new CustomEvent("reactionUpdateEvent", {
       detail: updateEventContent,
     });
     document.dispatchEvent(reactionUpdateEvent);
   }
 
-  // Display the count of the reaction 
+  // Display the count of the reaction
   addReactionCount(count: number): void {
     const countText = this.shadowRoot?.querySelector("#reaction-count");
     if (!(countText instanceof HTMLParagraphElement)) {
@@ -103,12 +111,12 @@ class ReactionComponent extends HTMLElement {
     ]);
   }
 
-  // Observe the attribute icon, reaction-button, and reacted. 
+  // Observe the attribute icon, reaction-button, and reacted.
   static get observedAttributes(): string[] {
     return ["icon", "reaction-count", "reacted"];
   }
 
-  // When the observed attributes are changed, adjust arial-labels and display the correct iconify icons. 
+  // When the observed attributes are changed, adjust arial-labels and display the correct iconify icons.
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     if (name === "icon") {
       // Adjust the corresponding arial-labels and reactionName correctly.
@@ -125,7 +133,10 @@ class ReactionComponent extends HTMLElement {
         this.reactionButton.setAttribute("aria-label", "smile reaction");
         this.reactionName = "smile";
       } else {
-        slog.info("ReactionComponent: attributeChangedCallback", ["unsupportedReaction", ""]);
+        slog.info("ReactionComponent: attributeChangedCallback", [
+          "unsupportedReaction",
+          "",
+        ]);
       }
 
       // Adjust the icon attribute to the newValue so that the appropriate iconify icon would be displayed.

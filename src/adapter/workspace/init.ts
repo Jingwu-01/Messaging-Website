@@ -40,7 +40,7 @@ export function initWorkspaces() {
         return;
       }
       getView().completeEvent(evt);
-    }
+    },
   );
   document.addEventListener(
     "workspaceCreated",
@@ -63,7 +63,7 @@ export function initWorkspaces() {
       }
 
       getView().completeEvent(evt);
-    }
+    },
   );
 
   // Handle workspace deletion
@@ -89,7 +89,7 @@ export function initWorkspaces() {
       }
 
       getView().completeEvent(evt);
-    }
+    },
   );
 
   //Handle workspace refresh
@@ -105,6 +105,6 @@ export function initWorkspaces() {
         return;
       }
       getView().completeEvent(evt);
-    }
+    },
   );
 }

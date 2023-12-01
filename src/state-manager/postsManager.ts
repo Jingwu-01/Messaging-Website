@@ -44,7 +44,7 @@ export class PostsManager {
       ["this.adapterPosts", this.adapterPosts],
       ["this.rootAdapterPosts", this.rootAdapterPosts],
       ["this.pendingPosts", this.pendingPosts],
-      ["response", response]
+      ["response", response],
     );
     let newPost: AdapterPost;
     try {
@@ -100,7 +100,7 @@ export class PostsManager {
     slog.info(
       "addPendingPosts: called",
       ["addedPostName", addedPostName],
-      ["addedPost", addedPost]
+      ["addedPost", addedPost],
     );
     let parentPendingPosts = this.pendingPosts.get(addedPostName);
     if (parentPendingPosts === undefined) {
@@ -133,7 +133,7 @@ export class PostsManager {
         "this.adapterPosts",
         `${JSON.stringify(Object.fromEntries(this.adapterPosts))}`,
       ],
-      ["this.rootAdapterPosts", `${JSON.stringify(this.rootAdapterPosts)}`]
+      ["this.rootAdapterPosts", `${JSON.stringify(this.rootAdapterPosts)}`],
     );
     this.upsertAdapterPost(adapterPost, exists);
     slog.info(
@@ -142,7 +142,7 @@ export class PostsManager {
         "this.adapterPosts",
         `${JSON.stringify(Object.fromEntries(this.adapterPosts))}`,
       ],
-      ["this.rootAdapterPosts", `${JSON.stringify(this.rootAdapterPosts)}`]
+      ["this.rootAdapterPosts", `${JSON.stringify(this.rootAdapterPosts)}`],
     );
   }
 

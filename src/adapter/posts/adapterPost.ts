@@ -11,11 +11,10 @@ import { insertPostSorted } from "./handleSortingPosts";
  * that the posts are displayed in order of creation time.
  */
 export class AdapterPost {
-
-    // The name of the post.
+  // The name of the post.
   private name: string;
 
-    // The time that the post was created.
+  // The time that the post was created.
   private createdTime: number;
 
   // JSON representing the post's response.

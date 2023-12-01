@@ -2,15 +2,9 @@
  * Functions for handling events related to posts from both the view and adapter.
  */
 
-import {
-  ModelPostEvent,
-  ModelReactionUpdate,
-} from "../../model/modelTypes";
+import { ModelPostEvent, ModelReactionUpdate } from "../../model/modelTypes";
 import { slog } from "../../slog";
-import {
-  CreatePostEvent,
-  ReactionUpdateEvent,
-} from "../../view/datatypes";
+import { CreatePostEvent, ReactionUpdateEvent } from "../../view/datatypes";
 import { getModel } from "../../model/model";
 import getStateManager from "../../state-manager";
 import createPost from "./createPost";
@@ -28,7 +22,7 @@ export function initPosts() {
         `${JSON.stringify(evt.detail)}`,
       ]);
       createPost(evt.detail);
-    }
+    },
   );
 
   /**
@@ -75,7 +69,7 @@ export function initPosts() {
             `${JSON.stringify(error)}`,
           ]);
         });
-    }
+    },
   );
 
   /**
@@ -90,6 +84,6 @@ export function initPosts() {
       ]);
       getStateManager().serializePostResponse(evt.detail.post);
       // TODO: call serializePostResponse, and throw an error on the view if there's any error with the corresponding error message
-    }
+    },
   );
 }

@@ -117,7 +117,7 @@ export default function homePageInit() {
     </header>
   </dialog>
 </template>
-`
+`,
   );
 
   // Define the custom element of home-page.

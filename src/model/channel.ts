@@ -80,7 +80,7 @@ export class ModelChannel {
               slog.info(
                 "subscribeToPosts",
                 ["thisChannel.postMap", `${thisChannel.postMap}`],
-                ["thisChannel.postRoots", `${thisChannel.postRoots}`]
+                ["thisChannel.postRoots", `${thisChannel.postRoots}`],
               );
               // const postsEvent = new CustomEvent("postsEvent", {
               //   // NOTE: we are passing by reference here. so mutations will be seen.
@@ -115,7 +115,7 @@ export class ModelChannel {
     let postName = newPostResponse.path.split("/").pop();
     if (postName === undefined) {
       throw Error(
-        "addPost: internal server error: post has an empty path string"
+        "addPost: internal server error: post has an empty path string",
       );
     }
     if (this.postMap.get(postName) !== undefined) {
@@ -141,7 +141,7 @@ export class ModelChannel {
     // to validate against what's the WS and curr open channel
     if (parentPathArr.length !== 6) {
       console.log(
-        "addPost: invalid parentPathArr: parentPathArr is not of length 6"
+        "addPost: invalid parentPathArr: parentPathArr is not of length 6",
       );
       return false;
     }
@@ -163,7 +163,7 @@ export class ModelChannel {
         "addPost",
         ["parentPost is undefined", ""],
         ["parentName", `${parentName}`],
-        ["this.postMap", `${JSON.stringify(Object.fromEntries(this.postMap))}`]
+        ["this.postMap", `${JSON.stringify(Object.fromEntries(this.postMap))}`],
       );
       let parentPendingPosts = this.pendingPosts.get(parentName);
       if (parentPendingPosts === undefined) {
@@ -198,7 +198,7 @@ export class ModelChannel {
     slog.info(
       "addPendingPosts: called",
       ["addedPostName", addedPostName],
-      ["addedPost", addedPost]
+      ["addedPost", addedPost],
     );
     let parentPendingPosts = this.pendingPosts.get(addedPostName);
     if (parentPendingPosts === undefined) {
@@ -223,7 +223,7 @@ export class ModelChannel {
   createPost(
     postContent: string,
     postParent: string,
-    channelPath: string
+    channelPath: string,
   ): Promise<CreateResponse> {
     // for now, this return type is indeed ignored. because i update from the subscription always.
     return getModel().typedModelFetch<CreateResponse>(`${channelPath}/posts/`, {

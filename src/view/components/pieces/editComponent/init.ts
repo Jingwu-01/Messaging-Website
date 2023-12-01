@@ -35,7 +35,7 @@ export default function editPostButtonComponentInit() {
       <iconify-icon icon="material-symbols:edit"></iconify-icon>
     </button>
   </template>
-`
+`,
   );
 
   // Register the reply button component custom element.

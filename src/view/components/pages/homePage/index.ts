@@ -90,7 +90,7 @@ class HomePage extends HTMLElement {
       });
     } else {
       throw new Error(
-        "Element with id #username-input is not a HTMLInputElement"
+        "Element with id #username-input is not a HTMLInputElement",
       );
     }
   }

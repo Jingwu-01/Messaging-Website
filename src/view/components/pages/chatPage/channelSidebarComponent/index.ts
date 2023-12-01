@@ -22,16 +22,16 @@ export class ChannelSidebar extends HTMLElement {
     this.attachShadow({ mode: "open" });
 
     let template = document.querySelector(
-      "#channel-sidebar-component-template"
+      "#channel-sidebar-component-template",
     );
     if (!(template instanceof HTMLTemplateElement)) {
       throw Error(
-        "element with id #channel-sidebar-component-template was not found"
+        "element with id #channel-sidebar-component-template was not found",
       );
     }
     if (this.shadowRoot === null) {
       throw Error(
-        "could not find shadow DOM root for channeldisplay element in constructor"
+        "could not find shadow DOM root for channeldisplay element in constructor",
       );
     }
 
@@ -49,18 +49,18 @@ export class ChannelSidebar extends HTMLElement {
 
     if (!(button_wrapper_query instanceof HTMLElement)) {
       throw Error(
-        "Could not find an element with the edit-channels-button-wrapper id"
+        "Could not find an element with the edit-channels-button-wrapper id",
       );
     }
 
     this.buttonWrapper = button_wrapper_query;
 
     let refresh_channels_button_query = this.shadowRoot.querySelector(
-      "#refresh-channels-button"
+      "#refresh-channels-button",
     );
     if (!(refresh_channels_button_query instanceof HTMLElement)) {
       throw Error(
-        "Could not find an element with the refresh-channels-button id"
+        "Could not find an element with the refresh-channels-button id",
       );
     }
     this.refreshChannelsButton = refresh_channels_button_query;
@@ -76,7 +76,7 @@ export class ChannelSidebar extends HTMLElement {
           detail: {
             id: event_id,
           },
-        })
+        }),
       );
     });
 
@@ -116,7 +116,7 @@ export class ChannelSidebar extends HTMLElement {
       `;
 
       let loading_button_el = channel_select_el.querySelector(
-        `#channel-loading-button-${i}`
+        `#channel-loading-button-${i}`,
       );
 
       // Add a click listener to the loading button that selects the channel.
@@ -136,7 +136,7 @@ export class ChannelSidebar extends HTMLElement {
               id: event_id,
               name: channel.name,
             },
-          })
+          }),
         );
       });
       this.channelEls.set(channel.name, channel_select_el);

@@ -12,7 +12,7 @@ function m3ssagin8AppComponentInit() {
         <chat-page></chat-page>
       </div>
     </template>
-    `
+    `,
   );
   customElements.define("m3ssagin8-app-component", M3ssagin8AppComponent);
 }

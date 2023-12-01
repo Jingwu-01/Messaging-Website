@@ -24,7 +24,7 @@ export function initChannels() {
         getView().failEvent(evt, "Failed to select channel");
       }
       getView().completeEvent(evt);
-    }
+    },
   );
 
   // Handle channel creation
@@ -48,7 +48,7 @@ export function initChannels() {
         return;
       }
       getView().completeEvent(evt);
-    }
+    },
   );
 
   // Handle channel deletion
@@ -77,7 +77,7 @@ export function initChannels() {
         return;
       }
       getView().completeEvent(evt);
-    }
+    },
   );
 
   //Handle channel refresh
@@ -93,6 +93,6 @@ export function initChannels() {
         return;
       }
       getView().completeEvent(evt);
-    }
+    },
   );
 }

@@ -15,7 +15,7 @@ class LoadingButtonComponent extends HTMLElement {
 
     this.attachShadow({ mode: "open" });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#loading-button-component-template"
+      "#loading-button-component-template",
     );
     if (!template) {
       throw Error("Could not find template #hover-component-template");
@@ -60,7 +60,7 @@ class LoadingButtonComponent extends HTMLElement {
   attributeChangedCallback(
     name: string,
     oldValue: string,
-    newValue: string
+    newValue: string,
   ): void {
     // Disable button
     if (name == "disabled-until-event") {

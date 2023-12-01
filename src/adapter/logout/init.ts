@@ -13,6 +13,6 @@ export function initLogout() {
       model.logout().then(() => {
         view.displayUser(null);
       });
-    }
+    },
   );
 }
