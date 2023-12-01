@@ -20,6 +20,14 @@ export default function replyButtonComponentInit() {
       button:active {
         background-color: #5a5a5a;
       }
+      button:focus-visible {
+        box-shadow: rgba(60, 60, 60, 0.6) 0 0 0 3px;
+        outline: none;
+      }
+      button:focus:not(:focus-visible) {
+        box-shadow: none;
+        outline: none;
+      }
 
     </style>
     <button id="reply-button" aria-label="reply">
