@@ -4,7 +4,7 @@
 
 import { ModelPostEvent, ModelReactionUpdate } from "../../model/modelTypes";
 import { slog } from "../../slog";
-import { CreatePostEvent, ReactionUpdateEvent, StarUpdateEvent } from "../../view/datatypes";
+import { CreatePostEvent, ReactionUpdateEvent } from "../../view/datatypes";
 import { getModel } from "../../model/model";
 import getStateManager from "../../state-manager";
 import createPost from "./createPost";
@@ -74,8 +74,11 @@ export function initPosts() {
         "modelPostEvent.detail",
         `${JSON.stringify(evt.detail)}`,
       ]);
-      getStateManager().serializePostResponse(evt.detail.post);
+      let [success, message] = getStateManager().serializePostResponse(evt.detail.post);
       // TODO: call serializePostResponse, and throw an error on the view if there's any error with the corresponding error message
+      if (!success) {
+        getView().displayError(message);
+      }
     },
   );
 }

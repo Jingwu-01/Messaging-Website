@@ -1,0 +1,16 @@
+{
+    "$id": "extensionResponse.json",
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "ExtensionResponse",
+    "type": "object",
+    "required": ["p2group50"],
+    "properties": {
+      "p2group50": {
+        "type": "array",
+        "items": {
+            "type": "string"
+        }
+      }
+    }
+  }
+  

@@ -1,4 +1,5 @@
 import { getModel } from "../../model/model";
+import getStateManager from "../../state-manager";
 import { LoginEvent } from "../../view/datatypes";
 import { getView } from "../../view/view";
 import refreshWorkspaces from "../workspace/refreshWorkspaces";
@@ -11,10 +12,11 @@ export function initLogin() {
     async (event: CustomEvent<LoginEvent>) => {
       let model = getModel();
       let view = getView();
-
+      let stateManager = getStateManager();
       try {
         // Log in with the input username and then display it
         await model.login(event.detail.username);
+        stateManager.setLoggedInUser(event.detail.username);
       } catch (err) {
         getView().failEvent(event, "Failed to log in");
         return;

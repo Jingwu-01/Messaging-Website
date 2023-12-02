@@ -24,6 +24,8 @@ class StateManager {
 
   private postsManager: PostsManager = new PostsManager();
 
+  private loggedInUser: string | null = null;
+
   /**
    * Gets the currently open workspace
    * @returns a ModelWorkspace if it's open, or null if no workspace is open.
@@ -130,6 +132,15 @@ class StateManager {
   resetPostsManager() {
     this.postsManager = new PostsManager();
   }
+
+  setLoggedInUser(username: string | null) {
+    this.loggedInUser = username;
+  }
+
+  getLoggedInUser(): string | null {
+    return this.loggedInUser;
+  }
+
 }
 
 // state manager

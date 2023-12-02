@@ -11,6 +11,7 @@ import PatchDocumentResponseSchema from "../../schemas/patchDocumentResponse.jso
 import PostResponseSchema from "../../schemas/postResponse.json";
 import WorkspaceResponseSchema from "../../schemas/workspaceResponse.json";
 import ChannelResponseSchema from "../../schemas/channelResponse.json";
+import ExtensionResponseSchema from "../../schemas/extensionResponse.json";
 import { ModelReactionUpdate, PatchBody } from "./modelTypes";
 
 /**
@@ -154,3 +155,5 @@ export const validatePostResponse = ajv.compile(PostResponseSchema);
 export const validateWorkspaceResponse = ajv.compile(WorkspaceResponseSchema);
 
 export const validateChannelResponse = ajv.compile(ChannelResponseSchema);
+
+export const validateExtensionResponse = ajv.compile(ExtensionResponseSchema);

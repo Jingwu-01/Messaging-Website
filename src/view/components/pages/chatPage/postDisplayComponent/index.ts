@@ -170,7 +170,7 @@ export class PostDisplay extends HTMLElement {
         ]);
       }
     } else {
-      this.postsContainer.innerHTML = "";
+      // this.postsContainer.innerHTML = "";
       for (let viewPost of update.allPosts) {
         let postEl = new PostComponent();
         postEl.addPostContent(viewPost);
