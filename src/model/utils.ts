@@ -11,6 +11,7 @@ import PatchDocumentResponseSchema from "../../schemas/patchDocumentResponse.jso
 import PostResponseSchema from "../../schemas/postResponse.json";
 import WorkspaceResponseSchema from "../../schemas/workspaceResponse.json";
 import ChannelResponseSchema from "../../schemas/channelResponse.json";
+import { ModelReactionUpdate, PatchBody } from "./modelTypes";
 
 /**
  * Wrapper around fetch to return a Promise that resolves to the desired
@@ -88,6 +89,44 @@ export function getAuthPath(): string {
     throw new Error("Database host is undefined");
   }
   return process.env.DATABASE_HOST + "/auth";
+}
+
+export function getPatchBody(reactionUpdate: ModelReactionUpdate): Array<PatchBody> {
+  let patches = new Array<PatchBody>();
+  let objPath: string;
+  let reactionName: string;
+  if (reactionUpdate.reactionName === undefined) {
+    objPath = "/extensions";
+    reactionName = "p2group50";
+  } else {
+    objPath = "/reactions";
+    reactionName = reactionUpdate.reactionName;
+  }
+  let addReactionObject: PatchBody = {
+    path: objPath,
+    op: "ObjectAdd",
+    value: {}
+  };
+  patches.push(addReactionObject);
+  let addReactionArray: PatchBody = {
+    path: `${objPath}/${reactionName}`,
+    op: "ObjectAdd",
+    value: []
+  };
+  patches.push(addReactionArray);
+  let op: "ArrayAdd" | "ArrayRemove";
+  if (reactionUpdate.add) {
+    op = "ArrayAdd";
+  } else {
+    op = "ArrayRemove";
+  }
+  let addReaction: PatchBody = {
+    path: `${objPath}/${reactionName}`,
+    op: op,
+    value: reactionUpdate.userName
+  };
+  patches.push(addReaction);
+  return patches;
 }
 
 // Data validation

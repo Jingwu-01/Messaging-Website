@@ -20,7 +20,7 @@ that the view can display. */
 export type ViewPost = {
   msg: string;
   reactions: ReactionData; // TODO: should be an array of strings? or custom reactions objects based on what we want?
-  extensions: any; // TODO: see above for 'reactions'
+  extensions: StarExtension; // TODO: see above for 'reactions'
   createdUser: string;
   postTime: number;
   children: Array<ViewPost>;
@@ -30,6 +30,9 @@ export type ViewPost = {
   name: string;
 };
 
+export type StarExtension = {
+  "p2group50": Array<string>;
+}
 /**
  * Update sent by the Adapter to the view when the workspaces change
  */
@@ -176,9 +179,10 @@ export type DeleteChannelEvent = {
 /**
  * Sent to the Adapter when a post is reacted to
  */
+// TODO: use composition of ReactionUpdateEvent and StarUpdateEvent?
 export type ReactionUpdateEvent = {
-  reactionName: string;
-  userName: string | undefined;
+  reactionName: string | undefined;
+  userName: string;
   postPath: string;
   add: boolean;
 };

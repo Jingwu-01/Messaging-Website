@@ -4,7 +4,7 @@
 
 import { ModelPostEvent, ModelReactionUpdate } from "../../model/modelTypes";
 import { slog } from "../../slog";
-import { CreatePostEvent, ReactionUpdateEvent } from "../../view/datatypes";
+import { CreatePostEvent, ReactionUpdateEvent, StarUpdateEvent } from "../../view/datatypes";
 import { getModel } from "../../model/model";
 import getStateManager from "../../state-manager";
 import createPost from "./createPost";
@@ -32,14 +32,6 @@ export function initPosts() {
     "reactionUpdateEvent",
     (event: CustomEvent<ReactionUpdateEvent>) => {
       let model = getModel();
-      if (event.detail.userName === undefined) {
-        // this corresponds to the case where we forget to remove the event handler, and it still handles the event when there is no username.
-        slog.error("reactionUpdateEvent listener", [
-          "user name is undefined",
-          `${event.detail.userName}`,
-        ]);
-        return;
-      }
       let modelUpdate: ModelReactionUpdate = {
         reactionName: event.detail.reactionName,
         userName: event.detail.userName,
