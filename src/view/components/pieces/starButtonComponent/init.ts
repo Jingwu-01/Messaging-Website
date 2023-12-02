@@ -26,7 +26,9 @@ export default function starButtonInit() {
         box-shadow: none;
         outline: none;
       }
-
+      .reacted {
+        background-color: #add8e6;
+      }
     </style>
     <button id="star-button" aria-label="star-post">
       <iconify-icon id="star-icon" icon="material-symbols:star-outline"></iconify-icon>

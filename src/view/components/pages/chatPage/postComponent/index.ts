@@ -1,5 +1,5 @@
 import { slog } from "../../../../../slog";
-import { ReactionData, ViewPost } from "../../../../datatypes";
+import { ReactionData, StarExtension, ViewPost } from "../../../../datatypes";
 import { getView } from "../../../../view";
 import EditPostButtonComponent from "../../../pieces/editComponent";
 import ReactionComponent from "../../../pieces/reactionComponent";
@@ -178,18 +178,15 @@ export class PostComponent extends HTMLElement {
       reactionButton.setLoggedInUser(currentUsername);
     }
 
-    if (currentUsername === this.postUser) {
-      // TODO: check if the post is starred
-      // TODO: set the attribute 'starred' of the star button based on whether or not the post is starred.
-      // TODO:
-      let extensionsObj = viewPost.extensions;
-      if (extensionsObj["p2group50"].includes(currentUsername)) {
-        this.starButton.setAttribute("reacted", "true");
-      } else {
-        this.starButton.setAttribute("reacted", "false");
-      }
+    // TODO: check if the post is starred
+    // TODO: set the attribute 'starred' of the star button based on whether or not the post is starred.
+    // TODO:
+    slog.info("addPostContent: initializing starred post");
+    let extensionsObj = viewPost.extensions;
+    if (extensionsObj["p2group50"].includes(currentUsername)) {
+      this.starButton.setAttribute("reacted", "true");
     } else {
-      this.starButton.setAttribute("data-visible", "false");
+      this.starButton.setAttribute("reacted", "false");
     }
 
     this.starButton.setLoggedInUser(currentUsername);
@@ -261,12 +258,12 @@ export class PostComponent extends HTMLElement {
   }
 
   modifyPostContent(viewPost: ViewPost) {
-    if (viewPost.msg !== this.postMsg) {
-      this.appendFormattedText(viewPost.msg, this.postBody);
-    }
     let reactionData = viewPost.reactions;
     this.updateReactions(reactionData);
+    let extensionData = viewPost.extensions;
+    this.updateExtensions(extensionData);
   }
+
   updateReactions(reactionData: ReactionData) {
     let currentUsername: string;
     let currentUser = getView().getUser();
@@ -283,18 +280,38 @@ export class PostComponent extends HTMLElement {
       let reactionButton = this.reactionButtons.get(reactionName);
       if (reactionButton !== undefined) {
         let reactionCount = reactionArray.length;
-        if (reactionArray.includes(currentUsername)) {
-          reactionButton.setAttribute("reacted", "true");
-        } else {
-          reactionButton.setAttribute("reacted", "false");
-        }
         slog.info(
           "addPostContent: reaction loop",
           ["reactionName", reactionName],
           ["reactionCount", reactionCount],
         );
         reactionButton.setAttribute("reaction-count", reactionCount.toString());
+        if (reactionArray.includes(currentUsername)) {
+          reactionButton.setAttribute("reacted", "true");
+        } else {
+          reactionButton.setAttribute("reacted", "false");
+        }
       }
+    }
+  }
+
+  updateExtensions(extensionData: StarExtension) {
+    let currentUsername: string;
+    let currentUser = getView().getUser();
+    if (currentUser === null) {
+      // this is the case where we're logged out but dealing with this event.
+      slog.info(
+        "addPostContent: trying to add a post when a user is logged out, dead request",
+      );
+      return;
+    }
+    currentUsername = currentUser.username;
+
+    let starButton = this.starButton;
+    if (extensionData["p2group50"].includes(currentUsername)) {
+      starButton.setAttribute("reacted", "true");
+    } else {
+      starButton.setAttribute("reacted", "false");
     }
   }
 

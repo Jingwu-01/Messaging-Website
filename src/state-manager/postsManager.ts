@@ -21,6 +21,8 @@ export class PostsManager {
 
   private rootAdapterPosts: Array<AdapterPost> = new Array<AdapterPost>();
 
+  private starredPosts: Array<AdapterPost> = new Array<AdapterPost>();
+
   createPost(postData: CreatePostEvent) {
     // TODO: consider if we want to enforce that a channel are open in order to send a message?
     let channel = getStateManager().getOpenChannel();
