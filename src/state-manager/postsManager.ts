@@ -3,11 +3,11 @@ import { CreateResponse } from "../../types/createResponse";
 import { PostResponse } from "../../types/postResponse";
 import { AdapterPost } from "../adapter/posts/adapterPost";
 import { adapterViewPostConverter } from "../adapter/posts/adapterViewPostConverter";
-import { insertPostSorted } from "../adapter/posts/handleSortingPosts";
+import { insertPostSorted, insertStarredPostSorted, removePostSorted } from "../adapter/posts/handleSortingPosts";
 import { slog } from "../slog";
 import { CreatePostEvent, ViewPostUpdate } from "../view/datatypes";
 import { getView } from "../view/view";
-import { isRespPostStarred } from "./utils";
+import { StarOps, isRespPostStarred } from "./utils";
 
 export class PostsManager {
   private adapterPosts: Map<string, AdapterPost> = new Map<
@@ -163,8 +163,7 @@ export class PostsManager {
     adapterPost.setPostIndex(insertedIdx);
 
     // upsert for extension
-    let starredIdx = -1;
-    [starredIdx, starOp] = this.insertStarredPost(adapterPost, exists);
+    let [starredIdx, starOp] = this.insertStarredPost(adapterPost, exists);
     if (starredIdx === -1) {
       slog.error("upsertAdapterPost", ["starredIdx is -1", starredIdx]);
     }
@@ -172,6 +171,7 @@ export class PostsManager {
     adapterPost.setStarredIndex(starredIdx);
     
     let op: "insert" | "modify";
+
     if (exists) {
       op = "modify";
     } else {
@@ -182,7 +182,9 @@ export class PostsManager {
       allPosts: [],
       op: op,
       affectedPosts: [viewPost],
+      starOp: starOp
     };
+    slog.info("upsertAdapterPost: end of func call", ["updatedPost", updatedPost], ["this.starredPosts", this.starredPosts]);
     getView().displayPosts(updatedPost);
   }
 
@@ -191,20 +193,19 @@ export class PostsManager {
     return insertPostSorted(this.rootAdapterPosts, adapterPost, exists);
   }
 
-  insertStarredPost(adapterPost: AdapterPost, exists: boolean): [number, string] {
+  insertStarredPost(adapterPost: AdapterPost, exists: boolean): [number, StarOps] {
+    // slog.info("insertStarredPost", ["exists", exists], ["isRespPostStarred(adapterPost)", isRespPostStarred(adapterPost)], ["adapterPost.getStarred()", adapterPost.getStarred()]);
     if (exists) {
       if (isRespPostStarred(adapterPost)) {
-        if (adapterPost.getStarred()) {
-          return [insertPostSorted(this.starredPosts, adapterPost, true), "modify"];
-        } else {
-          return [insertPostSorted(this.starredPosts, adapterPost, false), "insert"];
-        }
+        return insertStarredPostSorted(this.starredPosts, adapterPost);
       } else {
-        if (adapterPost.getStarred()) {
-          return [removePostSorted(this.starredPosts, adapterPost), "delete"];
-        } else {
-          
-        }
+        return removePostSorted(this.starredPosts, adapterPost);
+      }
+    } else {
+      if (isRespPostStarred(adapterPost)) {
+        return insertStarredPostSorted(this.starredPosts, adapterPost);
+      } else {
+        return [-2, "nop"];
       }
     }
   }

@@ -49,6 +49,7 @@ export class AdapterPost {
     // console.log(`AdapterPost constructor: response.path: ${response.path}`);
     // console.log(`AdapterPost constructor: response.path.split("/"): ${response.path.split("/")}`);
     // console.log(`AdapterPost constructor: response.path.split("/").pop(): ${response.path.split("/").pop()}`);
+    slog.info("AdapterPost constructor: top of func call", ["response", response.path], ["response.path", response.path]);
     let postPathArr = response.path.split("/");
     // Make sure that the path length is 6
     if (postPathArr.length !== 6) {

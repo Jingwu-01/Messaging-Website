@@ -72,7 +72,7 @@ export class ModelChannel {
                 "incoming post",
                 JSON.stringify(response),
               ]);
-              thisChannel.addPost(response);
+              // thisChannel.addPost(response);
               const modelPostEvent = new CustomEvent("modelPostEvent", {
                 detail: { post: response },
               });

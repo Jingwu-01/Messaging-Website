@@ -12,3 +12,5 @@ export function isRespPostStarred(adapterPost: AdapterPost): boolean {
     }
     return usersStarred.includes(loggedInUser);
   }
+
+export type StarOps = "modify" | "insert" | "delete" | "nop";

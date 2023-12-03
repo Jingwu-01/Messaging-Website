@@ -13,6 +13,7 @@ export type ViewPostUpdate = {
   op: "add" | "modify" | "insert";
   /** A list of the posts that were affected by this update */
   affectedPosts: Array<ViewPost>;
+  starOp: "insert" | "modify" | "delete" | "nop";
 };
 
 /** This ViewPost type will effectively allow us to represent a tree of posts
