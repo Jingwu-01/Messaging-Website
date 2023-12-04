@@ -79,7 +79,7 @@ export default function homePageInit() {
     }
 
     button:focus-visible {
-      box-shadow: #0047ab 0 0 0 3px;
+      box-shadow: #FF0000 0 0 0 3px;
       outline: none;
     }
 
@@ -93,7 +93,7 @@ export default function homePageInit() {
     }
 
     #username-input:focus-visible {
-      box-shadow: #0047ab 0 0 0 3px;
+      box-shadow: #FF0000 0 0 0 3px;
       outline: none;
     }
 

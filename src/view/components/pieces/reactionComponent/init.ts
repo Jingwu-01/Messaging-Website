@@ -30,7 +30,7 @@ export default function reactionComponentInit() {
         background-color: #add8e6
       }
       #reaction-button:focus-visible {
-        box-shadow: #0047ab 0 0 0 3px;
+        box-shadow: #FF0000 0 0 0 3px;
         outline: none;
       }
       #reaction-button:focus:not(:focus-visible) {
