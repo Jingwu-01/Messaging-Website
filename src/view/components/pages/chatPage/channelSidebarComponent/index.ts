@@ -10,9 +10,11 @@ import { getView } from "../../../../view";
 export class ChannelSidebar extends HTMLElement {
   private channelList: HTMLElement;
 
-  private editChannelsButtonWrapper: HTMLElement;
+  private buttonWrapper: HTMLElement;
 
   private channelNameToIdx = new Map<String, Number>();
+
+  private refreshChannelsButton: HTMLElement;
 
   constructor() {
     super();
@@ -20,16 +22,16 @@ export class ChannelSidebar extends HTMLElement {
     this.attachShadow({ mode: "open" });
 
     let template = document.querySelector(
-      "#channel-sidebar-component-template",
+      "#channel-sidebar-component-template"
     );
     if (!(template instanceof HTMLTemplateElement)) {
       throw Error(
-        "element with id #channel-sidebar-component-template was not found",
+        "element with id #channel-sidebar-component-template was not found"
       );
     }
     if (this.shadowRoot === null) {
       throw Error(
-        "could not find shadow DOM root for channeldisplay element in constructor",
+        "could not find shadow DOM root for channeldisplay element in constructor"
       );
     }
 
@@ -43,22 +45,39 @@ export class ChannelSidebar extends HTMLElement {
 
     this.channelList = channelList;
 
-    let edit_channels_button_wrapper_query = this.shadowRoot.querySelector(
-      "#edit-channels-button-wrapper",
-    );
+    let button_wrapper_query = this.shadowRoot.querySelector("#button-wrapper");
 
-    if (!(edit_channels_button_wrapper_query instanceof HTMLElement)) {
-      throw Error(
-        "Could not find an element with the edit-channels-button-wrapper id",
-      );
+    if (!(button_wrapper_query instanceof HTMLElement)) {
+      throw Error("Could not find an element with the button-wrapper id");
     }
 
-    this.editChannelsButtonWrapper = edit_channels_button_wrapper_query;
+    this.buttonWrapper = button_wrapper_query;
 
+    let refresh_channels_button_query = this.shadowRoot.querySelector(
+      "#refresh-channels-button"
+    );
+    if (!(refresh_channels_button_query instanceof HTMLElement)) {
+      throw Error(
+        "Could not find an element with the refresh-channels-button id"
+      );
+    }
+    this.refreshChannelsButton = refresh_channels_button_query;
     // this.displayPosts.bind(this);
   }
 
   connectedCallback() {
+    // Add listener for refresh channels button
+    this.refreshChannelsButton.addEventListener("click", () => {
+      let event_id = String(Date.now());
+      this.refreshChannelsButton.setAttribute("loading-until-event", event_id);
+      document.dispatchEvent(
+        new CustomEvent("refreshChannels", {
+          detail: {
+            id: event_id,
+          },
+        })
+      );
+    });
     getView().addChannelListener(this);
     // We need this so that we can listen for when a workspace is closed.
     // Since if the workspace is closed, we shouldn't render the "Edit Channels" button.
@@ -82,15 +101,15 @@ export class ChannelSidebar extends HTMLElement {
     if (channelIdx === undefined) {
       // TODO: test to reproduce this error
       throw Error(
-        "displayOpenChannel: trying to display a channel that doesn't exist on the view",
+        "displayOpenChannel: trying to display a channel that doesn't exist on the view"
       );
     }
     let selectedChannelEl = this.shadowRoot?.querySelector(
-      "#channel-select-" + channelIdx,
+      "#channel-select-" + channelIdx
     );
     if (!(selectedChannelEl instanceof HTMLElement)) {
       throw Error(
-        `displayOpenChannel: selected element with ID #channel-select-${channel.name} is not an HTML element`,
+        `displayOpenChannel: selected element with ID #channel-select-${channel.name} is not an HTML element`
       );
     }
     selectedChannelEl.classList.add("selected-channel");
@@ -114,7 +133,7 @@ export class ChannelSidebar extends HTMLElement {
         document.dispatchEvent(
           new CustomEvent("channelSelected", {
             detail: { name: channel.name },
-          }),
+          })
         );
       });
     });
@@ -123,9 +142,9 @@ export class ChannelSidebar extends HTMLElement {
   // If no workspace is selected, then don't render the "edit channels" button.
   displayOpenWorkspace(workspace: ViewWorkspace | null) {
     if (workspace == null) {
-      this.editChannelsButtonWrapper.style.display = "none";
+      this.buttonWrapper.style.display = "none";
     } else {
-      this.editChannelsButtonWrapper.style.display = "inherit";
+      this.buttonWrapper.style.display = "flex";
     }
   }
 
