@@ -79,7 +79,7 @@ export default function homePageInit() {
     }
 
     button:focus-visible {
-      box-shadow: rgba(60, 60, 60, 0.6) 0 0 0 3px;
+      box-shadow: #0047ab 0 0 0 3px;
       outline: none;
     }
 
@@ -91,6 +91,17 @@ export default function homePageInit() {
     dialog::backdrop {
       backdrop-filter: blur(2px);
     }
+
+    #username-input:focus-visible {
+      box-shadow: #0047ab 0 0 0 3px;
+      outline: none;
+    }
+
+    #username-input:focus:not(:focus-visible) {
+      box-shadow: none;
+      outline: none;
+    }
+    
   </style>
   <dialog id="login-dialog">
     <header>
