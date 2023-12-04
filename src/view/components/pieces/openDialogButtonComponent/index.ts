@@ -7,13 +7,13 @@ export class OpenDialogButtonComponent extends HTMLElement {
   constructor() {
     super();
 
-    this.attachShadow({ mode: "open" });
+    this.attachShadow({ mode: "open", delegatesFocus: true });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#open-dialog-button-component-template",
+      "#open-dialog-button-component-template"
     );
     if (!template) {
       throw Error(
-        "Could not find template #open-dialog-button-component-template",
+        "Could not find template #open-dialog-button-component-template"
       );
     }
     this.shadowRoot?.append(template.content.cloneNode(true));
@@ -30,7 +30,7 @@ export class OpenDialogButtonComponent extends HTMLElement {
   attributeChangedCallback(
     name: string,
     oldValue: string,
-    newValue: string,
+    newValue: string
   ): void {
     if (name == "dialog") {
       this.dialog_id = newValue;
