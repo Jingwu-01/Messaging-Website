@@ -13,9 +13,6 @@ export default function postEditorInit() {
         .editor-op--end {
             margin-left: auto;
         }
-        #post-operations li {
-            display: inline-block;
-        }
         #post-operations {
             list-style-type: none;
             padding-left: 0em;
@@ -55,34 +52,44 @@ export default function postEditorInit() {
         #send-icon {
             margin-left: .5em;
         }
-        #post-operations iconify-icon {
-            font-size: 1.5em;
+        .reactions, #cancel-reply{
+            width: 30px;
+            height: 30px;
+            border-radius: 3px 3px 3px 3px;
         }
-        li:hover {
+        .reactions:hover {
             background-color: #3896b7; 
         }
-        li:active {
+        .reactions:active {
             background-color: #163d4a; 
         }
         #post-submit:hover {
             background-color: #163d4a; 
         }
-        #post-submit:active{
+        #post-submit:active {
             background-color: #0f2831; 
         }
+        .reactions:focus-visible, #cancel-reply:focus-visible, #post-input:focus-visible, #post-submit:focus-visible {
+            box-shadow: #FF0000 0 0 0 3px;
+            outline: none;
+        }
+        .reactions:focus:not(:focus-visible), #cancel-reply:focus:not(:focus-visible),#post-input:focus:not(:focus-visible), #post-sumbit:focus:not(:focus-visible) {
+            box-shadow: none;
+            outline: none;
+        } 
     </style>
 
     <section id="post-editor-wrapper">
         <section id="post-editor-header">
-            <ul id="post-operations">
-                <li id="bold-text" aria-label="bold"><iconify-icon icon="octicon:bold-16"></iconify-icon></li>
-                <li id="italicize-text" aria-label="italicize"><iconify-icon icon="mingcute:italic-fill"></iconify-icon></li>
-                <li id="link-text" aria-label="link"><iconify-icon icon="material-symbols:link"></iconify-icon></li>
-                <li id="smile-reaction" aria-label="smile"><iconify-icon icon="lucide:smile"></iconify-icon></li>
-                <li id="frown-reaction" aria-label="frown"><iconify-icon icon="lucide:frown" ></iconify-icon></li>
-                <li id="like-reaction" aria-label="like"><iconify-icon icon="mdi:like-outline"></iconify-icon></li>
-                <li id="celebrate-reaction" aria-label="celebrate"><iconify-icon icon="mingcute:celebrate-line"></iconify-icon></li>
-            </ul>
+            <section id="post-operations">
+                <button class="reactions" id="bold-text" aria-label="bold" tabindex="0"><iconify-icon icon="octicon:bold-16"></iconify-icon></button>
+                <button class="reactions" id="italicize-text" aria-label="italicize" tabindex="0"><iconify-icon icon="mingcute:italic-fill"></iconify-icon></button>
+                <button class="reactions" id="link-text" aria-label="link" tabindex="0"><iconify-icon icon="material-symbols:link"></iconify-icon></button>
+                <button class="reactions" id="smile-reaction" aria-label="smile" tabindex="0"><iconify-icon icon="lucide:smile"></iconify-icon></button>
+                <button class="reactions" id="frown-reaction" aria-label="frown" tabindex="0"><iconify-icon icon="lucide:frown" ></iconify-icon></button>
+                <button class="reactions" id="like-reaction" aria-label="like" tabindex="0"><iconify-icon icon="mdi:like-outline"></iconify-icon></button>
+                <button class="reactions" id="celebrate-reaction" aria-label="celebrate" tabindex="0"><iconify-icon icon="mingcute:celebrate-line"></iconify-icon></button>
+            </section>
             <button id="cancel-reply" class="editor-op--end"><iconify-icon icon="octicon:x-12"></iconify-icon></button>
         </section>
         <form id="post-form">

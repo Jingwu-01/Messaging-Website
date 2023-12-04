@@ -95,32 +95,6 @@ export class EditDialogComponent extends HTMLElement {
     this.saveAndCloseButton.addEventListener("click", () => {
       this.close();
     });
-
-    // TODO improve accessibility so that remove can be accessed with keyboard
-    this.dialog.addEventListener("keydown", (event) => {
-      if (!this.dialog?.open) {
-        return;
-      }
-
-      // Handle enter press
-      if (event.key == "Enter") {
-        // Submit the add event if the currently-focused element is the add item
-        // element.
-        if (this.focused_element_index == this.item_elements.length) {
-          this.onAdd(this.addItemInput.value);
-        }
-      }
-      // Move the focused element up / down depending on arrow presses.
-      if (event.key == "ArrowUp" && this.focused_element_index > 0) {
-        this.setFocusedElement(this.focused_element_index - 1);
-      }
-      if (
-        event.key == "ArrowDown" &&
-        this.focused_element_index < this.item_elements.length + 1
-      ) {
-        this.setFocusedElement(this.focused_element_index + 1);
-      }
-    });
   }
 
   /**

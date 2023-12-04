@@ -30,6 +30,15 @@ export default function appBarComponentInit() {
       display: flex;
       align-items: center;
     }
+    workspace-menu-component:focus-visible, user-menu-component:focus-visible {
+      box-shadow: #FF0000 0 0 0 3px;
+      outline: none;
+      border-radius: 5px 5px 5px 5px;
+  }
+    workspace-menu-component:focus:not(:focus-visible), user-menu-component:focus:not(:focus-visible) {
+      box-shadow: none;
+      outline: none;
+  } 
   </style>
   <div id="app-bar-wrapper">
     <div id="title-wrapper">
@@ -38,8 +47,8 @@ export default function appBarComponentInit() {
       </span>
       <h2>Messaging</h2>
     </div>
-    <workspace-menu-component></workspace-menu-component>
-    <user-menu-component></user-menu-component>
+    <workspace-menu-component tabindex="0"></workspace-menu-component>
+    <user-menu-component tabindex="0"></user-menu-component>
   </div>
 </template>
 `,

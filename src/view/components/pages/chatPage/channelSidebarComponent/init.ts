@@ -19,6 +19,8 @@ export default function channelSidebarComponentInit() {
     li {
         margin-top: 1em;
         margin-bottom: 1em;
+        font-size: 17px;
+        border-radius: 5px 5px 5px 5px;
     }
     #button-wrapper{
         display: flex;
@@ -41,10 +43,14 @@ export default function channelSidebarComponentInit() {
     .button-content:active{
         background-color: #0f2831; 
     }
-    li {
-        font-size: 17px;
-        border-radius: 5px 5px 5px 5px;
+    #edit-channels-button-wrapper:focus-visible {
+        box-shadow: #FF0000 0 0 0 3px;
+        outline: none;
     }
+    #edit-channels-button-wrapper:focus:not(:focus-visible) {
+        box-shadow: none;
+        outline: none;
+    } 
     li:hover {
         background-color: #3896b7; 
     }
@@ -67,7 +73,7 @@ export default function channelSidebarComponentInit() {
                 <iconify-icon icon="material-symbols:edit" aria-label="Edit Channels"></iconify-icon>
             </div>
         </open-dialog-button-component>
-    </div>
+    </section>
 </template>
 `
   );
