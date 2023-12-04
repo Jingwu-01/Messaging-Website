@@ -106,7 +106,7 @@ class WorkspaceMenuComponent extends HTMLElement {
       } else {
         workspaces.forEach((workspace, i) => {
           new_inner_html += `
-          <loading-button-component id="workspace-select-${i}" class="workspace-select" style="background: none; border: none;">
+          <loading-button-component id="workspace-select-${i}" class="workspace-select" style="background: none; border: none;" >
             <p slot="content">${workspace.name}</p>
           </loading-button-component>
           `;

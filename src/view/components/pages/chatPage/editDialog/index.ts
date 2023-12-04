@@ -91,12 +91,6 @@ export class EditDialogComponent extends HTMLElement {
       this.close();
     });
 
-    // TODO improve accessibility so that remove can be accessed with keyboard
-    this.dialog.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" && this.dialog?.open) {
-        this.onAdd(this.addItemInput.value);
-      }
-    });
   }
 
   /**
