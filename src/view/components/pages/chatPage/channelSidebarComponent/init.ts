@@ -22,10 +22,13 @@ export default function channelSidebarComponentInit() {
         font-size: 17px;
         border-radius: 5px 5px 5px 5px;
     }
-    #edit-channels-button-wrapper{
-        text-align: center;
+    #button-wrapper{
+        display: flex;
+        align-items: center;
+        flex-direction: column; 
+        gap: 10px;
     }
-    #edit-channels-button-content{
+    .button-content{
         display: flex;
         align-items: center;
         gap: 10px;
@@ -34,10 +37,10 @@ export default function channelSidebarComponentInit() {
         color: white;
         padding: 0 10px;
     }
-    #edit-channels-button-content:hover{
+    .button-content:hover{
         background-color: #163d4a; 
     }
-    #edit-channels-button-content:active{
+    .button-content:active{
         background-color: #0f2831; 
     }
     #edit-channels-button-wrapper:focus-visible {
@@ -55,17 +58,24 @@ export default function channelSidebarComponentInit() {
         background-color: #163d4a; 
     }
     </style>
-    <ul id="channel-list"></ul>
-    <section id="edit-channels-button-wrapper">
-        <open-dialog-button-component dialog="edit-channels-dialog">
-            <section slot="button-content" id="edit-channels-button-content">
+    <ul id="channel-list">
+    </ul>
+    <div id="button-wrapper">
+        <loading-button-component id="refresh-channels-button" style="background: none; border: none">
+            <div slot="content" class="button-content">
+                <p>Refresh Channels</p>
+                <iconify-icon icon="material-symbols:refresh" aria-label="Refresh Channels"></iconify-icon>
+            </div>
+        </loading-button-component>
+        <open-dialog-button-component dialog="edit-channels-dialog" style="border: none; background: none;">
+            <div slot="button-content" id="edit-channels-button-content" class="button-content">
                 <p>Edit Channels</p>
-                <iconify-icon icon="material-symbols:edit"></iconify-icon>
-            </section>
+                <iconify-icon icon="material-symbols:edit" aria-label="Edit Channels"></iconify-icon>
+            </div>
         </open-dialog-button-component>
     </section>
 </template>
-`,
+`
   );
   // an example channel element looks like:
   // <li id="channel-select-{channel-name}">{channel-name}</li>

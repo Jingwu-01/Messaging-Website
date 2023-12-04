@@ -13,9 +13,9 @@ class LoadingButtonComponent extends HTMLElement {
   constructor() {
     super();
 
-    this.attachShadow({ mode: "open" });
+    this.attachShadow({ mode: "open", delegatesFocus: true });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#loading-button-component-template",
+      "#loading-button-component-template"
     );
     if (!template) {
       throw Error("Could not find template #hover-component-template");
@@ -42,11 +42,6 @@ class LoadingButtonComponent extends HTMLElement {
   }
 
   /**
-   * The browser calls this when the element is removed from a document.
-   */
-  disconnectedCallback(): void {}
-
-  /**
    * Observe the following attributes.
    */
   static get observedAttributes(): Array<string> {
@@ -60,7 +55,7 @@ class LoadingButtonComponent extends HTMLElement {
   attributeChangedCallback(
     name: string,
     oldValue: string,
-    newValue: string,
+    newValue: string
   ): void {
     // Disable button
     if (name == "disabled-until-event") {

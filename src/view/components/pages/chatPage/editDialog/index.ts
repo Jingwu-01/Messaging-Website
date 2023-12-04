@@ -24,12 +24,17 @@ export class EditDialogComponent extends HTMLElement {
   protected dialog: HTMLDialogElement;
   protected saveAndCloseButton: HTMLElement;
 
+  /** Position (starting from top of dialog) of the element that's currently focused. */
+  protected focused_element_index: number = 0;
+  /** Elements representing this dialog's items */
+  protected item_elements: HTMLElement[] = [];
+
   constructor() {
     super();
 
     this.attachShadow({ mode: "open" });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#edit-dialog-component-template",
+      "#edit-dialog-component-template"
     );
     if (!template) {
       throw Error("Could not find template #edit-dialog-component-template");
@@ -74,7 +79,7 @@ export class EditDialogComponent extends HTMLElement {
 
     // Set up save and close button
     let save_and_close_button_query = this.shadowRoot?.querySelector(
-      "#save-and-close-button",
+      "#save-and-close-button"
     );
     if (!(save_and_close_button_query instanceof HTMLElement)) {
       throw Error("Could not find a save and close button");
@@ -90,7 +95,6 @@ export class EditDialogComponent extends HTMLElement {
     this.saveAndCloseButton.addEventListener("click", () => {
       this.close();
     });
-
   }
 
   /**
@@ -98,7 +102,7 @@ export class EditDialogComponent extends HTMLElement {
    */
   showModal() {
     this.dialog.showModal();
-    this.addItemInput.focus();
+    this.setFocusedElement(this.item_elements.length);
   }
 
   /**
@@ -114,6 +118,7 @@ export class EditDialogComponent extends HTMLElement {
    * @param items Items to display
    */
   setItems(items: string[]) {
+    let item_elements: HTMLElement[] = [];
     this.itemDisplay.innerHTML = "";
     items.forEach((item_name, index) => {
       // maybe make this an actual web component instead of what we have?
@@ -127,7 +132,7 @@ export class EditDialogComponent extends HTMLElement {
       new_item_element.classList.add("item");
       // query the remove button
       const remove_button = new_item_element.querySelector(
-        `#remove-item-${index}`,
+        `#remove-item-${index}`
       );
       if (!remove_button) {
         throw new Error("Failed to add remove button for new item");
@@ -139,11 +144,11 @@ export class EditDialogComponent extends HTMLElement {
           // disable buttons to handle concurrency.
           this.addItemButton.setAttribute(
             "disabled-until-event",
-            event.detail.id,
+            event.detail.id
           );
           this.saveAndCloseButton.setAttribute(
             "disabled-until-event",
-            event.detail.id,
+            event.detail.id
           );
           remove_button.setAttribute("loading-until-event", event.detail.id);
           // dispatch the event.
@@ -151,7 +156,10 @@ export class EditDialogComponent extends HTMLElement {
         }
       });
       this.itemDisplay.appendChild(new_item_element);
+      item_elements.push(new_item_element);
     });
+    this.item_elements = item_elements;
+    this.setFocusedElement(this.focused_element_index);
   }
 
   /**
@@ -161,12 +169,40 @@ export class EditDialogComponent extends HTMLElement {
   onAdd(new_item_name: string) {
     const event = this.getAddEvent(new_item_name);
     if (event) {
+      this.addItemInput.value = "";
       this.addItemButton.setAttribute("loading-until-event", event.detail.id);
       this.saveAndCloseButton.setAttribute(
         "disabled-until-event",
-        event.detail.id,
+        event.detail.id
       );
       document.dispatchEvent(event);
+    }
+  }
+
+  /**
+   * Focuses the index'th element from the top of the dialog
+   * @param index The index of the element to focus.
+   */
+  setFocusedElement(index: number) {
+    this.focused_element_index = index;
+
+    // 0 --> this.item_elements.length - 1: it's one of the items
+    if (this.focused_element_index < this.item_elements.length) {
+      const item_remove_button = this.shadowRoot?.querySelector(
+        `#remove-item-${this.focused_element_index}`
+      );
+      if (!(item_remove_button instanceof HTMLElement)) {
+        throw new Error("Item does not have a remove button");
+      }
+      item_remove_button.focus();
+    }
+    // this.item_elements.length: it's the add item input
+    else if (this.focused_element_index == this.item_elements.length) {
+      this.addItemInput.focus();
+    }
+    // this.item_elements.length + 1: it's the save and close button
+    else {
+      this.saveAndCloseButton.focus();
     }
   }
 }
