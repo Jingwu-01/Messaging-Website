@@ -3,7 +3,21 @@
  */
 
 import { slog } from "../../slog";
+import { StarOps } from "../../state-manager/utils";
 import { AdapterPost } from "./adapterPost";
+
+
+function findSortedIdx(postList: Array<AdapterPost>, newPost: AdapterPost) {
+  let idx: number;
+  slog.info("findSortedIdx", ["postList", postList], ["newPost", newPost]);
+  for (idx = 0; idx < postList.length; idx++) {
+    if (newPost.getCreatedTime() <= postList[idx].getCreatedTime()) {
+      break;
+    }
+  }
+  slog.info("findSortedIdx: found idx", ["idx", idx]);
+  return idx;
+}
 
 /**
  * Function that upserts a post into an array of posts, with a boolean indicating whether the post exists or not.
@@ -17,16 +31,10 @@ export function insertPostSorted(
   newPost: AdapterPost,
   exists: boolean,
 ): number {
-  let idx: number;
-  slog.info("insertPostSorted", ["postList", postList], ["newPost", newPost]);
-  for (idx = 0; idx < postList.length; idx++) {
-    if (newPost.getCreatedTime() <= postList[idx].getCreatedTime()) {
-      break;
-    }
-  }
-  slog.info("insertPostSorted: found idx", ["idx", idx]);
+  let idx = findSortedIdx(postList, newPost);
   if (exists) {
     if (postList[idx].getName() !== newPost.getName()) {
+      slog.error("insertPostSorted: could not find existing post with the same name", ["postList[idx]", postList[idx]], ["newPost", newPost]);
       throw new Error(
         "couldn't find a post with the same name as the post already exists",
       );
@@ -56,4 +64,35 @@ export function insertPostSorted(
   // postList.splice(low, 0, newPost);
   // return low;
   // insert at low
+}
+
+export function removePostSorted(postList: Array<AdapterPost>, curPost: AdapterPost): [number, StarOps] {
+  let idx = findSortedIdx(postList, curPost);
+  if (postList.length === 0 || idx === postList.length) {
+    return [-2, "nop"];
+  } else if (postList[idx].getName() === curPost.getName()) {
+    slog.info("removePostSorted: could not find existing post with the same name", ["postList[idx]", postList[idx]], ["curPost", curPost]);
+    postList.splice(idx, 1);
+    return [idx, "delete"];
+  } else {
+    return [-2, "nop"];
+  }
+}
+
+export function insertStarredPostSorted(postList: Array<AdapterPost>, curPost: AdapterPost): [number, StarOps] {
+  let idx = findSortedIdx(postList, curPost);
+  let starOp: StarOps;
+  if (idx === postList.length) {
+    postList.splice(idx, 0, curPost);
+    starOp = "insert";
+  } else if (postList[idx].getName() === curPost.getName()) {
+    curPost.setReplies(postList[idx]);
+    postList[idx] = curPost;
+    starOp = "modify";
+  } else {
+    postList.splice(idx, 0, curPost);
+    starOp = "insert";
+  }
+  curPost.setStarred(true);
+  return [idx, starOp];
 }

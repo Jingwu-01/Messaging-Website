@@ -32,14 +32,6 @@ export function initPosts() {
     "reactionUpdateEvent",
     (event: CustomEvent<ReactionUpdateEvent>) => {
       let model = getModel();
-      if (event.detail.userName === undefined) {
-        // this corresponds to the case where we forget to remove the event handler, and it still handles the event when there is no username.
-        slog.error("reactionUpdateEvent listener", [
-          "user name is undefined",
-          `${event.detail.userName}`,
-        ]);
-        return;
-      }
       let modelUpdate: ModelReactionUpdate = {
         reactionName: event.detail.reactionName,
         userName: event.detail.userName,
@@ -80,10 +72,13 @@ export function initPosts() {
     function (evt: CustomEvent<ModelPostEvent>) {
       slog.info("modelPostEvent listener: received modelPostEvent", [
         "modelPostEvent.detail",
-        `${JSON.stringify(evt.detail)}`,
+        evt.detail,
       ]);
-      getStateManager().serializePostResponse(evt.detail.post);
+      let [success, message] = getStateManager().serializePostResponse(evt.detail.post);
       // TODO: call serializePostResponse, and throw an error on the view if there's any error with the corresponding error message
+      if (!success) {
+        getView().displayError(message);
+      }
     },
   );
 }

@@ -1,9 +1,10 @@
 import { slog } from "../../../../../slog";
-import { ReactionData, ViewPost } from "../../../../datatypes";
+import { ReactionData, StarExtension, ViewPost } from "../../../../datatypes";
 import { getView } from "../../../../view";
 import EditPostButtonComponent from "../../../pieces/editComponent";
 import ReactionComponent from "../../../pieces/reactionComponent";
 import ReplyButtonComponent from "../../../pieces/replyButtonComponent";
+import StarButtonComponent from "../../../pieces/starButtonComponent";
 import { PostEditor } from "../postEditorComponent";
 
 export class PostComponent extends HTMLElement {
@@ -28,7 +29,7 @@ export class PostComponent extends HTMLElement {
 
   private postMsg: string | undefined;
 
-  private editPostButton: EditPostButtonComponent;
+  private starButton: StarButtonComponent;
 
   constructor() {
     super();
@@ -60,6 +61,10 @@ export class PostComponent extends HTMLElement {
     this.postBody = postBody;
     this.postButtons = postButtons;
 
+    let starButton = new StarButtonComponent();
+    this.postHeader.append(starButton);
+    this.starButton = starButton;
+
     // add buttons
     let reactions = {
       smile: "lucide:smile",
@@ -68,11 +73,8 @@ export class PostComponent extends HTMLElement {
       celebrate: "mingcute:celebrate-line",
     };
     let replyButton = new ReplyButtonComponent();
-    let editPostButton = new EditPostButtonComponent();
     this.postButtons.append(replyButton);
-    this.postButtons.append(editPostButton);
     this.replyButton = replyButton;
-    this.editPostButton = editPostButton;
 
     for (const [reactionName, reactionIcon] of Object.entries(reactions)) {
       let reactionComp = new ReactionComponent();
@@ -92,13 +94,6 @@ export class PostComponent extends HTMLElement {
     this.replyButton.addEventListener(
       "click",
       this.addReplyPostEditor.bind(this),
-      options,
-    );
-
-    // Add click event listener for edit post button
-    this.editPostButton.addEventListener(
-      "click",
-      this.addEditPostEditor.bind(this),
       options,
     );
   }
@@ -168,24 +163,34 @@ export class PostComponent extends HTMLElement {
 
     for (let [reactionName, reactionButton] of this.reactionButtons) {
       let reactionCount = viewPost.reactions[reactionName].length;
-      if (viewPost.reactions[reactionName].includes(currentUsername)) {
-        reactionButton.setAttribute("reacted", "true");
-      } else {
-        reactionButton.setAttribute("reacted", "false");
-      }
       slog.info(
         "addPostContent: reaction loop",
         ["reactionName", reactionName],
         ["reactionCount", reactionCount],
       );
       reactionButton.setAttribute("reaction-count", reactionCount.toString());
+      if (viewPost.reactions[reactionName].includes(currentUsername)) {
+        reactionButton.setAttribute("reacted", "true");
+      } else {
+        reactionButton.setAttribute("reacted", "false");
+      }
       reactionButton.setParentPath(viewPost.path);
+      reactionButton.setLoggedInUser(currentUsername);
     }
 
-    let loggedinUser = getView().getUser()?.username;
-    if (!(loggedinUser === this.postUser)) {
-      this.editPostButton.setAttribute("data-visible", "false");
+    // TODO: check if the post is starred
+    // TODO: set the attribute 'starred' of the star button based on whether or not the post is starred.
+    // TODO:
+    slog.info("addPostContent: initializing starred post");
+    let extensionsObj = viewPost.extensions;
+    if (extensionsObj["p2group50"].includes(currentUsername)) {
+      this.starButton.setAttribute("reacted", "true");
+    } else {
+      this.starButton.setAttribute("reacted", "false");
     }
+
+    this.starButton.setLoggedInUser(currentUsername);
+    this.starButton.setParentPath(viewPost.path);
   }
 
   // Adds childrenPosts as replies to this ViewPost.
@@ -253,12 +258,12 @@ export class PostComponent extends HTMLElement {
   }
 
   modifyPostContent(viewPost: ViewPost) {
-    if (viewPost.msg !== this.postMsg) {
-      this.appendFormattedText(viewPost.msg, this.postBody);
-    }
     let reactionData = viewPost.reactions;
     this.updateReactions(reactionData);
+    let extensionData = viewPost.extensions;
+    this.updateExtensions(extensionData);
   }
+
   updateReactions(reactionData: ReactionData) {
     let currentUsername: string;
     let currentUser = getView().getUser();
@@ -275,18 +280,38 @@ export class PostComponent extends HTMLElement {
       let reactionButton = this.reactionButtons.get(reactionName);
       if (reactionButton !== undefined) {
         let reactionCount = reactionArray.length;
-        if (reactionArray.includes(currentUsername)) {
-          reactionButton.setAttribute("reacted", "true");
-        } else {
-          reactionButton.setAttribute("reacted", "false");
-        }
         slog.info(
           "addPostContent: reaction loop",
           ["reactionName", reactionName],
           ["reactionCount", reactionCount],
         );
         reactionButton.setAttribute("reaction-count", reactionCount.toString());
+        if (reactionArray.includes(currentUsername)) {
+          reactionButton.setAttribute("reacted", "true");
+        } else {
+          reactionButton.setAttribute("reacted", "false");
+        }
       }
+    }
+  }
+
+  updateExtensions(extensionData: StarExtension) {
+    let currentUsername: string;
+    let currentUser = getView().getUser();
+    if (currentUser === null) {
+      // this is the case where we're logged out but dealing with this event.
+      slog.info(
+        "addPostContent: trying to add a post when a user is logged out, dead request",
+      );
+      return;
+    }
+    currentUsername = currentUser.username;
+
+    let starButton = this.starButton;
+    if (extensionData["p2group50"].includes(currentUsername)) {
+      starButton.setAttribute("reacted", "true");
+    } else {
+      starButton.setAttribute("reacted", "false");
     }
   }
 

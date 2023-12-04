@@ -20,6 +20,7 @@ import snackbarInit from "./components/pieces/snackbarComponent/init";
 import editPostButtonComponentInit from "./components/pieces/editComponent/init";
 import { getView } from "./view";
 import snackbarDisplayInit from "./components/pieces/snackbarDisplayComponent/init";
+import starButtonInit from "./components/pieces/starButtonComponent/init";
 
 // Called when main.ts initializes the view. Used for setup.
 export function initView() {
@@ -45,6 +46,7 @@ export function initView() {
   snackbarInit();
   editPostButtonComponentInit();
   snackbarDisplayInit();
+  starButtonInit();
 
   // Open the login dialog on page load.
   getView().openDialog("login-dialog");

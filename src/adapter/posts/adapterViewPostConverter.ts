@@ -3,7 +3,7 @@
  */
 
 import { PostResponse } from "../../../types/postResponse";
-import { ReactionData, ViewPost } from "../../view/datatypes";
+import { ReactionData, StarExtension, ViewPost } from "../../view/datatypes";
 import { AdapterPost } from "./adapterPost";
 
 /**
@@ -32,6 +32,19 @@ function convertReactions(postResponse: PostResponse): ReactionData {
   }
 }
 
+function convertExtensions(postResponse: PostResponse): StarExtension {
+  if (postResponse.doc.extensions === undefined) {
+    return {
+      "p2group50": []
+    }
+  } else {
+    return {
+      "p2group50": [],
+      ...postResponse.doc.extensions,
+    }
+  }
+}
+
 /**
  * Converts an AdapterPost into a ViewPost, suitable for the view to manipulate.
  * @param adapterPost an AdapterPost representing the Adapter's representation of the post.
@@ -42,7 +55,7 @@ export function adapterViewPostConverter(adapterPost: AdapterPost): ViewPost {
     msg: adapterPost.getResponse().doc.msg,
     // Initialze empty reactions for the post.
     reactions: convertReactions(adapterPost.getResponse()),
-    extensions: adapterPost.getResponse().doc.extensions,
+    extensions: convertExtensions(adapterPost.getResponse()),
     createdUser: adapterPost.getResponse().meta.createdBy,
     postTime: adapterPost.getResponse().meta.createdAt,
     children: new Array<ViewPost>(),

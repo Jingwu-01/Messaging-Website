@@ -3,10 +3,11 @@ import { CreateResponse } from "../../types/createResponse";
 import { PostResponse } from "../../types/postResponse";
 import { AdapterPost } from "../adapter/posts/adapterPost";
 import { adapterViewPostConverter } from "../adapter/posts/adapterViewPostConverter";
-import { insertPostSorted } from "../adapter/posts/handleSortingPosts";
+import { insertPostSorted, insertStarredPostSorted, removePostSorted } from "../adapter/posts/handleSortingPosts";
 import { slog } from "../slog";
 import { CreatePostEvent, ViewPostUpdate } from "../view/datatypes";
 import { getView } from "../view/view";
+import { StarOps, isRespPostStarred } from "./utils";
 
 export class PostsManager {
   private adapterPosts: Map<string, AdapterPost> = new Map<
@@ -20,6 +21,8 @@ export class PostsManager {
   >();
 
   private rootAdapterPosts: Array<AdapterPost> = new Array<AdapterPost>();
+
+  private starredPosts: Array<AdapterPost> = new Array<AdapterPost>();
 
   createPost(postData: CreatePostEvent) {
     // TODO: consider if we want to enforce that a channel are open in order to send a message?
@@ -158,7 +161,17 @@ export class PostsManager {
       slog.error("upsertAdapterPost", ["insertedIdx is -1", `${insertedIdx}`]);
     }
     adapterPost.setPostIndex(insertedIdx);
+
+    // upsert for extension
+    let [starredIdx, starOp] = this.insertStarredPost(adapterPost, exists);
+    if (starredIdx === -1) {
+      slog.error("upsertAdapterPost", ["starredIdx is -1", starredIdx]);
+    }
+
+    adapterPost.setStarredIndex(starredIdx);
+    
     let op: "insert" | "modify";
+
     if (exists) {
       op = "modify";
     } else {
@@ -169,12 +182,31 @@ export class PostsManager {
       allPosts: [],
       op: op,
       affectedPosts: [viewPost],
+      starOp: starOp
     };
+    slog.info("upsertAdapterPost: end of func call", ["updatedPost", updatedPost], ["this.starredPosts", this.starredPosts]);
     getView().displayPosts(updatedPost);
   }
 
   insertRootAdapterPost(adapterPost: AdapterPost, exists: boolean) {
     // binary search
     return insertPostSorted(this.rootAdapterPosts, adapterPost, exists);
+  }
+
+  insertStarredPost(adapterPost: AdapterPost, exists: boolean): [number, StarOps] {
+    // slog.info("insertStarredPost", ["exists", exists], ["isRespPostStarred(adapterPost)", isRespPostStarred(adapterPost)], ["adapterPost.getStarred()", adapterPost.getStarred()]);
+    if (exists) {
+      if (isRespPostStarred(adapterPost)) {
+        return insertStarredPostSorted(this.starredPosts, adapterPost);
+      } else {
+        return removePostSorted(this.starredPosts, adapterPost);
+      }
+    } else {
+      if (isRespPostStarred(adapterPost)) {
+        return insertStarredPostSorted(this.starredPosts, adapterPost);
+      } else {
+        return [-2, "nop"];
+      }
+    }
   }
 }

@@ -14,7 +14,7 @@ class ReactionComponent extends HTMLElement {
   private reactionName: reactions = "smile";
   private count: number = 0;
   private parentPath: string | undefined;
-  private curReacted: boolean = false;
+  private loggedInUser: string | undefined;
 
   /*Constructor for the reaction custom element */
   constructor() {
@@ -67,21 +67,24 @@ class ReactionComponent extends HTMLElement {
 
   // Dispatch an reaction update event to the adapter
   update() {
-    let user = getView().getUser();
+    let user = this.loggedInUser;
     let postPath = this.parentPath;
-    if (user === null) {
-      getView().displayError("username isn't defined when reacting to a post");
+    let curReacted: boolean;
+    if (postPath === undefined || user === undefined) {
+      getView().displayError("reacted to a malformed post");
+      slog.error("ReactionComponent: update, user or postPath is undefined", ["user", user], ["postPath", postPath]);
       return;
     }
-    if (postPath === undefined) {
-      getView().displayError("reacted to a malformed post");
-      return;
+    if (this.reactionButton.classList.contains("reacted")) {
+      curReacted = true;
+    } else {
+      curReacted = false;
     }
     let updateEventContent: ReactionUpdateEvent = {
       reactionName: `${this.reactionName}`,
-      userName: user.username,
+      userName: user,
       postPath: postPath,
-      add: !this.curReacted,
+      add: !curReacted,
     };
     slog.info("ReactionComponent: update", [
       "updateEventContent",
@@ -149,10 +152,8 @@ class ReactionComponent extends HTMLElement {
     } else if (name === "reacted") {
       // TODO: compare to the old values, and maybe unfreeze the button.
       if (newValue === "true") {
-        this.curReacted = true;
         this.reactionButton.classList.add("reacted");
       } else {
-        this.curReacted = false;
         this.reactionButton.classList.remove("reacted");
       }
     }
@@ -160,6 +161,10 @@ class ReactionComponent extends HTMLElement {
 
   setParentPath(parentPath: string) {
     this.parentPath = parentPath;
+  }
+
+  setLoggedInUser(username: string) {
+    this.loggedInUser = username;
   }
 }
 

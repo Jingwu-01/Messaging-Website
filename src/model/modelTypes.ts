@@ -23,7 +23,7 @@ export type ModelPostEvent = {
  * An event that is received from the view to send to the model, in the event of a reaction update.
  */
 export type ModelReactionUpdate = {
-  reactionName: string;
+  reactionName: string | undefined;
   userName: string;
   postPath: string;
   add: boolean;

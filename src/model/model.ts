@@ -11,6 +11,7 @@ import {
   validateWorkspaceResponse,
   validateGetWorkspacesResponse,
   validatePatchDocumentResponse,
+  getPatchBody,
 } from "./utils";
 import { ModelWorkspace } from "./workspace";
 import { WorkspaceResponse } from "../../types/workspaceResponse";
@@ -256,31 +257,7 @@ export class OwlDBModel {
   async updateReaction(
     reactionUpdate: ModelReactionUpdate,
   ): Promise<PatchDocumentResponse> {
-    let patches = new Array<PatchBody>();
-    let addReactionObject: PatchBody = {
-      path: "/reactions",
-      op: "ObjectAdd",
-      value: {},
-    };
-    patches.push(addReactionObject);
-    let addReactionArray: PatchBody = {
-      path: `/reactions/${reactionUpdate.reactionName}`,
-      op: "ObjectAdd",
-      value: [],
-    };
-    patches.push(addReactionArray);
-    let op: "ArrayAdd" | "ArrayRemove";
-    if (reactionUpdate.add) {
-      op = "ArrayAdd";
-    } else {
-      op = "ArrayRemove";
-    }
-    let addReaction: PatchBody = {
-      path: `/reactions/${reactionUpdate.reactionName}`,
-      op: op,
-      value: reactionUpdate.userName,
-    };
-    patches.push(addReaction);
+    let patches = getPatchBody(reactionUpdate);
     const options = {
       method: "PATCH",
       headers: {

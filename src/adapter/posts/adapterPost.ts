@@ -3,7 +3,10 @@
  */
 
 import { PostResponse } from "../../../types/postResponse";
+import { validateExtensionResponse } from "../../model/utils";
+import { slog } from "../../slog";
 import { insertPostSorted } from "./handleSortingPosts";
+import { ExtensionResponse } from "../../../types/extensionResponse";
 
 /**
  * This class is the adapter's representation of a post. The adapter takes care of two primary
@@ -35,11 +38,18 @@ export class AdapterPost {
   // The name of the workspace this post is in.
   private workspaceName: string;
 
+  private starredIndex: number | undefined;
+
+  private starred: boolean = false;
+
+  private usersStarred: Array<string> = new Array<string>();
+
   // Creates a new AdapterPost, and also validates data.
   constructor(response: PostResponse) {
     // console.log(`AdapterPost constructor: response.path: ${response.path}`);
     // console.log(`AdapterPost constructor: response.path.split("/"): ${response.path.split("/")}`);
     // console.log(`AdapterPost constructor: response.path.split("/").pop(): ${response.path.split("/").pop()}`);
+    slog.info("AdapterPost constructor: top of func call", ["response", response.path], ["response.path", response.path]);
     let postPathArr = response.path.split("/");
     // Make sure that the path length is 6
     if (postPathArr.length !== 6) {
@@ -86,6 +96,27 @@ export class AdapterPost {
       // Set the parent name.
       this.parentName = parentName;
     }
+
+    let extensions = this.response.doc.extensions;
+    if (extensions === undefined) {
+      extensions = {
+        "p2group50": []
+      }
+    } else if (extensions["p2group50"] === undefined) {
+      extensions["p2group50"] = [];
+    } else if (!(validateExtensionResponse(extensions))) {
+      slog.error("getWorkspace", [
+        "invalid response from getting all workspaces",
+        `${validateExtensionResponse.errors}`,
+      ]);
+      // TODO: make a custom login error class so we can gracefully handle this situation by notifying the user.
+      throw new Error(
+        "unsupported extension type from owldb",
+      );
+    }
+    // this is safe.
+    let adapterExtensions: ExtensionResponse = extensions as ExtensionResponse;
+    this.usersStarred = adapterExtensions["p2group50"];
   }
 
   /**
@@ -169,5 +200,25 @@ export class AdapterPost {
    */
   setReplies(oldPost: AdapterPost) {
     this.replies = oldPost.replies;
+  }
+
+  setStarredIndex(starredIndex: number) {
+    this.starredIndex = starredIndex;
+  }
+
+  getStarredIndex() {
+    return this.starredIndex;
+  }
+
+  getStarred() {
+    return this.starred;
+  }
+
+  setStarred(starred: boolean) {
+    this.starred = starred;
+  }
+
+  getUsersStarred(): Array<string> {
+    return this.usersStarred;
   }
 }
