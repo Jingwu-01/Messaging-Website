@@ -11,6 +11,14 @@ export default function loadingButtonComponentInit() {
     background-color: #add8e6;
     border-radius: 15px;
   }
+  button:focus-visible {
+    box-shadow: #FF0000 0 0 0 3px;
+    outline: none;
+}
+  button:focus:not(:focus-visible) {
+    box-shadow: none;
+    outline: none;
+} 
   </style>
   <button id="outer-button">
     <slot id="content" name="content"></slot>

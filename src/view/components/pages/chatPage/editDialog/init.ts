@@ -41,14 +41,6 @@ export default function editDialogComponentInit() {
       outline: none;
       border-radius: 3px;
     }
-    #save-and-close-button:focus-visible{
-      box-shadow: #FF0000 0 0 0 3px;
-      outline: none;
-    }
-    #save-and-close-button:focus:not(:focus-visible) {
-      box-shadow: none;
-      outline: none;
-    }
   </style>
   <dialog id="dialog">
     <div id="dialog-content">
