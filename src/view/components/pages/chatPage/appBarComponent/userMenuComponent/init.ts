@@ -27,6 +27,10 @@ export default function init() {
     iconify-icon:hover {
       color: black;
     }
+    iconify-icon:focus-visible {
+      color: black;
+    }
+    
   </style>
   <menu-component>
     <div id="user-menu-anchor" slot="anchor-el" display="inline-block">
