@@ -30,7 +30,17 @@ export default function init() {
     iconify-icon:focus-visible {
       color: black;
     }
-    
+    .user-buttons {
+      background: none; 
+      color: inherit; 
+      border: none; 
+      padding: 0; 
+      font: inherit; 
+      cursor: pointer; 
+      outline: inherit; 
+      margin-top: 2px;
+    } 
+  
   </style>
   <menu-component>
     <div id="user-menu-anchor" slot="anchor-el" display="inline-block">
@@ -38,7 +48,8 @@ export default function init() {
       <p id="user-text"></p>
     </div>
     <div slot="menu-items" id="user-menu-dropdown">
-      <p id="logout-button">Log Out</p>
+      <p class="user-buttons" id="my-starred-posts-button" tabindex="0">My Starred Posts</p>
+      <p class="user-buttons" id="logout-button" tabindex="0">Log Out</p>
     </div>
   </menu-component>
 </template>
