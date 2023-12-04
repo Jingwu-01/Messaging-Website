@@ -29,6 +29,14 @@ export default function reactionComponentInit() {
       .reacted {
         background-color: #add8e6
       }
+      #reaction-button:focus-visible {
+        box-shadow: rgba(60, 60, 60, 0.6) 0 0 0 3px;
+        outline: none;
+      }
+      #reaction-button:focus:not(:focus-visible) {
+        box-shadow: none;
+        outline: none;
+      }
     </style>
     <div id="reaction-container">
       <button id="reaction-button" aria-label="smile reaction">
