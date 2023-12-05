@@ -7,17 +7,25 @@ import { getView } from "../../../../../view";
 class UserMenuComponent extends HTMLElement {
   private controller: AbortController | null = null;
 
+  private menu: HTMLElement;
+
   constructor() {
     super();
 
     this.attachShadow({ mode: "open" });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#user-menu-component-template",
+      "#user-menu-component-template"
     );
     if (!template) {
       throw Error("Could not find template #user-menu-component-template");
     }
     this.shadowRoot?.append(template.content.cloneNode(true));
+
+    let menu = this.shadowRoot?.querySelector<HTMLElement>("#menu");
+    if (!menu) {
+      throw Error("Could not find element with id #menu");
+    }
+    this.menu = menu;
   }
 
   /**
@@ -37,7 +45,7 @@ class UserMenuComponent extends HTMLElement {
     logoutButton.addEventListener(
       "click",
       this.handleLogout.bind(this),
-      options,
+      options
     );
   }
 
@@ -47,7 +55,7 @@ class UserMenuComponent extends HTMLElement {
   handleLogout(event: MouseEvent) {
     event.preventDefault();
     const logoutEvent = new CustomEvent("logoutEvent", {
-      detail: {},
+      detail: { id: new String(Date.now()) },
     });
     document.dispatchEvent(logoutEvent);
   }
@@ -65,7 +73,7 @@ class UserMenuComponent extends HTMLElement {
   attributeChangedCallback(
     name: string,
     oldValue: string,
-    newValue: string,
+    newValue: string
   ): void {}
 
   // called by view whenever there is a change in the logged-in user

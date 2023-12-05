@@ -20,6 +20,7 @@ export function initWorkspaces() {
     "workspaceSelected",
     async function (evt: CustomEvent<SelectWorkspaceEvent>) {
       slog.info(`Workspace selected: ${evt.detail.name}`);
+      getView().setStateLoadingUntil(["workspaces", "channels", "posts"], evt);
       // Set the open workspace
       try {
         await getStateManager().setOpenWorkspace(evt.detail.name);
@@ -40,13 +41,13 @@ export function initWorkspaces() {
         return;
       }
       getView().completeEvent(evt);
-    },
+    }
   );
   document.addEventListener(
     "workspaceCreated",
     async (evt: CustomEvent<CreateWorkspaceEvent>) => {
       slog.info(`Workspace added: ${evt.detail.name}`);
-
+      getView().setStateLoadingUntil(["workspaces"], evt);
       // Try to create the workspace
       try {
         await getModel().addWorkspace(evt.detail.name);
@@ -63,7 +64,7 @@ export function initWorkspaces() {
       }
 
       getView().completeEvent(evt);
-    },
+    }
   );
 
   // Handle workspace deletion
@@ -71,10 +72,7 @@ export function initWorkspaces() {
     "workspaceDeleted",
     async (evt: CustomEvent<DeleteWorkspaceEvent>) => {
       slog.info(`Workspace deleted: ${evt.detail.name}`);
-      // If we're deleting the open workspace, then close it.
-      if (evt.detail.name == getStateManager().getOpenWorkspace()?.getName()) {
-        getStateManager().setOpenWorkspace(null);
-      }
+      getView().setStateLoadingUntil(["workspaces", "channels", "posts"], evt);
       try {
         await getModel().removeWorkspace(evt.detail.name);
       } catch (error) {
@@ -89,7 +87,7 @@ export function initWorkspaces() {
       }
 
       getView().completeEvent(evt);
-    },
+    }
   );
 
   //Handle workspace refresh
@@ -97,7 +95,7 @@ export function initWorkspaces() {
     "refreshWorkspaces",
     async (evt: CustomEvent<RefreshWorkspacesEvent>) => {
       slog.info(`Workspaces refreshed`);
-
+      getView().setStateLoadingUntil(["channels", "posts", "workspaces"], evt);
       try {
         await refreshWorkspaces(evt);
       } catch (error) {
@@ -105,6 +103,6 @@ export function initWorkspaces() {
         return;
       }
       getView().completeEvent(evt);
-    },
+    }
   );
 }

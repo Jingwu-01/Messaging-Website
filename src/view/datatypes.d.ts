@@ -32,8 +32,8 @@ export type ViewPost = {
 };
 
 export type StarExtension = {
-  "p2group50": Array<string>;
-}
+  p2group50: Array<string>;
+};
 /**
  * Update sent by the Adapter to the view when the workspaces change
  */
@@ -127,7 +127,9 @@ export type LoginEvent = {
 /**
  * Sent to the Adapter when the logout button is pressed
  */
-export type LogoutEvent = {};
+export type LogoutEvent = {
+  id: string;
+};
 
 /**
  * Sent to the Adapter when a workspace is created
@@ -219,3 +221,5 @@ export interface EventWithId extends CustomEvent {
     [key: string]: any;
   };
 }
+
+export type StateName = "user" | "posts" | "channels" | "workspaces";

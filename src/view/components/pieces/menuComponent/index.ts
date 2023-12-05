@@ -7,7 +7,7 @@ class MenuComponent extends HTMLElement {
 
     this.attachShadow({ mode: "open" });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#menu-component-template",
+      "#menu-component-template"
     );
     if (!template) {
       throw Error("Could not find template #hover-component-template");
@@ -30,11 +30,13 @@ class MenuComponent extends HTMLElement {
       this.popoverElement.setAttribute("open", "false");
     });
 
-    // Add a click listener to the anchor element that opens the menu.
+    // Add a click listener to the anchor element that opens or closes the menu.
     this.shadowRoot
       ?.querySelector("#anchor-el-wrapper")
       ?.addEventListener("click", (event: Event) => {
-        this.popoverElement.setAttribute("open", "true");
+        const open =
+          this.popoverElement.getAttribute("open") == "true" ? "false" : "true";
+        this.popoverElement.setAttribute("open", open);
         event.stopPropagation();
       });
 
@@ -54,7 +56,7 @@ class MenuComponent extends HTMLElement {
   attributeChangedCallback(
     name: string,
     oldValue: string,
-    newValue: string,
+    newValue: string
   ): void {
     if (name == "open") {
       this.popoverElement.setAttribute("open", newValue);

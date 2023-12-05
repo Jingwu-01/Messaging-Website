@@ -50,13 +50,14 @@ export default function editDialogComponentInit() {
         <input type="text" id="add-item-input" arial-label="Your input"/>
         <loading-button-component 
           id="add-item-button"
+          disable-if-state-loading="workspaces channels"
         >
           <span slot="content">
             Add
           </span>
         </loading-button-component>
       </div>
-      <loading-button-component id="save-and-close-button">
+      <loading-button-component disable-if-state-loading="workspaces channels" id="save-and-close-button">
         <span slot="content">
           Save and Close
         </span>
@@ -64,7 +65,7 @@ export default function editDialogComponentInit() {
     </div>
   </dialog>
 </template>
-`,
+`
   );
 
   customElements.define("edit-dialog-component", EditDialogComponent);

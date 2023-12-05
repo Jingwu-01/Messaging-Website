@@ -3,6 +3,7 @@ import PostComponent from "./components/pages/chatPage/postComponent";
 import SnackbarComponent from "./components/pieces/snackbarComponent";
 import {
   EventWithId,
+  StateName,
   ViewChannel,
   ViewChannelUpdate,
   ViewPost,
@@ -87,6 +88,25 @@ interface Dialog extends HTMLElement {
 }
 
 /**
+ * Interface for loading listeners.
+ * If the adapter marks some application state as "invalid",
+ * then a component that is a LoadingListener will receive
+ * that update and can interact accordingly
+ */
+interface LoadingListener {
+  /**
+   * Called by the view when state is loading
+   * @param state The name of the state that is loading
+   */
+  onLoading(state: StateName): void;
+  /**
+   * Called by the view when state is finished loading
+   * @param state The name of the state that finished loading
+   */
+  onEndLoading(state: StateName): void;
+}
+
+/**
  * Returns True if the element is a Dialog.
  * @param element Element to check
  * @returns If the Element is a Dialog.
@@ -144,6 +164,10 @@ export class View {
     string,
     Array<(event: EventWithId, error_message?: string) => void>
   >();
+
+  private eventsBlockingState = new Map<StateName, Set<string>>();
+
+  private loadingListeners = new Array<LoadingListener>();
 
   /**
    * The workspaces that are currently rendered
@@ -206,6 +230,7 @@ export class View {
       allPosts: this.posts,
       op: "add",
       affectedPosts: new Array<ViewPost>(),
+      starOp: "nop",
     };
     listener.displayPosts(viewPostUpdate);
   }
@@ -217,7 +242,7 @@ export class View {
     let index = this.postListeners.indexOf(listener);
     if (index < 0) {
       throw new ReferenceError(
-        "Attempted to remove a post listener that was not subscribed",
+        "Attempted to remove a post listener that was not subscribed"
       );
     }
     this.postListeners.splice(index, 1);
@@ -334,7 +359,7 @@ export class View {
     slog.info(
       "View: addPostDisplayListener",
       ["listener", listener],
-      ["this.postDisplayListeners", this.postDisplayListeners],
+      ["this.postDisplayListeners", this.postDisplayListeners]
     );
   }
 
@@ -343,11 +368,11 @@ export class View {
     slog.info(
       "View: removePostDisplayListener",
       ["listener", listener],
-      ["index", index],
+      ["index", index]
     );
     if (index < 0) {
       throw new ReferenceError(
-        "Attempted to remove a post display listener that was not subscribed",
+        "Attempted to remove a post display listener that was not subscribed"
       );
     }
     this.postDisplayListeners.splice(index, 1);
@@ -375,7 +400,7 @@ export class View {
    */
   waitForEvent(
     id: string,
-    callback: (event: EventWithId, error?: string) => void,
+    callback: (event: EventWithId, error?: string) => void
   ) {
     let arr = this.eventCompletedListeners.get(id);
     if (!arr) {
@@ -390,6 +415,7 @@ export class View {
     this.eventCompletedListeners.get(event.detail.id)?.forEach((callback) => {
       callback(event);
     });
+    this.eventCompletedListeners.delete(event.detail.id);
   }
 
   /** The Adapter should call this when an event passed to it by the View results in an error. */
@@ -398,6 +424,57 @@ export class View {
     this.eventCompletedListeners.get(event.detail.id)?.forEach((callback) => {
       callback(event, error_message);
     });
+  }
+
+  /**
+   * The Adapter should call this when an event is in progress
+   * that is actively modifying the state referred to by state.
+   * @param state The state that is being modified.
+   * @param event The event that is causing the state to be modified
+   */
+  setStateLoadingUntil(
+    state: StateName | Array<StateName>,
+    event: EventWithId
+  ) {
+    let state_array = Array.isArray(state) ? state : [state];
+    state_array.forEach((state) => {
+      let event_set = this.eventsBlockingState.get(state);
+      // If this piece of state wasn't waiting for an event to complete
+      if (!event_set) {
+        event_set = new Set<string>();
+        slog.info(`${state} are now loading`);
+        // Notify all of the loading listeners that this state is now loading
+        this.loadingListeners.forEach((listener) => {
+          listener.onLoading(state);
+        });
+      }
+      if (!event_set.has(event.detail.id)) {
+        // Track that we're loading until the event completes
+        event_set.add(event.detail.id);
+        this.eventsBlockingState.set(state, event_set);
+      }
+      // When this event completes, remove from the eventsBlockingState.
+      this.waitForEvent(event.detail.id, () => {
+        this.eventsBlockingState.get(state)?.delete(event.detail.id);
+        // If that was the only event causing the state to be pending,
+        // then stop the state from loading.
+        if (this.eventsBlockingState.get(state)?.size == 0) {
+          this.eventsBlockingState.delete(state);
+          slog.info(`${state} is no longer loading`);
+          this.loadingListeners.forEach((listener) => {
+            listener.onEndLoading(state);
+          });
+        }
+      });
+    });
+  }
+
+  /**
+   * When the Adapter marks this state as invalid, the loading listener will listen for it.
+   * @param listener The listener to wait fo
+   */
+  addLoadingListener(listener: LoadingListener) {
+    this.loadingListeners.push(listener);
   }
 
   /** Displays the given error message to the user. */

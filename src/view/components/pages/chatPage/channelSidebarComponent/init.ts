@@ -45,18 +45,18 @@ export default function channelSidebarComponentInit() {
       }
       section button {
         background: none;
-        color: inherit;
         border: none;
         padding: 0;
-        font: inherit;
         cursor: pointer;
-        outline: inherit;
         margin-top: 1em;
         margin-bottom: 1em;
         font-size: 17px;
         border-radius: 5px 5px 5px 5px;
         display: block;
         width: 100%;
+      }
+      section button:disabled {
+        color: LightGray;
       }
       section button:hover {
         background-color: #3896b7;
@@ -80,6 +80,7 @@ export default function channelSidebarComponentInit() {
         <loading-button-component
           id="refresh-channels-button"
           style="background: none; border: none"
+          disable-if-state-loading="channels"
         >
           <div slot="content" class="button-content">
             <p>Refresh Channels</p>
