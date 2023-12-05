@@ -98,6 +98,18 @@ export class PostComponent extends HTMLElement {
     );
   }
 
+  static get observedAttributes(): string[] {
+    return ["starred"];
+  }
+
+  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+    if (name === "starred") {
+      if (newValue === "true") {
+        this.replyButton.style.display = 'none';
+      }
+    }
+  }
+
   disconnectedCallback() {
     this.controller?.abort();
     this.controller = null;

@@ -1,6 +1,7 @@
 import { slog } from "../../../../slog";
 import { getView } from "../../../view";
 import PostDisplay from "./postDisplayComponent";
+import StarredPosts from "./starredPostsComponent";
 
 /**
  * Component that displays the page where chats are displayed.
@@ -52,18 +53,20 @@ export class ChatPageComponent extends HTMLElement {
     // remove existing one's (in case of multiple) in case of errors, and add a new one.
     this.removePostDisplay();
     let newPostDisplay = new PostDisplay();
+    let newStarredPosts = new StarredPosts();
     this.mainContainer.append(newPostDisplay);
+    this.mainContainer.append(newStarredPosts);
   }
 
   /**
    * Remove the post Display.
    */
   removePostDisplay() {
-    let currentPostDisplay = this.mainContainer.querySelectorAll(
-      "post-display-component",
+    let currentPostViews = this.mainContainer.querySelectorAll(
+      "post-display-component, starred-posts-component",
     );
-    for (let potentialPostDisplay of currentPostDisplay) {
-      if (potentialPostDisplay instanceof PostDisplay) {
+    for (let potentialPostDisplay of currentPostViews) {
+      if (potentialPostDisplay instanceof PostDisplay || potentialPostDisplay instanceof StarredPosts) {
         potentialPostDisplay.remove();
         slog.info(
           "ChatPageComponent: removePostDisplay, removed current post display",

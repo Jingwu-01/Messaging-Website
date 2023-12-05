@@ -63,5 +63,6 @@ export function adapterViewPostConverter(adapterPost: AdapterPost): ViewPost {
     parent: adapterPost.getParentName(),
     name: adapterPost.getName(),
     postIdx: adapterPost.getPostIndex(),
+    starredIndex: adapterPost.getStarredIndex()
   };
 }

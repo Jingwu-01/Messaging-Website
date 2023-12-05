@@ -202,12 +202,12 @@ export class View {
   addPostListener(listener: PostListener) {
     this.postListeners.push(listener);
     // TODO: change this, is just a placeholder for now.
-    let viewPostUpdate: ViewPostUpdate = {
-      allPosts: this.posts,
-      op: "add",
-      affectedPosts: new Array<ViewPost>(),
-    };
-    listener.displayPosts(viewPostUpdate);
+    // let viewPostUpdate: ViewPostUpdate = {
+    //   allPosts: this.posts,
+    //   op: "add",
+    //   affectedPosts: new Array<ViewPost>(),
+    // };
+    // listener.displayPosts(viewPostUpdate);
   }
 
   /**
@@ -231,7 +231,7 @@ export class View {
     // add a function call to modify this.posts to contain the new post
     // do the listener thing
     // temporary check for testing
-    if (posts.op !== "insert") {
+    if (posts.op === "add") {
       this.posts = posts.allPosts;
     }
     this.postListeners.forEach((listener) => {
