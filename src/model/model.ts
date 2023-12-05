@@ -26,7 +26,7 @@ import { ModelReactionUpdate, PatchBody } from "./modelTypes";
  */
 export class OwlDBModel {
   private username: string;
-  private token: string;
+  private token: string | null;
   private workspaces: Map<string, ModelWorkspace> = new Map<
     string,
     ModelWorkspace
@@ -119,13 +119,11 @@ export class OwlDBModel {
       if (response.token) {
         this.token = response.token;
       }
-      // return response;
+      return response;
     } catch (error) {
       // maybe don't catch an error if you're just going to rethrow it
       throw error;
     }
-    // TODO: fix: why are you making another login call????
-    return typedFetch<LoginResponse>(getAuthPath(), options);
   }
 
   /**
@@ -144,7 +142,10 @@ export class OwlDBModel {
     // Return a void promise.
     // TODO: how are you handling the case where emptyFetch has invalid data because it does indeed
     // have a response body?
-    return emptyFetch(getAuthPath(), options);
+    return emptyFetch(getAuthPath(), options)
+    .then((value) => {
+      this.token = null;
+    });
   }
 
   /**
@@ -291,7 +292,7 @@ export class OwlDBModel {
    * A function that returns the token that identifies the currently logged in user.
    * @returns a string representing the token
    */
-  getToken(): string {
+  getToken(): string | null {
     return this.token;
   }
 

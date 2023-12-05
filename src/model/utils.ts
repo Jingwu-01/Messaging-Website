@@ -132,7 +132,7 @@ export function getPatchBody(reactionUpdate: ModelReactionUpdate): Array<PatchBo
 
 // Data validation
 
-const ajv = new Ajv();
+export const ajv = new Ajv();
 
 export const validateCreateResponse = ajv.compile(CreateResponseSchema);
 
