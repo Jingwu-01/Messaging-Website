@@ -33,7 +33,7 @@ export default function init() {
     .user-buttons:focus-visible {
       box-shadow: #FF0000 0 0 0 3px;
       outline: none;
-      border-radius: 5px 5px 5px 5px;
+      border-radius: 10px; 
     }
     .user-buttons:focus:not(:focus-visible) {
       box-shadow: none;

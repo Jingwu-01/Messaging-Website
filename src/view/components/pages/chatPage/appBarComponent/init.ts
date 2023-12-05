@@ -33,7 +33,7 @@ export default function appBarComponentInit() {
     workspace-menu-component:focus-visible, user-menu-component:focus-visible {
       box-shadow: #FF0000 0 0 0 3px;
       outline: none;
-      border-radius: 5px 5px 5px 5px;
+      border-radius: 10px; 
   }
     workspace-menu-component:focus:not(:focus-visible), user-menu-component:focus:not(:focus-visible) {
       box-shadow: none;
