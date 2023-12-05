@@ -9,7 +9,6 @@ export default function starredPostsComponentInit() {
         #starredposts-wrapper {
           display: flex;
           flex-direction: column;
-          justify-content: flex-end;
           height: 100%;
         }
         #posts-container{
