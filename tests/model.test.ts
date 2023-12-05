@@ -15,6 +15,7 @@ test("Get all posts", async () => {
   // This always fails because 'fetch' is not recognized?
   // const data = await owldbModel.getPosts("ws1", "ch1", "Uuc5ABwJhqd4gDd");
   // expect(data).toBe([]);
+  console.log("process.env.DATABASE_HOST", process.env.DATABASE_HOST);
 });
 
 test("Get all workspaces", async () => {

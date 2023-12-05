@@ -61,7 +61,7 @@ export class OwlDBModel {
       ...options.headers,
     };
     slog.info("typedModelFetch", [
-      "getDatabasePath()${url}",
+      "${getDatabasePath()}${url}",
       `${getDatabasePath()}${url}`,
     ]);
     return typedFetch<T>(`${getDatabasePath()}${url}`, options);
