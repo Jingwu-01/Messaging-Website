@@ -19,7 +19,7 @@ export default function starButtonInit() {
         background-color: #5a5a5a;
       }
       button:focus-visible {
-        box-shadow: rgba(60, 60, 60, 0.6) 0 0 0 3px;
+        box-shadow: #FF0000 0 0 0 3px;
         outline: none;
       }
       button:focus:not(:focus-visible) {

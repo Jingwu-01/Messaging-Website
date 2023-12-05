@@ -57,6 +57,9 @@ export default function postEditorInit() {
             height: 30px;
             border-radius: 3px 3px 3px 3px;
         }
+        #cancel-reply:hover{
+            background-color: #818589;
+        }
         .reactions:hover {
             background-color: #3896b7; 
         }
@@ -69,14 +72,29 @@ export default function postEditorInit() {
         #post-submit:active {
             background-color: #0f2831; 
         }
-        .reactions:focus-visible, #cancel-reply:focus-visible, #post-input:focus-visible, #post-submit:focus-visible {
+        .reactions:focus-visible, #cancel-reply:focus-visible, #post-input:focus-visible {
             box-shadow: #FF0000 0 0 0 3px;
             outline: none;
+            border-radius: 3px 3px 3px 3px;
+        }
+        #post-submit:focus-visible {
+            box-shadow: #FF0000 0 0 0 3px;
+            outline: none;
+            border-radius: 1em;
         }
         .reactions:focus:not(:focus-visible), #cancel-reply:focus:not(:focus-visible),#post-input:focus:not(:focus-visible), #post-sumbit:focus:not(:focus-visible) {
             box-shadow: none;
             outline: none;
         } 
+        .reactions {
+            background: none; 
+            color: inherit; 
+            border: none; 
+            padding: 0; 
+            font: inherit; 
+            cursor: pointer; 
+            outline: inherit; 
+          } 
     </style>
 
     <section id="post-editor-wrapper">

@@ -4,77 +4,111 @@ export default function channelSidebarComponentInit() {
   document.body.insertAdjacentHTML(
     "beforeend",
     `
-<template id="channel-sidebar-component-template">
+    <template id="channel-sidebar-component-template">
     <style>
-    .selected-channel {
-        color: white;
-        background-color: #26667C;
-    }
-    ul {
+      #channel-containner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+      #channel-list {
         list-style-type: none;
         margin-top: 0em;
         width: max(10vw, 80px);
         padding: 10px 10px;
-    }
-    li {
+      }
+      .selected-channel {
+        color: white;
+        background-color: #26667c;
+      }
+      #button-wrapper {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .button-content {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background-color: #26667c;
+        border-radius: 10px 10px 10px 10px;
+        color: white;
+        padding: 0 10px;
+      }
+      .button-content:hover {
+        background-color: #163d4a;
+      }
+      .button-content:active {
+        background-color: #0f2831;
+      }
+      section button {
+        background: none;
+        color: inherit;
+        border: none;
+        padding: 0;
+        font: inherit;
+        cursor: pointer;
+        outline: inherit;
         margin-top: 1em;
         margin-bottom: 1em;
         font-size: 17px;
         border-radius: 5px 5px 5px 5px;
-    }
-    #button-wrapper{
-        display: flex;
-        align-items: center;
-        flex-direction: column; 
-        gap: 10px;
-    }
-    .button-content{
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        background-color: #26667C;
-        border-radius: 10px 10px 10px 10px;
-        color: white;
-        padding: 0 10px;
-    }
-    .button-content:hover{
-        background-color: #163d4a; 
-    }
-    .button-content:active{
-        background-color: #0f2831; 
-    }
-    #edit-channels-button-wrapper:focus-visible {
-        box-shadow: #FF0000 0 0 0 3px;
+        display: block;
+        width: 100%;
+      }
+      section button:hover {
+        background-color: #3896b7;
+      }
+      section button:active {
+        background-color: #163d4a;
+      }
+      section button:focus-visible {
+        box-shadow: #ff0000 0 0 0 3px;
         outline: none;
-    }
-    #edit-channels-button-wrapper:focus:not(:focus-visible) {
+        border-radius: 5px 5px 5px 5px;
+      }
+      section button:focus:not(:focus-visible) {
         box-shadow: none;
         outline: none;
-    } 
-    li:hover {
-        background-color: #3896b7; 
-    }
-    li:active {
-        background-color: #163d4a; 
-    }
+      }
     </style>
-    <ul id="channel-list">
-    </ul>
-    <div id="button-wrapper">
-        <loading-button-component id="refresh-channels-button" style="background: none; border: none">
-            <div slot="content" class="button-content">
-                <p>Refresh Channels</p>
-                <iconify-icon icon="material-symbols:refresh" aria-label="Refresh Channels"></iconify-icon>
-            </div>
+    <section id="channel-containner">
+      <section id="channel-list"></section>
+      <section id="button-wrapper">
+        <loading-button-component
+          id="refresh-channels-button"
+          style="background: none; border: none"
+        >
+          <div slot="content" class="button-content">
+            <p>Refresh Channels</p>
+            <iconify-icon
+              icon="material-symbols:refresh"
+              aria-label="Refresh Channels"
+            ></iconify-icon>
+          </div>
         </loading-button-component>
-        <open-dialog-button-component dialog="edit-channels-dialog" style="border: none; background: none;">
-            <div slot="button-content" id="edit-channels-button-content" class="button-content">
-                <p>Edit Channels</p>
-                <iconify-icon icon="material-symbols:edit" aria-label="Edit Channels"></iconify-icon>
-            </div>
+        <open-dialog-button-component
+          dialog="edit-channels-dialog"
+          style="border: none; background: none"
+        >
+          <div
+            slot="button-content"
+            id="edit-channels-button-content"
+            class="button-content"
+          >
+            <p>Edit Channels</p>
+            <iconify-icon
+              icon="material-symbols:edit"
+              aria-label="Edit Channels"
+            ></iconify-icon>
+          </div>
         </open-dialog-button-component>
+      </section>
     </section>
-</template>
+  </template>
+  
 `
   );
   // an example channel element looks like:

@@ -87,7 +87,7 @@ export class ChannelSidebar extends HTMLElement {
   displayOpenChannel(channel: ViewChannel | null) {
     // TODO: may have to update this selector
     this.shadowRoot
-      ?.querySelectorAll("#channel-list > li.selected-channel")
+      ?.querySelectorAll("#channel-list > button.selected-channel")
       .forEach((selectedEl) => {
         selectedEl.classList.remove("selected-channel");
       });
@@ -120,7 +120,7 @@ export class ChannelSidebar extends HTMLElement {
     slog.info("displayChannels", ["channels", `${JSON.stringify(channels)}`]);
     this.channelList.innerHTML = "";
     channels.forEach((channel, idx) => {
-      let channelListEl = document.createElement("li");
+      let channelListEl = document.createElement("button");
       channelListEl.id = "channel-select-" + idx;
       this.channelNameToIdx.set(channel.name, idx);
       channelListEl.innerText = channel.name;

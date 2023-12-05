@@ -53,7 +53,8 @@ class UserMenuComponent extends HTMLElement {
   }
 
   disconnectedCallback(): void {
-    // The browser calls this when the element is removed from a document.
+    this.controller?.abort();
+    this.controller = null;
   }
 
   static get observedAttributes(): Array<string> {
