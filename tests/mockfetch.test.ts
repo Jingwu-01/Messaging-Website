@@ -12,34 +12,59 @@
 
     switch (input) {
         case `${baseUrl}/${authPath}`:
-            if (init !== undefined && init?.body !== undefined) {
-                let requestBody = init.body?.toString();
-                if (requestBody === undefined) {
-                    ok = false;
-                    status = 400;
-                    statusText = "Bad Request";
-                    break;
-                }
-                let parsedBody = JSON.parse(requestBody);
-                if (parsedBody.username === undefined) {
-                    ok = false;
-                    status = 400;
-                    statusText = "Bad Request";
-                    break;
-                }
-                let username = parsedBody.username;
-                if (username === "") {
-                    ok = false;
-                    status = 400;
-                    statusText = "Bad Request";
-                    break;
-                }
-                body = `{"token": "test"}`;
+            if (init === undefined || init.method === undefined) {
                 break;
             }
-            ok = false;
-            status = 400;
-            statusText = "Bad Request";
+            switch (init.method) {
+                case "POST":
+                    if (init !== undefined && init?.body !== undefined) {
+                        let requestBody = init.body?.toString();
+                        if (requestBody === undefined) {
+                            ok = false;
+                            status = 400;
+                            statusText = "Bad Request";
+                            break;
+                        }
+                        let parsedBody = JSON.parse(requestBody);
+                        if (parsedBody.username === undefined) {
+                            ok = false;
+                            status = 400;
+                            statusText = "Bad Request";
+                            break;
+                        }
+                        let username = parsedBody.username;
+                        if (username === "") {
+                            ok = false;
+                            status = 400;
+                            statusText = "Bad Request";
+                            break;
+                        }
+                        body = `{"token": "test"}`;
+                        break;
+                    }
+                    ok = false;
+                    status = 400;
+                    statusText = "Bad Request";
+                    break;
+                case "DELETE":
+                    if (init.headers !== undefined) {
+                        let requestHeaders = new Headers(init.headers);
+                        let authVal = requestHeaders.get("Authorization");
+                        if (!authVal?.startsWith("Bearer ")) {
+                            ok = false;
+                            status = 400;
+                            statusText = "Bad Request";
+                            break;
+                        }
+                        authVal = authVal.slice(7);
+                        if (authVal !== "test") {
+                            break;
+                        }
+                        // because we want to return an empty response body.
+                        break;
+                    }
+                    break;
+            }
             break;
         case `${invalidSchemaUrl}/${authPath}`:
             if (init !== undefined && init?.body !== undefined) {

@@ -30,16 +30,8 @@ export function typedFetch<T>(url: string, options?: RequestInit): Promise<T> {
     if (!response.ok) {
       throw new Error(response.statusText);
     }
-
-    // Return decoded JSON if there is a response body or null otherwise
-    const contentLength = response.headers.get("Content-Length");
-    if (contentLength && contentLength !== "0") {
-      // Type of unmarshaled response needs to be validated
-      return response.json() as Promise<T>;
-    } else {
-      // No content
-      throw new Error(`unexpected empty response`);
-    }
+    // Type of unmarshaled response needs to be validated
+    return response.json() as Promise<T>;
   });
 }
 
