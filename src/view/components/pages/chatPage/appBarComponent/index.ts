@@ -4,7 +4,6 @@ import { slog } from "../../../../../slog";
  * Defines the App Bar web Component.
  */
 export class AppBarComponent extends HTMLElement {
-  private controller: AbortController | null = null;
   private appBarWrapper: HTMLElement; 
 
   constructor() {
@@ -37,7 +36,6 @@ export class AppBarComponent extends HTMLElement {
         }
     }) 
     }
-   
   } 
 }
 
