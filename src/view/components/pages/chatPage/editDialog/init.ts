@@ -39,6 +39,7 @@ export default function editDialogComponentInit() {
     #add-item-input:focus-visible{
       box-shadow: #FF0000 0 0 0 3px;
       outline: none;
+      border-radius: 5px;
     }
   </style>
   <dialog id="dialog">

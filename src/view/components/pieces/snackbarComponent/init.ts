@@ -18,7 +18,6 @@ export default function snackbarInit() {
           gap: 10px;
           align-items: center;
         }
-        
         @keyframes fade-in {
           from {
             transform: translateX(100%);
@@ -28,6 +27,15 @@ export default function snackbarInit() {
             transform: translateX(0);
             left: 0;
           }
+        }
+        #close-button:focus-visible {
+          box-shadow: #FF0000 0 0 0 3px;
+          outline: none;
+          border-radius: 3px; 
+        }
+        #close-button:focus:not(:focus-visible) {
+          box-shadow: none;
+          outline: none;
         }
       </style>
       <div id="wrapper">

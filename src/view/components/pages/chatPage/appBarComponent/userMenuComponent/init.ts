@@ -30,15 +30,6 @@ export default function init() {
     iconify-icon:focus-visible {
       color: black;
     }
-    .user-buttons:focus-visible {
-      box-shadow: #FF0000 0 0 0 3px;
-      outline: none;
-      border-radius: 10px; 
-    }
-    .user-buttons:focus:not(:focus-visible) {
-      box-shadow: none;
-      outline: none;
-    }
     .user-buttons {
       background: none; 
       color: inherit; 
@@ -48,13 +39,24 @@ export default function init() {
       cursor: pointer; 
       outline: inherit; 
       margin-top: 2px;
-    } 
+    }
+    .user-buttons:focus-visible {
+      box-shadow: #FF0000 0 0 0 3px;
+      outline: none;
+      border-radius: 10px;
+    }
+    .user-buttons:focus:not(:focus-visible) {
+      box-shadow: none;
+      outline: none;
+    }
 
   </style>
   <menu-component>
     <div id="user-menu-anchor" slot="anchor-el" display="inline-block">
       <iconify-icon icon="carbon:user-avatar-filled" aria-label="user avatar" role="img"></iconify-icon>
-      <p id="user-text"></p>
+      <button class="user-buttons"> 
+        <p id="user-text"></p>
+      </button>
     </div>
     <div slot="menu-items" id="user-menu-dropdown">
       <button class="user-buttons"> 

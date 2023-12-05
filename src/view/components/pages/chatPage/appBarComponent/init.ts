@@ -47,8 +47,8 @@ export default function appBarComponentInit() {
       </span>
       <h2>Messaging</h2>
     </div>
-    <workspace-menu-component tabindex="0"></workspace-menu-component>
-    <user-menu-component tabindex="0"></user-menu-component>
+    <workspace-menu-component></workspace-menu-component>
+    <user-menu-component></user-menu-component>
   </div>
 </template>
 `,

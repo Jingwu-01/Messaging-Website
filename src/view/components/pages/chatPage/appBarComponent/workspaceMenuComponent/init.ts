@@ -49,10 +49,33 @@ export default function workspaceMenuComponentInit() {
     p:active {
       background-color: #0f2831; 
     }
+    #center-button {
+      background: none;
+      color: inherit;
+      border: none;
+      padding: 0;
+      font: inherit;
+      cursor: pointer;
+      outline: inherit;
+      margin-top: 1em;
+      margin-bottom: 1em;
+    } 
+    #center-button:focus-visible {
+      box-shadow: #ff0000 0 0 0 3px;
+      outline: none;
+      border-radius: 5px 5px 5px 5px;
+    }
+    #center-button:focus:not(:focus-visible) {
+      box-shadow: none;
+      outline: none;
+    }
+
   </style>
   <menu-component id="menu">
     <div id="workspace-menu-anchor" slot="anchor-el" display="inline-block">
-      <p id="open-workspace-text">Select Workspace</p>
+      <button id="center-button"> 
+        <p id="open-workspace-text">Select Workspace</p>
+      </button>
       <iconify-icon id="dropdown-icon" icon="gridicons:dropdown" aria-label="open select workspace menu" role="button"></iconify-icon>
     </div>
     <div slot="menu-items" id="menu-items-wrapper">
