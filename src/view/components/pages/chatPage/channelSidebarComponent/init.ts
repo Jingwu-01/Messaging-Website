@@ -5,61 +5,70 @@ export default function channelSidebarComponentInit() {
     "beforeend",
     `
 <template id="channel-sidebar-component-template">
-    <style>
-    .selected-channel {
-        color: white;
-        background-color: #26667C;
-    }
-    ul {
-        list-style-type: none;
-        margin-top: 0em;
-        width: max(10vw, 80px);
-        padding: 10px 10px;
-    }
-    li {
-        margin-top: 1em;
-        margin-bottom: 1em;
-        font-size: 17px;
-        border-radius: 5px 5px 5px 5px;
-    }
-    #button-wrapper{
-        display: flex;
-        align-items: center;
-        flex-direction: column; 
-        gap: 10px;
-    }
-    .button-content{
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        background-color: #26667C;
-        border-radius: 10px 10px 10px 10px;
-        color: white;
-        padding: 0 10px;
-    }
-    .button-content:hover{
-        background-color: #163d4a; 
-    }
-    .button-content:active{
-        background-color: #0f2831; 
-    }
-    #edit-channels-button-wrapper:focus-visible {
-        box-shadow: #FF0000 0 0 0 3px;
-        outline: none;
-    }
-    #edit-channels-button-wrapper:focus:not(:focus-visible) {
-        box-shadow: none;
-        outline: none;
-    } 
-    li:hover {
-        background-color: #3896b7; 
-    }
-    li:active {
-        background-color: #163d4a; 
-    }
-    </style>
-    <ul id="channel-list">
-    </ul>
+<style>
+#channel-list {
+  list-style-type: none;
+  margin-top: 0em;
+  width: max(10vw, 80px);
+  padding: 10px 10px;
+}
+.selected-channel {
+  color: white;
+  background-color: #26667c;
+}
+#button-wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+.button-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #26667c;
+  border-radius: 10px 10px 10px 10px;
+  color: white;
+  padding: 0 10px;
+}
+.button-content:hover {
+  background-color: #163d4a;
+}
+.button-content:active {
+  background-color: #0f2831;
+}
+section button:hover {
+  background-color: #3896b7;
+}
+section button:active {
+  background-color: #163d4a;
+}
+section button {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  font-size: 17px;
+  border-radius: 5px 5px 5px 5px;
+  width: 100%;
+}
+section button:focus-visible {
+  box-shadow: #ff0000 0 0 0 3px;
+  outline: none;
+  border-radius: 5px 5px 5px 5px;
+}
+section button:focus:not(:focus-visible){
+  box-shadow: none;
+  outline: none;
+}
+</style>
+    
+    <section id="channel-list"></section>
     <div id="button-wrapper">
         <loading-button-component id="refresh-channels-button" style="background: none; border: none">
             <div slot="content" class="button-content">
