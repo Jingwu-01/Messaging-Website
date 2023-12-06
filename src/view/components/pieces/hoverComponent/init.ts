@@ -12,7 +12,7 @@ export default function hoverComponentInit() {
   </style>
   <popover-component id="popover" align="top" open="false">
     <div slot="anchor-el" id="anchor-el-wrapper">
-      <slot name="anchor-el"></slot>
+      <slot name="anchor-el" id="hovered-content"></slot>
     </div>
     <div slot="popover-items" id="popover-items-wrapper">
       <slot name="hover-items"></slot>
