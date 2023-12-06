@@ -127,7 +127,6 @@ export class StarredPosts extends HTMLElement {
         return;
     }
     
-    // TODO: This probably 
     moveEditPostEditorTo(postEl: PostComponent) {
         // should never be called in theory
         return;

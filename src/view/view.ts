@@ -217,7 +217,7 @@ export class View {
     let index = this.postListeners.indexOf(listener);
     if (index < 0) {
       throw new ReferenceError(
-        "Attempted to remove a post listener that was not subscribed",
+        "Attempted to remove a post listener that was not subscribed"
       );
     }
     this.postListeners.splice(index, 1);
@@ -334,7 +334,7 @@ export class View {
     slog.info(
       "View: addPostDisplayListener",
       ["listener", listener],
-      ["this.postDisplayListeners", this.postDisplayListeners],
+      ["this.postDisplayListeners", this.postDisplayListeners]
     );
   }
 
@@ -343,11 +343,11 @@ export class View {
     slog.info(
       "View: removePostDisplayListener",
       ["listener", listener],
-      ["index", index],
+      ["index", index]
     );
     if (index < 0) {
       throw new ReferenceError(
-        "Attempted to remove a post display listener that was not subscribed",
+        "Attempted to remove a post display listener that was not subscribed"
       );
     }
     this.postDisplayListeners.splice(index, 1);
@@ -375,7 +375,7 @@ export class View {
    */
   waitForEvent(
     id: string,
-    callback: (event: EventWithId, error?: string) => void,
+    callback: (event: EventWithId, error?: string) => void
   ) {
     let arr = this.eventCompletedListeners.get(id);
     if (!arr) {
@@ -436,6 +436,25 @@ export class View {
       throw Error(`No dialog with ID ${dialog_id}`);
     }
   }
+
+  // Todo: This doesn't work. 
+  // openStarredPostsDialog() {
+  //   const starredPostsComponent = document.querySelector(
+  //     "starred-posts-component"
+  //   );
+  //   if (!(starredPostsComponent instanceof HTMLElement)) {
+  //     throw Error("cannot find starred-posts-component HTMLElement");
+  //   }
+  //   const starredPostsComponentShadowRoot = starredPostsComponent.shadowRoot;
+  //   if (starredPostsComponentShadowRoot) {
+  //     const starredPostDialog = starredPostsComponentShadowRoot.querySelector(
+  //       "starred-posts-dialog"
+  //     );
+  //     if (starredPostDialog instanceof HTMLElement) {
+  //       starredPostDialog.style.display = "block";
+  //     }
+  //   }
+  // }
 
   getUser() {
     return this.user;

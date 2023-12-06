@@ -18,13 +18,24 @@ export default function starredPostsComponentInit() {
         .post-children {
           margin-left: 5em;
         }
+        #starred-posts-dialog {
+          border: 1px solid #000;
+          padding: 10px;
+          width: 300px;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background-color: white;
+        }
+
     </style>
-    <dialog> 
+    <dialog id="starred-posts-dialog">
+      <button id="close-starred-posts"><iconify-icon icon="octicon:x-12"></iconify-icon></button>
       <section id="starredposts-wrapper">
-        <section id="posts-container">
-        </section>
+        <section id="posts-container"></section>
       </section>
-    </dialog> 
+    </dialog>
 </template>
 `,
   );
