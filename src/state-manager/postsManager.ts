@@ -3,7 +3,11 @@ import { CreateResponse } from "../../types/createResponse";
 import { PostResponse } from "../../types/postResponse";
 import { AdapterPost } from "../adapter/posts/adapterPost";
 import { adapterViewPostConverter } from "../adapter/posts/adapterViewPostConverter";
-import { insertPostSorted, insertStarredPostSorted, removePostSorted } from "../adapter/posts/handleSortingPosts";
+import {
+  insertPostSorted,
+  insertStarredPostSorted,
+  removePostSorted,
+} from "../adapter/posts/handleSortingPosts";
 import { slog } from "../slog";
 import { CreatePostEvent, ViewPostUpdate } from "../view/datatypes";
 import { getView } from "../view/view";
@@ -47,7 +51,7 @@ export class PostsManager {
       ["this.adapterPosts", this.adapterPosts],
       ["this.rootAdapterPosts", this.rootAdapterPosts],
       ["this.pendingPosts", this.pendingPosts],
-      ["response", response],
+      ["response", response]
     );
     let newPost: AdapterPost;
     try {
@@ -103,7 +107,7 @@ export class PostsManager {
     slog.info(
       "addPendingPosts: called",
       ["addedPostName", addedPostName],
-      ["addedPost", addedPost],
+      ["addedPost", addedPost]
     );
     let parentPendingPosts = this.pendingPosts.get(addedPostName);
     if (parentPendingPosts === undefined) {
@@ -136,7 +140,7 @@ export class PostsManager {
         "this.adapterPosts",
         `${JSON.stringify(Object.fromEntries(this.adapterPosts))}`,
       ],
-      ["this.rootAdapterPosts", `${JSON.stringify(this.rootAdapterPosts)}`],
+      ["this.rootAdapterPosts", `${JSON.stringify(this.rootAdapterPosts)}`]
     );
     this.upsertAdapterPost(adapterPost, exists);
     slog.info(
@@ -145,7 +149,7 @@ export class PostsManager {
         "this.adapterPosts",
         `${JSON.stringify(Object.fromEntries(this.adapterPosts))}`,
       ],
-      ["this.rootAdapterPosts", `${JSON.stringify(this.rootAdapterPosts)}`],
+      ["this.rootAdapterPosts", `${JSON.stringify(this.rootAdapterPosts)}`]
     );
   }
 
@@ -169,7 +173,7 @@ export class PostsManager {
     }
 
     adapterPost.setStarredIndex(starredIdx);
-    
+
     let op: "insert" | "modify";
 
     if (exists) {
@@ -182,9 +186,13 @@ export class PostsManager {
       allPosts: [],
       op: op,
       affectedPosts: [viewPost],
-      starOp: starOp
+      starOp: starOp,
     };
-    slog.info("upsertAdapterPost: end of func call", ["updatedPost", updatedPost], ["this.starredPosts", this.starredPosts]);
+    slog.info(
+      "upsertAdapterPost: end of func call",
+      ["updatedPost", updatedPost],
+      ["this.starredPosts", this.starredPosts]
+    );
     getView().displayPosts(updatedPost);
   }
 
@@ -193,7 +201,10 @@ export class PostsManager {
     return insertPostSorted(this.rootAdapterPosts, adapterPost, exists);
   }
 
-  insertStarredPost(adapterPost: AdapterPost, exists: boolean): [number, StarOps] {
+  insertStarredPost(
+    adapterPost: AdapterPost,
+    exists: boolean
+  ): [number, StarOps] {
     // slog.info("insertStarredPost", ["exists", exists], ["isRespPostStarred(adapterPost)", isRespPostStarred(adapterPost)], ["adapterPost.getStarred()", adapterPost.getStarred()]);
     if (exists) {
       if (isRespPostStarred(adapterPost)) {
