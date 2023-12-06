@@ -19,13 +19,19 @@ function stringAdditionHelper(keyName: string, dataPair: [string, boolean]) {
     }
 }
 
-function getReactionArray(smile: [string, boolean], frown: [string, boolean], like: [string, boolean], celebrate: [string, boolean], additionalReaction: [string, string, boolean]) {
+function getReactionObject(smile: [string, boolean], frown: [string, boolean], like: [string, boolean], celebrate: [string, boolean], additionalReaction: [string, string, boolean]) {
     return `{
         ${stringAdditionHelper("smile", smile)},
         ${stringAdditionHelper("frown", frown)},
         ${stringAdditionHelper("like", like)},
         ${stringAdditionHelper("celebrate", celebrate)},
         ${stringAdditionHelper(additionalReaction[0], [additionalReaction[1], additionalReaction[2]])}
+    }`;
+}
+
+function getExtensionObject(p2group50: [string, boolean]) {
+    return `{
+        ${stringAdditionHelper("p2group50", p2group50)}
     }`;
 }
 
@@ -40,14 +46,25 @@ function getPostBody(message: string, parent: [string, boolean], reactions: [str
 
 function getDocumentBodies(databasePath: string, username: string): Map<string, string> {
     return new Map<string, string>([
-        ["empty_workspace", getEmptyDocumentResult("empty_workspace", databasePath, username)],
 
-        ["workspace_onechannel", getEmptyDocumentResult("workspace_onechannel", databasePath, username)],
-        ["onechannel_multposts", getEmptyDocumentResult("onechannel_multposts", databasePath, username)],
-        ["multposts_post1", getPostBody("test message", )]
+        ["existingworkspace_onechannel", getDocumentResult("existingworkspace_onechannel", "{}", databasePath, username, 1701876023839, 1701876029328)],
+        ["existing_onechannel_onepost", getDocumentResult("existing_onechannel_multposts", "{}", databasePath, username, 1701873177565, 1701873257345)],
+        ["existing_post1", getDocumentResult("multposts_post1", getPostBody("test message 1", ["", false], ["", false], ["", false]), databasePath, username, 1701876075240, 1701876083511)],
 
-        ["workspace_multchannels", getEmptyDocumentResult("workspace_multchannels", databasePath, username)],
-    ])
+        ["empty_workspace", getDocumentResult("empty_workspace", "{}", databasePath, username, 1701873100944, 1701873107272)],
+
+        ["workspace_onechannel", getDocumentResult("workspace_onechannel", "{}", databasePath, username, 1701873141526, 1701873147688)],
+        ["onechannel_multposts", getDocumentResult("onechannel_multposts", "{}", databasePath, username, 1701873177565, 1701873257345)],
+        ["multposts_post1", getDocumentResult("multposts_post1", getPostBody("test message 1", ["", false], ["", false], ["", false]), databasePath, username, 1701873686563, 1701873691816)],
+        ["multposts_post2", getDocumentResult("multposts_post2", getPostBody("another test message for post 2", [`${databasePath}/channels/onechannel_multposts/multposts_post1`, true], [getReactionObject([`[${username}]`, true], [`[${username}]`, true], [`[${username}]`, true], [`[${username}]`, true], ["", "", false]), true], ["", false]), databasePath, username, 1701873756630, 1701873756630)],
+        ["multposts_post3", getDocumentResult("multposts_post3", getPostBody("some post content for post 3 :smile::like::celebrate:**bold***italic*[text](https://www.google.com])", ["", false], ["", false], [getExtensionObject([`[${username}]`, true]), true]), databasePath, username, 1701873686563, 1701873691816)],
+
+
+        ["workspace_multchannels", getDocumentResult("workspace_multchannels", `{"some data": "some value"}`, databasePath, username, 1701874540189, 1701874546840)],
+        ["multchannels_noposts", getDocumentResult("multchannels_noposts", "{'channel data': 'channel value'}", databasePath, username, 1701873177565, 1701873257345)],
+        ["multchannels_onepost", getDocumentResult("multchannels_noposts", "{'channel data': 'channel value'}", databasePath, username, 1701874668908, 1701874679548)],
+        ["onepost_ <script>alert('this is an attack!')</script>", getDocumentResult("onepost_ <script>alert('this is an attack!')</script>", getPostBody("<script>alert('attack script!')</script>", ["", false], ["", false], ["", false]), databasePath, username, 1701874873310, 1701874878667)]
+    ]);
 }
 
 (global as any).fetch = jest.fn((input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
@@ -62,15 +79,19 @@ function getDocumentBodies(databasePath: string, username: string): Map<string, 
     let status = 200;
     let statusText = "OK";
     let username = "test_user";
+    let documentBodies = getDocumentBodies(databasePath, username);
+    let method: string;
+    if (init === undefined || init.method === undefined) {
+        method = "GET";
+    } else {
+        method = init.method;
+    }
     
     // define all workspace, channels, etc. bodies that I need.
 
     switch (input) {
         case `${baseUrl}/${authPath}`:
-            if (init === undefined || init.method === undefined) {
-                break;
-            }
-            switch (init.method) {
+            switch (method) {
                 case "POST":
                     if (init !== undefined && init?.body !== undefined) {
                         let requestBody = init.body?.toString();
@@ -127,13 +148,9 @@ function getDocumentBodies(databasePath: string, username: string): Map<string, 
                     statusText = "Bad Request";
                     break;
             }
-            // should be unreachable
             break;
         case `${invalidSchemaUrl}/${authPath}`:
-            if (init === undefined || init.method === undefined) {
-                break;
-            }
-            switch (init.method) {
+            switch (method) {
                 case "POST":
                     if (init !== undefined && init?.body !== undefined) {
                         let requestBody = init.body?.toString();
@@ -233,41 +250,100 @@ function getDocumentBodies(databasePath: string, username: string): Map<string, 
         
         // M3ssaging cases: workspaces, channels, etc.
         case `${dbUrl}/`:
-            let method: string;
-            if (init === undefined || init.method === undefined) {
-                method = "GET";
-            } else {
-                method = init.method;
-            }
             switch (method) {
                 case "GET":
-                    
+                    body = `[
+                        ${documentBodies.get("existingworkspace_onechannel")}
+                    ]`;
+                    break;
             }
-            
-
-        case `${dbUrl}/test_workspace`:
-            if (init === undefined || init.method === undefined) {
-                method = "GET";
-            } else {
-                method = init.method;
-            }
+            break;
+        case `${dbUrl}/workspace_dne`:
             switch (method) {
                 case "GET":
-                    body = `{
-                        "path": "/test_workspace",
-                        "doc": {},
-                        "meta": {
-                            "createdBy": ${username},
-                            "createdAt": 1701826733252,
-                            "lastModifiedBy": ${username},
-                            "lastModifiedAt": 1701826733252
-                        }
-                    }`;
+                    status = 404;
+                    statusText = "Not Found";
+                    break;
+                case "DELETE":
+                    status = 404;
+                    statusText = "Not Found";
+                    break;
+            }
+            break;
+        case `${dbUrl}/workspace_dne?timestamp=0`:
+            switch (method) {
+                case "PUT":
+                    status = 201;
+                    statusText = "Created";
+                    break;
+            }
+            break;
+        case `${dbUrl}/workspace_dne/channels/`:
+            switch (method) {
+                case "PUT":
+                    status = 201;
+                    statusText = "Created";
+                    break;
+                case "DELETE":
+                    status = 204;
+                    statusText = "No Content";
+                    break;
+                case "GET":
+                    body = "[]";
+                    break;
+            }
+            break;
+        case `${dbUrl}/empty_workspace`:
+            switch (method) {
+                case "GET":
+                    body = `${documentBodies.get("empty_workspace")}`;
+                    break;
+                case "DELETE":
+                    ok = false;
+                    status = 404;
+                    statusText = "No Content";
+                    body = "could not delete doc: does not exist";
+                    break;
+            }
+            break;
+        case `${dbUrl}/empty_workspace?timestamp=0`:
+            switch (method) {
+                case "PUT":
+                    ok = false;
+                    status = 400;
+                    statusText = "Bad Request";
+                    body = "could not create/replace doc: exists";
+                    break;
+            }
+            break;
+        
+        case `${dbUrl}/empty_workspace/channels/`:
+            switch (method) {
+                case "GET":
+                    body = "[]";
                     break;
                 case "PUT":
+                    status = 200;
                     body = `{
-                        "uri": ${databasePath}/workspace1
+                        "uri": ${dbUrl}/empty_workspace/channels/
                     }`;
+                    break;
+                case "DELETE":
+                    ok = false;
+                    status = 404;
+                    statusText = "Not Found";
+                    body = "could not delete collection: does not exist";
+                    break;
+            }
+            break;
+        
+        case `${dbUrl}/existingworkspace_onechannel`:
+            switch (method) {
+                case "GET":
+                    body = `${documentBodies.get("existingworkspace_onechannel")}`;
+                    break;
+                case "PUT":
+                    console.log("should never be overwriting an existing channel. this is an error.");
                     break;
                 case "DELETE":
                     status = 204;
@@ -275,22 +351,67 @@ function getDocumentBodies(databasePath: string, username: string): Map<string, 
                     break;
             }
             break;
-        case `${dbUrl}/test_workspace/channels/`:
-            if (init === undefined || init.method === undefined) {
-                method = "GET";
-            } else {
-                method = init.method;
+        
+        case `${dbUrl}/existingworkspace_onechannel?timestamp=0`:
+            switch (method) {
+                case "PUT":
+                    ok = false;
+                    status = 400;
+                    statusText = "Bad Request";
+                    body = "unable to create/replace doc: timestamp 0 does not match precondition timestamp of 1701876029328";
+                    break;
             }
+            break;
+        
+        case `${dbUrl}/existingworkspace_onechannel/channels/`:
+            switch (method) {
+                case "PUT":
+                    ok = false;
+                    status = 400;
+                    statusText = "Bad Request";
+                    body = "unable to create channel: exists";
+                    break;
+                case "DELETE":
+                    status = 204;
+                    statusText = "No Content";
+                    break;
+            }
+            break;
+        
+        case `${dbUrl}/existingworkspace_onechannel/channels/existing_onechannel_onepost`:
             switch (method) {
                 case "GET":
-                    body = 
+                    body = `${documentBodies.get("existing_onechannel_onepost")}`;
+                    break;
+                case "PUT":
+                    console.log("this operation will overwrite an existing channel and is an error.");
+                    break;
+                case "DELETE":
+                    status = 204;
+                    statusText = "No Content";
+                    break;
             }
-            
+            break;
+        
+        case `${dbUrl}/existingworkspace_onechannel/channels/existing_onechannel_onepost?timestamp=0`:
+            switch (method) {
+                case "PUT":
+                    ok = false;
+                    status = 400;
+                    statusText = "Bad Request";
+                    body = "unable to create/replace doc: timestamp 0 does not match precondition timestamp of 1701873257345";
+                    break;
+            }
+            break;
+        
+        // TODO: finish existing posts for this channel. Afterwards, proceed to adding all channels/ws in the map that I've defined
+        // above.
         default:
             ok = false;
             status = 404;
             statusText = "Not Found";
             body = "Could not find specified resource";
+            console.log("error: sending requests to server outside of supported operations");
             break;
             
 
