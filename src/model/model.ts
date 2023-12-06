@@ -19,7 +19,7 @@ import { PatchDocumentResponse } from "../../types/patchDocumentResponse";
 import { slog } from "../slog";
 import { LoginResponse } from "../../types/loginResponse";
 import { GetWorkspacesResponse } from "../../types/getWorkspacesResponse";
-import { ModelReactionUpdate, PatchBody } from "./modelTypes";
+import { ModelReactionUpdate} from "./modelTypes";
 
 /**
  * A class representing the model we use for interfacing with OwlDB.

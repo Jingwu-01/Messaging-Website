@@ -1,4 +1,5 @@
 import { getModel } from "../src/model/model";
+import { fetchFunc } from "./mockfetch.test";
 
 const owldbModel = getModel();
 
@@ -6,8 +7,9 @@ const owldbModel = getModel();
 
 beforeAll(async () => {
   process.env.DATABASE_HOST = "http://localhost:4318";
-  process.env.DATABASE_PATH = "/v1/p2group50_3";
+  process.env.DATABASE_PATH = "/v1/p2group50";
   process.env.AUTH_PATH = "auth";
+  (global as any).fetch = fetchFunc;
 });
 
 // Test all posts.
