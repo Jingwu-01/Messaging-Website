@@ -56,8 +56,8 @@ function getDocumentBodies(databasePath: string, username: string): Map<string, 
         ["workspace_onechannel", getDocumentResult("workspace_onechannel", "{}", databasePath, username, 1701873141526, 1701873147688, "")],
         ["onechannel_multposts", getDocumentResult("onechannel_multposts", "{}", databasePath, username, 1701873177565, 1701873257345, "/workspace_onechannel/channels")],
         ["multposts_post1", getDocumentResult("multposts_post1", getPostBody("test message 1", ["", false], ["", false], ["", false]), databasePath, username, 1701873686563, 1701873691816, "/workspace_onechannel/channels/onechannel_multposts/posts")],
-        ["multposts_post2", getDocumentResult("multposts_post2", getPostBody("another test message for post 2", [`${databasePath}/channels/onechannel_multposts/multposts_post1`, true], [getReactionObject([`[${username}]`, true], [`[${username}]`, true], [`[${username}]`, true], [`[${username}]`, true], ["", "", false]), true], ["", false]), databasePath, username, 1701873756630, 1701873756630, "/workspace_onechannel/channels/onechannel_multposts/posts")],
-        ["multposts_post3", getDocumentResult("multposts_post3", getPostBody("some post content for post 3 :smile::like::celebrate:**bold***italic*[text](https://www.google.com])", ["", false], ["", false], [getExtensionObject([`[${username}]`, true]), true]), databasePath, username, 1701873686563, 1701873691816, "/workspace_onechannel/channels/onechannel_multposts/posts")],
+        ["multposts_post2", getDocumentResult("multposts_post2", getPostBody("another test message for post 2. contains reactions", [`${databasePath}/channels/onechannel_multposts/multposts_post1`, true], [getReactionObject([`[${username}]`, true], [`[${username}]`, true], [`[${username}]`, true], [`[${username}]`, true], ["", "", false]), true], ["", false]), databasePath, username, 1701873756630, 1701873756630, "/workspace_onechannel/channels/onechannel_multposts/posts")],
+        ["multposts_post3", getDocumentResult("multposts_post3", getPostBody("some post content for post 3. contains extensions :smile::like::celebrate:**bold***italic*[text](https://www.google.com])", ["", false], ["", false], [getExtensionObject([`[${username}]`, true]), true]), databasePath, username, 1701873686563, 1701873691816, "/workspace_onechannel/channels/onechannel_multposts/posts")],
 
 
         ["workspace_multchannels", getDocumentResult("workspace_multchannels", `{"some data": "some value"}`, databasePath, username, 1701874540189, 1701874546840, "")],
@@ -74,6 +74,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
     let databasePath = "/v1/p2group50";
     let authPath = "auth";
     let dbUrl = `${baseUrl}${databasePath}`;
+    let invalidSchemaDbUrl = `${invalidSchemaUrl}${databasePath}`;
     let body = "";
     let ok = true;
     let status = 200;
@@ -149,68 +150,8 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
                     break;
             }
             break;
-        case `${invalidSchemaUrl}/${authPath}`:
-            switch (method) {
-                case "POST":
-                    if (init !== undefined && init?.body !== undefined) {
-                        let requestBody = init.body?.toString();
-                        if (requestBody === undefined) {
-                            ok = false;
-                            status = 400;
-                            statusText = "Bad Request";
-                            break;
-                        }
-                        let parsedBody = JSON.parse(requestBody);
-                        if (parsedBody.username === undefined) {
-                            ok = false;
-                            status = 400;
-                            statusText = "Bad Request";
-                            break;
-                        }
-                        let username = parsedBody.username;
-                        if (username === "") {
-                            ok = false;
-                            status = 400;
-                            statusText = "Bad Request";
-                            break;
-                        }
-                        body = `{"somefield": "somevalue"}`;
-                        break;
-                    }
-                    ok = false;
-                    status = 400;
-                    statusText = "Bad Request";
-                    break;
-                case "DELETE":
-                    if (init !== undefined && init.headers !== undefined) {
-                        let requestHeaders = new Headers(init.headers);
-                        let authVal = requestHeaders.get("Authorization");
-                        if (!authVal?.startsWith("Bearer ")) {
-                            ok = false;
-                            status = 400;
-                            statusText = "Bad Request";
-                            break;
-                        }
-                        authVal = authVal.slice(7);
-                        if (authVal !== "test") {
-                            ok = false;
-                            status = 401;
-                            statusText = "Unauthorized";
-                            break;
-                        }
-                        body = "some body";
-                        status = 204;
-                        statusText = "No Content";
-                        break;
-                    }
-                    ok = false;
-                    status = 400;
-                    statusText = "Bad Request";
-                    break;
-            }
-            break;
         case `${dbUrl}/fetchSuccessful`:
-            body = "some body";
+            body = `"some body"`;
             break;
         case `${dbUrl}/fetchError`:
             return Promise.reject("failed fetch");
@@ -240,7 +181,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
                     break;
                 }
                 // TODO: make an empty string?
-                body = "auth passed";
+                body = '"auth passed"';
                 break;
             }
             ok = false;
@@ -302,7 +243,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
                     ok = false;
                     status = 404;
                     statusText = "No Content";
-                    body = "could not delete doc: does not exist";
+                    body = '"could not delete doc: does not exist"';
                     break;
             }
             break;
@@ -312,7 +253,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
                     ok = false;
                     status = 400;
                     statusText = "Bad Request";
-                    body = "could not create/replace doc: exists";
+                    body = '"could not create/replace doc: exists"';
                     break;
             }
             break;
@@ -325,14 +266,14 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
                 case "PUT":
                     status = 200;
                     body = `{
-                        "uri": ${databasePath}/empty_workspace/channels/
+                        "uri": "${databasePath}/empty_workspace/channels/"
                     }`;
                     break;
                 case "DELETE":
                     ok = false;
                     status = 404;
                     statusText = "Not Found";
-                    body = "could not delete collection: does not exist";
+                    body = '"could not delete collection: does not exist"';
                     break;
             }
             break;
@@ -358,7 +299,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
                     ok = false;
                     status = 400;
                     statusText = "Bad Request";
-                    body = "unable to create/replace doc: timestamp 0 does not match precondition timestamp of 1701876029328";
+                    body = '"unable to create/replace doc: timestamp 0 does not match precondition timestamp of 1701876029328"';
                     break;
             }
             break;
@@ -369,7 +310,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
                     ok = false;
                     status = 400;
                     statusText = "Bad Request";
-                    body = "unable to create channel: exists";
+                    body = '"unable to create channel: exists"';
                     break;
                 case "DELETE":
                     status = 204;
@@ -404,7 +345,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
                     ok = false;
                     status = 400;
                     statusText = "Bad Request";
-                    body = "unable to create/replace doc: timestamp 0 does not match precondition timestamp of 1701873257345";
+                    body = '"unable to create/replace doc: timestamp 0 does not match precondition timestamp of 1701873257345"';
                     break;
             }
             break;
@@ -415,11 +356,11 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
                     ok = false;
                     status = 400;
                     statusText = "Bad Request";
-                    body = "unable to create collection: exists";
+                    body = '"unable to create collection: exists"';
                     break;
                 case "POST":
                     body = `{
-                        "uri": ${databasePath}/existingworkspace_onechannel/channels/existing_onechannel_onepost/posts/existing_post1
+                        "uri": "${databasePath}/existingworkspace_onechannel/channels/existing_onechannel_onepost/posts/existing_post1"
                     }`;
                     status = 201;
                     statusText = "Created";
@@ -439,7 +380,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
                     ok = false;
                     status = 404;
                     statusText = "Not Found";
-                    body = "could not delete document: not found";
+                    body = '"could not delete document: not found"';
                     break;
             }
             break;
@@ -448,7 +389,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
             switch (method) {
                 case "PUT":
                     body = `{
-                        "uri": ${databasePath}/workspace_onechannel
+                        "uri": "${databasePath}/workspace_onechannel"
                     }`;
                     status = 201;
                     statusText = "Created";
@@ -460,14 +401,14 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
             switch (method) {
                 case "PUT":
                     body = `{
-                        "uri": ${databasePath}/workspace_onechannel/channels/
+                        "uri": "${databasePath}/workspace_onechannel/channels/"
                     }`;
                     status = 201;
                     statusText = "Created";
                     break;
                 case "DELETE":
                     ok = false;
-                    body = "could not delete collection: does not exist";
+                    body = '"could not delete collection: does not exist"';
                     status = 404;
                     statusText = "Not Found";
                     break;
@@ -491,7 +432,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
                     ok = false;
                     status = 404;
                     statusText = "Not Found";
-                    body = "could not delete document: not found";
+                    body = '"could not delete document: not found"';
                     break;
             }
             break;
@@ -500,7 +441,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
             switch (method) {
                 case "PUT":
                     body = `{
-                        "uri": ${databasePath}/workspace_onechannel/channels/onechannel_multposts
+                        "uri": "${databasePath}/workspace_onechannel/channels/onechannel_multposts"
                     }`;
                     status = 201;
                     statusText = "Created";
@@ -512,17 +453,41 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
             switch (method) {
                 case "PUT":
                     body = `{
-                        "uri": ${databasePath}/workspace_onechannel/channels/onechannel_multposts/posts/
+                        "uri": "${databasePath}/workspace_onechannel/channels/onechannel_multposts/posts/"
                     }`;
                     status = 201;
                     statusText = "Created";
                     break;
                 case "POST":
                     body = `{
-                        "uri": ${databasePath}/workspace_onechannel/channels/onechannel_multposts/posts/multposts_post1
+                        "uri": "${databasePath}/workspace_onechannel/channels/onechannel_multposts/posts/multposts_post1"
                     }`;
                     status = 201;
                     statusText = "Created";
+                    break;
+            }
+            break;
+        
+        case `${dbUrl}/workspace_onechannel/channels/onechannel_multposts/posts/multposts_post1`:
+            switch (method) {
+                case "PATCH":
+                    body = `{
+                        "uri": "${databasePath}/workspace_onechannel/channels/onechannel_multposts/posts/multposts_post1",
+                        "patchFailed": true,
+                        "message": "some reason that the patch failed"
+                    }`;
+                    break;
+            }
+            break;
+
+        case `${dbUrl}/workspace_onechannel/channels/onechannel_multposts/posts/multposts_post2`:
+            switch (method) {
+                case "PATCH":
+                    body = `{
+                        "uri": "${databasePath}/workspace_onechannel/channels/onechannel_multposts/posts/multposts_post2",
+                        "patchFailed": false,
+                        "message": "patches applied"
+                    }`;
                     break;
             }
             break;
@@ -539,7 +504,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
                     ok = false;
                     status = 404;
                     statusText = "Not Found";
-                    body = "could not delete document: not found";
+                    body = '"could not delete document: not found"';
                     break;
             }
             break;
@@ -548,7 +513,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
             switch (method) {
                 case "PUT":
                     body = `{
-                        "uri": ${databasePath}/workspace_multchannels
+                        "uri": "${databasePath}/workspace_multchannels"
                     }`;
                     break;
             }
@@ -564,7 +529,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
                     break;
                 case "PUT":
                     body = `{
-                        "uri": ${databasePath}/workspace_multchannels/channels/
+                        "uri": "${databasePath}/workspace_multchannels/channels/"
                     }`;
                     status = 201;
                     statusText = "Created";
@@ -584,7 +549,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
                     ok = false;
                     status = 404;
                     statusText = "Not Found";
-                    body = "could not delete document: not found";
+                    body = '"could not delete document: not found"';
                     break;
             }
             break;
@@ -593,7 +558,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
             switch (method) {
                 case "PUT":
                     body = `{
-                        "uri": ${databasePath}/multchannels_noposts
+                        "uri": "${databasePath}/multchannels_noposts"
                     }`;
                     break;
             }
@@ -603,7 +568,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
             switch (method) {
                 case "PUT":
                     body = `{
-                        "uri": ${databasePath}/workspace_multchannels/channels/multchannels_noposts/posts/
+                        "uri": "${databasePath}/workspace_multchannels/channels/multchannels_noposts/posts/"
                     }`;
                     break;
             }
@@ -621,7 +586,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
                     ok = false;
                     status = 404;
                     statusText = "Not Found";
-                    body = "could not delete document: not found";
+                    body = '"could not delete document: not found"';
                     break;
             }
             break;
@@ -630,7 +595,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
             switch (method) {
                 case "PUT":
                     body = `{
-                        "uri": ${databasePath}/multchannels_noposts
+                        "uri": "${databasePath}/multchannels_noposts"
                     }`;
                     break;
             }
@@ -640,12 +605,12 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
             switch (method) {
                 case "PUT":
                     body = `{
-                        "uri": ${databasePath}/workspace_multchannels/channels/multchannels_onepost/posts/
+                        "uri": "${databasePath}/workspace_multchannels/channels/multchannels_onepost/posts/"
                     }`;
                     break;
                 case "POST":
                     body = `{
-                        "uri": ${databasePath}/workspace_multchannels/channels/multchannels_onepost/posts/onepost_ <script>alert('this is an attack!')</script>
+                        "uri": "${databasePath}/workspace_multchannels/channels/multchannels_onepost/posts/onepost_ <script>alert('this is an attack!')</script>"
                     }`;
                     status = 201;
                     statusText = "Created";
@@ -655,11 +620,190 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
         
         // TODO: finish existing posts for this channel. Afterwards, proceed to adding all channels/ws in the map that I've defined
         // above.
+
+        case `${invalidSchemaUrl}/${authPath}`:
+            switch (method) {
+                case "POST":
+                    if (init !== undefined && init?.body !== undefined) {
+                        let requestBody = init.body?.toString();
+                        if (requestBody === undefined) {
+                            ok = false;
+                            status = 400;
+                            statusText = "Bad Request";
+                            break;
+                        }
+                        let parsedBody = JSON.parse(requestBody);
+                        if (parsedBody.username === undefined) {
+                            ok = false;
+                            status = 400;
+                            statusText = "Bad Request";
+                            break;
+                        }
+                        let username = parsedBody.username;
+                        if (username === "") {
+                            ok = false;
+                            status = 400;
+                            statusText = "Bad Request";
+                            break;
+                        }
+                        body = `{"somefield": "somevalue"}`;
+                        break;
+                    }
+                    ok = false;
+                    status = 400;
+                    statusText = "Bad Request";
+                    break;
+                case "DELETE":
+                    if (init !== undefined && init.headers !== undefined) {
+                        let requestHeaders = new Headers(init.headers);
+                        let authVal = requestHeaders.get("Authorization");
+                        if (!authVal?.startsWith("Bearer ")) {
+                            ok = false;
+                            status = 400;
+                            statusText = "Bad Request";
+                            break;
+                        }
+                        authVal = authVal.slice(7);
+                        if (authVal !== "test") {
+                            ok = false;
+                            status = 401;
+                            statusText = "Unauthorized";
+                            break;
+                        }
+                        body = "some body";
+                        status = 204;
+                        statusText = "No Content";
+                        break;
+                    }
+                    ok = false;
+                    status = 400;
+                    statusText = "Bad Request";
+                    break;
+            }
+            break;
+
+        case `${invalidSchemaDbUrl}/workspace_onechannel`:
+            switch (method) {
+                case "GET":
+                    body = "123";
+                    break;
+                case "PUT":
+                    console.log("should not overwrite documents");
+                    break;
+                case "DELETE":
+                    ok = false;
+                    status = 404;
+                    statusText = "Not Found";
+                    body = "456";
+                    break;
+            }
+            break;
+        case `${invalidSchemaDbUrl}/workspace_onechannel?timestamp=0`:
+            switch (method) {
+                case "PUT":
+                    body = `{
+                        "some useless field": "some useless value"
+                    }`;
+                    status = 201;
+                    statusText = "Created";
+                    break;
+            }
+            break;
+        
+        case `${invalidSchemaDbUrl}/workspace_onechannel/channels/`:
+            switch (method) {
+                case "PUT":
+                    body = `{
+                        "useless field": "1.5"
+                    }`;
+                    status = 201;
+                    statusText = "Created";
+                    break;
+                case "GET":
+                    body = `{
+                        "1.5": true
+                    }`;
+                    break;
+            }
+            break;
+        
+        case `${invalidSchemaDbUrl}/workspace_onechannel/channels/onechannel_multposts`:
+            switch (method) {
+                case "GET":
+                    body = `false`;
+                    break;
+                case "PUT":
+                    console.log("should not be overwriting existing documents");
+                    break;
+                case "DELETE":
+                    body = '"some text"';
+                    status = 204;
+                    statusText = "No Content";
+                    break;
+            }
+            break;
+        
+        case `${invalidSchemaDbUrl}/workspace_onechannel/channels/onechannel_multposts?timestamp=0`:
+            switch (method) {
+                case "PUT":
+                    body = "5";
+                    status = 201;
+                    statusText = "Created";
+                    break;
+            }
+            break;
+        
+        case `${invalidSchemaDbUrl}/workspace_onechannel/channels/onechannel_multposts/posts/`:
+            switch (method) {
+                case "GET":
+                    body = `[
+                        {
+                            "invalid field 1": "joe",
+                            "reactions": {},
+                            "extensions": {},
+                            "parent": ""
+                        }
+                    ]`;
+                    break;
+                case "PUT":
+                    body = `["hello", "bye", "next"]`;
+                    status = 201;
+                    statusText = "Created";
+                    break;
+                case "DELETE":
+                    body = "invalid json value";
+                    status = 204;
+                    statusText = "No Content";
+                    break;
+            }
+            break;
+        
+        case `${invalidSchemaDbUrl}/workspace_onechannel/channels/onechannel_multposts/posts/multposts_post1`:
+            switch (method) {
+                case "PATCH":
+                    body = `{
+                        "uri": "${databasePath}/workspace_onechannel/channels/onechannel_multposts/posts/multposts_post2",
+                        "message": "some reason that the patch failed"
+                    }`;
+                    break;
+            }
+            break;
+        
+        case `${invalidSchemaDbUrl}/workspace_onechannel/channels/onechannel_multposts/posts/multposts_post2`:
+            switch (method) {
+                case "PATCH":
+                    body = `{
+                        "hello": 123,
+                    }`;
+                    break;
+            }
+            break;
+
         default:
             ok = false;
             status = 404;
             statusText = "Not Found";
-            body = "Could not find specified resource";
+            body = '"Could not find specified resource"';
             console.log("error: sending requests to server outside of supported operations");
             break;
     }
