@@ -49,7 +49,7 @@ export class PostDisplay extends HTMLElement {
     this.postsContainer.after(postEditor);
 
     this.postEditor = postEditor;
-    this.postEditor.setParentPath("");
+    this.postEditor.setParentPath("", null);
     this.postEditor.setTopReplyEl(postDisplayWrapper);
 
     this.displayPosts.bind(this);
@@ -222,7 +222,7 @@ export class PostDisplay extends HTMLElement {
     if (postPath === undefined) {
       throw Error("movePostEditorTo: postEl's parent path is undefined");
     }
-    this.postEditor.setParentPath(postPath);
+    this.postEditor.setParentPath(postPath, postEl);
   }
 
   moveEditPostEditorTo(postEl: PostComponent) {

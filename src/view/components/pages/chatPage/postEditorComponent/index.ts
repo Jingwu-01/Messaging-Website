@@ -1,4 +1,5 @@
 import { slog } from "../../../../../slog";
+import PostComponent from "../postComponent";
 
 type StringFunction = () => string;
 
@@ -20,6 +21,8 @@ export class PostEditor extends HTMLElement {
   private cancelReply: HTMLElement;
 
   private topReplyEl: HTMLElement | undefined;
+
+  private parentPost: PostComponent | null = null;
 
   constructor() {
     super();
@@ -202,9 +205,15 @@ export class PostEditor extends HTMLElement {
     return "]()";
   }
 
-  setParentPath(parentPath: string) {
-    slog.info("setParentPath", ["parentPath", `${parentPath}`]);
+  setParentPath(parentPath: string, parentPost: PostComponent | null) {
+    if (this.parentPost !== null) {
+      // TODO: call this.parentPost.unhighlight();
+    }
+    // for this.parentPost, unhighlight.
+    // then, set parentPath and parentPost.
+    slog.info("setParentPath", ["parentPath", `${parentPath}`], ["parentPost", parentPost]);
     this.parentPath = parentPath;
+    this.parentPost = parentPost;
   }
 
   setTopReplyEl(topReplyEl: HTMLElement) {

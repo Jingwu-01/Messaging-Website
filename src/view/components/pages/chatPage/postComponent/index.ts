@@ -331,6 +331,10 @@ export class PostComponent extends HTMLElement {
   getPostText() {
     return this.postMsg;
   }
+
+  unhighlight() {
+    // TODO: unhighlight the post
+  }
 }
 
 export default PostComponent;
