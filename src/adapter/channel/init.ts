@@ -21,6 +21,7 @@ export function initChannels() {
       try {
         await getStateManager().setOpenChannel(evt.detail.name);
       } catch (err) {
+        slog.error("Setting open channel error:", ["err", err]);
         getView().failEvent(evt, "Failed to select channel");
       }
       getView().completeEvent(evt);

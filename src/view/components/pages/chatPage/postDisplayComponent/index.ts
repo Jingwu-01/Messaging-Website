@@ -75,7 +75,7 @@ export class PostDisplay extends HTMLElement {
       let postToUpsert = update.affectedPosts[0];
       let postComp: PostComponent;
       slog.info(
-        "displayPosts: insert",
+        "displayPosts: insert or modify",
         ["postToUpsert.parent", postToUpsert.parent],
         ["postToUpsert", postToUpsert],
       );

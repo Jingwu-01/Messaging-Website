@@ -179,6 +179,7 @@ export class PostEditor extends HTMLElement {
       `${JSON.stringify(createPostEvent.detail)}`,
     ]);
     document.dispatchEvent(createPostEvent);
+    this.postInput.value = "";
   }
 
   reactionMarkdown() {
@@ -213,6 +214,7 @@ export class PostEditor extends HTMLElement {
   replyToTopLevel(event: MouseEvent) {
     this.topReplyEl?.append(this);
     this.parentPath = "";
+    this.postInput.value = "";
   }
 
   printParentEl() {
