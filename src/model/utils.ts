@@ -13,6 +13,7 @@ import WorkspaceResponseSchema from "../../schemas/workspaceResponse.json";
 import ChannelResponseSchema from "../../schemas/channelResponse.json";
 import ExtensionResponseSchema from "../../schemas/extensionResponse.json";
 import { ModelReactionUpdate, PatchBody } from "./modelTypes";
+import { slog } from "../slog";
 
 /**
  * Wrapper around fetch to return a Promise that resolves to the desired
@@ -26,20 +27,15 @@ import { ModelReactionUpdate, PatchBody } from "./modelTypes";
  *                 or the response is not valid JSON
  */
 export function typedFetch<T>(url: string, options?: RequestInit): Promise<T> {
+  slog.info("typedFetch: was called");
   return fetch(url, options).then((response: Response) => {
+    slog.info("typedFetch: received response");
     if (!response.ok) {
+      slog.info("typedFetch: !response.ok");
       throw new Error(response.statusText);
     }
-
-    // Return decoded JSON if there is a response body or null otherwise
-    const contentLength = response.headers.get("Content-Length");
-    if (contentLength && contentLength !== "0") {
-      // Type of unmarshaled response needs to be validated
-      return response.json() as Promise<T>;
-    } else {
-      // No content
-      throw new Error(`unexpected empty response`);
-    }
+    // Type of unmarshaled response needs to be validated
+    return response.json() as Promise<T>;
   });
 }
 
@@ -132,7 +128,7 @@ export function getPatchBody(reactionUpdate: ModelReactionUpdate): Array<PatchBo
 
 // Data validation
 
-const ajv = new Ajv();
+export const ajv = new Ajv();
 
 export const validateCreateResponse = ajv.compile(CreateResponseSchema);
 
