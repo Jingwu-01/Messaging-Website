@@ -29,6 +29,7 @@ export type ViewPost = {
   parent: string | undefined;
   postIdx: number | undefined;
   name: string;
+  starredIndex: number | undefined;
 };
 
 export type StarExtension = {

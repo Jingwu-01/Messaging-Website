@@ -18,6 +18,10 @@ interface PostDisplayListener {
   removePostDisplay(): void;
 }
 
+interface StarredPostsListener {
+  
+}
+
 /**
  * Interface for post listeners
  * A component that is a PostListener will receive
@@ -30,7 +34,6 @@ interface PostListener {
    */
   displayPosts(posts: ViewPostUpdate): void;
   moveReplyPostEditorTo(postEl: PostComponent): void;
-  moveEditPostEditorTo(postEl: PostComponent): void;
 }
 
 /**
@@ -156,6 +159,8 @@ export class View {
   private postDisplayListeners: Array<PostDisplayListener> =
     new Array<PostDisplayListener>();
 
+  private starredPostsListeners: Array<StarredPostsListener> = new Array<StarredPostsListener>();
+
   /**
    * A 2D map, where every function in eventCompletedListeners.get(event_id)
    * should get called when the Adapter finishes handling the event with event_id.
@@ -214,18 +219,12 @@ export class View {
     });
   }
 
-  moveEditPostEditorTo(postElement: PostComponent) {
-    this.postListeners.forEach((listener) => {
-      listener.moveEditPostEditorTo(postElement);
-    });
-  }
-
   /**
    * @param listener Will receive updates when posts change
    */
   addPostListener(listener: PostListener) {
     this.postListeners.push(listener);
-    // TODO: change this, is just a placeholder for now.
+    // TODO: no support currently for adding multiple posts at once.
     let viewPostUpdate: ViewPostUpdate = {
       allPosts: this.posts,
       op: "add",
@@ -256,7 +255,7 @@ export class View {
     // add a function call to modify this.posts to contain the new post
     // do the listener thing
     // temporary check for testing
-    if (posts.op !== "insert") {
+    if (posts.op === "add") {
       this.posts = posts.allPosts;
     }
     this.postListeners.forEach((listener) => {
@@ -377,6 +376,34 @@ export class View {
     slog.info("View: removePostDisplayListener, after removing listener", [
       "this.postDisplayListeners",
       this.postDisplayListeners,
+    ]);
+  }
+
+  addStarredPostsListener(listener: StarredPostsListener) {
+    this.starredPostsListeners.push(listener);
+    slog.info(
+      "View: addStarredPostsListener",
+      ["listener", listener],
+      ["this.postDisplayListeners", this.starredPostsListeners]
+    );
+  }
+
+  removeStarredPostsListener(listener: StarredPostsListener) {
+    let index = this.starredPostsListeners.indexOf(listener);
+    slog.info(
+      "View: removeStarredPostsListener",
+      ["listener", listener],
+      ["index", index]
+    );
+    if (index < 0) {
+      throw new ReferenceError(
+        "Attempted to remove a post display listener that was not subscribed"
+      );
+    }
+    this.starredPostsListeners.splice(index, 1);
+    slog.info("View: removePostDisplayListener, after removing listener", [
+      "this.postDisplayListeners",
+      this.starredPostsListeners,
     ]);
   }
 
@@ -510,6 +537,24 @@ export class View {
       });
     } else {
       throw Error(`No dialog with ID ${dialog_id}`);
+    }
+  }
+
+  openStarredPostsDialog() {
+    const starredPostsComponent = document.querySelector(
+      "starred-posts-component"
+    );
+    if (!(starredPostsComponent instanceof HTMLElement)) {
+      throw Error("cannot find starred-posts-component HTMLElement");
+    }
+    const starredPostsComponentShadowRoot = starredPostsComponent.shadowRoot;
+    if (starredPostsComponentShadowRoot) {
+      const starredPostDialog = starredPostsComponentShadowRoot.querySelector(
+        "starred-posts-dialog"
+      );
+      if (starredPostDialog instanceof HTMLDialogElement) {
+        starredPostDialog.showModal();
+      }
     }
   }
 

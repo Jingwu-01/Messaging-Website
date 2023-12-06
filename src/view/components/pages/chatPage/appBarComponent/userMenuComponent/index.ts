@@ -6,6 +6,8 @@ import { getView } from "../../../../../view";
  */
 class UserMenuComponent extends HTMLElement {
   private controller: AbortController | null = null;
+  private starredPostsButton: HTMLElement; 
+  private logoutButton: HTMLElement | null; 
 
   constructor() {
     super();
@@ -18,6 +20,20 @@ class UserMenuComponent extends HTMLElement {
       throw Error("Could not find template #user-menu-component-template");
     }
     this.shadowRoot?.append(template.content.cloneNode(true));
+
+    const starredPostsButton = this.shadowRoot?.querySelector("#my-starred-posts-button"); 
+    if (!(starredPostsButton instanceof HTMLElement)){
+      throw Error("cannot find #my-starred-posts-button HTMLElement")
+    } else {
+      this.starredPostsButton = starredPostsButton
+    }
+
+    const logoutButton = this.shadowRoot?.querySelector("#logout-button");
+    if (!(logoutButton instanceof HTMLElement)) {
+      throw Error("cannot find #logout-button HTMLElement");
+    } else {
+      this.logoutButton = logoutButton
+    }
   }
 
   /**
@@ -25,19 +41,25 @@ class UserMenuComponent extends HTMLElement {
    */
   connectedCallback(): void {
     // Tell the view that this component wants to listen to user updates
+    this.starredPostsButton.style.display = 'none';
     getView().addUserListener(this);
+    getView().addPostDisplayListener(this);
 
-    // Add logout listener to logout button
-    const logoutButton = this.shadowRoot?.querySelector("#logout-button");
-    if (!(logoutButton instanceof HTMLElement)) {
-      throw new Error("Logout not HTMLElement");
-    }
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
-    logoutButton.addEventListener(
+
+    // Add logout listener to logout button
+    this.logoutButton?.addEventListener(
       "click",
       this.handleLogout.bind(this),
       options
+    );
+
+    // Add starredPosts listener to starredPostsButton
+    this.starredPostsButton?.addEventListener(
+      "click",
+      this.handleStarredPosts.bind(this),
+      options,
     );
   }
 
@@ -52,7 +74,14 @@ class UserMenuComponent extends HTMLElement {
     document.dispatchEvent(logoutEvent);
   }
 
+
+  handleStarredPosts(event: MouseEvent) {
+    event.preventDefault();
+    getView().openStarredPostsDialog();
+  }
+
   disconnectedCallback(): void {
+    getView().removePostDisplayListener(this);
     this.controller?.abort();
     this.controller = null;
   }
@@ -75,6 +104,14 @@ class UserMenuComponent extends HTMLElement {
     if (user_text_el instanceof HTMLElement) {
       user_text_el.innerHTML = user?.username ?? "";
     }
+  }
+
+  displayPostDisplay() {
+    this.starredPostsButton.style.display = "block";
+  }
+
+  removePostDisplay() {
+    this.starredPostsButton.style.display = "none";
   }
 }
 

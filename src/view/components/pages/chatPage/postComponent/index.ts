@@ -1,7 +1,6 @@
 import { slog } from "../../../../../slog";
 import { ReactionData, StarExtension, ViewPost } from "../../../../datatypes";
 import { getView } from "../../../../view";
-import EditPostButtonComponent from "../../../pieces/editComponent";
 import ReactionComponent from "../../../pieces/reactionComponent";
 import ReplyButtonComponent from "../../../pieces/replyButtonComponent";
 import StarButtonComponent from "../../../pieces/starButtonComponent";
@@ -98,6 +97,18 @@ export class PostComponent extends HTMLElement {
     );
   }
 
+  static get observedAttributes(): string[] {
+    return ["starred"];
+  }
+
+  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+    if (name === "starred") {
+      if (newValue === "true") {
+        this.replyButton.style.display = 'none';
+      }
+    }
+  }
+
   disconnectedCallback() {
     this.controller?.abort();
     this.controller = null;
@@ -108,11 +119,13 @@ export class PostComponent extends HTMLElement {
     // // this call should technically be before the previous one
     // getView().replacePostEditor(postEditor);
     // this.postBody.parentNode?.insertBefore(postEditor, this.postBody.nextSibling);
+    const postAll = this.shadowRoot?.querySelector("#post-all");
+    if (!(postAll instanceof HTMLElement)){
+      throw Error("cannot find #post-all HTMLElement")
+    } 
+    postAll.style.backgroundColor = "#d9d9d9"; 
+    postAll.style.borderRadius = "5px"; 
     getView().moveReplyPostEditorTo(this);
-  }
-
-  addEditPostEditor(event: MouseEvent) {
-    getView().moveEditPostEditorTo(this);
   }
 
   // Sets the content of this post equal to viewPost

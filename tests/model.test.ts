@@ -1,76 +1,34 @@
-// import { getModel } from "../src/model/model";
+import { typedFetch } from "../src/model/utils";
+import { slog } from "../src/slog";
+import { fetchFunc } from "./mockfetch";
 
-// const owldbModel = getModel();
+beforeAll(async () => {
+  process.env.DATABASE_HOST = "http://localhost:4318";
+  process.env.DATABASE_PATH = "/v1/p2group50";
+  process.env.AUTH_PATH = "auth";
+  (global as any).fetch = fetchFunc;
+});
 
-// // let openChannel
+test('Successful typedfetch case', async () => {
+  const data = await typedFetch<string>(`${process.env.DATABASE_HOST}${process.env.DATABASE_PATH}/fetchSuccessful`);
+  expect(data).toBe('some body');
+});
 
-// beforeAll(async () => {
-//   process.env.DATABASE_HOST = "http://localhost:4318";
-//   process.env.DATABASE_PATH = "/v1/p2group50_3";
-//   process.env.AUTH_PATH = "auth";
-// });
+test('Failed typedfetch case', async () => {
+  expect.assertions(1);
+  try {
+    await typedFetch<string>(`${process.env.DATABASE_HOST}${process.env.DATABASE_PATH}/fetchError`);
+  } catch (e) {
+    expect(e).toMatch('failed fetch');
+  }
+});
 
-// // Test all posts.
-// test("Get all posts", async () => {
-//   // This always fails because 'fetch' is not recognized?
-//   // const data = await owldbModel.getPosts("ws1", "ch1", "Uuc5ABwJhqd4gDd");
-//   // expect(data).toBe([]);
-// });
-
-// test("Get all workspaces", async () => {
-//   // TODO: note that, for all requests below, the owldb server enforces
-//   // that the user tells it that it's receiving 'application/json' in the
-//   // header; we can probably put this in the typedModelFetch as
-//   // a default header as we're only ever sending JSON to the owldb server
-//   // anyways.
-
-//   // Create workspace
-//   await owldbModel.login("user1");
-//   console.log(owldbModel.getToken());
-//   await owldbModel.typedModelFetch(`/getallworkspace1`, {
-//     method: "PUT",
-//     body: JSON.stringify({}),
-//     headers: {
-//       accept: "application/json",
-//       "Content-Type": "application/json",
-//     },
-//   });
-//   console.log(owldbModel.getToken());
-//   await owldbModel.typedModelFetch(`/getallworkspace1/channels/`, {
-//     method: "PUT",
-//     headers: {
-//       accept: "application/json",
-//     },
-//   });
-//   await owldbModel.typedModelFetch(`/getallworkspace2`, {
-//     method: "PUT",
-//     body: JSON.stringify({}),
-//     headers: {
-//       accept: "application/json",
-//       "Content-Type": "application/json",
-//     },
-//   });
-//   await owldbModel.typedModelFetch(`/getallworkspace2/channels/`, {
-//     method: "PUT",
-//     headers: {
-//       accept: "application/json",
-//     },
-//   });
-//   await owldbModel.typedModelFetch(`/getallworkspace2/channels/chan1`, {
-//     method: "PUT",
-//     body: JSON.stringify({}),
-//     headers: {
-//       accept: "application/json",
-//       "Content-Type": "application/json",
-//     },
-//   });
-//   let result = await owldbModel.getAllWorkspaces();
-//   expect(result.size).toBe(2);
-// });
-
-// afterAll(async () => {
-//   // TODO: fix the bug on logout (I think?) where we get an empty response; this is fine
-//   // *** TYPEDFETCH ASSUMES THAT AN EMPTY RESPONSE IS AN ERROR. OWLDB SOMETIMES THROWS AN EMPTY RESPONSE (correctly)
-//   // SO KEEP IN MIND *TO MODIFY* TYPED FETCH IN THESE CASES
-//   owldbModel.logout().then(() => console.log(owldbModel.getToken()));
+// test('Empty content typedfetch', async () => {
+//   slog.info("test", ["JSON.parse('')", Promise.resolve(JSON.parse(""))]);
+//   expect.assertions(1);
+//   try {
+//     await typedFetch<string>(`${process.env.DATABASE_HOST}${process.env.DATABASE_PATH}/fetchNoContent`);
+//   } catch (e) {
+//     expect(e).toMatch('Error parsing JSON input');
+//   }
 // });

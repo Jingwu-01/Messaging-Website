@@ -25,7 +25,7 @@ class HoverComponent extends HTMLElement {
 
     // Add a hover listener to the anchor element that opens the hover component.
     this.shadowRoot
-      ?.querySelector("#popover")
+      ?.querySelector("#hovered-content")
       ?.addEventListener("mouseover", (event: Event) => {
         let popover_el = this.shadowRoot?.querySelector("#popover");
         popover_el?.setAttribute("open", "true");
@@ -34,7 +34,7 @@ class HoverComponent extends HTMLElement {
     // Add a hover listener to the hover component.
     // Make it so that the document doesn't close the hover.
     this.shadowRoot
-      ?.querySelector("#popover")
+      ?.querySelector("#hovered-content")
       ?.addEventListener("mouseout", (event: Event) => {
         let popover_el = this.shadowRoot?.querySelector("#popover");
         popover_el?.setAttribute("open", "false");
