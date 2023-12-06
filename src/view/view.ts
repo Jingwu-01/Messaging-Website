@@ -17,6 +17,10 @@ interface PostDisplayListener {
   removePostDisplay(): void;
 }
 
+interface StarredPostsListener {
+  
+}
+
 /**
  * Interface for post listeners
  * A component that is a PostListener will receive
@@ -134,6 +138,8 @@ export class View {
    */
   private postDisplayListeners: Array<PostDisplayListener> =
     new Array<PostDisplayListener>();
+
+  private starredPostsListeners: Array<StarredPostsListener> = new Array<StarredPostsListener>();
 
   /**
    * A 2D map, where every function in eventCompletedListeners.get(event_id)
@@ -347,6 +353,34 @@ export class View {
     slog.info("View: removePostDisplayListener, after removing listener", [
       "this.postDisplayListeners",
       this.postDisplayListeners,
+    ]);
+  }
+
+  addStarredPostsListener(listener: StarredPostsListener) {
+    this.starredPostsListeners.push(listener);
+    slog.info(
+      "View: addStarredPostsListener",
+      ["listener", listener],
+      ["this.postDisplayListeners", this.starredPostsListeners]
+    );
+  }
+
+  removeStarredPostsListener(listener: StarredPostsListener) {
+    let index = this.starredPostsListeners.indexOf(listener);
+    slog.info(
+      "View: removeStarredPostsListener",
+      ["listener", listener],
+      ["index", index]
+    );
+    if (index < 0) {
+      throw new ReferenceError(
+        "Attempted to remove a post display listener that was not subscribed"
+      );
+    }
+    this.starredPostsListeners.splice(index, 1);
+    slog.info("View: removePostDisplayListener, after removing listener", [
+      "this.postDisplayListeners",
+      this.starredPostsListeners,
     ]);
   }
 

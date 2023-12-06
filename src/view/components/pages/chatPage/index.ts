@@ -36,6 +36,7 @@ export class ChatPageComponent extends HTMLElement {
   connectedCallback() {
     slog.info("ChatPageComponent: connectedCallback was called");
     getView().addPostDisplayListener(this);
+    getView().addStarredPostsListener(this);
   }
 
   /**
@@ -44,6 +45,7 @@ export class ChatPageComponent extends HTMLElement {
   disconnectedCallback() {
     slog.info("ChatPageComponent: disconnectedCallback was called");
     getView().removePostDisplayListener(this);
+    getView().removeStarredPostsListener(this);
   }
 
   /**

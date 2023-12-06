@@ -6,7 +6,7 @@ import { getView } from "../../../../../view";
  */
 class UserMenuComponent extends HTMLElement {
   private controller: AbortController | null = null;
-  private starredPostsButton: HTMLElement | null; 
+  private starredPostsButton: HTMLElement; 
   private logoutButton: HTMLElement | null; 
 
   constructor() {
@@ -41,7 +41,9 @@ class UserMenuComponent extends HTMLElement {
    */
   connectedCallback(): void {
     // Tell the view that this component wants to listen to user updates
+    this.starredPostsButton.style.display = 'none';
     getView().addUserListener(this);
+    getView().addPostDisplayListener(this);
 
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
@@ -79,6 +81,7 @@ class UserMenuComponent extends HTMLElement {
   }
 
   disconnectedCallback(): void {
+    getView().removePostDisplayListener(this);
     this.controller?.abort();
     this.controller = null;
   }
@@ -101,6 +104,14 @@ class UserMenuComponent extends HTMLElement {
     if (user_text_el instanceof HTMLElement) {
       user_text_el.innerHTML = user?.username ?? "";
     }
+  }
+
+  displayPostDisplay() {
+    this.starredPostsButton.style.display = "block";
+  }
+
+  removePostDisplay() {
+    this.starredPostsButton.style.display = "none";
   }
 }
 
