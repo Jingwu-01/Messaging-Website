@@ -1,4 +1,5 @@
 import { typedFetch } from "../src/model/utils";
+import { slog } from "../src/slog";
 import { fetchFunc } from "./mockfetch";
 
 beforeAll(async () => {
@@ -8,9 +9,26 @@ beforeAll(async () => {
   (global as any).fetch = fetchFunc;
 });
 
-test('Typical typedfetch case', () => {
-  return typedFetch<string>(`${process.env.DATABASE_HOST}${process.env.DATABASE_PATH}/fetchSuccessful`)
-  .then(data => {
-    expect(data).toBe('some body');
-  })
+test('Successful typedfetch case', async () => {
+  const data = await typedFetch<string>(`${process.env.DATABASE_HOST}${process.env.DATABASE_PATH}/fetchSuccessful`);
+  expect(data).toBe('some body');
 });
+
+test('Failed typedfetch case', async () => {
+  expect.assertions(1);
+  try {
+    await typedFetch<string>(`${process.env.DATABASE_HOST}${process.env.DATABASE_PATH}/fetchError`);
+  } catch (e) {
+    expect(e).toMatch('failed fetch');
+  }
+});
+
+// test('Empty content typedfetch', async () => {
+//   slog.info("test", ["JSON.parse('')", Promise.resolve(JSON.parse(""))]);
+//   expect.assertions(1);
+//   try {
+//     await typedFetch<string>(`${process.env.DATABASE_HOST}${process.env.DATABASE_PATH}/fetchNoContent`);
+//   } catch (e) {
+//     expect(e).toMatch('Error parsing JSON input');
+//   }
+// });

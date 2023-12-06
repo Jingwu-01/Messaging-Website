@@ -13,6 +13,7 @@ import WorkspaceResponseSchema from "../../schemas/workspaceResponse.json";
 import ChannelResponseSchema from "../../schemas/channelResponse.json";
 import ExtensionResponseSchema from "../../schemas/extensionResponse.json";
 import { ModelReactionUpdate, PatchBody } from "./modelTypes";
+import { slog } from "../slog";
 
 /**
  * Wrapper around fetch to return a Promise that resolves to the desired
@@ -26,8 +27,11 @@ import { ModelReactionUpdate, PatchBody } from "./modelTypes";
  *                 or the response is not valid JSON
  */
 export function typedFetch<T>(url: string, options?: RequestInit): Promise<T> {
+  slog.info("typedFetch: was called");
   return fetch(url, options).then((response: Response) => {
+    slog.info("typedFetch: received response");
     if (!response.ok) {
+      slog.info("typedFetch: !response.ok");
       throw new Error(response.statusText);
     }
     // Type of unmarshaled response needs to be validated
