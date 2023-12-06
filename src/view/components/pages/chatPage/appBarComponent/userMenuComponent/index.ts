@@ -75,13 +75,7 @@ class UserMenuComponent extends HTMLElement {
 
   handleStarredPosts(event: MouseEvent) {
     event.preventDefault();
-    
-    const starredPostsDialog = this.shadowRoot?.querySelector("#starred-posts-dialog")
-    if (!(starredPostsDialog instanceof HTMLDialogElement)){
-        throw Error("cannot find #starred-posts-dialog HTMLElement")
-    } else {
-      starredPostsDialog.showModal(); 
-    }
+    getView().openStarredPostsDialog();
   }
 
   disconnectedCallback(): void {

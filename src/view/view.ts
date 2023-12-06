@@ -29,7 +29,6 @@ interface PostListener {
    */
   displayPosts(posts: ViewPostUpdate): void;
   moveReplyPostEditorTo(postEl: PostComponent): void;
-  moveEditPostEditorTo(postEl: PostComponent): void;
 }
 
 /**
@@ -187,12 +186,6 @@ export class View {
   moveReplyPostEditorTo(postElement: PostComponent) {
     this.postListeners.forEach((listener) => {
       listener.moveReplyPostEditorTo(postElement);
-    });
-  }
-
-  moveEditPostEditorTo(postElement: PostComponent) {
-    this.postListeners.forEach((listener) => {
-      listener.moveEditPostEditorTo(postElement);
     });
   }
 
@@ -437,24 +430,23 @@ export class View {
     }
   }
 
-  // Todo: This doesn't work. 
-  // openStarredPostsDialog() {
-  //   const starredPostsComponent = document.querySelector(
-  //     "starred-posts-component"
-  //   );
-  //   if (!(starredPostsComponent instanceof HTMLElement)) {
-  //     throw Error("cannot find starred-posts-component HTMLElement");
-  //   }
-  //   const starredPostsComponentShadowRoot = starredPostsComponent.shadowRoot;
-  //   if (starredPostsComponentShadowRoot) {
-  //     const starredPostDialog = starredPostsComponentShadowRoot.querySelector(
-  //       "starred-posts-dialog"
-  //     );
-  //     if (starredPostDialog instanceof HTMLElement) {
-  //       starredPostDialog.style.display = "block";
-  //     }
-  //   }
-  // }
+  openStarredPostsDialog() {
+    const starredPostsComponent = document.querySelector(
+      "starred-posts-component"
+    );
+    if (!(starredPostsComponent instanceof HTMLElement)) {
+      throw Error("cannot find starred-posts-component HTMLElement");
+    }
+    const starredPostsComponentShadowRoot = starredPostsComponent.shadowRoot;
+    if (starredPostsComponentShadowRoot) {
+      const starredPostDialog = starredPostsComponentShadowRoot.querySelector(
+        "starred-posts-dialog"
+      );
+      if (starredPostDialog instanceof HTMLDialogElement) {
+        starredPostDialog.showModal();
+      }
+    }
+  }
 
   getUser() {
     return this.user;

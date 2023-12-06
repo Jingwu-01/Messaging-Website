@@ -127,10 +127,6 @@ export class StarredPosts extends HTMLElement {
         return;
     }
     
-    moveEditPostEditorTo(postEl: PostComponent) {
-        // should never be called in theory
-        return;
-    }
 }
 
 export default StarredPosts;

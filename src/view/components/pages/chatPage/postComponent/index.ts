@@ -1,7 +1,6 @@
 import { slog } from "../../../../../slog";
 import { ReactionData, StarExtension, ViewPost } from "../../../../datatypes";
 import { getView } from "../../../../view";
-import EditPostButtonComponent from "../../../pieces/editComponent";
 import ReactionComponent from "../../../pieces/reactionComponent";
 import ReplyButtonComponent from "../../../pieces/replyButtonComponent";
 import StarButtonComponent from "../../../pieces/starButtonComponent";
@@ -121,10 +120,6 @@ export class PostComponent extends HTMLElement {
     // getView().replacePostEditor(postEditor);
     // this.postBody.parentNode?.insertBefore(postEditor, this.postBody.nextSibling);
     getView().moveReplyPostEditorTo(this);
-  }
-
-  addEditPostEditor(event: MouseEvent) {
-    getView().moveEditPostEditorTo(this);
   }
 
   // Sets the content of this post equal to viewPost
