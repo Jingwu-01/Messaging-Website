@@ -40,9 +40,13 @@ export default function postComponentInit() {
         edit-post-button-component[data-visible="false"]{
             display: none
         }
+        #post-all{
+            background-color: null;
+            border-radius: 0px;
+        }
 
     </style>
-    <section>
+    <section id="post-all">
         <header id="post-header">
             <p id="post-user-text"></p>
             <div id="hover-wrapper">

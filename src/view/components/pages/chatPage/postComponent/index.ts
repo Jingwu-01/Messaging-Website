@@ -119,6 +119,12 @@ export class PostComponent extends HTMLElement {
     // // this call should technically be before the previous one
     // getView().replacePostEditor(postEditor);
     // this.postBody.parentNode?.insertBefore(postEditor, this.postBody.nextSibling);
+    const postAll = this.shadowRoot?.querySelector("#post-all");
+    if (!(postAll instanceof HTMLElement)){
+      throw Error("cannot find #post-all HTMLElement")
+    } 
+    postAll.style.backgroundColor = "#d9d9d9"; 
+    postAll.style.borderRadius = "5px"; 
     getView().moveReplyPostEditorTo(this);
   }
 
