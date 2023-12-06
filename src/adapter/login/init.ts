@@ -13,6 +13,7 @@ export function initLogin() {
       let model = getModel();
       let view = getView();
       let stateManager = getStateManager();
+      view.setStateLoadingUntil(["user"], event);
       try {
         // Log in with the input username and then display it
         await model.login(event.detail.username);
@@ -34,6 +35,6 @@ export function initLogin() {
         return;
       }
       getView().completeEvent(event);
-    },
+    }
   );
 }

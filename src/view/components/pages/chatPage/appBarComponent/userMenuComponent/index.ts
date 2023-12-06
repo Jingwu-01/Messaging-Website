@@ -14,7 +14,7 @@ class UserMenuComponent extends HTMLElement {
 
     this.attachShadow({ mode: "open" });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#user-menu-component-template",
+      "#user-menu-component-template"
     );
     if (!template) {
       throw Error("Could not find template #user-menu-component-template");
@@ -52,7 +52,7 @@ class UserMenuComponent extends HTMLElement {
     this.logoutButton?.addEventListener(
       "click",
       this.handleLogout.bind(this),
-      options,
+      options
     );
 
     // Add starredPosts listener to starredPostsButton
@@ -69,7 +69,7 @@ class UserMenuComponent extends HTMLElement {
   handleLogout(event: MouseEvent) {
     event.preventDefault();
     const logoutEvent = new CustomEvent("logoutEvent", {
-      detail: {},
+      detail: { id: new String(Date.now()) },
     });
     document.dispatchEvent(logoutEvent);
   }
@@ -94,7 +94,7 @@ class UserMenuComponent extends HTMLElement {
   attributeChangedCallback(
     name: string,
     oldValue: string,
-    newValue: string,
+    newValue: string
   ): void {}
 
   // called by view whenever there is a change in the logged-in user

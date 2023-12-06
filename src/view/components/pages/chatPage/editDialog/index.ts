@@ -125,7 +125,7 @@ export class EditDialogComponent extends HTMLElement {
       let new_item_element = document.createElement("div");
       new_item_element.innerHTML = `
         <p>${item_name}</p>
-        <loading-button-component id="remove-item-${index}">
+        <loading-button-component disable-if-state-loading="workspaces channels" id="remove-item-${index}">
           <iconify-icon icon="material-symbols:delete" slot="content"></iconify-icon>
         </loading-button-component>
       `;
@@ -141,15 +141,6 @@ export class EditDialogComponent extends HTMLElement {
         // get the event we want to send to the adapter
         const event = this.getRemoveEvent(item_name);
         if (event) {
-          // disable buttons to handle concurrency.
-          this.addItemButton.setAttribute(
-            "disabled-until-event",
-            event.detail.id
-          );
-          this.saveAndCloseButton.setAttribute(
-            "disabled-until-event",
-            event.detail.id
-          );
           remove_button.setAttribute("loading-until-event", event.detail.id);
           // dispatch the event.
           document.dispatchEvent(event);
@@ -171,10 +162,6 @@ export class EditDialogComponent extends HTMLElement {
     if (event) {
       this.addItemInput.value = "";
       this.addItemButton.setAttribute("loading-until-event", event.detail.id);
-      this.saveAndCloseButton.setAttribute(
-        "disabled-until-event",
-        event.detail.id
-      );
       document.dispatchEvent(event);
     }
   }

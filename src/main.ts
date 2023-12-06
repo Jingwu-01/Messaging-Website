@@ -16,7 +16,7 @@ import {
 import { LoginEvent } from "./view/datatypes";
 import { initView } from "./view/init";
 import { ModelPostEvent, PostsEvent } from "./model/modelTypes";
-import setupTestDb from "../tests/setup-test-db"
+import { setupBasicApp } from "../tests/setup-additional-state";
 
 /**
  * Declare names and types of environment variables.
@@ -82,8 +82,8 @@ function main(): void {
 
   // Set up test DB.
   // TODO: Remove before submitting
-  setupTestDb();
-  // setupBasicApp();
+  // setupTestDb();
+  setupBasicApp();
 
   initAdapter();
   initView();

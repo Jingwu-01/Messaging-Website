@@ -1,5 +1,6 @@
 import { slog } from "../../../../../slog";
 import {
+  StateName,
   ViewChannel,
   ViewChannelUpdate,
   ViewWorkspace,
@@ -82,6 +83,8 @@ export class ChannelSidebar extends HTMLElement {
     // We need this so that we can listen for when a workspace is closed.
     // Since if the workspace is closed, we shouldn't render the "Edit Channels" button.
     getView().addWorkspaceListener(this);
+    // We need this to disable our channel buttons when channels are loading.
+    getView().addLoadingListener(this);
   }
 
   displayOpenChannel(channel: ViewChannel | null) {
@@ -150,4 +153,22 @@ export class ChannelSidebar extends HTMLElement {
 
   // We don't care about the actual workspaces.
   displayWorkspaces(update: ViewWorkspaceUpdate) {}
+
+  // Disable all of our buttons when our channels are loading.
+  onLoading(state: StateName) {
+    if (state == "channels") {
+      this.channelList.querySelectorAll("button").forEach((button) => {
+        button.disabled = true;
+      });
+    }
+  }
+
+  // Re-enable all of our buttons when our channels stop loading.
+  onEndLoading(state: StateName) {
+    if (state == "channels") {
+      this.channelList.querySelectorAll("button").forEach((button) => {
+        button.disabled = false;
+      });
+    }
+  }
 }

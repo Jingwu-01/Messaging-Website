@@ -1,9 +1,6 @@
 import { ModelChannel } from "../model/channel";
 import { getModel } from "../model/model";
-import { CreateResponse } from "../../types/createResponse";
 import { ModelWorkspace } from "../model/workspace";
-import { slog } from "../slog";
-import { CreatePostEvent } from "../view/datatypes";
 import { getView } from "../view/view";
 import { PostsManager } from "./postsManager";
 import { PostResponse } from "../../types/postResponse";
@@ -41,7 +38,7 @@ class StateManager {
    * not able to be set.
    */
   async setOpenWorkspace(
-    workspaceName: string | null,
+    workspaceName: string | null
   ): Promise<ModelWorkspace | null> {
     // Close workspace if we passed a null.
     if (workspaceName == null) {
@@ -70,7 +67,7 @@ class StateManager {
   }
 
   async setOpenChannel(
-    channelName: string | null,
+    channelName: string | null
   ): Promise<ModelChannel | null> {
     // Unsub from old channel
     if (this.openChannel != null) {
@@ -99,24 +96,6 @@ class StateManager {
     }
   }
 
-  createPost(postData: CreatePostEvent) {
-    // TODO: consider if we want to enforce that a channel are open in order to send a message?
-    // no, we don't, but no time.
-    let channel = this.getOpenChannel();
-    if (channel === null) {
-      throw new Error("Cannot add a post: no open channel");
-    }
-    channel
-      .createPost(postData.msg, postData.parent, channel.path)
-      .then((result: CreateResponse) => {
-        slog.info("createPost: added to the database");
-      })
-      .catch((error: unknown) => {
-        // TODO: notify view that their post failed for whatever reason.
-        throw Error("createPost: creating the post failed");
-      });
-  }
-
   getOpenWorkspaceName() {
     return this.openWorkspaceName;
   }
@@ -140,7 +119,6 @@ class StateManager {
   getLoggedInUser(): string | null {
     return this.loggedInUser;
   }
-
 }
 
 // state manager

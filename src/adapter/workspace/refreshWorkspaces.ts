@@ -1,4 +1,5 @@
 import { getModel } from "../../model/model";
+import getStateManager from "../../state-manager";
 import { getView } from "../../view/view";
 import modelToViewWorkspaces from "./modelToViewWorkspaces";
 
@@ -8,10 +9,14 @@ import modelToViewWorkspaces from "./modelToViewWorkspaces";
  */
 export default async function refreshWorkspaces(evt: Event) {
   const workspaces = await getModel().getAllWorkspaces();
+  // If the open workspace doesn't exist anymore, then close the open workspace.
+  let open_workspace_name = getStateManager().getOpenWorkspace()?.getName();
+  if (open_workspace_name && !workspaces.has(open_workspace_name)) {
+    getStateManager().setOpenWorkspace(null);
+  }
   getView().displayWorkspaces({
     allWorkspaces: modelToViewWorkspaces(workspaces),
     op: "replace",
     affectedWorkspaces: modelToViewWorkspaces(workspaces),
-    cause: evt,
   });
 }

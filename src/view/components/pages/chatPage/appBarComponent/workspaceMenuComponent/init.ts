@@ -83,7 +83,7 @@ export default function workspaceMenuComponentInit() {
         No workspaces yet. Click "Edit Workspaces" to add one!
       </div>
       <div class="divider"></div>
-      <loading-button-component id="refresh-workspaces-button" style="border: none; background: none;">
+      <loading-button-component disable-if-state-loading="workspaces" id="refresh-workspaces-button" style="border: none; background: none;">
         <p slot="content">Refresh Workspaces</p>
         <iconify-icon icon="material-symbols:refresh" aria-label="Refresh Workspaces"></iconify-icon>
       </loading-button-component>
@@ -99,7 +99,7 @@ export default function workspaceMenuComponentInit() {
     <span slot="title">Edit Workspaces</span>
   </edit-dialog-component>
 </template>
-`,
+`
   );
 
   customElements.define("workspace-menu-component", WorkspaceMenuComponent);

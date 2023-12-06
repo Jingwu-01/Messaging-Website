@@ -11,11 +11,21 @@ export function initLogout() {
       let model = getModel();
       let view = getView();
       let stateManager = getStateManager();
+      view.setStateLoadingUntil(
+        ["user", "channels", "workspaces", "posts"],
+        event
+      );
       // Log out the current user and reset to the HomePage that requires login.
-      model.logout().then(() => {
-        view.displayUser(null);
-        stateManager.setLoggedInUser(null);
-      });
-    },
+      model
+        .logout()
+        .then(() => {
+          view.displayUser(null);
+          stateManager.setLoggedInUser(null);
+          view.completeEvent(event);
+        })
+        .catch(() => {
+          view.failEvent(event, "Failed to log out");
+        });
+    }
   );
 }

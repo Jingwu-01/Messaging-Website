@@ -33,8 +33,8 @@ export type ViewPost = {
 };
 
 export type StarExtension = {
-  "p2group50": Array<string>;
-}
+  p2group50: Array<string>;
+};
 /**
  * Update sent by the Adapter to the view when the workspaces change
  */
@@ -53,10 +53,6 @@ export type ViewWorkspaceUpdate = {
    * List of all workspaces affected by this update
    */
   affectedWorkspaces: Array<ViewWorkspace>;
-  /**
-   * The event that caused this update to be sent.
-   */
-  cause: Event;
 };
 
 /**
@@ -77,10 +73,6 @@ export type ViewChannelUpdate = {
    * List of all channels affected by this update
    */
   affectedChannels: Array<ViewWorkspace>;
-  /**
-   * The event that caused this update to be sent.
-   */
-  cause: Event;
 };
 
 /* ReactionData is have fields including smiles, frown, like and celebrate*/
@@ -128,7 +120,9 @@ export type LoginEvent = {
 /**
  * Sent to the Adapter when the logout button is pressed
  */
-export type LogoutEvent = {};
+export type LogoutEvent = {
+  id: string;
+};
 
 /**
  * Sent to the Adapter when a workspace is created
@@ -220,3 +214,5 @@ export interface EventWithId extends CustomEvent {
     [key: string]: any;
   };
 }
+
+export type StateName = "user" | "posts" | "channels" | "workspaces";

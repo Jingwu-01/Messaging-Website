@@ -18,6 +18,7 @@ export function initChannels() {
     "channelSelected",
     async function (evt: CustomEvent<SelectChannelEvent>) {
       slog.info("initChannels", ["Channel Selected", `${evt.detail.name}`]);
+      getView().setStateLoadingUntil(["posts", "channels", "workspaces"], evt);
       try {
         await getStateManager().setOpenChannel(evt.detail.name);
       } catch (err) {
@@ -25,7 +26,7 @@ export function initChannels() {
         getView().failEvent(evt, "Failed to select channel");
       }
       getView().completeEvent(evt);
-    },
+    }
   );
 
   // Handle channel creation
@@ -33,7 +34,7 @@ export function initChannels() {
     "channelCreated",
     async (evt: CustomEvent<CreateChannelEvent>) => {
       slog.info(`Channel Created: ${evt.detail.name}`);
-
+      getView().setStateLoadingUntil(["workspaces", "channels", "posts"], evt);
       // Add the channel
       try {
         await getStateManager().getOpenWorkspace()?.addChannel(evt.detail.name);
@@ -49,7 +50,7 @@ export function initChannels() {
         return;
       }
       getView().completeEvent(evt);
-    },
+    }
   );
 
   // Handle channel deletion
@@ -57,10 +58,7 @@ export function initChannels() {
     "channelDeleted",
     async (evt: CustomEvent<DeleteChannelEvent>) => {
       slog.info(`Channel Deleted: ${evt.detail.name}`);
-      // Close the open channel if we're removing it.
-      if (evt.detail.name == getStateManager().getOpenChannel()?.getName()) {
-        getStateManager().setOpenChannel(null);
-      }
+      getView().setStateLoadingUntil(["channels", "posts", "workspaces"], evt);
 
       // Try to remove the channel
       try {
@@ -78,7 +76,7 @@ export function initChannels() {
         return;
       }
       getView().completeEvent(evt);
-    },
+    }
   );
 
   //Handle channel refresh
@@ -86,7 +84,7 @@ export function initChannels() {
     "refreshChannels",
     async (evt: CustomEvent<RefreshChannelsEvent>) => {
       slog.info(`Workspaces refreshed`);
-
+      getView().setStateLoadingUntil(["channels", "posts", "workspaces"], evt);
       try {
         await refreshChannels(evt);
       } catch (error) {
@@ -94,6 +92,6 @@ export function initChannels() {
         return;
       }
       getView().completeEvent(evt);
-    },
+    }
   );
 }

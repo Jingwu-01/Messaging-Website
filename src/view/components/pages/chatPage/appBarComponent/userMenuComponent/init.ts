@@ -11,11 +11,12 @@ export default function init() {
   <style>
     iconify-icon{
       font-size: 48px;
-      color: #11303b;
+      color: white;
     }
     #user-menu-anchor{
       display: flex;
       align-items: center;
+      gap: 10px;
     }
     #user-menu-dropdown p:hover{
       background-color: #2e809c;
@@ -24,11 +25,8 @@ export default function init() {
     #user-menu-dropdown p:active{
       background-color: #0f2831; 
     }
-    iconify-icon:hover {
-      color: black;
-    }
-    iconify-icon:focus-visible {
-      color: black;
+    #user-text {
+      color: white;
     }
     .user-buttons {
       background: none; 
@@ -49,26 +47,29 @@ export default function init() {
       box-shadow: none;
       outline: none;
     }
-
+    #user-menu-dropdown {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
   </style>
-  <menu-component>
-    <div id="user-menu-anchor" slot="anchor-el" display="inline-block">
+  <menu-component id="menu">
+    <button class="user-buttons" id="user-menu-anchor" slot="anchor-el" display="inline-block"> 
       <iconify-icon icon="carbon:user-avatar-filled" aria-label="user avatar" role="img"></iconify-icon>
-      <button class="user-buttons"> 
-        <p id="user-text"></p>
-      </button>
-    </div>
+      <p id="user-text"></p>
+      <iconify-icon icon="gridicons:dropdown" aria-label="user dropdown" role="img"></iconify-icon>
+    </button>
     <div slot="menu-items" id="user-menu-dropdown">
       <button class="user-buttons"> 
         <p id="my-starred-posts-button">My Starred Posts</p>
       </button> 
-      <button class="user-buttons" id="logout-button"> 
-        <p>Log Out</p>
+      <loading-button-component disable-if-state-loading="user" class="user-buttons" id="logout-button" style="background: none; border: none"> 
+        <p slot="content">Log Out</p>
       </button> 
     </div>
   </menu-component>
 </template>
-`,
+`
   );
 
   customElements.define("user-menu-component", UserMenuComponent);
