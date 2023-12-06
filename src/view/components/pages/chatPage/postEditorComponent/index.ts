@@ -179,6 +179,7 @@ export class PostEditor extends HTMLElement {
       `${JSON.stringify(createPostEvent.detail)}`,
     ]);
     document.dispatchEvent(createPostEvent);
+    this.postInput.value = "";
   }
 
   reactionMarkdown() {

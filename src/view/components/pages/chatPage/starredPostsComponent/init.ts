@@ -19,10 +19,12 @@ export default function starredPostsComponentInit() {
           margin-left: 5em;
         }
     </style>
-    <section id="starredposts-wrapper">
-      <section id="posts-container">
+    <dialog> 
+      <section id="starredposts-wrapper">
+        <section id="posts-container">
+        </section>
       </section>
-    </section>
+    </dialog> 
 </template>
 `,
   );
