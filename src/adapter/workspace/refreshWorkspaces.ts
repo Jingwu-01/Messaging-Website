@@ -18,6 +18,5 @@ export default async function refreshWorkspaces(evt: Event) {
     allWorkspaces: modelToViewWorkspaces(workspaces),
     op: "replace",
     affectedWorkspaces: modelToViewWorkspaces(workspaces),
-    cause: evt,
   });
 }

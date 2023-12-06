@@ -7,8 +7,6 @@ import { getView } from "../../../../../view";
 class UserMenuComponent extends HTMLElement {
   private controller: AbortController | null = null;
 
-  private menu: HTMLElement;
-
   constructor() {
     super();
 
@@ -20,12 +18,6 @@ class UserMenuComponent extends HTMLElement {
       throw Error("Could not find template #user-menu-component-template");
     }
     this.shadowRoot?.append(template.content.cloneNode(true));
-
-    let menu = this.shadowRoot?.querySelector<HTMLElement>("#menu");
-    if (!menu) {
-      throw Error("Could not find element with id #menu");
-    }
-    this.menu = menu;
   }
 
   /**

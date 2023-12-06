@@ -292,7 +292,6 @@ export class View {
       allWorkspaces: this.workspaces,
       op: "add",
       affectedWorkspaces: this.workspaces,
-      cause: new Event("listenerAdded"),
     });
     listener.displayOpenWorkspace(this.openWorkspace);
   }
@@ -328,7 +327,6 @@ export class View {
       allChannels: this.channels,
       op: "add",
       affectedChannels: this.channels,
-      cause: new Event("listenerAdded"),
     });
     listener.displayOpenChannel(this.openChannel);
   }
@@ -424,6 +422,7 @@ export class View {
     this.eventCompletedListeners.get(event.detail.id)?.forEach((callback) => {
       callback(event, error_message);
     });
+    this.eventCompletedListeners.delete(event.detail.id);
   }
 
   /**

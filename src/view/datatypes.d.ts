@@ -52,10 +52,6 @@ export type ViewWorkspaceUpdate = {
    * List of all workspaces affected by this update
    */
   affectedWorkspaces: Array<ViewWorkspace>;
-  /**
-   * The event that caused this update to be sent.
-   */
-  cause: Event;
 };
 
 /**
@@ -76,10 +72,6 @@ export type ViewChannelUpdate = {
    * List of all channels affected by this update
    */
   affectedChannels: Array<ViewWorkspace>;
-  /**
-   * The event that caused this update to be sent.
-   */
-  cause: Event;
 };
 
 /* ReactionData is have fields including smiles, frown, like and celebrate*/

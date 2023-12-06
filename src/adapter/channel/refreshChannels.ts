@@ -25,6 +25,5 @@ export default async function refreshChannels(evt: Event) {
     allChannels: modelToViewChannels(channels),
     op: "replace",
     affectedChannels: modelToViewChannels(channels),
-    cause: evt,
   });
 }

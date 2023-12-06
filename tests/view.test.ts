@@ -7,7 +7,7 @@ import {
   ViewUser,
   StateName,
 } from "../src/view/datatypes";
-
+import { slog } from "../src/slog";
 let view: View;
 
 const queriesToElements: Map<string, HTMLElement> = new Map<
@@ -16,6 +16,7 @@ const queriesToElements: Map<string, HTMLElement> = new Map<
 >();
 
 beforeAll(() => {
+  slog.setLevel(slog.LevelWarn);
   // mock query selector
   const mockQuerySelector = jest.fn((query) => {
     return queriesToElements.get(query);
@@ -25,16 +26,17 @@ beforeAll(() => {
     let fragment = document.createDocumentFragment();
     if (el) {
       fragment.appendChild(el);
+    } else {
     }
     return fragment.childNodes;
   });
   global.document.querySelector = mockQuerySelector;
   global.document.querySelectorAll = mockQuerySelectorAll;
-
   // setup snackbar display
   const snackbarDisplay = document.createElement("div");
   queriesToElements.set("#snackbar-display", snackbarDisplay);
   view = getView();
+  view.openSnackbar = jest.fn();
 });
 
 test("Workspace listener receives updates", () => {
@@ -42,7 +44,6 @@ test("Workspace listener receives updates", () => {
   const workspaceUpdate: ViewWorkspaceUpdate = {
     affectedWorkspaces: [],
     allWorkspaces: [],
-    cause: new Event("sample"),
     op: "add",
   };
 
@@ -55,13 +56,13 @@ test("Workspace listener receives updates", () => {
       expect(ws).toBe(workspaceUpdate);
     },
     displayOpenWorkspace(ws: ViewWorkspace | null) {
-      expect(ws).toBe(ws);
+      expect(ws).toBe(workspace);
     },
   };
 
-  view.addWorkspaceListener(workspaceListener);
   view.displayWorkspaces(workspaceUpdate);
   view.displayOpenWorkspace(workspace);
+  view.addWorkspaceListener(workspaceListener);
 });
 
 test("Channel listener receives updates", () => {
@@ -69,7 +70,6 @@ test("Channel listener receives updates", () => {
   const channelUpdate: ViewChannelUpdate = {
     affectedChannels: [],
     allChannels: [],
-    cause: new Event("sample"),
     op: "add",
   };
 
@@ -81,14 +81,14 @@ test("Channel listener receives updates", () => {
     displayChannels(ch: ViewChannelUpdate) {
       expect(ch).toBe(channelUpdate);
     },
-    displayOpenChannel(ch: ViewWorkspace | null) {
+    displayOpenChannel(ch: ViewChannel | null) {
       expect(ch).toBe(channel);
     },
   };
 
-  view.addChannelListener(channelListener);
   view.displayChannels(channelUpdate);
   view.displayOpenChannel(channel);
+  view.addChannelListener(channelListener);
 });
 
 test("User listener receives updates", () => {
@@ -98,13 +98,13 @@ test("User listener receives updates", () => {
   };
 
   const userListener = {
-    displayUser(user: ViewUser) {
+    displayUser(user: ViewUser | null) {
       expect(user).toBe(testUser);
     },
   };
 
-  view.addUserListener(userListener);
   view.displayUser(testUser);
+  view.addUserListener(userListener);
 });
 
 test("Loading listener receives updates", () => {
@@ -145,7 +145,7 @@ test("Wait for event function works", () => {
     expect(event).toBe(testEventSuccess);
     expect(error).toBe(undefined);
   });
-  view.completeEvent(testEvent);
+  view.completeEvent(testEventSuccess);
 });
 
 // test("Display dialog works", () => {
