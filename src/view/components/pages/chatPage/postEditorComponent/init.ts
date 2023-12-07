@@ -115,11 +115,14 @@ export default function postEditorInit() {
         </section>
         <form id="post-form">
             <textarea id="post-input" name="post_input" aria-label="Type your post input"></textarea>
-            <button type="submit" id="post-submit" aria-label="send">Send<iconify-icon id="send-icon" icon="tabler:send"></iconify-icon>
+            <button type="submit" id="post-submit" aria-label="send">
+                Send
+                <iconify-icon id="send-icon" icon="tabler:send"></iconify-icon>
+            </button>
         </form>
     </section>
 </template>
-        `,
+        `
   );
 
   customElements.define("post-editor-component", PostEditor);

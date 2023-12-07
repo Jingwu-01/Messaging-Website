@@ -534,6 +534,9 @@ export class View {
    */
   addLoadingListener(listener: LoadingListener) {
     this.loadingListeners.push(listener);
+    for (let key of this.eventsBlockingState.keys()) {
+      listener.onLoading(key);
+    }
   }
 
   /** 

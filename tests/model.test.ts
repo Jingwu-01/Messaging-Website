@@ -1,5 +1,4 @@
 import { typedFetch } from "../src/model/utils";
-import { slog } from "../src/slog";
 import { fetchFunc } from "./mockfetch";
 
 beforeAll(async () => {
@@ -23,12 +22,21 @@ test('Failed typedfetch case', async () => {
   }
 });
 
-// test('Empty content typedfetch', async () => {
-//   slog.info("test", ["JSON.parse('')", Promise.resolve(JSON.parse(""))]);
-//   expect.assertions(1);
-//   try {
-//     await typedFetch<string>(`${process.env.DATABASE_HOST}${process.env.DATABASE_PATH}/fetchNoContent`);
-//   } catch (e) {
-//     expect(e).toMatch('Error parsing JSON input');
-//   }
-// });
+test('Empty content typedfetch', async () => {
+  expect.assertions(1);
+  try {
+    await typedFetch<string>(`${process.env.DATABASE_HOST}${process.env.DATABASE_PATH}/fetchNoContent`);
+  } catch (e) {
+    expect((e as Error).message).toMatch('error parsing JSON input');
+  }
+});
+
+test('Failed fetch response', async () => {
+  expect.assertions(1);
+  try {
+    await typedFetch<string>(`${process.env.DATABASE_HOST}${process.env.DATABASE_PATH}/fetchResponseError`);
+  } catch (e) {
+    expect((e as Error).message).toMatch("Bad Request");
+  }
+});
+

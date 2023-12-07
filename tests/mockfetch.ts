@@ -1,3 +1,5 @@
+import { slog } from "../src/slog";
+
 function getDocumentResult(docName: string, doc: string, databasePath: string, username: string, createdAt: number, lastModifiedAt: number, prefixPath: string): string {
     return `{
         "path": ${databasePath}${prefixPath}/${docName},
@@ -75,7 +77,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
     let authPath = "auth";
     let dbUrl = `${baseUrl}${databasePath}`;
     let invalidSchemaDbUrl = `${invalidSchemaUrl}${databasePath}`;
-    let body = "";
+    let body = '""';
     let ok = true;
     let status = 200;
     let statusText = "OK";
@@ -156,6 +158,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
         case `${dbUrl}/fetchError`:
             return Promise.reject("failed fetch");
         case `${dbUrl}/fetchNoContent`:
+            body = '';
             break;
         case `${dbUrl}/fetchResponseError`:
             ok = false;
@@ -810,12 +813,21 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
 
     const hdrs = new Headers();
     hdrs.set("Content-Length", `${body.length}`);
+    let resPromise: Promise<Response>;
+    try {
+        const jsonResp = JSON.parse(body);
+        resPromise = Promise.resolve(jsonResp);
+    } catch (e) {
+        resPromise = Promise.reject(e);
+    }
+    slog.info("mockFetch: resPromise passed", ["resPromise.status", resPromise]);
+
     const response: Response = {
         ok: ok,
         status: status,
         statusText: statusText,
         headers: hdrs,
-        json: () => Promise.resolve(JSON.parse(body)),
+        json: () => resPromise,
     } as Response;
 
     return Promise.resolve(response);
