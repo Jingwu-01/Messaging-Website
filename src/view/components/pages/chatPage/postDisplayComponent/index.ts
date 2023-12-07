@@ -4,16 +4,25 @@ import { getView } from "../../../../view";
 import { PostComponent } from "../postComponent";
 import { PostEditor } from "../postEditorComponent";
 
+/**
+ * Post Display component displays all the posts in the selected channel. 
+ */
 export class PostDisplay extends HTMLElement {
+  /** post container element  */
   private postsContainer: HTMLElement;
 
+  /** post editor class */
   private postEditor: PostEditor;
 
+  /** A map of post ton its children posts */
   private postToHTMLChildren: Map<string, HTMLElement> = new Map<
     string,
     HTMLElement
   >();
 
+  /**
+   * Constructor for the post display. 
+   */
   constructor() {
     super();
 
@@ -55,12 +64,18 @@ export class PostDisplay extends HTMLElement {
     this.displayPosts.bind(this);
   }
 
-  // is connected callback atomic?
+
+  /**
+   * When connected, add post listener in the view. 
+   */
   connectedCallback() {
     slog.info("PostDisplay: connectedCallback was called");
     getView().addPostListener(this);
   }
 
+  /**
+   * When disconnected, remove the post listener in the view. 
+   */
   disconnectedCallback() {
     slog.info("PostDisplay: disconnectedCallback was called");
     getView().removePostListener(this);
@@ -68,6 +83,10 @@ export class PostDisplay extends HTMLElement {
 
   // TODO: add another helper for setting the channel name
 
+  /**
+   * Display the posts based on the view update. 
+   * @param update ViewPostUpdate
+   */
   displayPosts(update: ViewPostUpdate): void {
     slog.info("postDisplay displayPosts: was called");
     if (update.op === "modify" || update.op === "insert") {
@@ -188,6 +207,12 @@ export class PostDisplay extends HTMLElement {
     }
   }
 
+  /**
+   * Display posts helper function that display the children posts. 
+   * @param postEl root post element 
+   * @param childrenPosts array of children posts 
+   * @param childrenContainer children container element 
+   */
   displayPostsHelper(
     postEl: PostComponent,
     childrenPosts: Array<ViewPost>,
@@ -216,6 +241,10 @@ export class PostDisplay extends HTMLElement {
     }
   }
 
+  /**
+   * Move the post editor to the correct position. 
+   * @param postEl postComponent being replied to 
+   */
   moveReplyPostEditorTo(postEl: PostComponent) {
     postEl.parentNode?.insertBefore(this.postEditor, postEl.nextSibling);
     let postPath = postEl.getPostPath();
@@ -225,13 +254,6 @@ export class PostDisplay extends HTMLElement {
     this.postEditor.setParentPath(postPath, postEl);
   }
 
-  moveEditPostEditorTo(postEl: PostComponent) {
-    this.moveReplyPostEditorTo(postEl);
-    let postText = postEl.getPostText();
-    if (postText) {
-      this.postEditor.setText(postText);
-    }
-  }
 }
 
 export default PostDisplay;

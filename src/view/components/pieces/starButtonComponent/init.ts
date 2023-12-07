@@ -1,5 +1,8 @@
 import StarButtonComponent from ".";
 
+/**
+ * Initialize the html template for starButton and register the custom element. 
+ */
 export default function starButtonInit() {
     document.body.insertAdjacentHTML(
         "beforeend",

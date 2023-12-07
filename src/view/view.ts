@@ -13,6 +13,9 @@ import {
   ViewWorkspaceUpdate,
 } from "./datatypes";
 
+/**
+ * interface for posts display that could display posts display or remove post display
+ */
 interface PostDisplayListener {
   displayPostDisplay(): void;
   removePostDisplay(): void;
@@ -154,7 +157,7 @@ export class View {
    */
   private postDisplayListeners: Array<PostDisplayListener> =
     new Array<PostDisplayListener>();
-
+  
   /**
    * A 2D map, where every function in eventCompletedListeners.get(event_id)
    * should get called when the Adapter finishes handling the event with event_id.
@@ -164,8 +167,14 @@ export class View {
     Array<(event: EventWithId, error_message?: string) => void>
   >();
 
+  /**
+   * A map of state to the things it should block. 
+   */
   private eventsBlockingState = new Map<StateName, Set<string>>();
 
+  /**
+   * A list of components that should update when the loading are finished. 
+   */
   private loadingListeners = new Array<LoadingListener>();
 
   /**
@@ -198,6 +207,9 @@ export class View {
    */
   private snackbarDisplay: HTMLElement;
 
+  /**
+   * Constructor for the view. 
+   */
   constructor() {
     let snackbarDisplay = document.querySelector("#snackbar-display");
     if (!(snackbarDisplay instanceof HTMLElement)) {
@@ -206,6 +218,9 @@ export class View {
     this.snackbarDisplay = snackbarDisplay;
   }
 
+  /** 
+   * For each post listner, move reply post editor. 
+   */
   // TODO: have an abstract superclass that adds a parent field.
   moveReplyPostEditorTo(postElement: PostComponent) {
     this.postListeners.forEach((listener) => {
@@ -213,8 +228,9 @@ export class View {
     });
   }
 
-  /**
-   * @param listener Will receive updates when posts change
+  /** 
+   * Will receive updates when posts change
+   * @param listener 
    */
   addPostListener(listener: PostListener) {
     this.postListeners.push(listener);
@@ -228,8 +244,9 @@ export class View {
     listener.displayPosts(viewPostUpdate);
   }
 
-  /**
-   * @param listener Will no longer receive updates when posts change
+  /** 
+   * Will no longer receive updates when posts change
+   * @param listener
    */
   removePostListener(listener: PostListener) {
     let index = this.postListeners.indexOf(listener);
@@ -401,7 +418,9 @@ export class View {
     arr.push(callback);
   }
 
-  /** The Adapter should call this when an event passed to it by the View is completed. */
+  /** 
+   * The Adapter should call this when an event passed to it by the View is completed. 
+   */
   completeEvent(event: EventWithId) {
     this.eventCompletedListeners.get(event.detail.id)?.forEach((callback) => {
       callback(event);
@@ -409,7 +428,9 @@ export class View {
     this.eventCompletedListeners.delete(event.detail.id);
   }
 
-  /** The Adapter should call this when an event passed to it by the View results in an error. */
+  /** 
+   * The Adapter should call this when an event passed to it by the View results in an error. 
+   */
   failEvent(event: EventWithId, error_message: string) {
     this.displayError(error_message);
     this.eventCompletedListeners.get(event.detail.id)?.forEach((callback) => {
@@ -467,15 +488,22 @@ export class View {
    */
   addLoadingListener(listener: LoadingListener) {
     this.loadingListeners.push(listener);
+    for (let key of this.eventsBlockingState.keys()) {
+      listener.onLoading(key);
+    }
   }
 
-  /** Displays the given error message to the user. */
+  /** 
+   * Displays the given error message to the user. 
+   */
   displayError(message: string) {
     // Display a snackbar
     this.openSnackbar("error", message);
   }
 
-  /** Opens a snackbar with the given level and message.  */
+  /** 
+   * Opens a snackbar with the given level and message. 
+   */
   openSnackbar(level: string, message: string) {
     const snackbarEl = new SnackbarComponent();
     snackbarEl.innerHTML = `<p slot="content">${message}</p>`;
@@ -489,7 +517,9 @@ export class View {
   // they might be affected by the styles of that parent. E.G if parent has "display: none",
   // then the dialog won't ever render.
 
-  /** Opens the dialog with the given ID. */
+  /** 
+   * Opens the dialog with the given ID. 
+   */
   openDialog(dialog_id: string) {
     let dialog_query = document.querySelector(`#${dialog_id}`);
     if (isDialog(dialog_query)) {
@@ -506,20 +536,30 @@ export class View {
     }
   }
 
+  /**
+   * Get the username that is logged in 
+   * @returns string of username 
+   */
   getUser() {
     return this.user;
   }
 
+  /**
+   * Set the homepage. 
+   */
   setHomePage() {
     // TODO: erroneous; just need it for compiler checks
   }
 }
 
-// view singleton
-let lazyView: View | null = null;
+/** view singleton */ 
 // NOTE: this is a LAZY view now
+let lazyView: View | null = null;
 
-/** Gets the view singleton object */
+
+/** 
+ * Gets the view singleton object 
+ */
 export function getView() {
   if (lazyView === null) {
     lazyView = new View();

@@ -72,28 +72,28 @@ export default function workspaceMenuComponentInit() {
 
   </style>
   <menu-component id="menu">
-    <div id="workspace-menu-anchor" slot="anchor-el" display="inline-block">
+    <section id="workspace-menu-anchor" slot="anchor-el" display="inline-block">
       <button id="center-button"> 
         <p id="open-workspace-text">Select Workspace</p>
       </button>
       <iconify-icon id="dropdown-icon" icon="gridicons:dropdown" aria-label="open select workspace menu" role="button"></iconify-icon>
-    </div>
-    <div slot="menu-items" id="menu-items-wrapper">
-      <div id="workspace-menu-items">
+    </section>
+    <section slot="menu-items" id="menu-items-wrapper">
+      <section id="workspace-menu-items">
         No workspaces yet. Click "Edit Workspaces" to add one!
-      </div>
-      <div class="divider"></div>
+      </section>
+      <section class="divider"></section>
       <loading-button-component disable-if-state-loading="workspaces" id="refresh-workspaces-button" style="border: none; background: none;">
         <p slot="content">Refresh Workspaces</p>
         <iconify-icon icon="material-symbols:refresh" aria-label="Refresh Workspaces"></iconify-icon>
       </loading-button-component>
       <open-dialog-button-component dialog="edit-workspaces-dialog" style="border: none; background: none;">
-        <div slot="button-content" id="edit-workspaces-button">
+        <section slot="button-content" id="edit-workspaces-button">
           <p>Edit Workspaces</p>
           <iconify-icon icon="material-symbols:edit" aria-label="Edit Workspaces"></iconify-icon>
-        </div>
+        </section>
       </open-dialog-button-component>
-    </div>
+    </section>
   </menu-component>
   <edit-dialog-component id="edit-dialog">
     <span slot="title">Edit Workspaces</span>

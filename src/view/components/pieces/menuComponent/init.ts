@@ -1,6 +1,6 @@
 import MenuComponent from ".";
 
-/* Initializes the HTML template for menu component and register the menu  custom element. */
+/* Initialize the HTML template for menu component and register the menu  custom element. */
 export default function init() {
   document.body.insertAdjacentHTML(
     "beforeend",
@@ -8,12 +8,12 @@ export default function init() {
     <template id="menu-component-template">
     <style></style>
     <popover-component id="popover" align="bottom" open="false">
-      <div slot="anchor-el" id="anchor-el-wrapper">
+      <section slot="anchor-el" id="anchor-el-wrapper">
         <slot name="anchor-el"></slot>
-      </div>
-      <div slot="popover-items">
+      </section>
+      <section slot="popover-items">
         <slot name="menu-items"></slot>
-      </div>
+      </section>
     </popover-component>
   </template>
   

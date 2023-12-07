@@ -2,13 +2,20 @@ import { ViewChannel, ViewChannelUpdate, ViewUser } from "../../../../../datatyp
 import { getView } from "../../../../../view";
 
 /**
- * Displays username, handles logout
+ * UserMenu Component displays username, has my starred posts button and
+ * handles logout. 
  */
 class UserMenuComponent extends HTMLElement {
+  /** Controller */
   private controller: AbortController | null = null;
+  /** the starred posts button  */
   private starredPostsButton: HTMLElement; 
+  /** logout button */
   private logoutButton: HTMLElement | null; 
 
+  /**
+   * Constructor for the UserMenu Component.
+   */
   constructor() {
     super();
 
@@ -62,9 +69,18 @@ class UserMenuComponent extends HTMLElement {
       options,
     );
   }
+  
+  /** 
+   * When disconnected, abort the controller. 
+   */
+  disconnectedCallback(): void {
+    this.controller?.abort();
+    this.controller = null;
+  }
 
   /**
    * Handles the logout request by sending a logout event.
+   * @param event Mousevent of clicking 
    */
   handleLogout(event: MouseEvent) {
     event.preventDefault();
@@ -74,14 +90,13 @@ class UserMenuComponent extends HTMLElement {
     document.dispatchEvent(logoutEvent);
   }
 
+  /**
+   * Handles the show starred posts by ask the view to get the starred posts component and display the dialog. 
+   * @param event Mousevent of clicking 
+   */
   handleStarredPosts(event: MouseEvent) {
     event.preventDefault();
     getView().openDialog("starred-posts-dialog")
-  }
-
-  disconnectedCallback(): void {
-    this.controller?.abort();
-    this.controller = null;
   }
 
   static get observedAttributes(): Array<string> {
@@ -95,7 +110,10 @@ class UserMenuComponent extends HTMLElement {
     newValue: string
   ): void {}
 
-  // called by view whenever there is a change in the logged-in user
+  /**
+   * called by view whenever there is a change in the logged-in user
+   * @param user a VierUser that contains username or null 
+   */
   displayUser(user: ViewUser | null) {
     // update the displayed username
     let user_text_el = this.shadowRoot?.querySelector("#user-text");
@@ -114,7 +132,6 @@ class UserMenuComponent extends HTMLElement {
     } else {
       this.starredPostsButton.style.display = "block";
     }
-  }
 }
 
 export default UserMenuComponent;

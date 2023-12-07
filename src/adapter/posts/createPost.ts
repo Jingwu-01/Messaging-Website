@@ -25,9 +25,5 @@ export default async function createPost(postData: CreatePostEvent) {
     .createPost(postData.msg, postData.parent, channel.path)
     .then(() => {
       slog.info("createPost: added to the database");
-    })
-    .catch(() => {
-      getView().displayError("Failed to create post");
-      return;
     });
 }

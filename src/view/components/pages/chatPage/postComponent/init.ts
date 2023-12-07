@@ -1,5 +1,8 @@
 import PostComponent from ".";
 
+/**
+ * Initialize the post component by adding html template and resgister the custom element.
+ */
 export default function postComponentInit() {
   document.body.insertAdjacentHTML(
     "beforeend",
@@ -49,20 +52,20 @@ export default function postComponentInit() {
     <section id="post-all">
         <header id="post-header">
             <p id="post-user-text"></p>
-            <div id="hover-wrapper">
+            <section id="hover-wrapper">
                 <hover-component align="top">
                     <time id="post-time-short" slot="anchor-el"></time>
                     <time id="post-time-long" slot="hover-items"></time>
                 </hover-component>
-            </div>
+            </section>
         </header>
-        <div id="post-body">    
+        <section id="post-body">    
             <!-- TODO: can also add additional HTML element(s) for buttons (reactions, replies)-->
-        </div>
+        </section>
         <section id="post-buttons"> 
         </section> 
-        <div id="post-child-container">
-        </div>
+        <section id="post-child-container">
+        </section>
     </section>
 </template>
 `,

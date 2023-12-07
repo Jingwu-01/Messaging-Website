@@ -3,11 +3,15 @@ import { getView } from "../../../view";
 import PostDisplay from "./postDisplayComponent";
 
 /**
- * Component that displays the page where chats are displayed.
+ * ChatPage Component displays the page where chats(workspaces, channels, and posts) are displayed.
  */
 export class ChatPageComponent extends HTMLElement {
+  /** Container for the whole chatpage */
   private mainContainer: HTMLElement;
 
+  /**
+   * Constructor for the ChatPage component.
+   */
   constructor() {
     super();
 
@@ -72,7 +76,6 @@ export class ChatPageComponent extends HTMLElement {
       }
     }
   }
-
 }
 
 export default ChatPageComponent;
