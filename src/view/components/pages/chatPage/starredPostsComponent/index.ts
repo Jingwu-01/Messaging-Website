@@ -6,6 +6,9 @@ import PostComponent from "../postComponent";
 export class StarredPosts extends HTMLElement {
 
     private postsContainer: HTMLElement;
+    private postsDialog: HTMLDialogElement;
+    private closeButton: HTMLElement; 
+    private controller: AbortController | null = null;
 
     constructor() {
         super();
@@ -30,7 +33,9 @@ export class StarredPosts extends HTMLElement {
         let starredPostsWrapper = this.shadowRoot.querySelector(
           "#starredposts-wrapper",
         );
-
+        let postsDialog = this.shadowRoot.querySelector("#starred-posts-dialog")
+        let closeButton = this.shadowRoot.querySelector("#close-starred-posts")
+        
         if (!(postsContainer instanceof HTMLElement)) {
             throw new Error("Could not find an element with the posts-container id");
         }
@@ -39,8 +44,15 @@ export class StarredPosts extends HTMLElement {
             throw new Error("Could not find an element with the id starredposts-wrapper");
         }
 
+        if (!(postsDialog instanceof HTMLDialogElement)){
+            throw new Error("Could not find an element with the id starred-posts-dialog")
+        }
+        if (!(closeButton instanceof HTMLElement)){
+            throw new Error("Could not find an element with the id close-starred-posts")
+        }
         this.postsContainer = postsContainer;
-
+        this.postsDialog = postsDialog; 
+        this.closeButton = closeButton
         this.displayPosts.bind(this);
     }
 
@@ -115,6 +127,13 @@ export class StarredPosts extends HTMLElement {
     connectedCallback() {
         slog.info("PostDisplay: connectedCallback was called");
         getView().addPostListener(this);
+
+        this.controller = new AbortController();
+        const options = { signal: this.controller.signal };
+        this.closeButton.addEventListener(
+         "click",this.closeDialog.bind(this),options,
+    );
+
     }
 
     disconnectedCallback() {
@@ -125,6 +144,14 @@ export class StarredPosts extends HTMLElement {
     moveReplyPostEditorTo(postEl: PostComponent) {
         // should never be called in theory
         return;
+    }
+
+    closeDialog(){
+        this.postsDialog.close()
+    }
+    
+    displayDialog(){
+        this.postsDialog.showModal(); 
     }
     
 }
