@@ -3,7 +3,7 @@ import editChannelsDialogComponentInit from "./editChannelsDialog/init";
 import editWorkspacesDialogComponentInit from "./editWorkspacesDialog/init";
 
 /**
- * Initializes the EditDialog component
+ * Initialize the EditDialog component. 
  */
 export default function editDialogComponentInit() {
   document.body.insertAdjacentHTML(
@@ -43,10 +43,10 @@ export default function editDialogComponentInit() {
     }
   </style>
   <dialog id="dialog">
-    <div id="dialog-content">
+    <section id="dialog-content">
       <h2 id="dialog-title"></h2>
-      <div id="item-display"></div>
-      <div id="add-item-form">
+      <section id="item-display"></section>
+      <section id="add-item-form">
         <input type="text" id="add-item-input" arial-label="Your input"/>
         <loading-button-component 
           id="add-item-button"
@@ -56,13 +56,13 @@ export default function editDialogComponentInit() {
             Add
           </span>
         </loading-button-component>
-      </div>
+      </section>
       <loading-button-component disable-if-state-loading="workspaces channels" id="save-and-close-button">
         <span slot="content">
           Save and Close
         </span>
       </loading-button-component>
-    </div>
+    </section>
   </dialog>
 </template>
 `

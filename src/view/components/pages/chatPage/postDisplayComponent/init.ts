@@ -1,5 +1,8 @@
 import PostDisplay from ".";
 
+/**
+ * Init post display component by inserting the html template and register the custom element. 
+ */
 export default function postDisplayComponentInit() {
   document.body.insertAdjacentHTML(
     "beforeend",

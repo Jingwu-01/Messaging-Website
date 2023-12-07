@@ -1,14 +1,14 @@
 import SnackbarDisplayComponent from ".";
 
 /**
- * Initializes the HTML template for snack bar display and register the snack bar display custom element.
+ * Initialize the HTML template for snack bar display and register the snack bar display custom element.
  */
 export default function snackbarDisplayInit() {
   document.body.insertAdjacentHTML(
     "beforeend",
     `
   <template id="snackbar-display-component-template">
-    <div
+    <section
       id="display"
       style="
         position: fixed;
@@ -21,7 +21,7 @@ export default function snackbarDisplayInit() {
         align-items: flex-end;
       "
     >
-    </div>
+    </section>
   </template>
   `,
   );

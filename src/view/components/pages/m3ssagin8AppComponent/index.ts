@@ -2,6 +2,9 @@
  * Root component for the application
  */
 export default class M3ssagin8AppComponent extends HTMLElement {
+  /**
+   * Constructor for the MessagingAppComponent
+   */
   constructor() {
     super();
 

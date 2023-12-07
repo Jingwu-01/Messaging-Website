@@ -1,7 +1,7 @@
 import { EditWorkspacesDialogComponent } from ".";
 
 /**
- * Initializes the EditWorkspacesDialog component
+ * Initialize the EditWorkspacesDialog component
  */
 export default function editWorkspacesDialogComponentInit() {
   customElements.define(

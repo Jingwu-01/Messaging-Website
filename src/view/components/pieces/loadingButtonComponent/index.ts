@@ -52,34 +52,45 @@ class LoadingButtonComponent extends HTMLElement {
     this.button = button_query;
   }
 
+  /**
+   * When the loadingButton component is connected, add loading listener to it. 
+   */
   connectedCallback() {
     getView().addLoadingListener(this);
   }
 
   /**
-   * Observe the following attributes.
+   * Observe the following attributes: "disable-if-state-loading", "loading-until-event", "style".
    */
   static get observedAttributes(): Array<string> {
     // Attributes to observe
-    return ["disable-if-state-loading", "loading-until-event", "style"];
+    return [
+      "disable-if-state-loading",
+      "loading-until-event",
+      "style",
+      "default-button-styles",
+    ];
   }
 
   /**
-   * When the attributes, disable and show loading text accordingly.
+   * When the open attribute changes, show or hide loading text accordingly. 
+   * @param name the name of attribute that changed
+   * @param oldValue the old value of changed attribute
+   * @param newValue the new value of chanegd attribute 
    */
   attributeChangedCallback(
     name: string,
     oldValue: string,
     newValue: string
   ): void {
-    if (name == "disable-if-state-loading") {
+    if (name === "disable-if-state-loading") {
       this.disableIfStateLoading = new Set(
         newValue.split(" ")
       ) as Set<StateName>;
     }
 
     // Display loading spinner if we set the loading-until-event attribute
-    if (name == "loading-until-event") {
+    if (name === "loading-until-event") {
       this.button.setAttribute("disabled", "");
       this.content.setAttribute("hidden", "");
       this.loadingText.removeAttribute("hidden");
@@ -92,8 +103,17 @@ class LoadingButtonComponent extends HTMLElement {
     }
 
     // Pass button styles to child
-    else if (name == "style") {
+    else if (name === "style") {
       this.button.setAttribute("style", newValue);
+    }
+
+    // Disable button styles
+    else if (name === "default-button-styles") {
+      if (newValue === "true") {
+        this.button.classList.remove("loading-button");
+      } else {
+        this.button.classList.add("loading-button");
+      }
     }
   }
 

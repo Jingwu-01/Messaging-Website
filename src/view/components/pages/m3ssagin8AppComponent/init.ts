@@ -1,16 +1,16 @@
 import M3ssagin8AppComponent from ".";
 
 /**
- * Initializes the html for the messageApp component
+ * Initialize the html template for the messageApp component
  */
 function m3ssagin8AppComponentInit() {
   document.body.insertAdjacentHTML(
     "beforeend",
     `
     <template id="m3ssagin8-app-template">
-      <div id="app">
+      <section id="app">
         <chat-page></chat-page>
-      </div>
+      </section>
     </template>
     `,
   );

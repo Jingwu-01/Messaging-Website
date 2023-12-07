@@ -1,8 +1,10 @@
 /**
- * Defines the App Bar web Component.
+ * the App Bar web Component is the bar at the top of the chatpage that contains the workspace menu and the user menu.
  */
 export class AppBarComponent extends HTMLElement {
-
+  /**
+   * Constructor for the app bar component. 
+   */
   constructor() {
     super();
 
