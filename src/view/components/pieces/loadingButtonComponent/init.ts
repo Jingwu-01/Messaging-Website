@@ -22,9 +22,9 @@ export default function loadingButtonComponentInit() {
   </style>
   <button id="outer-button">
     <slot id="content" name="content"></slot>
-    <div id="loading-text" hidden>
+    <section id="loading-text" hidden>
       <iconify-icon icon="svg-spinners:180-ring-with-bg" aria-label="Loading..."></iconify-icon>
-    </div>
+    </section>
   </button>
 </template>
 `,

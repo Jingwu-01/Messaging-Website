@@ -22,10 +22,7 @@ export default function starredPostsComponentInit() {
           border: 1px solid #000;
           padding: 10px;
           width: 500px;
-          position: absolute;
-          top: 30%;
           left: 50%;
-          transform: translate(-50%, -50%);
           background-color: white;
           border-radius: 5px;
         }

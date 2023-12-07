@@ -221,6 +221,9 @@ export class PostEditor extends HTMLElement {
   }
 
   replyToTopLevel(event: MouseEvent) {
+    if (this.parentPost !== null) {
+      this.parentPost.unhighlight();
+    }
     this.topReplyEl?.append(this);
     this.parentPath = "";
     this.postInput.value = "";
