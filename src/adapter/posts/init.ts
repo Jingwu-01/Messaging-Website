@@ -19,7 +19,7 @@ import { getView } from "../../view/view";
  */
 export function initPosts() {
   // In-progress events that are waiting on a post from the user to come back.
-  let eventsWaitingOnPostUpdate: EventWithId[] = [];
+  let eventsWaitingOnPostUpdate = new Set<EventWithId>();
 
   document.addEventListener(
     "createPostEvent",
@@ -32,8 +32,13 @@ export function initPosts() {
         "create post event",
         `${JSON.stringify(evt.detail)}`,
       ]);
-      await createPost(evt.detail);
-      eventsWaitingOnPostUpdate.push(evt);
+      eventsWaitingOnPostUpdate.add(evt);
+      try {
+        await createPost(evt.detail);
+      } catch (err) {
+        eventsWaitingOnPostUpdate.delete(evt);
+        getView().failEvent(evt, "Failed to create post");
+      }
     }
   );
 
@@ -55,17 +60,18 @@ export function initPosts() {
         add: event.detail.add,
       };
       try {
+        eventsWaitingOnPostUpdate.add(event);
         const response = await model.updateReaction(modelUpdate);
         slog.info("reactionUpdateEvent listener", [
           "update reaction request went through",
           `${JSON.stringify(response)}`,
         ]);
         if (response.patchFailed) {
+          eventsWaitingOnPostUpdate.delete(event);
           getView().failEvent(event, "error displaying reactions");
-        } else {
-          eventsWaitingOnPostUpdate.push(event);
         }
       } catch (error) {
+        eventsWaitingOnPostUpdate.delete(event);
         slog.error("reactionUpdateEvent listener", [
           "error from model.updateReaction",
           `${JSON.stringify(error)}`,
@@ -103,7 +109,7 @@ export function initPosts() {
             getView().completeEvent(evt);
           }
         });
-        eventsWaitingOnPostUpdate = [];
+        eventsWaitingOnPostUpdate = new Set<EventWithId>();
         return;
       }
       // If this was just a random post (not from the user) and the request failed, then display the error.
