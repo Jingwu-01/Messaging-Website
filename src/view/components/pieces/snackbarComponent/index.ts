@@ -1,9 +1,13 @@
-// A Snackbar pops up at the bottom of the screen with a message and disappears when the "x" button is clicked.
+/**
+ * A Snackbar pops up at the bottom of the screen with a message and disappears when the "x" button is clicked. It is used for diaplaying error messages. 
+ */
 class SnackbarComponent extends HTMLElement {
   private wrapper: HTMLElement;
   private closeButton: HTMLElement;
 
-  // Constructor for the snack bar custom element
+  /**
+   * Constructor for the snack bar custom element
+   * */ 
   constructor() {
     super();
 
@@ -29,6 +33,9 @@ class SnackbarComponent extends HTMLElement {
     this.closeButton = close_button_query;
   }
 
+  /**
+   * When the component is connected, add event listeners for the wrapper and the close button. 
+   */
   connectedCallback(): void {
     // Disable the animation when it's done.
     // This way, if the snackbarDisplay that this is rendered in changes,
@@ -48,27 +55,34 @@ class SnackbarComponent extends HTMLElement {
     // }, 5000);
   }
 
-  disconnectedCallback(): void {
-    // The browser calls this when the element is removed from a document.
-  }
-
-  // Close the snack bar
+  /**
+   * Close the snack bar. 
+   */
   close() {
     this.parentNode?.removeChild(this);
     this.remove();
   }
-
+  
+  /**
+   * Observe the changes of level attribute. 
+   */
   static get observedAttributes(): Array<string> {
     // Attributes to observe
     return ["level"];
   }
 
-  // When the level attribute changes, display the corresponding snack bar.
+  /**
+   * When the level attribute changes, display the corresponding snack bar.
+   * @param name the name of the attibute that changes 
+   * @param oldValue the old value of changed attribute
+   * @param newValue the new value of chanegd attribute
+   */
   attributeChangedCallback(
     name: string,
     oldValue: string,
     newValue: string,
   ): void {
+    // Display the snack bar in different colors based on the level of info. 
     if (name == "level") {
       switch (newValue) {
         case "error":

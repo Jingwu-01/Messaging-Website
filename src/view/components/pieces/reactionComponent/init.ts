@@ -1,6 +1,9 @@
 import ReactionComponent from ".";
 
-/* Initialize the HTML template for reaction component and register the reaction component custom element. */
+/**
+ * Initialize the HTML template for reaction component and register the
+ * reaction component custom element.
+ */
 export default function reactionComponentInit() {
   document.body.insertAdjacentHTML(
     "beforeend",
