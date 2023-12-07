@@ -21,12 +21,32 @@ export default function starredPostsComponentInit() {
         #starred-posts-dialog {
           border: 1px solid #000;
           padding: 10px;
-          width: 300px;
+          width: 500px;
           position: absolute;
-          top: 50%;
+          top: 30%;
           left: 50%;
           transform: translate(-50%, -50%);
           background-color: white;
+          border-radius: 5px;
+        }
+        #close-starred-posts:focus-visible {
+          box-shadow: #FF0000 0 0 0 3px;
+          outline: none;
+        }
+        #close-starred-posts:focus:not(:focus-visible) {
+          box-shadow: none;
+          outline: none;
+        }
+        #close-starred-posts {
+          width: 30px;
+          height: 30px;
+          border-radius: 3px 3px 3px 3px;
+        }
+        #close-starred-posts:hover {
+          background-color: #818589;
+        }
+        #close-starred-posts:active {
+          background-color: #5a5a5a;
         }
 
     </style>
