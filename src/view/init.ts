@@ -26,7 +26,7 @@ import starredPostsComponentInit from "./components/pages/chatPage/starredPostsC
  * Called when main.ts initializes the view. Used for setup all the web components.
  */
 export function initView() {
-  // Initialize / register components.
+  // Initialize / register all the web components.
   reactionComponentInit();
   popoverComponentInit();
   menuComponentInit();

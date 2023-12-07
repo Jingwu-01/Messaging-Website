@@ -7,9 +7,13 @@ import PostComponent from "../postComponent";
  * StarredPosts is a dialog that contains all the starred posts of the current user in the selected channel.
  */
 export class StarredPosts extends HTMLElement {
+  /** container for starred posts */
   private postsContainer: HTMLElement;
+  /** starred posts dialog */
   private postsDialog: HTMLDialogElement;
+  /** close button of dialog */
   private closeButton: HTMLElement;
+  /** controller */
   private controller: AbortController | null = null;
 
   /**

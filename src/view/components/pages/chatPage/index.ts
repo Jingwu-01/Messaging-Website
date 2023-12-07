@@ -7,6 +7,7 @@ import StarredPosts from "./starredPostsComponent";
  * ChatPage Component displays the page where chats(workspaces, channels, and posts) are displayed.
  */
 export class ChatPageComponent extends HTMLElement {
+  /** Container for the whole chatpage */
   private mainContainer: HTMLElement;
 
   /**

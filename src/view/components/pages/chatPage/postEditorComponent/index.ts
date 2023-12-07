@@ -10,21 +10,29 @@ export class PostEditor extends HTMLElement {
   // TODO: can definitely add abortcontroller for event handlers and
   // 'deregistering' the event handlers here.
 
+  /** Controller */
   private controller: AbortController | null = null;
 
+  /** Container for post operations */
   private postOperations: HTMLElement;
 
+  /** Text area element */
   // TODO: can we make this more generic?
   private postInput: HTMLTextAreaElement;
 
+  /** post form element */
   private postForm: HTMLFormElement;
 
+  /** parent path of the post editor */
   private parentPath: string | undefined;
 
+  /** cancel reply button element */
   private cancelReply: HTMLElement;
 
+  /** top reply element */
   private topReplyEl: HTMLElement | undefined;
 
+  /** parent post component of the post editor.  */
   private parentPost: PostComponent | null = null;
 
   /**
@@ -76,7 +84,7 @@ export class PostEditor extends HTMLElement {
   }
 
   /**
-   * When the component is connected, set the 
+   * When the component is connected, set the operations correctly and event lisners. 
    */
   connectedCallback() {
     // post editor operation callbacks

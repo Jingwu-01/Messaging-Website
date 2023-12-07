@@ -6,9 +6,13 @@ import { getView } from "../../../view";
  * HomePage is a dialog that propts the user to log in. 
  */
 class HomePage extends HTMLElement {
+  /** controller */
   private controller: AbortController | null = null;
+  /** login dialog element */
   private dialog: HTMLDialogElement;
+  /** login form element */
   private form: HTMLFormElement;
+  /** submit button for login */
   private submitButton: HTMLElement;
 
   /**
