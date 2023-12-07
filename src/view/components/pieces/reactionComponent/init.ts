@@ -11,10 +11,12 @@ export default function reactionComponentInit() {
         display: flex;
         margin-left: 10px;
       }
-      #reaction-button {
+      #reaction-button-content {
         width: 30px;
         height: 30px;
-        border-radius: 3px 3px 3px 3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       #reaction-count {
         margin-left: 10px;
@@ -39,14 +41,16 @@ export default function reactionComponentInit() {
       }
     </style>
     <div id="reaction-container">
-      <button id="reaction-button" aria-label="smile reaction">
-        <iconify-icon icon="lucide:smile" id="smile-reaction"></iconify-icon>
-      </button>
+      <loading-button-component disable-if-state-loading="posts" id="reaction-button" aria-label="smile reaction" style="padding: 0;" default-button-styles="true">
+        <div id="reaction-button-content" slot="content">
+          <iconify-icon slot="content" icon="lucide:smile" id="smile-reaction"></iconify-icon>
+        </div>
+      </loading-button-component>
       <p id="reaction-count"></p>
     </div>
   </template>
   
-`,
+`
   );
 
   customElements.define("reaction-component", ReactionComponent);

@@ -9,7 +9,8 @@ type reactions = "smile" | "frown" | "like" | "celebrate";
 class ReactionComponent extends HTMLElement {
   private controller: AbortController | null = null;
   private reactionIcon: HTMLElement;
-  private reactionButton: HTMLButtonElement;
+  private reactionButton: HTMLElement;
+  private reactionButtonContent: HTMLElement;
 
   private reactionName: reactions = "smile";
   private count: number = 0;
@@ -33,7 +34,7 @@ class ReactionComponent extends HTMLElement {
     this.shadowRoot.append(template.content.cloneNode(true));
 
     const reactionButton = this.shadowRoot?.querySelector("#reaction-button");
-    if (!(reactionButton instanceof HTMLButtonElement)) {
+    if (!(reactionButton instanceof HTMLElement)) {
       throw new Error("reactionButton not HTML button element");
     }
 
@@ -42,8 +43,16 @@ class ReactionComponent extends HTMLElement {
       throw new Error("smileButton is not an HTMLElement");
     }
 
+    const reactionButtonContent = this.shadowRoot?.querySelector(
+      "#reaction-button-content"
+    );
+    if (!(reactionButtonContent instanceof HTMLElement)) {
+      throw new Error("No HTML element with id #reaction-button-content");
+    }
+
     this.reactionIcon = reactionIcon;
     this.reactionButton = reactionButton;
+    this.reactionButtonContent = reactionButtonContent;
   }
 
   // When the element is connected, add a click listener for the reaction button.
@@ -55,7 +64,7 @@ class ReactionComponent extends HTMLElement {
     this.reactionButton.addEventListener(
       "click",
       this.update.bind(this),
-      options,
+      options
     );
   }
 
@@ -72,19 +81,25 @@ class ReactionComponent extends HTMLElement {
     let curReacted: boolean;
     if (postPath === undefined || user === undefined) {
       getView().displayError("reacted to a malformed post");
-      slog.error("ReactionComponent: update, user or postPath is undefined", ["user", user], ["postPath", postPath]);
+      slog.error(
+        "ReactionComponent: update, user or postPath is undefined",
+        ["user", user],
+        ["postPath", postPath]
+      );
       return;
     }
-    if (this.reactionButton.classList.contains("reacted")) {
+    if (this.reactionButtonContent.classList.contains("reacted")) {
       curReacted = true;
     } else {
       curReacted = false;
     }
+    const event_id = String(Date.now());
     let updateEventContent: ReactionUpdateEvent = {
       reactionName: `${this.reactionName}`,
       userName: user,
       postPath: postPath,
       add: !curReacted,
+      id: event_id,
     };
     slog.info("ReactionComponent: update", [
       "updateEventContent",
@@ -152,9 +167,9 @@ class ReactionComponent extends HTMLElement {
     } else if (name === "reacted") {
       // TODO: compare to the old values, and maybe unfreeze the button.
       if (newValue === "true") {
-        this.reactionButton.classList.add("reacted");
+        this.reactionButtonContent.classList.add("reacted");
       } else {
-        this.reactionButton.classList.remove("reacted");
+        this.reactionButtonContent.classList.remove("reacted");
       }
     }
   }

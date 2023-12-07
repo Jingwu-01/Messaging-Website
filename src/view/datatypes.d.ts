@@ -181,6 +181,7 @@ export type ReactionUpdateEvent = {
   userName: string;
   postPath: string;
   add: boolean;
+  id: string;
 };
 
 /**
@@ -189,6 +190,7 @@ export type ReactionUpdateEvent = {
 export type CreatePostEvent = {
   msg: string;
   parent: string;
+  id: string;
 };
 
 /**

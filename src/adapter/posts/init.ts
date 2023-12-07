@@ -4,7 +4,11 @@
 
 import { ModelPostEvent, ModelReactionUpdate } from "../../model/modelTypes";
 import { slog } from "../../slog";
-import { CreatePostEvent, ReactionUpdateEvent } from "../../view/datatypes";
+import {
+  CreatePostEvent,
+  EventWithId,
+  ReactionUpdateEvent,
+} from "../../view/datatypes";
 import { getModel } from "../../model/model";
 import getStateManager from "../../state-manager";
 import createPost from "./createPost";
@@ -14,15 +18,23 @@ import { getView } from "../../view/view";
  * Handles events for post creation.
  */
 export function initPosts() {
+  // In-progress events that are waiting on a post from the user to come back.
+  let eventsWaitingOnPostUpdate: EventWithId[] = [];
+
   document.addEventListener(
     "createPostEvent",
-    function (evt: CustomEvent<CreatePostEvent>) {
+    async (evt: CustomEvent<CreatePostEvent>) => {
+      getView().setStateLoadingUntil(
+        ["channels", "posts", "user", "workspaces"],
+        evt
+      );
       slog.info("createPostEvent handler", [
         "create post event",
         `${JSON.stringify(evt.detail)}`,
       ]);
-      createPost(evt.detail);
-    },
+      await createPost(evt.detail);
+      eventsWaitingOnPostUpdate.push(evt);
+    }
   );
 
   /**
@@ -30,7 +42,11 @@ export function initPosts() {
    */
   document.addEventListener(
     "reactionUpdateEvent",
-    (event: CustomEvent<ReactionUpdateEvent>) => {
+    async (event: CustomEvent<ReactionUpdateEvent>) => {
+      getView().setStateLoadingUntil(
+        ["channels", "posts", "user", "workspaces"],
+        event
+      );
       let model = getModel();
       let modelUpdate: ModelReactionUpdate = {
         reactionName: event.detail.reactionName,
@@ -38,30 +54,25 @@ export function initPosts() {
         postPath: event.detail.postPath,
         add: event.detail.add,
       };
-      model
-        .updateReaction(modelUpdate)
-        .then((response) => {
-          slog.info("reactionUpdateEvent listener", [
-            "update reaction request went through",
-            `${JSON.stringify(response)}`,
-          ]);
-          if (response.patchFailed) {
-            // // TODO: display an error on the view, the patch failed
-            // slog.error("reactionUpdateEvent listener", ["patchFailed", ""]);
-            getView().displayError("error displaying reactions");
-          } else {
-            // return
-            // somehow notify the view? nothing to notify the view here; it's all subscriptions.
-          }
-        })
-        .catch((error: Error) => {
-          // TODO: what if it's just a schema error?
-          slog.error("reactionUpdateEvent listener", [
-            "error from model.updateReaction",
-            `${JSON.stringify(error)}`,
-          ]);
-        });
-    },
+      try {
+        const response = await model.updateReaction(modelUpdate);
+        slog.info("reactionUpdateEvent listener", [
+          "update reaction request went through",
+          `${JSON.stringify(response)}`,
+        ]);
+        if (response.patchFailed) {
+          getView().failEvent(event, "error displaying reactions");
+        } else {
+          eventsWaitingOnPostUpdate.push(event);
+        }
+      } catch (error) {
+        slog.error("reactionUpdateEvent listener", [
+          "error from model.updateReaction",
+          `${JSON.stringify(error)}`,
+        ]);
+        getView().failEvent(event, "error displaying reactions");
+      }
+    }
   );
 
   /**
@@ -74,11 +85,31 @@ export function initPosts() {
         "modelPostEvent.detail",
         evt.detail,
       ]);
-      let [success, message] = getStateManager().serializePostResponse(evt.detail.post);
-      // TODO: call serializePostResponse, and throw an error on the view if there's any error with the corresponding error message
+      // Render the post
+      let [success, message] = getStateManager().serializePostResponse(
+        evt.detail.post
+      );
+      // After everything is rendered, check if this event was the result of an
+      // action taken by our user.
+      if (
+        evt.detail.post.meta.lastModifiedBy ===
+        getStateManager().getLoggedInUser()
+      ) {
+        console.log("reaction updated!");
+        eventsWaitingOnPostUpdate.forEach((evt) => {
+          if (!success) {
+            getView().failEvent(evt, message);
+          } else {
+            getView().completeEvent(evt);
+          }
+        });
+        eventsWaitingOnPostUpdate = [];
+        return;
+      }
+      // If this was just a random post (not from the user) and the request failed, then display the error.
       if (!success) {
         getView().displayError(message);
       }
-    },
+    }
   );
 }
