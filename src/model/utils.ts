@@ -35,7 +35,9 @@ export function typedFetch<T>(url: string, options?: RequestInit): Promise<T> {
       throw new Error(response.statusText);
     }
     // Type of unmarshaled response needs to be validated
-    return response.json() as Promise<T>;
+    return response.json().catch(err => {
+      throw new Error("error parsing JSON input");
+    }) as Promise<T>;
   });
 }
 

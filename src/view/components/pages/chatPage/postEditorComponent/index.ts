@@ -1,6 +1,7 @@
 import { slog } from "../../../../../slog";
 import { StateName } from "../../../../datatypes";
 import { getView } from "../../../../view";
+import PostComponent from "../postComponent";
 
 type StringFunction = () => string;
 
@@ -25,6 +26,7 @@ export class PostEditor extends HTMLElement {
 
   private submitPostIcon: HTMLElement;
   private submitPostButton: HTMLElement;
+  private parentPost: PostComponent | null = null;
 
   constructor() {
     super();
@@ -226,9 +228,15 @@ export class PostEditor extends HTMLElement {
     return "]()";
   }
 
-  setParentPath(parentPath: string) {
-    slog.info("setParentPath", ["parentPath", `${parentPath}`]);
+  setParentPath(parentPath: string, parentPost: PostComponent | null) {
+    // Unhighlight the current parentPost of post editor
+    if (this.parentPost !== null) {
+      this.parentPost.unhighlight();
+    }
+    // Update the new parentPath and parentPost 
+    slog.info("setParentPath", ["parentPath", `${parentPath}`], ["parentPost", parentPost]);
     this.parentPath = parentPath;
+    this.parentPost = parentPost;
   }
 
   setTopReplyEl(topReplyEl: HTMLElement) {
@@ -236,6 +244,9 @@ export class PostEditor extends HTMLElement {
   }
 
   replyToTopLevel(event: MouseEvent) {
+    if (this.parentPost !== null) {
+      this.parentPost.unhighlight();
+    }
     this.topReplyEl?.append(this);
     this.parentPath = "";
     this.postInput.value = "";

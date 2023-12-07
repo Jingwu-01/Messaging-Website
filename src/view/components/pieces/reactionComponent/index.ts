@@ -2,33 +2,36 @@ import { slog } from "../../../../slog";
 import { ReactionUpdateEvent } from "../../../datatypes";
 import { getView } from "../../../view";
 
-// Reactions could be only one of the four defined reactions types.
+// Reactions can only one of the four defined reactions types.
 type reactions = "smile" | "frown" | "like" | "celebrate";
 
-/* Defines the custom element for ReactionComponent, which will be used as a reaction component web component. */
+/** ReactionComponent is reaction buttons for posts. When a user clicks on it, a
+ * reaction will be added or removed.
+ */ 
 class ReactionComponent extends HTMLElement {
   private controller: AbortController | null = null;
   private reactionIcon: HTMLElement;
   private reactionButton: HTMLElement;
   private reactionButtonContent: HTMLElement;
-
   private reactionName: reactions = "smile";
   private count: number = 0;
   private parentPath: string | undefined;
   private loggedInUser: string | undefined;
 
-  /*Constructor for the reaction custom element */
+  /**
+   * Constructor for the ReactionComponent. 
+   */
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
 
     let template = document.querySelector("#reaction-component-template");
     if (!(template instanceof HTMLTemplateElement)) {
-      throw Error("ReactionComponent: template was not found");
+      throw new Error("ReactionComponent: template was not found");
     }
 
     if (this.shadowRoot === null) {
-      throw Error("ReactionComponent: no shadow root exists");
+      throw new Error("ReactionComponent: no shadow root exists");
     }
 
     this.shadowRoot.append(template.content.cloneNode(true));
@@ -55,10 +58,14 @@ class ReactionComponent extends HTMLElement {
     this.reactionButtonContent = reactionButtonContent;
   }
 
-  // When the element is connected, add a click listener for the reaction button.
+  /**
+   * When the ReactionComponent is connected, add a click listener for the reaction button.
+   */
   connectedCallback(): void {
-    this.addReactionCount(this.count);
+    // Set the count for the reaction. 
+    this.setCount(this.count);
 
+    // Add click event listener for the reactionButton. If clicked, call the this.update() function. 
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
     this.reactionButton.addEventListener(
@@ -68,17 +75,23 @@ class ReactionComponent extends HTMLElement {
     );
   }
 
-  // When the element is disconnected, remove the controller.
+  /**
+   * When the ReactionComponent is disconnected, remove the controller.
+   */
   disconnectedCallback(): void {
     this.controller?.abort();
     this.controller = null;
   }
 
-  // Dispatch an reaction update event to the adapter
-  update() {
+  /**
+   * Dispatch an reaction update event to the adapter. 
+   */
+  update(): void {
     let user = this.loggedInUser;
     let postPath = this.parentPath;
     let curReacted: boolean;
+
+    // If postPath or loggedin user is undefine, slog an error. 
     if (postPath === undefined || user === undefined) {
       getView().displayError("reacted to a malformed post");
       slog.error(
@@ -93,7 +106,8 @@ class ReactionComponent extends HTMLElement {
     } else {
       curReacted = false;
     }
-    const event_id = String(Date.now());
+    const event_id = String(Date.now());    
+    // Dispatch the reactionUpdate event, which contains the reaction name, username, post path, and new state of the reaction. 
     let updateEventContent: ReactionUpdateEvent = {
       reactionName: `${this.reactionName}`,
       userName: user,
@@ -111,12 +125,16 @@ class ReactionComponent extends HTMLElement {
     document.dispatchEvent(reactionUpdateEvent);
   }
 
-  // Display the count of the reaction
-  addReactionCount(count: number): void {
+  /**
+   * Set the count of a particular reaction
+   * @param count the number of a particular reaction that the post receives. 
+   */
+  setCount(count: number): void {
     const countText = this.shadowRoot?.querySelector("#reaction-count");
     if (!(countText instanceof HTMLParagraphElement)) {
       throw new Error("countText is not an HTML paragraph element");
     } else {
+      // Set the innerHTML of countText to the input count string. 
       countText.innerHTML = count.toString();
       slog.info("addReactionCount: set count", [
         "countText.innerHTML",
@@ -129,15 +147,22 @@ class ReactionComponent extends HTMLElement {
     ]);
   }
 
-  // Observe the attribute icon, reaction-button, and reacted.
+  /**
+   * Observe the attribute icon, reaction-button, and reacted.
+   */
   static get observedAttributes(): string[] {
     return ["icon", "reaction-count", "reacted"];
   }
 
-  // When the observed attributes are changed, adjust arial-labels and display the correct iconify icons.
+  /**
+   * When the observed attributes are changed, adjust arial-labels and display the correct iconify icons.
+   * @param name name of attribute that are changed 
+   * @param oldValue the old value of the changed attribute 
+   * @param newValue the new value of the changed attribute
+   */
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+    // If the icon attribute is changed, update the corresponding arial-labels and reactionName. 
     if (name === "icon") {
-      // Adjust the corresponding arial-labels and reactionName correctly.
       if (newValue === "lucide:frown") {
         this.reactionButton.setAttribute("aria-label", "frown reaction");
         this.reactionName = "frown";
@@ -156,14 +181,14 @@ class ReactionComponent extends HTMLElement {
           "",
         ]);
       }
-
-      // Adjust the icon attribute to the newValue so that the appropriate iconify icon would be displayed.
+      // Update the icon attribute to the newValue so that the appropriate iconify icons could be displayed.
       this.reactionIcon.setAttribute("icon", newValue);
     } else if (name === "reaction-count") {
+      // If the count of reactions are changed, update and display the count. 
       slog.info("attributeChangedCallback: reaction-count");
       let numReactionCount = parseInt(newValue);
       this.count = numReactionCount;
-      this.addReactionCount(numReactionCount);
+      this.setCount(numReactionCount);
     } else if (name === "reacted") {
       // TODO: compare to the old values, and maybe unfreeze the button.
       if (newValue === "true") {
@@ -174,10 +199,18 @@ class ReactionComponent extends HTMLElement {
     }
   }
 
+  /**
+   * Set the parentPath of this ReactionComponent to the input string. 
+   * @param parentPath the input string for new parentPath
+   */
   setParentPath(parentPath: string) {
     this.parentPath = parentPath;
   }
 
+  /**
+   * Set the loggedInUser of this ReactionComponent to intput username string. 
+   * @param username the input string for the new username 
+   */
   setLoggedInUser(username: string) {
     this.loggedInUser = username;
   }

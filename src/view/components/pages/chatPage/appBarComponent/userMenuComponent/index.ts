@@ -2,13 +2,17 @@ import { ViewUser } from "../../../../../datatypes";
 import { getView } from "../../../../../view";
 
 /**
- * Displays username, handles logout
+ * UserMenu Component displays username, has my starred posts button and
+ * handles logout. 
  */
 class UserMenuComponent extends HTMLElement {
   private controller: AbortController | null = null;
   private starredPostsButton: HTMLElement; 
   private logoutButton: HTMLElement | null; 
 
+  /**
+   * Constructor for the UserMenu Component.
+   */
   constructor() {
     super();
 
@@ -74,10 +78,9 @@ class UserMenuComponent extends HTMLElement {
     document.dispatchEvent(logoutEvent);
   }
 
-
   handleStarredPosts(event: MouseEvent) {
     event.preventDefault();
-    getView().openStarredPostsDialog();
+    getView().getStarredPostsComponent();
   }
 
   disconnectedCallback(): void {
@@ -85,17 +88,6 @@ class UserMenuComponent extends HTMLElement {
     this.controller?.abort();
     this.controller = null;
   }
-
-  static get observedAttributes(): Array<string> {
-    // Attributes to observe
-    return [];
-  }
-
-  attributeChangedCallback(
-    name: string,
-    oldValue: string,
-    newValue: string
-  ): void {}
 
   // called by view whenever there is a change in the logged-in user
   displayUser(user: ViewUser | null) {

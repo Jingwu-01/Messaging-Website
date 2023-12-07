@@ -77,6 +77,14 @@ export class ChatPageComponent extends HTMLElement {
       }
     }
   }
+
+  getStarredPostsComponent(){
+    let starredPostsComponent = this.shadowRoot?.querySelector("starred-posts-component")
+    if (!(starredPostsComponent instanceof StarredPosts)){
+      throw new Error("cannot find starred-posts-component custom element")
+    } 
+    starredPostsComponent.displayDialog();
+  }
 }
 
 export default ChatPageComponent;
