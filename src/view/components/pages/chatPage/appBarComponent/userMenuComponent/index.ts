@@ -6,8 +6,11 @@ import { getView } from "../../../../../view";
  * handles logout. 
  */
 class UserMenuComponent extends HTMLElement {
+  /** Controller */
   private controller: AbortController | null = null;
+  /** the starred posts button  */
   private starredPostsButton: HTMLElement; 
+  /** logout button */
   private logoutButton: HTMLElement | null; 
 
   /**
@@ -66,9 +69,19 @@ class UserMenuComponent extends HTMLElement {
       options,
     );
   }
+  
+  /** 
+   * When disconnected, abort the controller. 
+   */
+  disconnectedCallback(): void {
+    getView().removePostDisplayListener(this);
+    this.controller?.abort();
+    this.controller = null;
+  }
 
   /**
    * Handles the logout request by sending a logout event.
+   * @param event Mousevent of clicking 
    */
   handleLogout(event: MouseEvent) {
     event.preventDefault();
@@ -78,18 +91,19 @@ class UserMenuComponent extends HTMLElement {
     document.dispatchEvent(logoutEvent);
   }
 
+  /**
+   * Handles the show starred posts by ask the view to get the starred posts component and display the dialog. 
+   * @param event Mousevent of clicking 
+   */
   handleStarredPosts(event: MouseEvent) {
     event.preventDefault();
     getView().getStarredPostsComponent();
   }
 
-  disconnectedCallback(): void {
-    getView().removePostDisplayListener(this);
-    this.controller?.abort();
-    this.controller = null;
-  }
-
-  // called by view whenever there is a change in the logged-in user
+  /**
+   * called by view whenever there is a change in the logged-in user
+   * @param user a VierUser that contains username or null 
+   */
   displayUser(user: ViewUser | null) {
     // update the displayed username
     let user_text_el = this.shadowRoot?.querySelector("#user-text");
@@ -98,10 +112,16 @@ class UserMenuComponent extends HTMLElement {
     }
   }
 
+  /**
+   * Display the starred posts button. 
+   */
   displayPostDisplay() {
     this.starredPostsButton.style.display = "block";
   }
 
+  /**
+   * Hide the starred posts button. 
+   */
   removePostDisplay() {
     this.starredPostsButton.style.display = "none";
   }

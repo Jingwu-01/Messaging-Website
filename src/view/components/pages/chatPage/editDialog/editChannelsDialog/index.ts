@@ -10,6 +10,9 @@ import { getView } from "../../../../../view";
  * EditDialog subclass that allows channels to be edited.
  */
 export class EditChannelsDialogComponent extends EditDialogComponent {
+  /**
+   * When connected, show the edit channels text and add channel listener in the view. 
+   */
   connectedCallback(): void {
     super.connectedCallback();
     let title = this.shadowRoot?.querySelector("#dialog-title");
@@ -20,12 +23,25 @@ export class EditChannelsDialogComponent extends EditDialogComponent {
     getView().addChannelListener(this);
   }
 
+  /**
+   * Display the open channel. 
+   * @param channel ViewChannel | null
+   */
   displayOpenChannel(channel: ViewChannel | null) {}
 
+  /**
+   * Display the channels. 
+   * @param update ViewChannelUpdate
+   */
   displayChannels(update: ViewChannelUpdate) {
     this.setItems(update.allChannels.map((ch) => ch.name));
   }
 
+  /**
+   * get the add channel event. 
+   * @param new_item_name string for new channel name 
+   * @returns EventWithId
+   */
   public getAddEvent(new_item_name: string): EventWithId {
     let event_id = String(Date.now());
     return new CustomEvent("channelCreated", {
@@ -36,7 +52,12 @@ export class EditChannelsDialogComponent extends EditDialogComponent {
     });
   }
 
-  public getRemoveEvent(channel_name: string) {
+  /**
+   * get the remove channel event. 
+   * @param channel_name string for the channel 
+   * @returns EventWithId
+   */
+  public getRemoveEvent(channel_name: string): EventWithId {
     let event_id = String(Date.now());
     return new CustomEvent("channelDeleted", {
       detail: {

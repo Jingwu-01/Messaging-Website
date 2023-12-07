@@ -75,7 +75,9 @@ export class PostEditor extends HTMLElement {
     this.cancelReply = cancelReply;
   }
 
-
+  /**
+   * When the component is connected, set the 
+   */
   connectedCallback() {
     // post editor operation callbacks
     this.controller = new AbortController();

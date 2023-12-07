@@ -2,11 +2,12 @@ import { ViewWorkspace, ViewWorkspaceUpdate } from "../../../../../datatypes";
 import { getView } from "../../../../../view";
 
 /**
- *  Displays username, handles logout.
+ *  WorkspaceMenu Component displays the workspaces. 
  */
 class WorkspaceMenuComponent extends HTMLElement {
+  /** The workspace menu. */
   private menu: HTMLElement;
-
+  /** Refresh workspace button */
   private refreshWorkspacesButton: HTMLElement;
 
   /**

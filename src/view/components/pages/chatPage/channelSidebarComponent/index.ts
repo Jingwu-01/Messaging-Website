@@ -8,13 +8,20 @@ import {
 } from "../../../../datatypes";
 import { getView } from "../../../../view";
 
+/**
+ * Channel side bar displays all the channels in the current workspace and allows users to select or edit a channel. 
+ */
 export class ChannelSidebar extends HTMLElement {
+  /** Container for channels */
   private channelList: HTMLElement;
 
+  /** Container for buttons */
   private buttonWrapper: HTMLElement;
 
-  private channelNameToIdx = new Map<String, Number>();
+  /** A map of channel name to ids */
+  private channelNameToIdx = new Map<String, Number>(); 
 
+  /** Refresh channel button */
   private refreshChannelsButton: HTMLElement;
 
   constructor() {
@@ -66,11 +73,15 @@ export class ChannelSidebar extends HTMLElement {
     // this.displayPosts.bind(this);
   }
 
+  /**
+   * When connnected, add channel, workspace, and loading listeners in the view. Also, add click event listener to the refresh button. 
+   */
   connectedCallback() {
     // Add listener for refresh channels button
     this.refreshChannelsButton.addEventListener("click", () => {
       let event_id = String(Date.now());
       this.refreshChannelsButton.setAttribute("loading-until-event", event_id);
+      // Dispatch a refresh channel event 
       document.dispatchEvent(
         new CustomEvent("refreshChannels", {
           detail: {
@@ -87,6 +98,10 @@ export class ChannelSidebar extends HTMLElement {
     getView().addLoadingListener(this);
   }
 
+  /**
+   * Display the open channel. 
+   * @param channel a ViewChannel or null
+   */
   displayOpenChannel(channel: ViewChannel | null) {
     // TODO: may have to update this selector
     this.shadowRoot
@@ -118,6 +133,10 @@ export class ChannelSidebar extends HTMLElement {
     selectedChannelEl.classList.add("selected-channel");
   }
 
+  /**
+   * Display the channels of the current workspace. 
+   * @param update ViewChannelUpdate
+   */
   displayChannels(update: ViewChannelUpdate) {
     const channels = update.allChannels;
     slog.info("displayChannels", ["channels", `${JSON.stringify(channels)}`]);
@@ -142,7 +161,10 @@ export class ChannelSidebar extends HTMLElement {
     });
   }
 
-  // If no workspace is selected, then don't render the "edit channels" button.
+  /**
+   * If no workspace is selected, then don't render the "edit channels" button.
+   * @param workspace ViewWorkspace | null
+   */
   displayOpenWorkspace(workspace: ViewWorkspace | null) {
     if (workspace == null) {
       this.buttonWrapper.style.display = "none";
@@ -151,10 +173,16 @@ export class ChannelSidebar extends HTMLElement {
     }
   }
 
-  // We don't care about the actual workspaces.
+  /**
+   * We don't care about the actual workspaces.
+   * @param update ViewWorkspaceUpdate
+   */
   displayWorkspaces(update: ViewWorkspaceUpdate) {}
 
-  // Disable all of our buttons when our channels are loading.
+  /**
+   * Disable all of our buttons when our channels are loading.
+   * @param state StateName
+   */
   onLoading(state: StateName) {
     if (state == "channels") {
       this.channelList.querySelectorAll("button").forEach((button) => {
@@ -163,7 +191,10 @@ export class ChannelSidebar extends HTMLElement {
     }
   }
 
-  // Re-enable all of our buttons when our channels stop loading.
+  /**
+   * Re-enable all of our buttons when our channels stop loading.
+   * @param state StateName
+   */
   onEndLoading(state: StateName) {
     if (state == "channels") {
       this.channelList.querySelectorAll("button").forEach((button) => {
