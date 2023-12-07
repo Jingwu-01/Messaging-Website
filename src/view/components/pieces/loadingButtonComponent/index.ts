@@ -52,12 +52,15 @@ class LoadingButtonComponent extends HTMLElement {
     this.button = button_query;
   }
 
+  /**
+   * When the loadingButton component is connected, add loading listener to it. 
+   */
   connectedCallback() {
     getView().addLoadingListener(this);
   }
 
   /**
-   * Observe the following attributes.
+   * Observe the following attributes: "disable-if-state-loading", "loading-until-event", "style".
    */
   static get observedAttributes(): Array<string> {
     // Attributes to observe
@@ -65,7 +68,10 @@ class LoadingButtonComponent extends HTMLElement {
   }
 
   /**
-   * When the attributes, disable and show loading text accordingly.
+   * When the open attribute changes, show or hide loading text accordingly. 
+   * @param name the name of attribute that changed
+   * @param oldValue the old value of changed attribute
+   * @param newValue the new value of chanegd attribute 
    */
   attributeChangedCallback(
     name: string,
