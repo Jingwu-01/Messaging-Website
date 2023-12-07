@@ -1,4 +1,6 @@
 import { slog } from "../../../../../slog";
+import { StateName } from "../../../../datatypes";
+import { getView } from "../../../../view";
 import PostComponent from "../postComponent";
 
 type StringFunction = () => string;
@@ -22,6 +24,8 @@ export class PostEditor extends HTMLElement {
 
   private topReplyEl: HTMLElement | undefined;
 
+  private submitPostIcon: HTMLElement;
+  private submitPostButton: HTMLElement;
   private parentPost: PostComponent | null = null;
 
   constructor() {
@@ -37,7 +41,7 @@ export class PostEditor extends HTMLElement {
 
     if (this.shadowRoot === null) {
       throw Error(
-        "could not find shadow DOM root for post-editor element in constructor",
+        "could not find shadow DOM root for post-editor element in constructor"
       );
     }
 
@@ -47,6 +51,8 @@ export class PostEditor extends HTMLElement {
     let postInput = this.shadowRoot.querySelector("#post-input");
     let postForm = this.shadowRoot.querySelector("#post-form");
     let cancelReply = this.shadowRoot.querySelector("#cancel-reply");
+    let submitPostIcon = this.shadowRoot.querySelector("#send-icon");
+    let submitPostButton = this.shadowRoot.querySelector("#post-submit");
 
     if (!(postOperations instanceof HTMLElement)) {
       throw Error("Could not find an element with the post-operations id");
@@ -63,10 +69,20 @@ export class PostEditor extends HTMLElement {
       throw Error("Could not find an elemnet with the cancel-reply id");
     }
 
+    if (!(submitPostIcon instanceof HTMLElement)) {
+      throw Error("Could not find an element with the send-icon id");
+    }
+
+    if (!(submitPostButton instanceof HTMLElement)) {
+      throw Error("Could not find an element with the post-submit id");
+    }
+
     this.postOperations = postOperations;
     this.postInput = postInput;
     this.postForm = postForm;
     this.cancelReply = cancelReply;
+    this.submitPostButton = submitPostButton;
+    this.submitPostIcon = submitPostIcon;
   }
 
   connectedCallback() {
@@ -100,7 +116,7 @@ export class PostEditor extends HTMLElement {
         }
         default: {
           throw Error(
-            `post editor connected callback: expected id of post operation to be of the form <operation>-text or <operation>-reaction, but id is: ${id}`,
+            `post editor connected callback: expected id of post operation to be of the form <operation>-text or <operation>-reaction, but id is: ${id}`
           );
         }
       }
@@ -128,7 +144,7 @@ export class PostEditor extends HTMLElement {
         () => {
           this.applyTextFormatting(prefixFunc, suffixFunc, innerTextFunc);
         },
-        options,
+        options
       );
     }
 
@@ -136,14 +152,16 @@ export class PostEditor extends HTMLElement {
     this.postForm.addEventListener(
       "submit",
       this.submitPost.bind(this),
-      options,
+      options
     );
 
     this.cancelReply.addEventListener(
       "click",
       this.replyToTopLevel.bind(this),
-      options,
+      options
     );
+
+    getView().addLoadingListener(this);
   }
 
   disconnectedCallback(): void {
@@ -155,7 +173,7 @@ export class PostEditor extends HTMLElement {
   applyTextFormatting(
     prefixFunc: StringFunction,
     suffixFunc: StringFunction,
-    selectedValFunc: StringFunction,
+    selectedValFunc: StringFunction
   ) {
     let startCharIdx = this.postInput.selectionStart;
     let endCharIdx = this.postInput.selectionEnd;
@@ -174,13 +192,18 @@ export class PostEditor extends HTMLElement {
     if (this.parentPath === undefined) {
       throw Error("error: submitPost: this.parentPath is undefined");
     }
+    let id = String(Date.now());
     const createPostEvent = new CustomEvent("createPostEvent", {
-      detail: { msg: postData, parent: this.parentPath },
+      detail: { msg: postData, parent: this.parentPath, id },
     });
     slog.info("submitPost", [
       "createPostEvent.detail",
       `${JSON.stringify(createPostEvent.detail)}`,
     ]);
+    this.submitPostIcon.setAttribute("icon", "svg-spinners:180-ring-with-bg");
+    getView().waitForEvent(id, (evt, err) => {
+      this.submitPostIcon.setAttribute("icon", "tabler:send");
+    });
     document.dispatchEvent(createPostEvent);
     this.postInput.value = "";
   }
@@ -233,11 +256,23 @@ export class PostEditor extends HTMLElement {
     slog.info(
       "printParentEl",
       ["postEditor parent", `${JSON.stringify(this.parentNode)}`],
-      ["postEditor", `${JSON.stringify(this)}`],
+      ["postEditor", `${JSON.stringify(this)}`]
     );
   }
 
   setText(text: string) {
     this.postInput.value = text;
+  }
+
+  onLoading(state: StateName) {
+    if (state == "posts") {
+      this.submitPostButton.setAttribute("disabled", "");
+    }
+  }
+
+  onEndLoading(state: StateName) {
+    if (state == "posts") {
+      this.submitPostButton.removeAttribute("disabled");
+    }
   }
 }

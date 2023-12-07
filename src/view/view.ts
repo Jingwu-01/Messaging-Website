@@ -159,7 +159,8 @@ export class View {
   private postDisplayListeners: Array<PostDisplayListener> =
     new Array<PostDisplayListener>();
 
-  private starredPostsListeners: Array<StarredPostsListener> = new Array<StarredPostsListener>();
+  private starredPostsListeners: Array<StarredPostsListener> =
+    new Array<StarredPostsListener>();
 
   /**
    * A 2D map, where every function in eventCompletedListeners.get(event_id)
@@ -507,6 +508,9 @@ export class View {
    */
   addLoadingListener(listener: LoadingListener) {
     this.loadingListeners.push(listener);
+    for (let key of this.eventsBlockingState.keys()) {
+      listener.onLoading(key);
+    }
   }
 
   /** Displays the given error message to the user. */
