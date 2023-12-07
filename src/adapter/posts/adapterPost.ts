@@ -7,6 +7,7 @@ import { validateExtensionResponse } from "../../model/utils";
 import { slog } from "../../slog";
 import { insertPostSorted } from "./handleSortingPosts";
 import { ExtensionResponse } from "../../../types/extensionResponse";
+import { validateExtension, validateParentPath, validatePostPath } from "./dataValidation";
 
 /**
  * This class is the adapter's representation of a post. The adapter takes care of two primary
@@ -50,13 +51,7 @@ export class AdapterPost {
     // console.log(`AdapterPost constructor: response.path.split("/"): ${response.path.split("/")}`);
     // console.log(`AdapterPost constructor: response.path.split("/").pop(): ${response.path.split("/").pop()}`);
     slog.info("AdapterPost constructor: top of func call", ["response", response.path], ["response.path", response.path]);
-    let postPathArr = response.path.split("/");
-    // Make sure that the path length is 6
-    if (postPathArr.length !== 6) {
-      throw new Error(
-        "AdapterPost constructor: response path does not have 6 elements but needs to",
-      );
-    }
+    let postPathArr = validatePostPath(response.path);
     // Set the name, workspace name, and channel name for the post.
     this.name = postPathArr[5];
     this.workspaceName = postPathArr[1];
@@ -64,58 +59,10 @@ export class AdapterPost {
     // Set the response and created time.
     this.response = response;
     this.createdTime = response.meta.createdAt;
-    // Set the parent of the post, checking for error cases.
-    if (response.doc.parent === undefined || response.doc.parent === "") {
-      this.parentName = "";
-    } else {
-      let parentPathArr = response.doc.parent.split("/");
-      if (parentPathArr.length !== 6) {
-        throw new Error(
-          "AdapterPost constructor: parentPathArr is not of the correct length",
-        );
-      }
-      let parentName = parentPathArr[5];
-      if (postPathArr[1] !== parentPathArr[1]) {
-        throw new Error(
-          "AdapterPost constructor: workspace name of parent and child are not equal",
-        );
-      }
-      if (postPathArr[3] !== parentPathArr[3]) {
-        throw new Error(
-          "AdapterPost constructor: channel name of parent and child are not equal",
-        );
-      }
-      if (parentName === undefined) {
-        throw new Error(
-          "AdapterPost constructor: internal server error (last element of parentPathArr is undefined)",
-        );
-      }
-      if (parentName === this.name) {
-        throw new Error("AdapterPost constructor: post is its own parent");
-      }
-      // Set the parent name.
-      this.parentName = parentName;
-    }
-
-    let extensions = this.response.doc.extensions;
-    if (extensions === undefined) {
-      extensions = {
-        "p2group50": []
-      }
-    } else if (extensions["p2group50"] === undefined) {
-      extensions["p2group50"] = [];
-    } else if (!(validateExtensionResponse(extensions))) {
-      slog.error("getWorkspace", [
-        "invalid response from getting all workspaces",
-        `${validateExtensionResponse.errors}`,
-      ]);
-      // TODO: make a custom login error class so we can gracefully handle this situation by notifying the user.
-      throw new Error(
-        "unsupported extension type from owldb",
-      );
-    }
+    // Set the parent name.
+    this.parentName = validateParentPath(response.doc.parent, postPathArr);
     // this is safe.
-    let adapterExtensions: ExtensionResponse = extensions as ExtensionResponse;
+    let adapterExtensions = validateExtension(response.doc.extensions);
     this.usersStarred = adapterExtensions["p2group50"];
   }
 
