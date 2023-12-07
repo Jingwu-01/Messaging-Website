@@ -132,7 +132,8 @@ export class StarredPosts extends HTMLElement {
         return;
     }
 
-    displayStarredPostsDialog(){
+
+    displayDialog(){
         this.postsDialog.showModal(); 
     }
     
