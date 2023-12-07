@@ -19,7 +19,7 @@ interface PostDisplayListener {
 }
 
 interface StarredPostsListener {
-  
+  getStarredPostsComponent(): void; 
 }
 
 /**
@@ -420,6 +420,12 @@ export class View {
     });
   }
 
+  getStarredPostsComponent() {
+    this.starredPostsListeners.forEach((listener) => {
+      listener.getStarredPostsComponent();
+    });
+  }
+
   /**
    * When the Adapter calls .completeEvent(event), callback will be called.
    */
@@ -537,24 +543,6 @@ export class View {
       });
     } else {
       throw Error(`No dialog with ID ${dialog_id}`);
-    }
-  }
-
-  openStarredPostsDialog() {
-    const starredPostsComponent = document.querySelector(
-      "starred-posts-component"
-    );
-    if (!(starredPostsComponent instanceof HTMLElement)) {
-      throw Error("cannot find starred-posts-component HTMLElement");
-    }
-    const starredPostsComponentShadowRoot = starredPostsComponent.shadowRoot;
-    if (starredPostsComponentShadowRoot) {
-      const starredPostDialog = starredPostsComponentShadowRoot.querySelector(
-        "starred-posts-dialog"
-      );
-      if (starredPostDialog instanceof HTMLDialogElement) {
-        starredPostDialog.showModal();
-      }
     }
   }
 

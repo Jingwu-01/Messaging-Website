@@ -7,6 +7,8 @@ import StarButtonComponent from "../../../pieces/starButtonComponent";
 import { PostEditor } from "../postEditorComponent";
 
 export class PostComponent extends HTMLElement {
+  private postAll: HTMLElement; 
+
   private postHeader: HTMLElement;
 
   private postBody: HTMLElement;
@@ -45,6 +47,7 @@ export class PostComponent extends HTMLElement {
     let postHeader = this.shadowRoot.querySelector("#post-header");
     let postBody = this.shadowRoot.querySelector("#post-body");
     let postButtons = this.shadowRoot.querySelector("#post-buttons");
+    let postAll = this.shadowRoot?.querySelector("#post-all");
 
     if (!(postHeader instanceof HTMLElement)) {
       throw new Error("Could not find an element with the #post-header id");
@@ -55,10 +58,14 @@ export class PostComponent extends HTMLElement {
     if (!(postButtons instanceof HTMLElement)) {
       throw new Error("Could not find an element with the #post-buttons id");
     }
+    if (!(postAll instanceof HTMLElement)){
+      throw new Error("cannot find #post-all HTMLElement")
+    } 
 
     this.postHeader = postHeader;
     this.postBody = postBody;
     this.postButtons = postButtons;
+    this.postAll = postAll
 
     let starButton = new StarButtonComponent();
     this.postHeader.append(starButton);
@@ -119,12 +126,7 @@ export class PostComponent extends HTMLElement {
     // // this call should technically be before the previous one
     // getView().replacePostEditor(postEditor);
     // this.postBody.parentNode?.insertBefore(postEditor, this.postBody.nextSibling);
-    const postAll = this.shadowRoot?.querySelector("#post-all");
-    if (!(postAll instanceof HTMLElement)){
-      throw Error("cannot find #post-all HTMLElement")
-    } 
-    postAll.style.backgroundColor = "#d9d9d9"; 
-    postAll.style.borderRadius = "5px"; 
+    this.highlight();
     getView().moveReplyPostEditorTo(this);
   }
 
@@ -332,8 +334,14 @@ export class PostComponent extends HTMLElement {
     return this.postMsg;
   }
 
+  highlight() {
+    this.postAll.style.backgroundColor = "#d9d9d9"; 
+    this.postAll.style.borderRadius = "5px"; 
+  }
+
   unhighlight() {
-    // TODO: unhighlight the post
+    this.postAll.style.backgroundColor = "transparent"; 
+    this.postAll.style.borderRadius = "0px"; 
   }
 }
 
