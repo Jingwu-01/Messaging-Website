@@ -1,5 +1,8 @@
 import PostComponent from ".";
 
+/**
+ * Initialize the post component by adding html template and resgister the custom element.
+ */
 export default function postComponentInit() {
   document.body.insertAdjacentHTML(
     "beforeend",
