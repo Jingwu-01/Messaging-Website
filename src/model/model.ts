@@ -12,6 +12,8 @@ import {
   validateGetWorkspacesResponse,
   validatePatchDocumentResponse,
   getPatchBody,
+  validateGetChannelsResponse,
+  validateChannelResponse,
 } from "./utils";
 import { ModelWorkspace } from "./workspace";
 import { WorkspaceResponse } from "../../types/workspaceResponse";
@@ -19,7 +21,10 @@ import { PatchDocumentResponse } from "../../types/patchDocumentResponse";
 import { slog } from "../slog";
 import { LoginResponse } from "../../types/loginResponse";
 import { GetWorkspacesResponse } from "../../types/getWorkspacesResponse";
-import { ModelReactionUpdate} from "./modelTypes";
+import { ModelReactionUpdate } from "./modelTypes";
+import { ModelChannel } from "./channel";
+import { GetChannelsResponse } from "../../types/getChannelsResponse";
+import { ChannelResponse } from "../../types/channelResponse";
 
 /**
  * A class representing the model we use for interfacing with OwlDB.
@@ -27,11 +32,6 @@ import { ModelReactionUpdate} from "./modelTypes";
 export class OwlDBModel {
   private username: string;
   private token: string | null;
-  private workspaces: Map<string, ModelWorkspace> = new Map<
-    string,
-    ModelWorkspace
-  >();
-  private subscribedToWorkspaces: boolean = false;
 
   constructor() {
     // Initialize the posts as an empty array.
@@ -142,8 +142,7 @@ export class OwlDBModel {
     // Return a void promise.
     // TODO: how are you handling the case where emptyFetch has invalid data because it does indeed
     // have a response body?
-    return emptyFetch(getAuthPath(), options)
-    .then((value) => {
+    return emptyFetch(getAuthPath(), options).then((value) => {
       this.token = null;
     });
   }
@@ -154,29 +153,22 @@ export class OwlDBModel {
    * @returns a Promise resolving to a ModelWorkspace, used by our application
    */
   async getWorkspace(id: string): Promise<ModelWorkspace> {
-    // Get logged in user
-    let existingWorkspace = this.workspaces.get(id);
-    if (existingWorkspace) {
-      return existingWorkspace;
-    } else {
-      const response = await this.typedModelFetch<WorkspaceResponse>(`/${id}`, {
-        headers: {
-          accept: "application/json",
-        },
-      });
-      const valid = validateWorkspaceResponse(response);
-      if (!valid) {
-        slog.error("getWorkspace", [
-          "invalid response from retrieving a workspace",
-          `${validateWorkspaceResponse.errors}`,
-        ]);
-        // TODO: make a custom login error class so we can gracefully handle this situation by notifying the user.
-        throw new Error("invalid workspace response received from owldb");
-      }
-      let freshWorkspace = new ModelWorkspace(response);
-      this.workspaces.set(id, freshWorkspace);
-      return freshWorkspace;
+    const response = await this.typedModelFetch<WorkspaceResponse>(`/${id}`, {
+      headers: {
+        accept: "application/json",
+      },
+    });
+    const valid = validateWorkspaceResponse(response);
+    if (!valid) {
+      slog.error("getWorkspace", [
+        "invalid response from retrieving a workspace",
+        `${validateWorkspaceResponse.errors}`,
+      ]);
+      // TODO: make a custom login error class so we can gracefully handle this situation by notifying the user.
+      throw new Error("invalid workspace response received from owldb");
     }
+    let freshWorkspace = new ModelWorkspace(response);
+    return freshWorkspace;
   }
 
   /**
@@ -184,32 +176,26 @@ export class OwlDBModel {
    * @returns A promise mapping the names of workspaces to the corresponding ModelWorkspace objects.
    */
   async getAllWorkspaces(): Promise<Map<string, ModelWorkspace>> {
-    // Update workspaces, if we aren't subscribed
-    if (!this.subscribedToWorkspaces) {
-      this.workspaces = new Map<string, ModelWorkspace>();
-      let db_workspaces =
-        await this.typedModelFetch<GetWorkspacesResponse>(`/`);
-      const valid = validateGetWorkspacesResponse(db_workspaces);
-      if (!valid) {
-        slog.error("getWorkspace", [
-          "invalid response from getting all workspaces",
-          `${validateGetWorkspacesResponse.errors}`,
-        ]);
-        // TODO: make a custom login error class so we can gracefully handle this situation by notifying the user.
-        throw new Error(
-          "invalid getting all workspaces response received from owldb",
-        );
-      }
-      db_workspaces.forEach((workspace_response) => {
-        let split_path = workspace_response.path.split("/");
-        let workspace_name = split_path[split_path.length - 1];
-        this.workspaces.set(
-          workspace_name,
-          new ModelWorkspace(workspace_response),
-        );
-      });
+    // Update workspaces
+    let workspaces = new Map<string, ModelWorkspace>();
+    let db_workspaces = await this.typedModelFetch<GetWorkspacesResponse>(`/`);
+    const valid = validateGetWorkspacesResponse(db_workspaces);
+    if (!valid) {
+      slog.error("getWorkspace", [
+        "invalid response from getting all workspaces",
+        `${validateGetWorkspacesResponse.errors}`,
+      ]);
+      // TODO: make a custom login error class so we can gracefully handle this situation by notifying the user.
+      throw new Error(
+        "invalid getting all workspaces response received from owldb"
+      );
     }
-    return this.workspaces;
+    db_workspaces.forEach((workspace_response) => {
+      let split_path = workspace_response.path.split("/");
+      let workspace_name = split_path[split_path.length - 1];
+      workspaces.set(workspace_name, new ModelWorkspace(workspace_response));
+    });
+    return workspaces;
   }
 
   /**
@@ -251,12 +237,106 @@ export class OwlDBModel {
   }
 
   /**
+   * Gets the channel, an asynchronous operation that resolves to a ModelChannel.
+   * @param id the string id of this channel
+   * @retuns a Promise resolving to a ModelChannel
+   */
+  async getChannel(channel_path: string): Promise<ModelChannel> {
+    const response = await getModel().typedModelFetch<ChannelResponse>(
+      channel_path,
+      {
+        headers: {
+          accept: "application/json",
+        },
+      }
+    );
+    const valid = validateChannelResponse(response);
+    if (!valid) {
+      slog.error("getChannel", [
+        "invalid channel response",
+        `${validateChannelResponse.errors}`,
+      ]);
+      throw new Error("invalid channel response received from owldb");
+    }
+    return new ModelChannel(response);
+  }
+
+  /**
+   * Adds a channel with the specified name to the workspace.
+   * @param channel_name the string name of the channel
+   * @returns an empty promise representing the result of waiting on the database requests.
+   */
+  async addChannel(channel_path: string): Promise<void> {
+    // Add this channel under this workspace to the API
+    await this.typedModelFetch<any>(`${channel_path}?timestamp=0`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    });
+    // Give it a "posts" collection
+    await getModel().typedModelFetch<any>(`${channel_path}/posts/`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    });
+    // Now, either:
+    // 1. we are subscribed to channels, so OWLDB will send back a message which updates the state
+    // or:
+    // 2. we aren't subscribed, in which case the adapter will manually refresh, if it wants to.
+    // Either way, we don't have to do anything else.
+  }
+
+  /**
+   * Deletes the channel at the given path from the database.
+   * @param channel_path
+   */
+  async removeChannel(channel_path: string): Promise<void> {
+    await this.emptyModelFetch(`${channel_path}`, {
+      method: "DELETE",
+    });
+  }
+
+  /**
+   * Fetches all of the channels at the given workspace path
+   * @returns a map of channel names to ModelChannels
+   */
+  async getAllChannels(
+    workspace_path: string
+  ): Promise<Map<string, ModelChannel>> {
+    // Update channels, if we aren't subscribed
+    let channels = new Map<string, ModelChannel>();
+    slog.info("getAllChannels", ["workspace_path", `${workspace_path}`]);
+    let db_channels = await getModel().typedModelFetch<GetChannelsResponse>(
+      `${workspace_path}/channels/`
+    );
+    const valid = validateGetChannelsResponse(db_channels);
+    if (!valid) {
+      slog.error("getAllChannels", [
+        "invalid all channels response",
+        `${validateGetChannelsResponse.errors}`,
+      ]);
+      throw new Error("invalid all channels response received from owldb");
+    }
+    db_channels.forEach((channel_response) => {
+      let split_path = channel_response.path.split("/");
+      let workspace_name = split_path[split_path.length - 1];
+      channels.set(workspace_name, new ModelChannel(channel_response));
+    });
+    slog.info("getAllChannels", ["channels", channels]);
+    return channels;
+  }
+
+  /**
    * A function that updates a specific post by adding a reaction.
    * @param reactionUpdate an object representing the reaction update data to send to the model.
    * @returns a Promise that resolves to the patch response received from the database.
    */
   async updateReaction(
-    reactionUpdate: ModelReactionUpdate,
+    reactionUpdate: ModelReactionUpdate
   ): Promise<PatchDocumentResponse> {
     let patches = getPatchBody(reactionUpdate);
     const options = {
@@ -272,7 +352,7 @@ export class OwlDBModel {
     return getModel()
       .typedModelFetch<PatchDocumentResponse>(
         `${reactionUpdate.postPath}`,
-        options,
+        options
       )
       .then((response) => {
         slog.info("updateReaction", ["response", response]);
