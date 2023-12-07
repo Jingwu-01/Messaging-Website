@@ -1,17 +1,21 @@
-import { ViewChannel, ViewChannelUpdate, ViewUser } from "../../../../../datatypes";
+import {
+  ViewChannel,
+  ViewChannelUpdate,
+  ViewUser,
+} from "../../../../../datatypes";
 import { getView } from "../../../../../view";
 
 /**
  * UserMenu Component displays username, has my starred posts button and
- * handles logout. 
+ * handles logout.
  */
 class UserMenuComponent extends HTMLElement {
   /** Controller */
   private controller: AbortController | null = null;
   /** the starred posts button  */
-  private starredPostsButton: HTMLElement; 
+  private starredPostsButton: HTMLElement;
   /** logout button */
-  private logoutButton: HTMLElement | null; 
+  private logoutButton: HTMLElement | null;
 
   /**
    * Constructor for the UserMenu Component.
@@ -28,18 +32,20 @@ class UserMenuComponent extends HTMLElement {
     }
     this.shadowRoot?.append(template.content.cloneNode(true));
 
-    const starredPostsButton = this.shadowRoot?.querySelector("#my-starred-posts-button"); 
-    if (!(starredPostsButton instanceof HTMLElement)){
-      throw Error("cannot find #my-starred-posts-button HTMLElement")
+    const starredPostsButton = this.shadowRoot?.querySelector(
+      "#my-starred-posts-button"
+    );
+    if (!(starredPostsButton instanceof HTMLElement)) {
+      throw Error("cannot find #my-starred-posts-button HTMLElement");
     } else {
-      this.starredPostsButton = starredPostsButton
+      this.starredPostsButton = starredPostsButton;
     }
 
     const logoutButton = this.shadowRoot?.querySelector("#logout-button");
     if (!(logoutButton instanceof HTMLElement)) {
       throw Error("cannot find #logout-button HTMLElement");
     } else {
-      this.logoutButton = logoutButton
+      this.logoutButton = logoutButton;
     }
   }
 
@@ -48,7 +54,7 @@ class UserMenuComponent extends HTMLElement {
    */
   connectedCallback(): void {
     // Tell the view that this component wants to listen to user updates
-    this.starredPostsButton.style.display = 'none';
+    this.starredPostsButton.style.display = "none";
     getView().addUserListener(this);
     getView().addChannelListener(this);
 
@@ -66,12 +72,12 @@ class UserMenuComponent extends HTMLElement {
     this.starredPostsButton?.addEventListener(
       "click",
       this.handleStarredPosts.bind(this),
-      options,
+      options
     );
   }
-  
-  /** 
-   * When disconnected, abort the controller. 
+
+  /**
+   * When disconnected, abort the controller.
    */
   disconnectedCallback(): void {
     this.controller?.abort();
@@ -80,7 +86,7 @@ class UserMenuComponent extends HTMLElement {
 
   /**
    * Handles the logout request by sending a logout event.
-   * @param event Mousevent of clicking 
+   * @param event Mousevent of clicking
    */
   handleLogout(event: MouseEvent) {
     event.preventDefault();
@@ -91,12 +97,12 @@ class UserMenuComponent extends HTMLElement {
   }
 
   /**
-   * Handles the show starred posts by ask the view to get the starred posts component and display the dialog. 
-   * @param event Mousevent of clicking 
+   * Handles the show starred posts by ask the view to get the starred posts component and display the dialog.
+   * @param event Mousevent of clicking
    */
   handleStarredPosts(event: MouseEvent) {
     event.preventDefault();
-    getView().openDialog("starred-posts-dialog")
+    getView().openDialog("starred-posts-dialog");
   }
 
   static get observedAttributes(): Array<string> {
@@ -112,7 +118,7 @@ class UserMenuComponent extends HTMLElement {
 
   /**
    * called by view whenever there is a change in the logged-in user
-   * @param user a VierUser that contains username or null 
+   * @param user a VierUser that contains username or null
    */
   displayUser(user: ViewUser | null) {
     // update the displayed username
@@ -122,9 +128,7 @@ class UserMenuComponent extends HTMLElement {
     }
   }
 
-  displayChannels(update: ViewChannelUpdate) {
-
-  }
+  displayChannels(update: ViewChannelUpdate) {}
 
   displayOpenChannel(open_channel: ViewChannel | null) {
     if (open_channel === null) {
@@ -132,6 +136,7 @@ class UserMenuComponent extends HTMLElement {
     } else {
       this.starredPostsButton.style.display = "block";
     }
+  }
 }
 
 export default UserMenuComponent;
