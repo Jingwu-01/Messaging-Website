@@ -82,7 +82,7 @@ class ReactionComponent extends HTMLElement {
     let postPath = this.parentPath;
     let curReacted: boolean;
 
-    // If postPath or loggedin user is undefine, throw an error. 
+    // If postPath or loggedin user is undefine, slog an error. 
     if (postPath === undefined || user === undefined) {
       getView().displayError("reacted to a malformed post");
       slog.error("ReactionComponent: update, user or postPath is undefined", ["user", user], ["postPath", postPath]);
