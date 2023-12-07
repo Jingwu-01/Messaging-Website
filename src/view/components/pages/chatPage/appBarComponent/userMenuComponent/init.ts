@@ -72,7 +72,7 @@ export default function init() {
           role="img"
         ></iconify-icon>
       </button>
-      <div slot="menu-items" id="user-menu-dropdown">
+      <section slot="menu-items" id="user-menu-dropdown">
         <button class="user-buttons">
           <p id="my-starred-posts-button">My Starred Posts</p>
         </button>
@@ -84,7 +84,7 @@ export default function init() {
         >
           <p slot="content">Log Out</p>
         </loading-button-component>
-      </div>
+      </section>
     </menu-component>
   </template>
 `
