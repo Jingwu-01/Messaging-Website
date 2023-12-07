@@ -1,7 +1,7 @@
 import HomePage from ".";
 
 /**
- * Initializes the HomePage by inserting its html to the document and defining
+ * Initialize the HomePage by inserting its html to the document and defining
  * the home-page custom element.
  */
 export default function homePageInit() {

@@ -1,5 +1,8 @@
 import { PostEditor } from ".";
 
+/**
+ * Initialize the post editor component by inserting its html template and registering its custom element.
+ */
 export default function postEditorInit() {
   document.body.insertAdjacentHTML(
     "beforeend",

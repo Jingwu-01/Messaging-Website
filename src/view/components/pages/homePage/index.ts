@@ -2,14 +2,18 @@ import { slog } from "../../../../slog";
 import { ViewUser } from "../../../datatypes";
 import { getView } from "../../../view";
 
-// This component was formerly a page, but is now a dialog.
-// Prompts the user to log in.
+/**
+ * HomePage is a dialog that propts the user to log in. 
+ */
 class HomePage extends HTMLElement {
   private controller: AbortController | null = null;
   private dialog: HTMLDialogElement;
   private form: HTMLFormElement;
   private submitButton: HTMLElement;
 
+  /**
+   * Constructor for the HomePage component. 
+   */
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -111,7 +115,7 @@ class HomePage extends HTMLElement {
   }
 
   /**
-   *  Show the dialog.
+   * Show the dialog.
    */
   showModal() {
     this.dialog.showModal();
@@ -125,7 +129,7 @@ class HomePage extends HTMLElement {
   }
 
   /**
-   * Based on the cuurent user, display the Login Dialog again or close the dialog
+   * Based on the cuurent user, display the Login Dialog again or close the dialog. 
    */
   displayUser(user: ViewUser | null) {
     if (user == null) {

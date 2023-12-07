@@ -4,11 +4,14 @@ import PostDisplay from "./postDisplayComponent";
 import StarredPosts from "./starredPostsComponent";
 
 /**
- * Component that displays the page where chats are displayed.
+ * ChatPage Component displays the page where chats(workspaces, channels, and posts) are displayed.
  */
 export class ChatPageComponent extends HTMLElement {
   private mainContainer: HTMLElement;
 
+  /**
+   * Constructor for the ChatPage component.
+   */
   constructor() {
     super();
 
@@ -78,6 +81,9 @@ export class ChatPageComponent extends HTMLElement {
     }
   }
 
+  /**
+   * Get the starredPosts Component and then display the dialog. 
+   */
   getStarredPostsComponent(){
     let starredPostsComponent = this.shadowRoot?.querySelector("starred-posts-component")
     if (!(starredPostsComponent instanceof StarredPosts)){

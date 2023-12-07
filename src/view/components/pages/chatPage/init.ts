@@ -1,7 +1,7 @@
 import ChatPage from ".";
 
 /**
- * Initializes the ChatPage component
+ * Initialize the ChatPage component by inserting its html template and registering its custom component. 
  */
 export default function chatPageInit() {
   // TODO: add styling here. below sidebar and post display needs to be
@@ -11,7 +11,7 @@ export default function chatPageInit() {
     `
 <template id="chat-page-template">
   <style>
-    div {
+    section {
       display: flex;
       flex-direction: column;
       height: 100vh;
@@ -29,12 +29,12 @@ export default function chatPageInit() {
       width: 83%;
     }
   </style>
-  <div>
+  <section>
     <app-bar-component></app-bar-component>
     <main>
       <channel-sidebar-component></channel-sidebar-component>
     </main>
-  </div>
+  </section>
 </template>
 `,
   );
