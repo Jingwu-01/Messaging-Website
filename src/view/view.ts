@@ -18,10 +18,6 @@ interface PostDisplayListener {
   removePostDisplay(): void;
 }
 
-interface StarredPostsListener {
-  getStarredPostsComponent(): void; 
-}
-
 /**
  * Interface for post listeners
  * A component that is a PostListener will receive
@@ -158,8 +154,6 @@ export class View {
    */
   private postDisplayListeners: Array<PostDisplayListener> =
     new Array<PostDisplayListener>();
-
-  private starredPostsListeners: Array<StarredPostsListener> = new Array<StarredPostsListener>();
 
   /**
    * A 2D map, where every function in eventCompletedListeners.get(event_id)
@@ -379,34 +373,6 @@ export class View {
     ]);
   }
 
-  addStarredPostsListener(listener: StarredPostsListener) {
-    this.starredPostsListeners.push(listener);
-    slog.info(
-      "View: addStarredPostsListener",
-      ["listener", listener],
-      ["this.postDisplayListeners", this.starredPostsListeners]
-    );
-  }
-
-  removeStarredPostsListener(listener: StarredPostsListener) {
-    let index = this.starredPostsListeners.indexOf(listener);
-    slog.info(
-      "View: removeStarredPostsListener",
-      ["listener", listener],
-      ["index", index]
-    );
-    if (index < 0) {
-      throw new ReferenceError(
-        "Attempted to remove a post display listener that was not subscribed"
-      );
-    }
-    this.starredPostsListeners.splice(index, 1);
-    slog.info("View: removePostDisplayListener, after removing listener", [
-      "this.postDisplayListeners",
-      this.starredPostsListeners,
-    ]);
-  }
-
   displayPostDisplay() {
     slog.info("displayPostDisplay: was called");
     this.postDisplayListeners.forEach((listener) => {
@@ -417,12 +383,6 @@ export class View {
   removePostDisplay() {
     this.postDisplayListeners.forEach((listener) => {
       listener.removePostDisplay();
-    });
-  }
-
-  getStarredPostsComponent() {
-    this.starredPostsListeners.forEach((listener) => {
-      listener.getStarredPostsComponent();
     });
   }
 

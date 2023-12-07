@@ -1,4 +1,4 @@
-import { ViewUser } from "../../../../../datatypes";
+import { ViewChannel, ViewChannelUpdate, ViewUser } from "../../../../../datatypes";
 import { getView } from "../../../../../view";
 
 /**
@@ -43,7 +43,7 @@ class UserMenuComponent extends HTMLElement {
     // Tell the view that this component wants to listen to user updates
     this.starredPostsButton.style.display = 'none';
     getView().addUserListener(this);
-    getView().addPostDisplayListener(this);
+    getView().addChannelListener(this);
 
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
@@ -76,11 +76,10 @@ class UserMenuComponent extends HTMLElement {
 
   handleStarredPosts(event: MouseEvent) {
     event.preventDefault();
-    getView().getStarredPostsComponent();
+    getView().openDialog("starred-posts-dialog")
   }
 
   disconnectedCallback(): void {
-    getView().removePostDisplayListener(this);
     this.controller?.abort();
     this.controller = null;
   }
@@ -105,12 +104,16 @@ class UserMenuComponent extends HTMLElement {
     }
   }
 
-  displayPostDisplay() {
-    this.starredPostsButton.style.display = "block";
+  displayChannels(update: ViewChannelUpdate) {
+
   }
 
-  removePostDisplay() {
-    this.starredPostsButton.style.display = "none";
+  displayOpenChannel(open_channel: ViewChannel | null) {
+    if (open_channel === null) {
+      this.starredPostsButton.style.display = "none";
+    } else {
+      this.starredPostsButton.style.display = "block";
+    }
   }
 }
 

@@ -1,5 +1,5 @@
 import { slog } from "../../../../../slog";
-import { ViewPostUpdate } from "../../../../datatypes";
+import { ViewChannel, ViewChannelUpdate, ViewPostUpdate } from "../../../../datatypes";
 import { getView } from "../../../../view";
 import PostComponent from "../postComponent";
 
@@ -127,11 +127,11 @@ export class StarredPosts extends HTMLElement {
     connectedCallback() {
         slog.info("PostDisplay: connectedCallback was called");
         getView().addPostListener(this);
-
+        getView().addChannelListener(this)
         this.controller = new AbortController();
         const options = { signal: this.controller.signal };
         this.closeButton.addEventListener(
-         "click",this.closeDialog.bind(this),options,
+         "click",this.close.bind(this),options,
     );
 
     }
@@ -146,12 +146,20 @@ export class StarredPosts extends HTMLElement {
         return;
     }
 
-    closeDialog(){
+    close(){
         this.postsDialog.close()
     }
     
-    displayDialog(){
+    showModal(){
         this.postsDialog.showModal(); 
+    }
+
+    displayChannels(channels: ViewChannelUpdate) {
+
+    }
+
+    displayOpenChannel(channel: ViewChannel | null) {
+        this.postsContainer.innerHTML = ""
     }
     
 }

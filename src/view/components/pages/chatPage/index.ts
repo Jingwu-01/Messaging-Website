@@ -1,7 +1,6 @@
 import { slog } from "../../../../slog";
 import { getView } from "../../../view";
 import PostDisplay from "./postDisplayComponent";
-import StarredPosts from "./starredPostsComponent";
 
 /**
  * Component that displays the page where chats are displayed.
@@ -36,7 +35,6 @@ export class ChatPageComponent extends HTMLElement {
   connectedCallback() {
     slog.info("ChatPageComponent: connectedCallback was called");
     getView().addPostDisplayListener(this);
-    getView().addStarredPostsListener(this);
   }
 
   /**
@@ -45,7 +43,6 @@ export class ChatPageComponent extends HTMLElement {
   disconnectedCallback() {
     slog.info("ChatPageComponent: disconnectedCallback was called");
     getView().removePostDisplayListener(this);
-    getView().removeStarredPostsListener(this);
   }
 
   /**
@@ -55,9 +52,7 @@ export class ChatPageComponent extends HTMLElement {
     // remove existing one's (in case of multiple) in case of errors, and add a new one.
     this.removePostDisplay();
     let newPostDisplay = new PostDisplay();
-    let newStarredPosts = new StarredPosts();
     this.mainContainer.append(newPostDisplay);
-    this.mainContainer.append(newStarredPosts);
   }
 
   /**
@@ -65,10 +60,10 @@ export class ChatPageComponent extends HTMLElement {
    */
   removePostDisplay() {
     let currentPostViews = this.mainContainer.querySelectorAll(
-      "post-display-component, starred-posts-component",
+      "post-display-component",
     );
     for (let potentialPostDisplay of currentPostViews) {
-      if (potentialPostDisplay instanceof PostDisplay || potentialPostDisplay instanceof StarredPosts) {
+      if (potentialPostDisplay instanceof PostDisplay) {
         potentialPostDisplay.remove();
         slog.info(
           "ChatPageComponent: removePostDisplay, removed current post display",
@@ -78,13 +73,6 @@ export class ChatPageComponent extends HTMLElement {
     }
   }
 
-  getStarredPostsComponent(){
-    let starredPostsComponent = this.shadowRoot?.querySelector("starred-posts-component")
-    if (!(starredPostsComponent instanceof StarredPosts)){
-      throw new Error("cannot find starred-posts-component custom element")
-    } 
-    starredPostsComponent.displayDialog();
-  }
 }
 
 export default ChatPageComponent;
