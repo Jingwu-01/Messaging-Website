@@ -16,8 +16,10 @@ export type ViewPostUpdate = {
   starOp: "insert" | "modify" | "delete" | "nop";
 };
 
-/** This ViewPost type will effectively allow us to represent a tree of posts
-that the view can display. */
+/**
+ * This ViewPost type will effectively allow us to represent a tree of posts
+that the view can display.
+ */
 export type ViewPost = {
   msg: string;
   reactions: ReactionData; // TODO: should be an array of strings? or custom reactions objects based on what we want?
@@ -32,9 +34,13 @@ export type ViewPost = {
   starredIndex: number | undefined;
 };
 
+/**
+ * StarExtention contains an array of usernames that starred a post. 
+ */
 export type StarExtension = {
   p2group50: Array<string>;
 };
+
 /**
  * Update sent by the Adapter to the view when the workspaces change
  */
@@ -75,7 +81,9 @@ export type ViewChannelUpdate = {
   affectedChannels: Array<ViewWorkspace>;
 };
 
-/* ReactionData is have fields including smiles, frown, like and celebrate*/
+/**
+ * ReactionData have fields including smiles, frown, like and celebrate. 
+ */
 export type ReactionData = {
   smile: string[];
   frown: string[];
@@ -84,6 +92,9 @@ export type ReactionData = {
   [k: string]: string[];
 };
 
+/**
+ * PostReactions should empty if nothing goes wrong.
+ */
 export type PostReactions = {
   [k: string]: string[];
 };
@@ -217,4 +228,7 @@ export interface EventWithId extends CustomEvent {
   };
 }
 
+/**
+ * the name of state can only one of "user" | "posts" | "channels" | "workspaces";
+ */
 export type StateName = "user" | "posts" | "channels" | "workspaces";

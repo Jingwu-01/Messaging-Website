@@ -1,6 +1,5 @@
 /**
- * Defines the custom element for SnackbarDisplayComponent, which will be used
- * as a snack bar display web component.
+ * SnackbarDisplayComponennt displays the snack bar for messages.
  * */
 class SnackbarDisplayComponent extends HTMLElement {
   private display: HTMLElement;

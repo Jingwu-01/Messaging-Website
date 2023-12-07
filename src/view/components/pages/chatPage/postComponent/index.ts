@@ -6,30 +6,49 @@ import ReplyButtonComponent from "../../../pieces/replyButtonComponent";
 import StarButtonComponent from "../../../pieces/starButtonComponent";
 import { PostEditor } from "../postEditorComponent";
 
+/**
+ * PostComponent displays the content of an individual post. 
+ */
 export class PostComponent extends HTMLElement {
+  /** Container of everthing of the post */
   private postAll: HTMLElement; 
 
+  /** Container of post header */
   private postHeader: HTMLElement;
 
+  /** Container of post body */
   private postBody: HTMLElement;
 
+  /** path of the post  */
   private postPath: string | undefined;
 
+  /** Container of post buttons */
   private postButtons: HTMLElement;
 
+  /** Post user */
+  private postUser: string | undefined;
+
+  /** Reply button of the post */
   private replyButton: ReplyButtonComponent;
 
+  /** Reaction buttons of the post */
   private reactionButtons: Map<string, ReactionComponent> = new Map<
     string,
     ReactionComponent
   >();
 
+  /** Controller */
   private controller: AbortController | null = null;
 
+  /** Post message */
   private postMsg: string | undefined;
 
+  /** Star button of the post */
   private starButton: StarButtonComponent;
 
+  /**
+   * Constructor for the post component. 
+   */
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -90,6 +109,9 @@ export class PostComponent extends HTMLElement {
     }
   }
 
+  /** 
+   * When connected, add listener to add reply 
+   */
   connectedCallback() {
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
@@ -102,10 +124,19 @@ export class PostComponent extends HTMLElement {
     );
   }
 
+  /**
+   * observe the starred attribute. 
+   */
   static get observedAttributes(): string[] {
     return ["starred"];
   }
 
+  /**
+   * Hide the reply button in the starred posts
+   * @param name string of changed attributes
+   * @param oldValue old value of changed attributes
+   * @param newValue new value of changed attributes
+   */
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     if (name === "starred") {
       if (newValue === "true") {
@@ -114,11 +145,16 @@ export class PostComponent extends HTMLElement {
     }
   }
 
+  /** When disconencted, abort the controller.  */
   disconnectedCallback() {
     this.controller?.abort();
     this.controller = null;
   }
 
+  /**
+   * Move the post editor under the correct post when reply is clicked. 
+   * @param event MouseEvent
+   */
   addReplyPostEditor(event: MouseEvent) {
     // let postEditor = new PostEditor();
     // // this call should technically be before the previous one
@@ -128,7 +164,11 @@ export class PostComponent extends HTMLElement {
     getView().moveReplyPostEditorTo(this);
   }
 
-  // Sets the content of this post equal to viewPost
+  /**
+   * Sets the content of this post equal to viewPost
+   * @param viewPost ViewPost
+   * @returns void
+   */
   addPostContent(viewPost: ViewPost): void {
     // TODO: obviously can add more functionality here later as needed.
     slog.info("addPostContent: top of func call", ["viewPost", viewPost]);
@@ -205,7 +245,10 @@ export class PostComponent extends HTMLElement {
     this.starButton.setParentPath(viewPost.path);
   }
 
-  // Adds childrenPosts as replies to this ViewPost.
+  /**
+   * Adds childrenPosts as replies to this ViewPost.
+   * @param childrenPosts an array of ViewPost
+   */
   addPostChildren(childrenPosts: Array<ViewPost>): void {
     for (let childPost of childrenPosts) {
       let childPostEl = new PostComponent();
@@ -217,11 +260,19 @@ export class PostComponent extends HTMLElement {
     }
   }
 
+  /**
+   * append the post editor to the bottom of the page. 
+   * @param postEditor PostEditor
+   */
   appendPostEditor(postEditor: PostEditor) {
     this.append(postEditor);
   }
 
-  getPostPath() {
+  /**
+   * get the post path
+   * @returns the post path string
+   */
+  getPostPath(): string | undefined {
     return this.postPath;
   }
 
@@ -230,12 +281,16 @@ export class PostComponent extends HTMLElement {
   //   // then add the reactio if it's a "modify"
   // }
 
-  /* Convert the input string to their corresponding HTML elements based on the markdown patterns and append them to the input HTML container element. Mark down patterns: 
+  /**
+   * Convert the input string to their corresponding HTML elements based on the markdown patterns and append them to the input HTML container element. Mark down patterns: 
   1. Text surrounded by single * symbols rendered in italics using <em>; 
   2. Text surrounded by double * symbols rendered in bold using <strong>;
   3. Text and a URL surrounded by []() rendered as links using <a>;
   4. Reaction names like :smile: must be rendered as their associated emoji using <iconify>. 
-  5. Other text rendered as plain text using <p> */
+  5. Other text rendered as plain text using <p>
+   * @param text string for conversion 
+   * @param container HTML that accepts the converted text
+   */
   appendFormattedText(text: string, container: HTMLElement): void {
     // Regular expressions for different markdown patterns
     const patterns = {
@@ -269,6 +324,10 @@ export class PostComponent extends HTMLElement {
     });
   }
 
+  /**
+   * Modify the post content based on input ViewPost
+   * @param viewPost ViewPost
+   */
   modifyPostContent(viewPost: ViewPost) {
     let reactionData = viewPost.reactions;
     this.updateReactions(reactionData);
@@ -276,6 +335,11 @@ export class PostComponent extends HTMLElement {
     this.updateExtensions(extensionData);
   }
 
+  /**
+   * Update the reactions based on received ReactionData
+   * @param reactionData ReactionData
+   * @returns nothing 
+   */
   updateReactions(reactionData: ReactionData) {
     let currentUsername: string;
     let currentUser = getView().getUser();
@@ -307,6 +371,11 @@ export class PostComponent extends HTMLElement {
     }
   }
 
+  /**
+   * update the extensions based on received StarExtension
+   * @param extensionData StarExtension
+   * @returns nothing 
+   */
   updateExtensions(extensionData: StarExtension) {
     let currentUsername: string;
     let currentUser = getView().getUser();
@@ -327,15 +396,25 @@ export class PostComponent extends HTMLElement {
     }
   }
 
+  /**
+   * get post text of the post. 
+   * @returns string for the post message 
+   */
   getPostText() {
     return this.postMsg;
   }
 
+  /**
+   * highlight a post that the user is replying to 
+   */
   highlight() {
     this.postAll.style.backgroundColor = "#d9d9d9"; 
     this.postAll.style.borderRadius = "5px"; 
   }
 
+  /**
+   * unhighly a post that the user is no longer replying to 
+   */
   unhighlight() {
     this.postAll.style.backgroundColor = "transparent"; 
     this.postAll.style.borderRadius = "0px"; 

@@ -1,5 +1,5 @@
 /**
- * PopoverComponent is used for the display of dates of posts. When a user
+ * PopoverComponent is used for elements that will pop over when some conditions are met. In the display of dates of posts, when a user
  * hovers over the date, the detailed time would pop over. 
  */
 class PopoverComponent extends HTMLElement {
@@ -27,8 +27,7 @@ class PopoverComponent extends HTMLElement {
   }
 
   /**
-   * Open or close popover based on value of "open" attribute. Set alignment of
-   * popover box. 
+   * Display the pop over box based on value of "open" attribute and set alignment of popover box based "align". 
    * @param name the name of attribute that changes 
    * @param oldValue the old value of chanegd attribute
    * @param newValue the new value of chanegd attribute 

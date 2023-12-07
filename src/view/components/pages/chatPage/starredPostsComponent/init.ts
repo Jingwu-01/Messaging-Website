@@ -1,5 +1,8 @@
 import StarredPosts from ".";
 
+/**
+ * Initialize the starredPosts component by inserting its html template and registering its custom element.
+ */
 export default function starredPostsComponentInit() {
   document.body.insertAdjacentHTML(
     "beforeend",

@@ -1,7 +1,7 @@
 import AppBarComponent from ".";
 
 /**
- * HTML template for app bar.
+ * Init HTML template for app bar component and register it.
  */
 export default function appBarComponentInit() {
   document.body.insertAdjacentHTML(
@@ -40,16 +40,16 @@ export default function appBarComponentInit() {
       outline: none;
   } 
   </style>
-  <div id="app-bar-wrapper">
-    <div id="title-wrapper">
+  <section id="app-bar-wrapper">
+    <section id="title-wrapper">
       <span>
         <iconify-icon id="owl-icon" icon="noto-v1:owl" aria-label="m3ssag1ng owl" role="img"></iconify-icon>
       </span>
       <h2>Messaging</h2>
-    </div>
+    </section>
     <workspace-menu-component></workspace-menu-component>
     <user-menu-component></user-menu-component>
-  </div>
+  </section>
 </template>
 `,
   );

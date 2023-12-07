@@ -1,8 +1,8 @@
 import { EventWithId } from "../../../../datatypes";
 
-/*
-  An EditDialog is a dialog that allows for the creation or deletion of channels or workspaces.
-*/
+/**
+ * An EditDialog is a dialog that allows for the creation or deletion of channels or workspaces.
+ */
 export class EditDialogComponent extends HTMLElement {
   /**
    * Called when the "add-item" form is filled out.
@@ -18,17 +18,24 @@ export class EditDialogComponent extends HTMLElement {
    */
   public getRemoveEvent(item_id: string): EventWithId | void {}
 
+  /** add item button */
   protected addItemButton: HTMLElement;
+  /** add item text input */
   protected addItemInput: HTMLInputElement;
+  /** item display div element */
   protected itemDisplay: HTMLDivElement;
+  /** Edit dialog element */
   protected dialog: HTMLDialogElement;
+  /** Save and close button element */
   protected saveAndCloseButton: HTMLElement;
-
   /** Position (starting from top of dialog) of the element that's currently focused. */
   protected focused_element_index: number = 0;
   /** Elements representing this dialog's items */
   protected item_elements: HTMLElement[] = [];
 
+  /**
+   * Constructor for the edit dialog. 
+   */
   constructor() {
     super();
 
@@ -87,6 +94,9 @@ export class EditDialogComponent extends HTMLElement {
     this.saveAndCloseButton = save_and_close_button_query;
   }
 
+  /**
+   * When connected, add click listeners to add item button and close button. 
+   */
   connectedCallback(): void {
     this.addItemButton.addEventListener("click", () => {
       this.onAdd(this.addItemInput.value);

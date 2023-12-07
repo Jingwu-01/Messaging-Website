@@ -1,7 +1,12 @@
-/* Defines the custom element for MenuComponent, which will be used as a menu component web component. */
+/**
+ * MenuComponent is a drop-down menu. When a user clicks on it, the elements of the menu will show. 
+ */
 class MenuComponent extends HTMLElement {
   private popoverElement: HTMLElement;
 
+  /**
+   * Constructor for the MenuComponent. 
+   */
   constructor() {
     super();
 
@@ -21,9 +26,11 @@ class MenuComponent extends HTMLElement {
     this.popoverElement = popover_el;
   }
 
+  /**
+   * When the component is connected, add some event listners to window and menu. 
+   */
   connectedCallback(): void {
-    // The browser calls this when the element is added to a document.
-
+   
     // Add a click listener to the document that closes this menu if it isn't open.
     // This means clicking outside the menu will close it.
     window.addEventListener("click", () => {
@@ -46,13 +53,20 @@ class MenuComponent extends HTMLElement {
     });
   }
 
-  disconnectedCallback(): void {
-    // The browser calls this when the element is removed from a document.
-  }
+  /**
+   * Observe the attribute open. 
+   */
   static get observedAttributes(): Array<string> {
     // Attributes to observe
     return ["open"];
   }
+
+  /**
+   * When the open attribute changes, open or close the menu accordingly. 
+   * @param name the name of attribute that changed
+   * @param oldValue the old value of changed attribute
+   * @param newValue the new value of chanegd attribute 
+   */
   attributeChangedCallback(
     name: string,
     oldValue: string,

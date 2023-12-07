@@ -5,29 +5,44 @@ import PostComponent from "../postComponent";
 
 type StringFunction = () => string;
 
+/**
+ * PostEditor component is a post editor that allows users to add a post. 
+ */
 export class PostEditor extends HTMLElement {
   // TODO: can definitely add abortcontroller for event handlers and
   // 'deregistering' the event handlers here.
 
+  /** Controller */
   private controller: AbortController | null = null;
 
+  /** Container for post operations */
   private postOperations: HTMLElement;
 
+  /** Text area element */
   // TODO: can we make this more generic?
   private postInput: HTMLTextAreaElement;
 
+  /** post form element */
   private postForm: HTMLFormElement;
 
+  /** parent path of the post editor */
   private parentPath: string | undefined;
 
+  /** cancel reply button element */
   private cancelReply: HTMLElement;
 
+  /** top reply element */
   private topReplyEl: HTMLElement | undefined;
-
+  
   private submitPostIcon: HTMLElement;
   private submitPostButton: HTMLElement;
+
+  /** parent post component of the post editor.  */
   private parentPost: PostComponent | null = null;
 
+  /**
+   * Constructor for the post editor component. 
+   */
   constructor() {
     super();
 
@@ -85,6 +100,9 @@ export class PostEditor extends HTMLElement {
     this.submitPostIcon = submitPostIcon;
   }
 
+  /**
+   * When the component is connected, set the operations correctly and event lisners. 
+   */
   connectedCallback() {
     // post editor operation callbacks
     this.controller = new AbortController();
@@ -164,12 +182,21 @@ export class PostEditor extends HTMLElement {
     getView().addLoadingListener(this);
   }
 
+  /**
+   * When the component is disconnected, abort the controller.
+   */
   disconnectedCallback(): void {
     slog.info("PostEditor: removed from the DOM");
     this.controller?.abort();
     this.controller = null;
   }
 
+  /**
+   * Format the text formatting of bold, italics, and hyperlink. 
+   * @param prefixFunc a string function that contains prefix of formatting 
+   * @param suffixFunc a string function that contains suffix of formatting 
+   * @param selectedValFunc a string function that contains the text for formatting. 
+   */
   applyTextFormatting(
     prefixFunc: StringFunction,
     suffixFunc: StringFunction,
@@ -185,6 +212,10 @@ export class PostEditor extends HTMLElement {
       this.postInput.value.substring(endCharIdx);
   }
 
+  /**
+   * Submit a post by dispatching a createPost event. 
+   * @param event SubmitEvent of clicking the sumbit button 
+   */
   submitPost(event: SubmitEvent) {
     slog.info("submitPost: called");
     event.preventDefault();
@@ -208,26 +239,51 @@ export class PostEditor extends HTMLElement {
     this.postInput.value = "";
   }
 
+  /**
+   * Markdown for reactions.
+   * @returns string ":"
+   */
   reactionMarkdown() {
     return ":";
   }
 
+  /**
+   * Markdown for bold. 
+   * @returns string "**"
+   */
   boldMarkdown() {
     return "**";
   }
 
+  /**
+   * Markdown for italics. 
+   * @returns string "*"
+   */
   italicsMarkdown() {
     return "*";
   }
 
+  /**
+   * Markdown for ulr prefix. 
+   * @returns string "["
+   */
   urlPrefixMarkdown() {
     return "[";
   }
 
+  /**
+   * Markdown for url suffix. 
+   * @returns string "]()"
+   */
   urlSuffixMarkdown() {
     return "]()";
   }
 
+  /**
+   * Set the parent path and the postComponent of this post editor to the input. 
+   * @param parentPath string for new parent path
+   * @param parentPost PostComponent of new post
+   */
   setParentPath(parentPath: string, parentPost: PostComponent | null) {
     // Unhighlight the current parentPost of post editor
     if (this.parentPost !== null) {
@@ -239,10 +295,19 @@ export class PostEditor extends HTMLElement {
     this.parentPost = parentPost;
   }
 
+  /**
+   * Set the 
+   * @param topReplyEl HTMLElement for top reply element 
+   */
   setTopReplyEl(topReplyEl: HTMLElement) {
     this.topReplyEl = topReplyEl;
   }
 
+  /**
+   * When the post editor moves back to the top level (default level), 
+   * remove highlight, reset parent path and reset the text area. 
+   * @param event MouseEvent for click 
+   */
   replyToTopLevel(event: MouseEvent) {
     if (this.parentPost !== null) {
       this.parentPost.unhighlight();
@@ -252,6 +317,9 @@ export class PostEditor extends HTMLElement {
     this.postInput.value = "";
   }
 
+  /**
+   * Slog the parent post info. 
+   */
   printParentEl() {
     slog.info(
       "printParentEl",
@@ -260,6 +328,10 @@ export class PostEditor extends HTMLElement {
     );
   }
 
+  /**
+   * Set the text in the textarea to the input string. 
+   * @param text string for text in the textarea 
+   */
   setText(text: string) {
     this.postInput.value = text;
   }
