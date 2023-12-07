@@ -207,10 +207,12 @@ export class PostEditor extends HTMLElement {
 
   setParentPath(parentPath: string, parentPost: PostComponent | null) {
     if (this.parentPost !== null) {
-      // TODO: call this.parentPost.unhighlight();
+      this.parentPost.unhighlight();
     }
+    
     // for this.parentPost, unhighlight.
-    // then, set parentPath and parentPost.
+    
+    // Then, set parentPath and parentPost.
     slog.info("setParentPath", ["parentPath", `${parentPath}`], ["parentPost", parentPost]);
     this.parentPath = parentPath;
     this.parentPost = parentPost;

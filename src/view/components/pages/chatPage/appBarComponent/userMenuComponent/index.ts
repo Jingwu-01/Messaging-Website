@@ -74,7 +74,6 @@ class UserMenuComponent extends HTMLElement {
     document.dispatchEvent(logoutEvent);
   }
 
-
   handleStarredPosts(event: MouseEvent) {
     event.preventDefault();
     getView().openStarredPostsDialog();

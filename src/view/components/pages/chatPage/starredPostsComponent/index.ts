@@ -6,6 +6,7 @@ import PostComponent from "../postComponent";
 export class StarredPosts extends HTMLElement {
 
     private postsContainer: HTMLElement;
+    private postsDialog: HTMLDialogElement;
 
     constructor() {
         super();
@@ -30,7 +31,8 @@ export class StarredPosts extends HTMLElement {
         let starredPostsWrapper = this.shadowRoot.querySelector(
           "#starredposts-wrapper",
         );
-
+        let postsDialog = this.shadowRoot.querySelector("#starred-posts-dialog")
+        
         if (!(postsContainer instanceof HTMLElement)) {
             throw new Error("Could not find an element with the posts-container id");
         }
@@ -39,8 +41,11 @@ export class StarredPosts extends HTMLElement {
             throw new Error("Could not find an element with the id starredposts-wrapper");
         }
 
+        if (!(postsDialog instanceof HTMLDialogElement)){
+            throw new Error("Could not find an element with the id starred-posts-dialog")
+        }
         this.postsContainer = postsContainer;
-
+        this.postsDialog = postsDialog; 
         this.displayPosts.bind(this);
     }
 
@@ -125,6 +130,10 @@ export class StarredPosts extends HTMLElement {
     moveReplyPostEditorTo(postEl: PostComponent) {
         // should never be called in theory
         return;
+    }
+
+    displayStarredPostsDialog(){
+        this.postsDialog.showModal(); 
     }
     
 }
