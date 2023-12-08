@@ -25,6 +25,7 @@ import { ModelReactionUpdate } from "./modelTypes";
 import { ModelChannel } from "./channel";
 import { GetChannelsResponse } from "../../types/getChannelsResponse";
 import { ChannelResponse } from "../../types/channelResponse";
+import { WorkspaceInterface } from "../interfaces";
 
 /**
  * A class representing the model we use for interfacing with OwlDB.
@@ -150,9 +151,9 @@ export class OwlDBModel {
   /**
    * Retrieves a workspace from the model.
    * @param id a string representing the identifier for the workspace
-   * @returns a Promise resolving to a ModelWorkspace, used by our application
+   * @returns a Promise resolving to a WorkspaceInterface, used by our application
    */
-  async getWorkspace(id: string): Promise<ModelWorkspace> {
+  async getWorkspace(id: string): Promise<WorkspaceInterface> {
     const response = await this.typedModelFetch<WorkspaceResponse>(`/${id}`, {
       headers: {
         accept: "application/json",

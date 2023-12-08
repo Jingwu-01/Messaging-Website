@@ -104,7 +104,6 @@ export class ChannelSidebar extends HTMLElement {
    * @param channel a ViewChannel or null
    */
   displayOpenChannel(channel: ViewChannel | null) {
-    // TODO: may have to update this selector
     this.shadowRoot
       ?.querySelectorAll("#channel-list > button.selected-channel")
       .forEach((selectedEl) => {

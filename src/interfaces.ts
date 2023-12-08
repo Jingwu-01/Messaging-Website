@@ -27,6 +27,7 @@ export interface ModelInterface {
     addWorkspace(workspace_name: string): Promise<void>;
     removeWorkspace(workspace_name: string): Promise<void>;
     getAllWorkspaces(): Promise<Map<string, WorkspaceInterface>>;
+    getWorkspace(id: string): Promise<WorkspaceInterface>;
 }
 
 export interface StateManagerInterface {

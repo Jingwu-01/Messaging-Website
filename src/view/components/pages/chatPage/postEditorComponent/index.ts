@@ -17,7 +17,6 @@ export class PostEditor extends HTMLElement {
   private postOperations: HTMLElement;
 
   /** Text area element */
-  // TODO: can we make this more generic?
   private postInput: HTMLTextAreaElement;
 
   /** post form element */
