@@ -104,6 +104,7 @@ export class AuthAdapter {
           .then(() => {
             view.displayUser(null);
             stateManager.setLoggedInUser(null);
+            stateManager.setOpenWorkspace(null);
             view.completeEvent(event);
           })
           .catch(() => {
