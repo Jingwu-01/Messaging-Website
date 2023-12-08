@@ -168,12 +168,20 @@ class StarButtonComponent extends HTMLElement {
     this.loggedInUser = username;
   }
 
+  /**
+   * Called by the view when a piece of the state starts loading.
+   * @param state The piece of the state that is loading.
+   */
   onLoading(state: StateName) {
     if (state == "channels" || state == "user" || state == "workspaces") {
       this.starButton.setAttribute("disabled", "");
     }
   }
 
+  /**
+   * Called by the view when a piece of the state is finished loading.
+   * @param state The piece of the state that is finished loading.
+   */
   onEndLoading(state: StateName) {
     if (state == "channels" || state == "user" || state == "workspaces") {
       this.starButton.removeAttribute("disabled");

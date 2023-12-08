@@ -6,7 +6,7 @@ import PostComponent from "../postComponent";
 type StringFunction = () => string;
 
 /**
- * PostEditor component is a post editor that allows users to add a post. 
+ * PostEditor component is a post editor that allows users to add a post.
  */
 export class PostEditor extends HTMLElement {
   // TODO: can definitely add abortcontroller for event handlers and
@@ -33,7 +33,7 @@ export class PostEditor extends HTMLElement {
 
   /** top reply element */
   private topReplyEl: HTMLElement | undefined;
-  
+
   private submitPostIcon: HTMLElement;
   private submitPostButton: HTMLElement;
 
@@ -41,7 +41,7 @@ export class PostEditor extends HTMLElement {
   private parentPost: PostComponent | null = null;
 
   /**
-   * Constructor for the post editor component. 
+   * Constructor for the post editor component.
    */
   constructor() {
     super();
@@ -101,7 +101,7 @@ export class PostEditor extends HTMLElement {
   }
 
   /**
-   * When the component is connected, set the operations correctly and event lisners. 
+   * When the component is connected, set the operations correctly and event lisners.
    */
   connectedCallback() {
     // post editor operation callbacks
@@ -192,10 +192,10 @@ export class PostEditor extends HTMLElement {
   }
 
   /**
-   * Format the text formatting of bold, italics, and hyperlink. 
-   * @param prefixFunc a string function that contains prefix of formatting 
-   * @param suffixFunc a string function that contains suffix of formatting 
-   * @param selectedValFunc a string function that contains the text for formatting. 
+   * Format the text formatting of bold, italics, and hyperlink.
+   * @param prefixFunc a string function that contains prefix of formatting
+   * @param suffixFunc a string function that contains suffix of formatting
+   * @param selectedValFunc a string function that contains the text for formatting.
    */
   applyTextFormatting(
     prefixFunc: StringFunction,
@@ -213,8 +213,8 @@ export class PostEditor extends HTMLElement {
   }
 
   /**
-   * Submit a post by dispatching a createPost event. 
-   * @param event SubmitEvent of clicking the sumbit button 
+   * Submit a post by dispatching a createPost event.
+   * @param event SubmitEvent of clicking the sumbit button
    */
   submitPost(event: SubmitEvent) {
     slog.info("submitPost: called");
@@ -231,9 +231,11 @@ export class PostEditor extends HTMLElement {
       "createPostEvent.detail",
       `${JSON.stringify(createPostEvent.detail)}`,
     ]);
+    this.submitPostButton.setAttribute("disabled", "");
     this.submitPostIcon.setAttribute("icon", "svg-spinners:180-ring-with-bg");
     getView().waitForEvent(id, (evt, err) => {
       this.submitPostIcon.setAttribute("icon", "tabler:send");
+      this.submitPostButton.removeAttribute("disabled");
     });
     document.dispatchEvent(createPostEvent);
     this.postInput.value = "";
@@ -248,7 +250,7 @@ export class PostEditor extends HTMLElement {
   }
 
   /**
-   * Markdown for bold. 
+   * Markdown for bold.
    * @returns string "**"
    */
   boldMarkdown() {
@@ -256,7 +258,7 @@ export class PostEditor extends HTMLElement {
   }
 
   /**
-   * Markdown for italics. 
+   * Markdown for italics.
    * @returns string "*"
    */
   italicsMarkdown() {
@@ -264,7 +266,7 @@ export class PostEditor extends HTMLElement {
   }
 
   /**
-   * Markdown for ulr prefix. 
+   * Markdown for ulr prefix.
    * @returns string "["
    */
   urlPrefixMarkdown() {
@@ -272,7 +274,7 @@ export class PostEditor extends HTMLElement {
   }
 
   /**
-   * Markdown for url suffix. 
+   * Markdown for url suffix.
    * @returns string "]()"
    */
   urlSuffixMarkdown() {
@@ -280,7 +282,7 @@ export class PostEditor extends HTMLElement {
   }
 
   /**
-   * Set the parent path and the postComponent of this post editor to the input. 
+   * Set the parent path and the postComponent of this post editor to the input.
    * @param parentPath string for new parent path
    * @param parentPost PostComponent of new post
    */
@@ -289,24 +291,28 @@ export class PostEditor extends HTMLElement {
     if (this.parentPost !== null) {
       this.parentPost.unhighlight();
     }
-    // Update the new parentPath and parentPost 
-    slog.info("setParentPath", ["parentPath", `${parentPath}`], ["parentPost", parentPost]);
+    // Update the new parentPath and parentPost
+    slog.info(
+      "setParentPath",
+      ["parentPath", `${parentPath}`],
+      ["parentPost", parentPost]
+    );
     this.parentPath = parentPath;
     this.parentPost = parentPost;
   }
 
   /**
-   * Set the 
-   * @param topReplyEl HTMLElement for top reply element 
+   * Set the
+   * @param topReplyEl HTMLElement for top reply element
    */
   setTopReplyEl(topReplyEl: HTMLElement) {
     this.topReplyEl = topReplyEl;
   }
 
   /**
-   * When the post editor moves back to the top level (default level), 
-   * remove highlight, reset parent path and reset the text area. 
-   * @param event MouseEvent for click 
+   * When the post editor moves back to the top level (default level),
+   * remove highlight, reset parent path and reset the text area.
+   * @param event MouseEvent for click
    */
   replyToTopLevel(event: MouseEvent) {
     if (this.parentPost !== null) {
@@ -318,7 +324,7 @@ export class PostEditor extends HTMLElement {
   }
 
   /**
-   * Slog the parent post info. 
+   * Slog the parent post info.
    */
   printParentEl() {
     slog.info(
@@ -329,21 +335,21 @@ export class PostEditor extends HTMLElement {
   }
 
   /**
-   * Set the text in the textarea to the input string. 
-   * @param text string for text in the textarea 
+   * Set the text in the textarea to the input string.
+   * @param text string for text in the textarea
    */
   setText(text: string) {
     this.postInput.value = text;
   }
 
   onLoading(state: StateName) {
-    if (state == "posts") {
+    if (state === "channels" || state === "workspaces" || state === "user") {
       this.submitPostButton.setAttribute("disabled", "");
     }
   }
 
   onEndLoading(state: StateName) {
-    if (state == "posts") {
+    if (state === "channels" || state === "workspaces" || state === "user") {
       this.submitPostButton.removeAttribute("disabled");
     }
   }

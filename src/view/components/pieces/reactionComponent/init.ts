@@ -14,24 +14,16 @@ export default function reactionComponentInit() {
         display: flex;
         margin-left: 10px;
       }
-      #reaction-button-content {
-        width: 26px;
-        height: 26px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      #reaction-button {
+        width: 30px;
+        height: 30px;
         border-radius: 3px 3px 3px 3px;
-        border-style: outset;
-        border-color: buttonborder;
-        border-image: initial;
-        border-width: 2px;
-        background-color: buttonface;
       }
       #reaction-count {
         margin-left: 10px;
         margin-top: 7px;
       }
-      #reaction-button-content:hover {
+      #reaction-button:hover {
         background-color: #818589;
         border-radius: 3px 3px 3px 3px;
       }
@@ -54,11 +46,9 @@ export default function reactionComponentInit() {
       
     </style>
     <div id="reaction-container">
-      <loading-button-component disable-if-state-loading="posts channels workspaces user" id="reaction-button" aria-label="smile reaction" style="padding: 0;" default-button-styles="true">
-        <div id="reaction-button-content" slot="content">
-          <iconify-icon slot="content" icon="lucide:smile" id="smile-reaction"></iconify-icon>
-        </section>
-      </loading-button-component>
+      <button id="reaction-button" aria-label="smile reaction">
+        <iconify-icon slot="content" icon="lucide:smile" id="smile-reaction"></iconify-icon>
+      </button>
       <p id="reaction-count"></p>
     </section>
   </template>
