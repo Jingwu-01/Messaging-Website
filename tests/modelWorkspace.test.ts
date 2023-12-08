@@ -1,6 +1,7 @@
 import { fetchFunc } from "./mockfetch";
 import { getModel } from "../src/model/model";
 import { beforeAll, expect, test } from "@jest/globals";
+import { ModelWorkspace } from "../src/model/workspace";
 
 const model = getModel();
 
@@ -18,25 +19,41 @@ test("Get existing workspace", async () => {
   expect(data.getName()).toBe(expectedPath);
 });
 
-test("Get empty workspace", async ()=> {
-    const data = await model.getWorkspace("empty_workspace");
-    const expectedPath = "v1/p2group50/empty_workspace"
-    expect(data.getName()).toBe(expectedPath);
+test("Get empty workspace", async () => {
+  const data = await model.getWorkspace("empty_workspace");
+  const expectedPath = "v1/p2group50/empty_workspace";
+  expect(data.getName()).toBe(expectedPath);
+});
+
+test("Get workspace with one channel", async () => {
+  const receivedData = await model.getWorkspace("workspace_onechannel");
+  const expectedPath = "v1/p2group50/workspace_onechannel";
+  expect(receivedData.getName()).toBe(expectedPath);
+});
+
+test("Get workspaces", async () => {
+  const received = await model.getAllWorkspaces();
+  expect(received).toBeInstanceOf(Map);
+  for (const [key, value] of received.entries()) {
+    expect(typeof key).toBe("string");
+    expect(value).toBeInstanceOf(ModelWorkspace);
+  }
+});
+
+test("Add new workspace", async () => {
+  try {
+   await model.addWorkspace("new_workspace");
+  } catch (e) {
+    expect((e as Error).message).toBe("Not Found");
+  }
+});
+
+test("Remove workspace", async() => {
+  try {
+    await model.removeWorkspace("missing_workspace"); 
+  } catch (e) {
+    expect((e as Error).message).toBe("Not Found") 
+  }
 })
 
-test("Get workspace with one channel", async() => {
-    const receivedData = await model.getWorkspace("workspace_onechannel");
-    const expectedPath = "v1/p2group50/workspace_onechannel"
-    expect(receivedData.getName()).toBe(expectedPath);
-})
 
-test("Get workspaces", async() => {
-  const receivedData = await model.getAllWorkspaces()
-  receivedData
-  expect(receivedData).toBe(expectedData);
-})
-
-test("Add new workspace", async() => {
-  const data = await model.addWorkspace("new_workspace")
-  console.log(data)
-})
