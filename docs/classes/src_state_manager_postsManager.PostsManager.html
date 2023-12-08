@@ -16,12 +16,18 @@
 <li><a href="../modules/src_state_manager_postsManager.html">src/state-manager/postsManager</a></li>
 <li><a href="src_state_manager_postsManager.PostsManager.html">PostsManager</a></li></ul>
 <h1>Class PostsManager</h1></div>
+<section class="tsd-panel tsd-comment">
+<div class="tsd-comment tsd-typography"><p>This class stores the posts in a tree, and calls functions on the view to display
+the updated post. This class ensures that (1) each post&#39;s parent is added before the
+post itself and (2) each post is inserted according to ascending order of timestamp.</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></section>
 <section class="tsd-panel tsd-hierarchy">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
 <li><span class="target">PostsManager</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/state-manager/postsManager.ts#L11">src/state-manager/postsManager.ts:11</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/state-manager/postsManager.ts#L19">src/state-manager/postsManager.ts:19</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -36,12 +42,19 @@
 <div class="tsd-index-list"><a href="src_state_manager_postsManager.PostsManager.html#adapterPosts" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>adapter<wbr/>Posts</span></a>
 <a href="src_state_manager_postsManager.PostsManager.html#pendingPosts" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>pending<wbr/>Posts</span></a>
 <a href="src_state_manager_postsManager.PostsManager.html#rootAdapterPosts" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>root<wbr/>Adapter<wbr/>Posts</span></a>
+<a href="src_state_manager_postsManager.PostsManager.html#starredPosts" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>starred<wbr/>Posts</span></a>
+<a href="src_state_manager_postsManager.PostsManager.html#stateManager" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>state<wbr/>Manager</span></a>
+<a href="src_state_manager_postsManager.PostsManager.html#view" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>view</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Methods</h3>
 <div class="tsd-index-list"><a href="src_state_manager_postsManager.PostsManager.html#addPendingPosts" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>add<wbr/>Pending<wbr/>Posts</span></a>
 <a href="src_state_manager_postsManager.PostsManager.html#createPost" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>create<wbr/>Post</span></a>
+<a href="src_state_manager_postsManager.PostsManager.html#getStateManager" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>State<wbr/>Manager</span></a>
+<a href="src_state_manager_postsManager.PostsManager.html#getView" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>View</span></a>
 <a href="src_state_manager_postsManager.PostsManager.html#insertRootAdapterPost" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>insert<wbr/>Root<wbr/>Adapter<wbr/>Post</span></a>
+<a href="src_state_manager_postsManager.PostsManager.html#insertStarredPost" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>insert<wbr/>Starred<wbr/>Post</span></a>
+<a href="src_state_manager_postsManager.PostsManager.html#isRespPostStarred" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>is<wbr/>Resp<wbr/>Post<wbr/>Starred</span></a>
 <a href="src_state_manager_postsManager.PostsManager.html#serializePostResponse" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>serialize<wbr/>Post<wbr/>Response</span></a>
 <a href="src_state_manager_postsManager.PostsManager.html#updateAdapterPost" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>update<wbr/>Adapter<wbr/>Post</span></a>
 <a href="src_state_manager_postsManager.PostsManager.html#upsertAdapterPost" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>upsert<wbr/>Adapter<wbr/>Post</span></a>
@@ -52,26 +65,61 @@
 <section class="tsd-panel tsd-member"><a id="constructor" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>constructor</span><a href="#constructor" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
-<li class="tsd-signature tsd-anchor-link" id="constructor.new_PostsManager"><span class="tsd-kind-constructor-signature">new <wbr/>Posts<wbr/>Manager</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="src_state_manager_postsManager.PostsManager.html" class="tsd-signature-type tsd-kind-class">PostsManager</a><a href="#constructor.new_PostsManager" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="constructor.new_PostsManager"><span class="tsd-kind-constructor-signature">new <wbr/>Posts<wbr/>Manager</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">view</span>, <span class="tsd-kind-parameter">stateManager</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="src_state_manager_postsManager.PostsManager.html" class="tsd-signature-type tsd-kind-class">PostsManager</a><a href="#constructor.new_PostsManager" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
-<h4 class="tsd-returns-title">Returns <a href="src_state_manager_postsManager.PostsManager.html" class="tsd-signature-type tsd-kind-class">PostsManager</a></h4></li></ul></section></section>
+<div class="tsd-comment tsd-typography"><p>Creates a PostsManager class, with a ViewInterface that receives post updates
+as well as a StateManager interface that stores the currently opened
+workspace and channel to decide whether a post is relevant to the opened channel.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">view</span>: <a href="../interfaces/src_interfaces.ViewInterface.html" class="tsd-signature-type tsd-kind-interface">ViewInterface</a></h5>
+<div class="tsd-comment tsd-typography"><p>a view interface receiving post updates</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
+<li>
+<h5><span class="tsd-kind-parameter">stateManager</span>: <a href="../interfaces/src_interfaces.StateManagerInterface.html" class="tsd-signature-type tsd-kind-interface">StateManagerInterface</a></h5>
+<div class="tsd-comment tsd-typography"><p>a state manager interface storing the currently opened workspace and channel name</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="src_state_manager_postsManager.PostsManager.html" class="tsd-signature-type tsd-kind-class">PostsManager</a></h4>
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/state-manager/postsManager.ts#L45">src/state-manager/postsManager.ts:45</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="adapterPosts" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>adapter<wbr/>Posts</span><a href="#adapterPosts" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">adapter<wbr/>Posts</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="src_adapter_posts_adapterPost.AdapterPost.html" class="tsd-signature-type tsd-kind-class">AdapterPost</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/state-manager/postsManager.ts#L12">src/state-manager/postsManager.ts:12</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/state-manager/postsManager.ts#L24">src/state-manager/postsManager.ts:24</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="pendingPosts" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>pending<wbr/>Posts</span><a href="#pendingPosts" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">pending<wbr/>Posts</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="src_adapter_posts_adapterPost.AdapterPost.html" class="tsd-signature-type tsd-kind-class">AdapterPost</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/state-manager/postsManager.ts#L17">src/state-manager/postsManager.ts:17</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/state-manager/postsManager.ts#L29">src/state-manager/postsManager.ts:29</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="rootAdapterPosts" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>root<wbr/>Adapter<wbr/>Posts</span><a href="#rootAdapterPosts" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">root<wbr/>Adapter<wbr/>Posts</span><span class="tsd-signature-symbol">:</span> <a href="src_adapter_posts_adapterPost.AdapterPost.html" class="tsd-signature-type tsd-kind-class">AdapterPost</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/state-manager/postsManager.ts#L22">src/state-manager/postsManager.ts:22</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/state-manager/postsManager.ts#L34">src/state-manager/postsManager.ts:34</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-private"><a id="starredPosts" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>starred<wbr/>Posts</span><a href="#starredPosts" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">starred<wbr/>Posts</span><span class="tsd-signature-symbol">:</span> <a href="src_adapter_posts_adapterPost.AdapterPost.html" class="tsd-signature-type tsd-kind-class">AdapterPost</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/state-manager/postsManager.ts#L36">src/state-manager/postsManager.ts:36</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-private"><a id="stateManager" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>state<wbr/>Manager</span><a href="#stateManager" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">state<wbr/>Manager</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/src_interfaces.StateManagerInterface.html" class="tsd-signature-type tsd-kind-interface">StateManagerInterface</a></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/state-manager/postsManager.ts#L22">src/state-manager/postsManager.ts:22</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-private"><a id="view" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>view</span><a href="#view" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">view</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/src_interfaces.ViewInterface.html" class="tsd-signature-type tsd-kind-interface">ViewInterface</a></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/state-manager/postsManager.ts#L20">src/state-manager/postsManager.ts:20</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member"><a id="addPendingPosts" class="tsd-anchor"></a>
@@ -79,100 +127,244 @@
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="addPendingPosts.addPendingPosts-1"><span class="tsd-kind-call-signature">add<wbr/>Pending<wbr/>Posts</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">addedPostName</span>, <span class="tsd-kind-parameter">addedPost</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#addPendingPosts.addPendingPosts-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Adds all children post events that were received before this post was received to the
+post tree.</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5><span class="tsd-kind-parameter">addedPostName</span>: <span class="tsd-signature-type">string</span></h5></li>
+<h5><span class="tsd-kind-parameter">addedPostName</span>: <span class="tsd-signature-type">string</span></h5>
+<div class="tsd-comment tsd-typography"><p>the name of the parent post that is added</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
 <li>
-<h5><span class="tsd-kind-parameter">addedPost</span>: <a href="src_adapter_posts_adapterPost.AdapterPost.html" class="tsd-signature-type tsd-kind-class">AdapterPost</a></h5></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<h5><span class="tsd-kind-parameter">addedPost</span>: <a href="src_adapter_posts_adapterPost.AdapterPost.html" class="tsd-signature-type tsd-kind-class">AdapterPost</a></h5>
+<div class="tsd-comment tsd-typography"><p>the parent post itself</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><p>nothing (adds all children posts of this parent to the post tree)</p>
+
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/state-manager/postsManager.ts#L99">src/state-manager/postsManager.ts:99</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/state-manager/postsManager.ts#L146">src/state-manager/postsManager.ts:146</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="createPost" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>create<wbr/>Post</span><a href="#createPost" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="createPost.createPost-1"><span class="tsd-kind-call-signature">create<wbr/>Post</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">postData</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#createPost.createPost-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Creates a new post in the corresponding channel in the model, with the given
+message and parent post path.</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5><span class="tsd-kind-parameter">postData</span>: <a href="../types/src_view_datatypes.CreatePostEvent.html" class="tsd-signature-type tsd-kind-type-alias">CreatePostEvent</a></h5></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<h5><span class="tsd-kind-parameter">postData</span>: <a href="../types/src_view_datatypes.CreatePostEvent.html" class="tsd-signature-type tsd-kind-type-alias">CreatePostEvent</a></h5>
+<div class="tsd-comment tsd-typography"><p>an event encapsulating the post&#39;s message, as well as its parent post path</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/state-manager/postsManager.ts#L24">src/state-manager/postsManager.ts:24</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/state-manager/postsManager.ts#L55">src/state-manager/postsManager.ts:55</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="getStateManager" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>get<wbr/>State<wbr/>Manager</span><a href="#getStateManager" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="getStateManager.getStateManager-1"><span class="tsd-kind-call-signature">get<wbr/>State<wbr/>Manager</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/src_interfaces.StateManagerInterface.html" class="tsd-signature-type tsd-kind-interface">StateManagerInterface</a><a href="#getStateManager.getStateManager-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Returns the state manager that this posts manager needs information from;
+specifically, the currently open workspace and channel name.</p>
+</div>
+<h4 class="tsd-returns-title">Returns <a href="../interfaces/src_interfaces.StateManagerInterface.html" class="tsd-signature-type tsd-kind-interface">StateManagerInterface</a></h4><p>the state manager interface that this posts manager requests information from.</p>
+
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/state-manager/postsManager.ts#L312">src/state-manager/postsManager.ts:312</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="getView" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>get<wbr/>View</span><a href="#getView" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="getView.getView-1"><span class="tsd-kind-call-signature">get<wbr/>View</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/src_interfaces.ViewInterface.html" class="tsd-signature-type tsd-kind-interface">ViewInterface</a><a href="#getView.getView-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Returns the view that this posts manager updates.</p>
+</div>
+<h4 class="tsd-returns-title">Returns <a href="../interfaces/src_interfaces.ViewInterface.html" class="tsd-signature-type tsd-kind-interface">ViewInterface</a></h4><p>the view interface that this state manager updates with posts..</p>
+
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/state-manager/postsManager.ts#L303">src/state-manager/postsManager.ts:303</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="insertRootAdapterPost" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>insert<wbr/>Root<wbr/>Adapter<wbr/>Post</span><a href="#insertRootAdapterPost" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="insertRootAdapterPost.insertRootAdapterPost-1"><span class="tsd-kind-call-signature">insert<wbr/>Root<wbr/>Adapter<wbr/>Post</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">adapterPost</span>, <span class="tsd-kind-parameter">exists</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><a href="#insertRootAdapterPost.insertRootAdapterPost-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Inserts the adapter post at the root of the tree.</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5><span class="tsd-kind-parameter">adapterPost</span>: <a href="src_adapter_posts_adapterPost.AdapterPost.html" class="tsd-signature-type tsd-kind-class">AdapterPost</a></h5></li>
+<h5><span class="tsd-kind-parameter">adapterPost</span>: <a href="src_adapter_posts_adapterPost.AdapterPost.html" class="tsd-signature-type tsd-kind-class">AdapterPost</a></h5>
+<div class="tsd-comment tsd-typography"><p>an AdapterPost that is to be inserted at the root</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
 <li>
-<h5><span class="tsd-kind-parameter">exists</span>: <span class="tsd-signature-type">boolean</span></h5></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
+<h5><span class="tsd-kind-parameter">exists</span>: <span class="tsd-signature-type">boolean</span></h5>
+<div class="tsd-comment tsd-typography"><p>a boolean indicating whether or not the AdapterPost currently exists in the tree</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><p>an integer representing the index of the post that was upserted</p>
+
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/state-manager/postsManager.ts#L176">src/state-manager/postsManager.ts:176</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/state-manager/postsManager.ts#L264">src/state-manager/postsManager.ts:264</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="insertStarredPost" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>insert<wbr/>Starred<wbr/>Post</span><a href="#insertStarredPost" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="insertStarredPost.insertStarredPost-1"><span class="tsd-kind-call-signature">insert<wbr/>Starred<wbr/>Post</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">adapterPost</span>, <span class="tsd-kind-parameter">exists</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><a href="../types/src_state_manager_postsManager.StarOps.html" class="tsd-signature-type tsd-kind-type-alias">StarOps</a><span class="tsd-signature-symbol">]</span><a href="#insertStarredPost.insertStarredPost-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Inserts the adapter post into the starred posts array, dealing with a variety of cases of whether or not
+the new post is starred or not, the existing post is starred or not, and whether the post currently exists or not.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">adapterPost</span>: <a href="src_adapter_posts_adapterPost.AdapterPost.html" class="tsd-signature-type tsd-kind-class">AdapterPost</a></h5>
+<div class="tsd-comment tsd-typography"><p>an AdapterPost to be upserted into the starred posts array</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
+<li>
+<h5><span class="tsd-kind-parameter">exists</span>: <span class="tsd-signature-type">boolean</span></h5>
+<div class="tsd-comment tsd-typography"><p>a boolean indicating whether or not the post currently exists in the post tree (which
+does not necessarily mean that the adapter post is a starred post)</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><a href="../types/src_state_manager_postsManager.StarOps.html" class="tsd-signature-type tsd-kind-type-alias">StarOps</a><span class="tsd-signature-symbol">]</span></h4><p>a [number, StarOps] where the first element represents the index that the starred posts is upserted
+into the starred posts array, and the second element represents the operation to be performed for this starred post
+(either insertion, modification, removal, or no operation).</p>
+
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/state-manager/postsManager.ts#L279">src/state-manager/postsManager.ts:279</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="isRespPostStarred" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>is<wbr/>Resp<wbr/>Post<wbr/>Starred</span><a href="#isRespPostStarred" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="isRespPostStarred.isRespPostStarred-1"><span class="tsd-kind-call-signature">is<wbr/>Resp<wbr/>Post<wbr/>Starred</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">adapterPost</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><a href="#isRespPostStarred.isRespPostStarred-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Determines whether or not the adapterPost is starred, given the currently logged in user
+stored in the state manager.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">adapterPost</span>: <a href="src_adapter_posts_adapterPost.AdapterPost.html" class="tsd-signature-type tsd-kind-class">AdapterPost</a></h5>
+<div class="tsd-comment tsd-typography"><p>an AdapterPost representing the starred post to be displayed in the view</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><p>a boolean indicating whether or not the input adapterPost is starred</p>
+
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/state-manager/postsManager.ts#L322">src/state-manager/postsManager.ts:322</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="serializePostResponse" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>serialize<wbr/>Post<wbr/>Response</span><a href="#serializePostResponse" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="serializePostResponse.serializePostResponse-1"><span class="tsd-kind-call-signature">serialize<wbr/>Post<wbr/>Response</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">response</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><a href="#serializePostResponse.serializePostResponse-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>A function that inserts the PostResponse received by the model into the tree
+of AdapterPosts. It does this by first checking that the parent post has been received,
+and does not display the post if its parent has not been received. Then,
+if the parent post has been received, it inserts this post into the parent&#39;s posts children
+based on ascending order of timestamp.</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5><span class="tsd-kind-parameter">response</span>: <a href="../interfaces/types_postResponse.PostResponse.html" class="tsd-signature-type tsd-kind-interface">PostResponse</a></h5></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span></h4><aside class="tsd-sources">
+<h5><span class="tsd-kind-parameter">response</span>: <a href="../interfaces/types_postResponse.PostResponse.html" class="tsd-signature-type tsd-kind-interface">PostResponse</a></h5>
+<div class="tsd-comment tsd-typography"><p>an object representing the JSON response received by the server</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span></h4><p>a [boolean, string] where the first element represents if an error occurred, while
+the second element is the string message for the error.</p>
+
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/state-manager/postsManager.ts#L41">src/state-manager/postsManager.ts:41</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/state-manager/postsManager.ts#L81">src/state-manager/postsManager.ts:81</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="updateAdapterPost" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>update<wbr/>Adapter<wbr/>Post</span><a href="#updateAdapterPost" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="updateAdapterPost.updateAdapterPost-1"><span class="tsd-kind-call-signature">update<wbr/>Adapter<wbr/>Post</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">adapterPost</span>, <span class="tsd-kind-parameter">exists</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#updateAdapterPost.updateAdapterPost-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Updates the adapter post in the tree by delegating to upsertAdapterPost.</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5><span class="tsd-kind-parameter">adapterPost</span>: <a href="src_adapter_posts_adapterPost.AdapterPost.html" class="tsd-signature-type tsd-kind-class">AdapterPost</a></h5></li>
+<h5><span class="tsd-kind-parameter">adapterPost</span>: <a href="src_adapter_posts_adapterPost.AdapterPost.html" class="tsd-signature-type tsd-kind-class">AdapterPost</a></h5>
+<div class="tsd-comment tsd-typography"><p>an AdapterPost that is to be added to the post tree.</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
 <li>
-<h5><span class="tsd-kind-parameter">exists</span>: <span class="tsd-signature-type">boolean</span></h5></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<h5><span class="tsd-kind-parameter">exists</span>: <span class="tsd-signature-type">boolean</span></h5>
+<div class="tsd-comment tsd-typography"><p>a boolean indicating whether or not the adapter post currently exists in the post tree.</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/state-manager/postsManager.ts#L129">src/state-manager/postsManager.ts:129</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/state-manager/postsManager.ts#L189">src/state-manager/postsManager.ts:189</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="upsertAdapterPost" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>upsert<wbr/>Adapter<wbr/>Post</span><a href="#upsertAdapterPost" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="upsertAdapterPost.upsertAdapterPost-1"><span class="tsd-kind-call-signature">upsert<wbr/>Adapter<wbr/>Post</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">adapterPost</span>, <span class="tsd-kind-parameter">exists</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#upsertAdapterPost.upsertAdapterPost-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Updates or inserts the adapter post in the post tree, based on whether or not it currently exists in the post tree.
+Additionally calls a method on the view to display the modified post.</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5><span class="tsd-kind-parameter">adapterPost</span>: <a href="src_adapter_posts_adapterPost.AdapterPost.html" class="tsd-signature-type tsd-kind-class">AdapterPost</a></h5></li>
+<h5><span class="tsd-kind-parameter">adapterPost</span>: <a href="src_adapter_posts_adapterPost.AdapterPost.html" class="tsd-signature-type tsd-kind-class">AdapterPost</a></h5>
+<div class="tsd-comment tsd-typography"><p>an AdapterPost to upsert into the post tree</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
 <li>
-<h5><span class="tsd-kind-parameter">exists</span>: <span class="tsd-signature-type">boolean</span></h5></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<h5><span class="tsd-kind-parameter">exists</span>: <span class="tsd-signature-type">boolean</span></h5>
+<div class="tsd-comment tsd-typography"><p>a boolean indicating whether or not the AdapterPost currently exists in the tree</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/state-manager/postsManager.ts#L149">src/state-manager/postsManager.ts:149</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/state-manager/postsManager.ts#L215">src/state-manager/postsManager.ts:215</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="verifyAlivePost" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>verify<wbr/>Alive<wbr/>Post</span><a href="#verifyAlivePost" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="verifyAlivePost.verifyAlivePost-1"><span class="tsd-kind-call-signature">verify<wbr/>Alive<wbr/>Post</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">newPost</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><a href="#verifyAlivePost.verifyAlivePost-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Checks if the adapter post matches the currently opened channel and workspace
+name.</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5><span class="tsd-kind-parameter">newPost</span>: <a href="src_adapter_posts_adapterPost.AdapterPost.html" class="tsd-signature-type tsd-kind-class">AdapterPost</a></h5></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span></h4><aside class="tsd-sources">
+<h5><span class="tsd-kind-parameter">newPost</span>: <a href="src_adapter_posts_adapterPost.AdapterPost.html" class="tsd-signature-type tsd-kind-class">AdapterPost</a></h5>
+<div class="tsd-comment tsd-typography"><p>an AdapterPost representing the post to add to this channel</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span></h4><p>a [boolean, string] where the first element represents whether or not the
+post is alive, and the second element contains a string encapsulating the error message
+if the post is not alive.</p>
+
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/state-manager/postsManager.ts#L117">src/state-manager/postsManager.ts:117</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/state-manager/postsManager.ts#L172">src/state-manager/postsManager.ts:172</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -196,9 +388,16 @@
 <li><a href="#adapterPosts" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>adapter<wbr/>Posts</span></a></li>
 <li><a href="#pendingPosts" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>pending<wbr/>Posts</span></a></li>
 <li><a href="#rootAdapterPosts" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>root<wbr/>Adapter<wbr/>Posts</span></a></li>
+<li><a href="#starredPosts" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>starred<wbr/>Posts</span></a></li>
+<li><a href="#stateManager" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>state<wbr/>Manager</span></a></li>
+<li><a href="#view" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>view</span></a></li>
 <li><a href="#addPendingPosts" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>add<wbr/>Pending<wbr/>Posts</span></a></li>
 <li><a href="#createPost" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>create<wbr/>Post</span></a></li>
+<li><a href="#getStateManager" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>State<wbr/>Manager</span></a></li>
+<li><a href="#getView" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>View</span></a></li>
 <li><a href="#insertRootAdapterPost" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>insert<wbr/>Root<wbr/>Adapter<wbr/>Post</span></a></li>
+<li><a href="#insertStarredPost" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>insert<wbr/>Starred<wbr/>Post</span></a></li>
+<li><a href="#isRespPostStarred" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>is<wbr/>Resp<wbr/>Post<wbr/>Starred</span></a></li>
 <li><a href="#serializePostResponse" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>serialize<wbr/>Post<wbr/>Response</span></a></li>
 <li><a href="#updateAdapterPost" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>update<wbr/>Adapter<wbr/>Post</span></a></li>
 <li><a href="#upsertAdapterPost" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>upsert<wbr/>Adapter<wbr/>Post</span></a></li>
@@ -206,27 +405,27 @@
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="../index.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1"></use></svg><span>m3ssag1n8</span></a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="..">
-<li><a href="../modules/src_adapter_channel_init.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/channel/init</a></li>
-<li><a href="../modules/src_adapter_channel_modelToViewChannels.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/channel/modelToViewChannels</a></li>
-<li><a href="../modules/src_adapter_channel_refreshChannels.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/channel/refreshChannels</a></li>
+<li><a href="../modules/src_adapter_auth_authAdapter.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/auth/authAdapter</a></li>
+<li><a href="../modules/src_adapter_channel_channelsAdapter.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/channel/channelsAdapter</a></li>
 <li><a href="../modules/src_adapter_init.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/init</a></li>
-<li><a href="../modules/src_adapter_login_init.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/login/init</a></li>
-<li><a href="../modules/src_adapter_logout_init.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/logout/init</a></li>
 <li><a href="../modules/src_adapter_posts_adapterPost.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/adapterPost</a></li>
 <li><a href="../modules/src_adapter_posts_adapterViewPostConverter.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/adapterViewPostConverter</a></li>
-<li><a href="../modules/src_adapter_posts_createPost.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/createPost</a></li>
+<li><a href="../modules/src_adapter_posts_dataValidation.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/dataValidation</a></li>
 <li><a href="../modules/src_adapter_posts_handleSortingPosts.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/handleSortingPosts</a></li>
-<li><a href="../modules/src_adapter_posts_init.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/init</a></li>
-<li><a href="../modules/src_adapter_workspace_init.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/workspace/init</a></li>
-<li><a href="../modules/src_adapter_workspace_modelToViewWorkspaces.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/workspace/modelToViewWorkspaces</a></li>
-<li><a href="../modules/src_adapter_workspace_refreshWorkspaces.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/workspace/refreshWorkspaces</a></li>
+<li><a href="../modules/src_adapter_posts_postsAdapter.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/postsAdapter</a></li>
+<li><a href="../modules/src_adapter_utils.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/utils</a></li>
+<li><a href="../modules/src_adapter_workspace_workspacesAdapter.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/workspace/workspacesAdapter</a></li>
+<li><a href="../modules/src_interfaces.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/interfaces</a></li>
 <li><a href="../modules/src_main.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/main</a></li>
 <li><a href="../modules/src_model_channel.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/model/channel</a></li>
 <li><a href="../modules/src_model_model.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/model/model</a></li>
 <li><a href="../modules/src_model_modelTypes.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/model/modelTypes</a></li>
-<li><a href="../modules/src_model_post.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/model/post</a></li>
 <li><a href="../modules/src_model_utils.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/model/utils</a></li>
 <li><a href="../modules/src_model_workspace.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/model/workspace</a></li>
+<li><a href="../modules/src_slog.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/slog</a></li>
+<li><a href="../modules/src_state_manager.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/state-manager</a></li>
+<li><a href="../modules/src_state_manager_postsManager.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/state-manager/postsManager</a></li>
+<li><a href="../modules/src_view_components_pages_chatPage.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/view/components/pages/chatPage</a></li>
 <li>Loading...</li></ul></nav></div></div></div>
 <div class="tsd-generator">
 <p>Generated using <a href="https://typedoc.org/" rel="noopener" target="_blank">TypeDoc</a></p></div>

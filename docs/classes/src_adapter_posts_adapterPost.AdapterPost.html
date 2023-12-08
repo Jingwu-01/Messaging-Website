@@ -27,7 +27,7 @@ that the posts are displayed in order of creation time.</p>
 <ul class="tsd-hierarchy">
 <li><span class="target">AdapterPost</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/adapter/posts/adapterPost.ts#L13">src/adapter/posts/adapterPost.ts:13</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L19">src/adapter/posts/adapterPost.ts:19</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -46,6 +46,9 @@ that the posts are displayed in order of creation time.</p>
 <a href="src_adapter_posts_adapterPost.AdapterPost.html#postIndex" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>post<wbr/>Index</span></a>
 <a href="src_adapter_posts_adapterPost.AdapterPost.html#replies" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>replies</span></a>
 <a href="src_adapter_posts_adapterPost.AdapterPost.html#response" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>response</span></a>
+<a href="src_adapter_posts_adapterPost.AdapterPost.html#starred" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>starred</span></a>
+<a href="src_adapter_posts_adapterPost.AdapterPost.html#starredIndex" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>starred<wbr/>Index</span></a>
+<a href="src_adapter_posts_adapterPost.AdapterPost.html#usersStarred" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>users<wbr/>Starred</span></a>
 <a href="src_adapter_posts_adapterPost.AdapterPost.html#workspaceName" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>workspace<wbr/>Name</span></a>
 </div></section>
 <section class="tsd-index-section">
@@ -57,9 +60,14 @@ that the posts are displayed in order of creation time.</p>
 <a href="src_adapter_posts_adapterPost.AdapterPost.html#getParentName" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>Parent<wbr/>Name</span></a>
 <a href="src_adapter_posts_adapterPost.AdapterPost.html#getPostIndex" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>Post<wbr/>Index</span></a>
 <a href="src_adapter_posts_adapterPost.AdapterPost.html#getResponse" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>Response</span></a>
+<a href="src_adapter_posts_adapterPost.AdapterPost.html#getStarred" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>Starred</span></a>
+<a href="src_adapter_posts_adapterPost.AdapterPost.html#getStarredIndex" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>Starred<wbr/>Index</span></a>
+<a href="src_adapter_posts_adapterPost.AdapterPost.html#getUsersStarred" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>Users<wbr/>Starred</span></a>
 <a href="src_adapter_posts_adapterPost.AdapterPost.html#getWorkspaceName" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>Workspace<wbr/>Name</span></a>
 <a href="src_adapter_posts_adapterPost.AdapterPost.html#setPostIndex" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Post<wbr/>Index</span></a>
 <a href="src_adapter_posts_adapterPost.AdapterPost.html#setReplies" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Replies</span></a>
+<a href="src_adapter_posts_adapterPost.AdapterPost.html#setStarred" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Starred</span></a>
+<a href="src_adapter_posts_adapterPost.AdapterPost.html#setStarredIndex" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Starred<wbr/>Index</span></a>
 </div></section></div></details></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Constructors</h2>
@@ -68,56 +76,77 @@ that the posts are displayed in order of creation time.</p>
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="constructor.new_AdapterPost"><span class="tsd-kind-constructor-signature">new <wbr/>Adapter<wbr/>Post</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">response</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="src_adapter_posts_adapterPost.AdapterPost.html" class="tsd-signature-type tsd-kind-class">AdapterPost</a><a href="#constructor.new_AdapterPost" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Creates a new AdapterPost, and additionally validates that the post repsonse is valid.</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5><span class="tsd-kind-parameter">response</span>: <a href="../interfaces/types_postResponse.PostResponse.html" class="tsd-signature-type tsd-kind-interface">PostResponse</a></h5></li></ul></div>
-<h4 class="tsd-returns-title">Returns <a href="src_adapter_posts_adapterPost.AdapterPost.html" class="tsd-signature-type tsd-kind-class">AdapterPost</a></h4><aside class="tsd-sources">
+<h5><span class="tsd-kind-parameter">response</span>: <a href="../interfaces/types_postResponse.PostResponse.html" class="tsd-signature-type tsd-kind-interface">PostResponse</a></h5>
+<div class="tsd-comment tsd-typography"><p>a PostResponse object representing the JSON that is returned by the model.</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="src_adapter_posts_adapterPost.AdapterPost.html" class="tsd-signature-type tsd-kind-class">AdapterPost</a></h4>
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/adapter/posts/adapterPost.ts#L40">src/adapter/posts/adapterPost.ts:40</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L54">src/adapter/posts/adapterPost.ts:54</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="channelName" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>channel<wbr/>Name</span><a href="#channelName" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">channel<wbr/>Name</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/adapter/posts/adapterPost.ts#L34">src/adapter/posts/adapterPost.ts:34</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L39">src/adapter/posts/adapterPost.ts:39</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="createdTime" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>created<wbr/>Time</span><a href="#createdTime" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">created<wbr/>Time</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/adapter/posts/adapterPost.ts#L19">src/adapter/posts/adapterPost.ts:19</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L24">src/adapter/posts/adapterPost.ts:24</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="name" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>name</span><a href="#name" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">name</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/adapter/posts/adapterPost.ts#L16">src/adapter/posts/adapterPost.ts:16</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L21">src/adapter/posts/adapterPost.ts:21</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="parentName" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>parent<wbr/>Name</span><a href="#parentName" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">parent<wbr/>Name</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/adapter/posts/adapterPost.ts#L28">src/adapter/posts/adapterPost.ts:28</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L33">src/adapter/posts/adapterPost.ts:33</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="postIndex" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>post<wbr/>Index</span><a href="#postIndex" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">post<wbr/>Index</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/adapter/posts/adapterPost.ts#L31">src/adapter/posts/adapterPost.ts:31</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L36">src/adapter/posts/adapterPost.ts:36</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="replies" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>replies</span><a href="#replies" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">replies</span><span class="tsd-signature-symbol">:</span> <a href="src_adapter_posts_adapterPost.AdapterPost.html" class="tsd-signature-type tsd-kind-class">AdapterPost</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/adapter/posts/adapterPost.ts#L25">src/adapter/posts/adapterPost.ts:25</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L30">src/adapter/posts/adapterPost.ts:30</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="response" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>response</span><a href="#response" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">response</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/types_postResponse.PostResponse.html" class="tsd-signature-type tsd-kind-interface">PostResponse</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/adapter/posts/adapterPost.ts#L22">src/adapter/posts/adapterPost.ts:22</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L27">src/adapter/posts/adapterPost.ts:27</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-private"><a id="starred" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>starred</span><a href="#starred" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">starred</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L46">src/adapter/posts/adapterPost.ts:46</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-private"><a id="starredIndex" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>starred<wbr/>Index</span><a href="#starredIndex" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">starred<wbr/>Index</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L44">src/adapter/posts/adapterPost.ts:44</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-private"><a id="usersStarred" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>users<wbr/>Starred</span><a href="#usersStarred" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">users<wbr/>Starred</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L48">src/adapter/posts/adapterPost.ts:48</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="workspaceName" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>workspace<wbr/>Name</span><a href="#workspaceName" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">workspace<wbr/>Name</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/adapter/posts/adapterPost.ts#L37">src/adapter/posts/adapterPost.ts:37</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L42">src/adapter/posts/adapterPost.ts:42</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member"><a id="addChildPost" class="tsd-anchor"></a>
@@ -144,7 +173,7 @@ that the posts are displayed in order of creation time.</p>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/adapter/posts/adapterPost.ts#L114">src/adapter/posts/adapterPost.ts:114</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L97">src/adapter/posts/adapterPost.ts:97</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getChannelName" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Channel<wbr/>Name</span><a href="#getChannelName" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -156,7 +185,7 @@ that the posts are displayed in order of creation time.</p>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/adapter/posts/adapterPost.ts#L163">src/adapter/posts/adapterPost.ts:163</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L146">src/adapter/posts/adapterPost.ts:146</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getCreatedTime" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Created<wbr/>Time</span><a href="#getCreatedTime" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -168,7 +197,7 @@ that the posts are displayed in order of creation time.</p>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/adapter/posts/adapterPost.ts#L123">src/adapter/posts/adapterPost.ts:123</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L106">src/adapter/posts/adapterPost.ts:106</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getName" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Name</span><a href="#getName" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -180,7 +209,7 @@ that the posts are displayed in order of creation time.</p>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/adapter/posts/adapterPost.ts#L96">src/adapter/posts/adapterPost.ts:96</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L79">src/adapter/posts/adapterPost.ts:79</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getParentName" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Parent<wbr/>Name</span><a href="#getParentName" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -192,7 +221,7 @@ that the posts are displayed in order of creation time.</p>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/adapter/posts/adapterPost.ts#L104">src/adapter/posts/adapterPost.ts:104</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L87">src/adapter/posts/adapterPost.ts:87</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getPostIndex" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Post<wbr/>Index</span><a href="#getPostIndex" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -204,7 +233,7 @@ that the posts are displayed in order of creation time.</p>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/adapter/posts/adapterPost.ts#L147">src/adapter/posts/adapterPost.ts:147</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L130">src/adapter/posts/adapterPost.ts:130</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getResponse" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Response</span><a href="#getResponse" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -216,7 +245,43 @@ that the posts are displayed in order of creation time.</p>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/adapter/posts/adapterPost.ts#L131">src/adapter/posts/adapterPost.ts:131</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L114">src/adapter/posts/adapterPost.ts:114</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="getStarred" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>get<wbr/>Starred</span><a href="#getStarred" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="getStarred.getStarred-1"><span class="tsd-kind-call-signature">get<wbr/>Starred</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><a href="#getStarred.getStarred-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Retrieves a boolean indicating whether or not this post is currently starred.</p>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><p>a boolean indicating whether this post is starred or not.</p>
+
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L178">src/adapter/posts/adapterPost.ts:178</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="getStarredIndex" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>get<wbr/>Starred<wbr/>Index</span><a href="#getStarredIndex" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="getStarredIndex.getStarredIndex-1"><span class="tsd-kind-call-signature">get<wbr/>Starred<wbr/>Index</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><a href="#getStarredIndex.getStarredIndex-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Retrieves the starred index; that is, the index of this post with respect to other starred posts.</p>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h4><p>an integer representing this post&#39;s starred index.</p>
+
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L170">src/adapter/posts/adapterPost.ts:170</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="getUsersStarred" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>get<wbr/>Users<wbr/>Starred</span><a href="#getUsersStarred" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="getUsersStarred.getUsersStarred-1"><span class="tsd-kind-call-signature">get<wbr/>Users<wbr/>Starred</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><a href="#getUsersStarred.getUsersStarred-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Returns an array of usernames indicating which users have starred this post.</p>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4><p>an array of usernames indicating who&#39;s starred this post.</p>
+
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L194">src/adapter/posts/adapterPost.ts:194</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getWorkspaceName" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Workspace<wbr/>Name</span><a href="#getWorkspaceName" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -228,7 +293,7 @@ that the posts are displayed in order of creation time.</p>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/adapter/posts/adapterPost.ts#L155">src/adapter/posts/adapterPost.ts:155</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L138">src/adapter/posts/adapterPost.ts:138</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="setPostIndex" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Post<wbr/>Index</span><a href="#setPostIndex" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -247,7 +312,7 @@ that the posts are displayed in order of creation time.</p>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/adapter/posts/adapterPost.ts#L139">src/adapter/posts/adapterPost.ts:139</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L122">src/adapter/posts/adapterPost.ts:122</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="setReplies" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Replies</span><a href="#setReplies" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -266,7 +331,45 @@ that the posts are displayed in order of creation time.</p>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/adapter/posts/adapterPost.ts#L171">src/adapter/posts/adapterPost.ts:171</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L154">src/adapter/posts/adapterPost.ts:154</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="setStarred" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>set<wbr/>Starred</span><a href="#setStarred" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="setStarred.setStarred-1"><span class="tsd-kind-call-signature">set<wbr/>Starred</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">starred</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#setStarred.setStarred-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Sets whether or not this post is now starred.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">starred</span>: <span class="tsd-signature-type">boolean</span></h5>
+<div class="tsd-comment tsd-typography"><p>a boolean indicating whether or not this post is now starred.</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L186">src/adapter/posts/adapterPost.ts:186</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="setStarredIndex" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>set<wbr/>Starred<wbr/>Index</span><a href="#setStarredIndex" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="setStarredIndex.setStarredIndex-1"><span class="tsd-kind-call-signature">set<wbr/>Starred<wbr/>Index</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">starredIndex</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#setStarredIndex.setStarredIndex-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Sets the starred index of the post (indicating the position the post should be added in the view).</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">starredIndex</span>: <span class="tsd-signature-type">number</span></h5>
+<div class="tsd-comment tsd-typography"><p>an integer representing the starred index of the post to add to the view.</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/adapter/posts/adapterPost.ts#L162">src/adapter/posts/adapterPost.ts:162</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -294,6 +397,9 @@ that the posts are displayed in order of creation time.</p>
 <li><a href="#postIndex" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>post<wbr/>Index</span></a></li>
 <li><a href="#replies" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>replies</span></a></li>
 <li><a href="#response" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>response</span></a></li>
+<li><a href="#starred" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>starred</span></a></li>
+<li><a href="#starredIndex" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>starred<wbr/>Index</span></a></li>
+<li><a href="#usersStarred" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>users<wbr/>Starred</span></a></li>
 <li><a href="#workspaceName" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>workspace<wbr/>Name</span></a></li>
 <li><a href="#addChildPost" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>add<wbr/>Child<wbr/>Post</span></a></li>
 <li><a href="#getChannelName" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>Channel<wbr/>Name</span></a></li>
@@ -302,33 +408,38 @@ that the posts are displayed in order of creation time.</p>
 <li><a href="#getParentName" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>Parent<wbr/>Name</span></a></li>
 <li><a href="#getPostIndex" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>Post<wbr/>Index</span></a></li>
 <li><a href="#getResponse" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>Response</span></a></li>
+<li><a href="#getStarred" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>Starred</span></a></li>
+<li><a href="#getStarredIndex" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>Starred<wbr/>Index</span></a></li>
+<li><a href="#getUsersStarred" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>Users<wbr/>Starred</span></a></li>
 <li><a href="#getWorkspaceName" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>Workspace<wbr/>Name</span></a></li>
 <li><a href="#setPostIndex" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Post<wbr/>Index</span></a></li>
-<li><a href="#setReplies" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Replies</span></a></li></ul></div></details></div>
+<li><a href="#setReplies" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Replies</span></a></li>
+<li><a href="#setStarred" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Starred</span></a></li>
+<li><a href="#setStarredIndex" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Starred<wbr/>Index</span></a></li></ul></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="../index.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1"></use></svg><span>m3ssag1n8</span></a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="..">
-<li><a href="../modules/src_adapter_channel_init.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/channel/init</a></li>
-<li><a href="../modules/src_adapter_channel_modelToViewChannels.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/channel/modelToViewChannels</a></li>
-<li><a href="../modules/src_adapter_channel_refreshChannels.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/channel/refreshChannels</a></li>
+<li><a href="../modules/src_adapter_auth_authAdapter.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/auth/authAdapter</a></li>
+<li><a href="../modules/src_adapter_channel_channelsAdapter.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/channel/channelsAdapter</a></li>
 <li><a href="../modules/src_adapter_init.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/init</a></li>
-<li><a href="../modules/src_adapter_login_init.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/login/init</a></li>
-<li><a href="../modules/src_adapter_logout_init.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/logout/init</a></li>
 <li><a href="../modules/src_adapter_posts_adapterPost.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/adapterPost</a></li>
 <li><a href="../modules/src_adapter_posts_adapterViewPostConverter.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/adapterViewPostConverter</a></li>
-<li><a href="../modules/src_adapter_posts_createPost.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/createPost</a></li>
+<li><a href="../modules/src_adapter_posts_dataValidation.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/dataValidation</a></li>
 <li><a href="../modules/src_adapter_posts_handleSortingPosts.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/handleSortingPosts</a></li>
-<li><a href="../modules/src_adapter_posts_init.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/init</a></li>
-<li><a href="../modules/src_adapter_workspace_init.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/workspace/init</a></li>
-<li><a href="../modules/src_adapter_workspace_modelToViewWorkspaces.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/workspace/modelToViewWorkspaces</a></li>
-<li><a href="../modules/src_adapter_workspace_refreshWorkspaces.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/workspace/refreshWorkspaces</a></li>
+<li><a href="../modules/src_adapter_posts_postsAdapter.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/postsAdapter</a></li>
+<li><a href="../modules/src_adapter_utils.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/utils</a></li>
+<li><a href="../modules/src_adapter_workspace_workspacesAdapter.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/workspace/workspacesAdapter</a></li>
+<li><a href="../modules/src_interfaces.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/interfaces</a></li>
 <li><a href="../modules/src_main.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/main</a></li>
 <li><a href="../modules/src_model_channel.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/model/channel</a></li>
 <li><a href="../modules/src_model_model.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/model/model</a></li>
 <li><a href="../modules/src_model_modelTypes.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/model/modelTypes</a></li>
-<li><a href="../modules/src_model_post.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/model/post</a></li>
 <li><a href="../modules/src_model_utils.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/model/utils</a></li>
 <li><a href="../modules/src_model_workspace.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/model/workspace</a></li>
+<li><a href="../modules/src_slog.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/slog</a></li>
+<li><a href="../modules/src_state_manager.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/state-manager</a></li>
+<li><a href="../modules/src_state_manager_postsManager.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/state-manager/postsManager</a></li>
+<li><a href="../modules/src_view_components_pages_chatPage.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/view/components/pages/chatPage</a></li>
 <li>Loading...</li></ul></nav></div></div></div>
 <div class="tsd-generator">
 <p>Generated using <a href="https://typedoc.org/" rel="noopener" target="_blank">TypeDoc</a></p></div>

@@ -25,7 +25,7 @@
 <ul class="tsd-hierarchy">
 <li><span class="target">ModelChannel</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/model/channel.ts#L17">src/model/channel.ts:17</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/model/channel.ts#L16">src/model/channel.ts:16</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -39,15 +39,10 @@
 <h3 class="tsd-index-heading">Properties</h3>
 <div class="tsd-index-list"><a href="src_model_channel.ModelChannel.html#controller" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>controller</span></a>
 <a href="src_model_channel.ModelChannel.html#path" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>path</span></a>
-<a href="src_model_channel.ModelChannel.html#pendingPosts" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>pending<wbr/>Posts</span></a>
-<a href="src_model_channel.ModelChannel.html#postMap" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>post<wbr/>Map</span></a>
-<a href="src_model_channel.ModelChannel.html#postRoots" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>post<wbr/>Roots</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Methods</h3>
-<div class="tsd-index-list"><a href="src_model_channel.ModelChannel.html#addPendingPosts" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>add<wbr/>Pending<wbr/>Posts</span></a>
-<a href="src_model_channel.ModelChannel.html#addPost" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>add<wbr/>Post</span></a>
-<a href="src_model_channel.ModelChannel.html#createPost" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>create<wbr/>Post</span></a>
+<div class="tsd-index-list"><a href="src_model_channel.ModelChannel.html#createPost" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>create<wbr/>Post</span></a>
 <a href="src_model_channel.ModelChannel.html#getName" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>Name</span></a>
 <a href="src_model_channel.ModelChannel.html#subscribeToPosts" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>subscribe<wbr/>To<wbr/>Posts</span></a>
 <a href="src_model_channel.ModelChannel.html#unsubscribe" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>unsubscribe</span></a>
@@ -59,113 +54,73 @@
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="constructor.new_ModelChannel"><span class="tsd-kind-constructor-signature">new <wbr/>Model<wbr/>Channel</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">res</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="src_model_channel.ModelChannel.html" class="tsd-signature-type tsd-kind-class">ModelChannel</a><a href="#constructor.new_ModelChannel" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Constructs a new ModelChannel based on the received ChannelResponse.</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
 <h5><span class="tsd-kind-parameter">res</span>: <a href="../interfaces/types_channelResponse.ChannelResponse.html" class="tsd-signature-type tsd-kind-interface">ChannelResponse</a></h5></li></ul></div>
-<h4 class="tsd-returns-title">Returns <a href="src_model_channel.ModelChannel.html" class="tsd-signature-type tsd-kind-class">ModelChannel</a></h4><aside class="tsd-sources">
+<h4 class="tsd-returns-title">Returns <a href="src_model_channel.ModelChannel.html" class="tsd-signature-type tsd-kind-class">ModelChannel</a></h4>
+<div class="tsd-comment tsd-typography">
+<h4>Res</h4><p>A ChannelResponse received from an OwlDB Channel fetch.</p>
+</div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/model/channel.ts#L36">src/model/channel.ts:36</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/model/channel.ts#L27">src/model/channel.ts:27</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="controller" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>controller</span><a href="#controller" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">controller</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">AbortController</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/model/channel.ts#L34">src/model/channel.ts:34</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/model/channel.ts#L21">src/model/channel.ts:21</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="path" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>path</span><a href="#path" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">path</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/model/channel.ts#L19">src/model/channel.ts:19</a></li></ul></aside></section>
-<section class="tsd-panel tsd-member tsd-is-private"><a id="pendingPosts" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>pending<wbr/>Posts</span><a href="#pendingPosts" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">pending<wbr/>Posts</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="src_model_post.ModelPost.html" class="tsd-signature-type tsd-kind-class">ModelPost</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/model/channel.ts#L28">src/model/channel.ts:28</a></li></ul></aside></section>
-<section class="tsd-panel tsd-member tsd-is-private"><a id="postMap" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>post<wbr/>Map</span><a href="#postMap" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">post<wbr/>Map</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="src_model_post.ModelPost.html" class="tsd-signature-type tsd-kind-class">ModelPost</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/model/channel.ts#L22">src/model/channel.ts:22</a></li></ul></aside></section>
-<section class="tsd-panel tsd-member tsd-is-private"><a id="postRoots" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>post<wbr/>Roots</span><a href="#postRoots" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">post<wbr/>Roots</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="src_model_post.ModelPost.html" class="tsd-signature-type tsd-kind-class">ModelPost</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></div><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/model/channel.ts#L25">src/model/channel.ts:25</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/model/channel.ts#L18">src/model/channel.ts:18</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
-<section class="tsd-panel tsd-member"><a id="addPendingPosts" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>add<wbr/>Pending<wbr/>Posts</span><a href="#addPendingPosts" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<ul class="tsd-signatures">
-<li class="tsd-signature tsd-anchor-link" id="addPendingPosts.addPendingPosts-1"><span class="tsd-kind-call-signature">add<wbr/>Pending<wbr/>Posts</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">addedPostName</span>, <span class="tsd-kind-parameter">addedPost</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#addPendingPosts.addPendingPosts-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
-<li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Adds all pending posts for this particular post that was added.</p>
-</div>
-<div class="tsd-parameters">
-<h4 class="tsd-parameters-title">Parameters</h4>
-<ul class="tsd-parameter-list">
-<li>
-<h5><span class="tsd-kind-parameter">addedPostName</span>: <span class="tsd-signature-type">string</span></h5>
-<div class="tsd-comment tsd-typography"><p>a string representing the name of the post that was added</p>
-</div>
-<div class="tsd-comment tsd-typography"></div></li>
-<li>
-<h5><span class="tsd-kind-parameter">addedPost</span>: <a href="src_model_post.ModelPost.html" class="tsd-signature-type tsd-kind-class">ModelPost</a></h5>
-<div class="tsd-comment tsd-typography"><p>a ModelPost object representing the ModelPost that was added</p>
-</div>
-<div class="tsd-comment tsd-typography"></div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><p>nothing</p>
-
-<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/model/channel.ts#L197">src/model/channel.ts:197</a></li></ul></aside></li></ul></section>
-<section class="tsd-panel tsd-member"><a id="addPost" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>add<wbr/>Post</span><a href="#addPost" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<ul class="tsd-signatures">
-<li class="tsd-signature tsd-anchor-link" id="addPost.addPost-1"><span class="tsd-kind-call-signature">add<wbr/>Post</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">newPostResponse</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Boolean</span><a href="#addPost.addPost-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
-<li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Adds a ModelPost to this channel.</p>
-</div>
-<div class="tsd-parameters">
-<h4 class="tsd-parameters-title">Parameters</h4>
-<ul class="tsd-parameter-list">
-<li>
-<h5><span class="tsd-kind-parameter">newPostResponse</span>: <a href="../interfaces/types_postResponse.PostResponse.html" class="tsd-signature-type tsd-kind-interface">PostResponse</a></h5>
-<div class="tsd-comment tsd-typography"><p>a JSON object representing the response from the post event.</p>
-</div>
-<div class="tsd-comment tsd-typography"></div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Boolean</span></h4><p>a boolean representing whether or not the post was successfully added to the model.</p>
-
-<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/model/channel.ts#L110">src/model/channel.ts:110</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="createPost" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>create<wbr/>Post</span><a href="#createPost" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="createPost.createPost-1"><span class="tsd-kind-call-signature">create<wbr/>Post</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">postContent</span>, <span class="tsd-kind-parameter">postParent</span>, <span class="tsd-kind-parameter">channelPath</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/types_createResponse.CreateResponse.html" class="tsd-signature-type tsd-kind-interface">CreateResponse</a><span class="tsd-signature-symbol">&gt;</span><a href="#createPost.createPost-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Creates a new post</p>
+</div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5><span class="tsd-kind-parameter">postContent</span>: <span class="tsd-signature-type">string</span></h5></li>
+<h5><span class="tsd-kind-parameter">postContent</span>: <span class="tsd-signature-type">string</span></h5>
+<div class="tsd-comment tsd-typography"><p>The content of the post</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
 <li>
-<h5><span class="tsd-kind-parameter">postParent</span>: <span class="tsd-signature-type">string</span></h5></li>
+<h5><span class="tsd-kind-parameter">postParent</span>: <span class="tsd-signature-type">string</span></h5>
+<div class="tsd-comment tsd-typography"><p>The post to reply to</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
 <li>
-<h5><span class="tsd-kind-parameter">channelPath</span>: <span class="tsd-signature-type">string</span></h5></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/types_createResponse.CreateResponse.html" class="tsd-signature-type tsd-kind-interface">CreateResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<h5><span class="tsd-kind-parameter">channelPath</span>: <span class="tsd-signature-type">string</span></h5>
+<div class="tsd-comment tsd-typography"><p>The path of the channel to put the post in.</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/types_createResponse.CreateResponse.html" class="tsd-signature-type tsd-kind-interface">CreateResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><p>The response from OwlDB</p>
+
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/model/channel.ts#L223">src/model/channel.ts:223</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/model/channel.ts#L84">src/model/channel.ts:84</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getName" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Name</span><a href="#getName" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="getName.getName-1"><span class="tsd-kind-call-signature">get<wbr/>Name</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><a href="#getName.getName-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><p>The name of this channel.</p>
+
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/model/channel.ts#L247">src/model/channel.ts:247</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/model/channel.ts#L114">src/model/channel.ts:114</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="subscribeToPosts" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>subscribe<wbr/>To<wbr/>Posts</span><a href="#subscribeToPosts" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -176,15 +131,18 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/model/channel.ts#L43">src/model/channel.ts:43</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/model/channel.ts#L34">src/model/channel.ts:34</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="unsubscribe" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>unsubscribe</span><a href="#unsubscribe" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="unsubscribe.unsubscribe-1"><span class="tsd-kind-call-signature">unsubscribe</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#unsubscribe.unsubscribe-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<div class="tsd-comment tsd-typography"><p>Unsubscribes this channel from model post updates.</p>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/1e759b0/src/model/channel.ts#L242">src/model/channel.ts:242</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/RICE-COMP318-FALL23/m3ssag1n8-p2group50/blob/ab27f86/src/model/channel.ts#L106">src/model/channel.ts:106</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -207,11 +165,6 @@
 <li><a href="#constructor" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-512"></use></svg><span>constructor</span></a></li>
 <li><a href="#controller" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>controller</span></a></li>
 <li><a href="#path" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>path</span></a></li>
-<li><a href="#pendingPosts" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>pending<wbr/>Posts</span></a></li>
-<li><a href="#postMap" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>post<wbr/>Map</span></a></li>
-<li><a href="#postRoots" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>post<wbr/>Roots</span></a></li>
-<li><a href="#addPendingPosts" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>add<wbr/>Pending<wbr/>Posts</span></a></li>
-<li><a href="#addPost" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>add<wbr/>Post</span></a></li>
 <li><a href="#createPost" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>create<wbr/>Post</span></a></li>
 <li><a href="#getName" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>get<wbr/>Name</span></a></li>
 <li><a href="#subscribeToPosts" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>subscribe<wbr/>To<wbr/>Posts</span></a></li>
@@ -219,27 +172,27 @@
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="../index.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1"></use></svg><span>m3ssag1n8</span></a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="..">
-<li><a href="../modules/src_adapter_channel_init.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/channel/init</a></li>
-<li><a href="../modules/src_adapter_channel_modelToViewChannels.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/channel/modelToViewChannels</a></li>
-<li><a href="../modules/src_adapter_channel_refreshChannels.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/channel/refreshChannels</a></li>
+<li><a href="../modules/src_adapter_auth_authAdapter.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/auth/authAdapter</a></li>
+<li><a href="../modules/src_adapter_channel_channelsAdapter.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/channel/channelsAdapter</a></li>
 <li><a href="../modules/src_adapter_init.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/init</a></li>
-<li><a href="../modules/src_adapter_login_init.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/login/init</a></li>
-<li><a href="../modules/src_adapter_logout_init.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/logout/init</a></li>
 <li><a href="../modules/src_adapter_posts_adapterPost.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/adapterPost</a></li>
 <li><a href="../modules/src_adapter_posts_adapterViewPostConverter.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/adapterViewPostConverter</a></li>
-<li><a href="../modules/src_adapter_posts_createPost.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/createPost</a></li>
+<li><a href="../modules/src_adapter_posts_dataValidation.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/dataValidation</a></li>
 <li><a href="../modules/src_adapter_posts_handleSortingPosts.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/handleSortingPosts</a></li>
-<li><a href="../modules/src_adapter_posts_init.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/init</a></li>
-<li><a href="../modules/src_adapter_workspace_init.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/workspace/init</a></li>
-<li><a href="../modules/src_adapter_workspace_modelToViewWorkspaces.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/workspace/modelToViewWorkspaces</a></li>
-<li><a href="../modules/src_adapter_workspace_refreshWorkspaces.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/workspace/refreshWorkspaces</a></li>
+<li><a href="../modules/src_adapter_posts_postsAdapter.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/posts/postsAdapter</a></li>
+<li><a href="../modules/src_adapter_utils.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/utils</a></li>
+<li><a href="../modules/src_adapter_workspace_workspacesAdapter.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/adapter/workspace/workspacesAdapter</a></li>
+<li><a href="../modules/src_interfaces.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/interfaces</a></li>
 <li><a href="../modules/src_main.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/main</a></li>
 <li><a href="../modules/src_model_channel.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/model/channel</a></li>
 <li><a href="../modules/src_model_model.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/model/model</a></li>
 <li><a href="../modules/src_model_modelTypes.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/model/modelTypes</a></li>
-<li><a href="../modules/src_model_post.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/model/post</a></li>
 <li><a href="../modules/src_model_utils.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/model/utils</a></li>
 <li><a href="../modules/src_model_workspace.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/model/workspace</a></li>
+<li><a href="../modules/src_slog.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/slog</a></li>
+<li><a href="../modules/src_state_manager.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/state-manager</a></li>
+<li><a href="../modules/src_state_manager_postsManager.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/state-manager/postsManager</a></li>
+<li><a href="../modules/src_view_components_pages_chatPage.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2"></use></svg>src/view/components/pages/chatPage</a></li>
 <li>Loading...</li></ul></nav></div></div></div>
 <div class="tsd-generator">
 <p>Generated using <a href="https://typedoc.org/" rel="noopener" target="_blank">TypeDoc</a></p></div>
