@@ -1,5 +1,5 @@
 import { slog } from "../../../../slog";
-import { ReactionUpdateEvent } from "../../../datatypes";
+import { ReactionUpdateEvent, StateName } from "../../../datatypes";
 import { getView } from "../../../view";
 
 // Reactions can only one of the four defined reactions types.
@@ -64,6 +64,8 @@ class ReactionComponent extends HTMLElement {
       this.update.bind(this),
       options
     );
+
+    getView().addLoadingListener(this);
   }
 
   /**
@@ -214,6 +216,18 @@ class ReactionComponent extends HTMLElement {
    */
   setLoggedInUser(username: string) {
     this.loggedInUser = username;
+  }
+
+  onLoading(state: StateName) {
+    if (state === "user") {
+      this.reactionButton.setAttribute("disabled", "");
+    }
+  }
+
+  onEndLoading(state: StateName) {
+    if (state === "user") {
+      this.reactionButton.removeAttribute("disabled");
+    }
   }
 }
 

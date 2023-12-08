@@ -342,12 +342,18 @@ export class PostEditor extends HTMLElement {
     this.postInput.value = text;
   }
 
+  /**
+   * View calls this when the adapter marks any piece of state as loading
+   */
   onLoading(state: StateName) {
     if (state === "channels" || state === "workspaces" || state === "user") {
       this.submitPostButton.setAttribute("disabled", "");
     }
   }
 
+  /**
+   * View calls this when the adapter marks any piece of state as done loading
+   */
   onEndLoading(state: StateName) {
     if (state === "channels" || state === "workspaces" || state === "user") {
       this.submitPostButton.removeAttribute("disabled");

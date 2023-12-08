@@ -183,11 +183,16 @@ export class ChannelSidebar extends HTMLElement {
   displayWorkspaces(update: ViewWorkspaceUpdate) {}
 
   /**
-   * Disable all of our buttons when our channels are loading.
+   * Disallow channel selects if anything in the app is loading.
    * @param state StateName
    */
   onLoading(state: StateName) {
-    if (state === "channels" || state === "posts" || state === "user") {
+    if (
+      state === "workspaces" ||
+      state === "channels" ||
+      state === "posts" ||
+      state === "user"
+    ) {
       this.channelList.querySelectorAll("button").forEach((button) => {
         button.disabled = true;
       });
@@ -195,11 +200,16 @@ export class ChannelSidebar extends HTMLElement {
   }
 
   /**
-   * Re-enable all of our buttons when our channels stop loading.
+   * Re-enable channel selects when the application state stops loading.
    * @param state StateName
    */
   onEndLoading(state: StateName) {
-    if (state === "channels" || state == "posts" || state === "user") {
+    if (
+      state === "workspaces" ||
+      state === "channels" ||
+      state == "posts" ||
+      state === "user"
+    ) {
       this.channelList.querySelectorAll("button").forEach((button) => {
         button.disabled = false;
       });
