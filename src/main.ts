@@ -32,7 +32,6 @@ declare const process: {
   };
 };
 
-// TODO: can you declare a global in both the model AND the view?
 /**
  * Defines all the custom events that are used.
  */
