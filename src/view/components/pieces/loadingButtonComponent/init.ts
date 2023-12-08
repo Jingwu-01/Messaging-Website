@@ -22,7 +22,6 @@ export default function loadingButtonComponentInit() {
   #outer-button:focus-visible {
     box-shadow: #FF0000 0 0 0 3px;
     outline: none;
-    border-radius: 3px 3px 3px 3px;
   }
   button:focus:not(:focus-visible) {
     box-shadow: none;
