@@ -5,6 +5,10 @@ import { PostResponse } from "../types/postResponse";
 import { ModelReactionUpdate } from "./model/modelTypes";
 import { EventWithId, StateName, ViewChannel, ViewChannelUpdate, ViewPostUpdate, ViewUser, ViewWorkspace, ViewWorkspaceUpdate } from "./view/datatypes";
 
+/**
+ * An interface encapsulating the functions of our view in our application,
+ * to display updates to a user.
+ */
 export interface ViewInterface {
     displayPosts(posts: ViewPostUpdate): void;
     displayUser(user: ViewUser | null): void;
@@ -20,6 +24,10 @@ export interface ViewInterface {
     displayError(error: string): void;
 }
 
+/**
+ * An interface encapsulating the functions of our model in our application,
+ * to request data.
+ */
 export interface ModelInterface {
     login(username: string): Promise<LoginResponse>;
     logout(): Promise<void>;
@@ -30,6 +38,10 @@ export interface ModelInterface {
     getWorkspace(id: string): Promise<WorkspaceInterface>;
 }
 
+/**
+ * An interface encapsulating the functions of our state manager in our application,
+ * to store data related to our view.
+ */
 export interface StateManagerInterface {
     setOpenChannel(name: string | null): Promise<ChannelInterface | null>;
     getOpenWorkspace(): WorkspaceInterface | null;
@@ -42,6 +54,10 @@ export interface StateManagerInterface {
     getOpenChannelName(): string | undefined;
 }
 
+/**
+ * An interface encapsulating the functions we need to perform on a workspace
+ * in the model.
+ */
 export interface WorkspaceInterface {
     addChannel(channel_name: string): Promise<void>;
     removeChannel(channel_name: string): Promise<void>;
@@ -50,6 +66,10 @@ export interface WorkspaceInterface {
     getChannel(id: string): Promise<ChannelInterface>
 }
 
+/**
+ * An interface encapsulating the functions we need to perform on
+ * a channel in the model.
+ */
 export interface ChannelInterface {
     getName(): string;
     subscribeToPosts(): void;
@@ -57,4 +77,3 @@ export interface ChannelInterface {
     createPost(postContent: string, postParent: string, channelPath: string): Promise<CreateResponse>;
     path: string;
 }
-
