@@ -2,6 +2,7 @@ import { AuthAdapter } from "../src/adapter/auth/authAdapter";
 import { MockModel } from "./mockModel";
 import { MockStateManager } from "./mockStateManager";
 import { MockView } from "./mockView";
+import { expect, test, jest } from "@jest/globals";
 
 function getAuthAdapter() {
   const authAdapter = new AuthAdapter(
