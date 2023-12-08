@@ -39,7 +39,7 @@ export async function typedFetch<T>(
   slog.info("typedFetch: was called");
   const response = await fetch(url, opts);
   setTimeout(() => {
-    slog.error("Request timed out");
+    slog.info("Request timed out");
     controller.abort("Request timed out");
   }, wait);
   slog.info("typedFetch: received response");
@@ -71,7 +71,7 @@ export async function emptyFetch(
   opts.signal = controller.signal;
   const response = await fetch(url, opts);
   setTimeout(() => {
-    slog.error("Request timed out");
+    slog.info("Request timed out");
     controller.abort("Request timed out");
   }, wait);
   if (!response.ok) {
