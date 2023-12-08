@@ -1,5 +1,5 @@
 import { slog } from "../../../../slog";
-import { ReactionUpdateEvent } from "../../../datatypes";
+import { ReactionUpdateEvent, StateName } from "../../../datatypes";
 import escapeString from "../../../utils";
 import { getView } from "../../../view";
 
@@ -65,6 +65,8 @@ class ReactionComponent extends HTMLElement {
       this.update.bind(this),
       options
     );
+
+    getView().addLoadingListener(this);
   }
 
   /**
@@ -215,6 +217,18 @@ class ReactionComponent extends HTMLElement {
    */
   setLoggedInUser(username: string) {
     this.loggedInUser = username;
+  }
+
+  onLoading(state: StateName) {
+    if (state === "user") {
+      this.reactionButton.setAttribute("disabled", "");
+    }
+  }
+
+  onEndLoading(state: StateName) {
+    if (state === "user") {
+      this.reactionButton.removeAttribute("disabled");
+    }
   }
 }
 
