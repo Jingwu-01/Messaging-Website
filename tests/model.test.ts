@@ -14,6 +14,14 @@ beforeAll(async () => {
   await model.login("test_user");
 });
 
+test("Get 1 existing workspace", async() => {
+  try {
+    await model.getWorkspace("existingworkspace_onechannel"); 
+  } catch(e) {
+    expect((e as Error).message).toBe('What')
+  }
+})
+
 test("Duplicated login", async () => {
   try {
     await model.login("test_user");
@@ -39,14 +47,6 @@ test("Get workspace that does not exist", async() => {
     expect((e as Error).message).toBe("error parsing JSON input")
   }
 })
-
-test("Get workspace that does exist", async() => {
-  const data = await model.getWorkspace
-})
-
-
-
-
 
 test("Successful typedfetch case", async () => {
   const data = await typedFetch<string>(
