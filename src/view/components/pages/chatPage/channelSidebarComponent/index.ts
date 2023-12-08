@@ -9,7 +9,7 @@ import {
 import { getView } from "../../../../view";
 
 /**
- * Channel side bar displays all the channels in the current workspace and allows users to select or edit a channel. 
+ * Channel side bar displays all the channels in the current workspace and allows users to select or edit a channel.
  */
 export class ChannelSidebar extends HTMLElement {
   /** Container for channels */
@@ -19,7 +19,7 @@ export class ChannelSidebar extends HTMLElement {
   private buttonWrapper: HTMLElement;
 
   /** A map of channel name to ids */
-  private channelNameToIdx = new Map<String, Number>(); 
+  private channelNameToIdx = new Map<String, Number>();
 
   /** Refresh channel button */
   private refreshChannelsButton: HTMLElement;
@@ -77,14 +77,14 @@ export class ChannelSidebar extends HTMLElement {
   }
 
   /**
-   * When connnected, add channel, workspace, and loading listeners in the view. Also, add click event listener to the refresh button. 
+   * When connnected, add channel, workspace, and loading listeners in the view. Also, add click event listener to the refresh button.
    */
   connectedCallback() {
     // Add listener for refresh channels button
     this.refreshChannelsButton.addEventListener("click", () => {
       let event_id = String(Date.now());
       this.refreshChannelsButton.setAttribute("loading-until-event", event_id);
-      // Dispatch a refresh channel event 
+      // Dispatch a refresh channel event
       document.dispatchEvent(
         new CustomEvent("refreshChannels", {
           detail: {
@@ -102,7 +102,7 @@ export class ChannelSidebar extends HTMLElement {
   }
 
   /**
-   * Display the open channel. 
+   * Display the open channel.
    * @param channel a ViewChannel or null
    */
   displayOpenChannel(channel: ViewChannel | null) {
@@ -137,7 +137,7 @@ export class ChannelSidebar extends HTMLElement {
   }
 
   /**
-   * Display the channels of the current workspace. 
+   * Display the channels of the current workspace.
    * @param update ViewChannelUpdate
    */
   displayChannels(update: ViewChannelUpdate) {
@@ -187,7 +187,7 @@ export class ChannelSidebar extends HTMLElement {
    * @param state StateName
    */
   onLoading(state: StateName) {
-    if (state == "channels") {
+    if (state == "channels" || state == "posts") {
       this.channelList.querySelectorAll("button").forEach((button) => {
         button.disabled = true;
       });
@@ -199,7 +199,7 @@ export class ChannelSidebar extends HTMLElement {
    * @param state StateName
    */
   onEndLoading(state: StateName) {
-    if (state == "channels") {
+    if (state == "channels" || state == "posts") {
       this.channelList.querySelectorAll("button").forEach((button) => {
         button.disabled = false;
       });

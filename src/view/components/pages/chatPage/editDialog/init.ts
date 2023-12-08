@@ -3,7 +3,7 @@ import editChannelsDialogComponentInit from "./editChannelsDialog/init";
 import editWorkspacesDialogComponentInit from "./editWorkspacesDialog/init";
 
 /**
- * Initialize the EditDialog component. 
+ * Initialize the EditDialog component.
  */
 export default function editDialogComponentInit() {
   document.body.insertAdjacentHTML(
@@ -50,7 +50,6 @@ export default function editDialogComponentInit() {
         <input type="text" id="add-item-input" arial-label="Your input"/>
         <loading-button-component 
           id="add-item-button"
-          disable-if-state-loading="workspaces channels"
         >
           <span slot="content">
             Add

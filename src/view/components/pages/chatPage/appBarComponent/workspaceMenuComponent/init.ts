@@ -85,7 +85,7 @@ export default function workspaceMenuComponentInit() {
         No workspaces yet. Click "Edit Workspaces" to add one!
       </section>
       <section class="divider"></section>
-      <loading-button-component disable-if-state-loading="workspaces" id="refresh-workspaces-button" style="border: none; background: none;">
+      <loading-button-component disable-if-state-loading="workspaces user" id="refresh-workspaces-button" style="border: none; background: none;">
         <p slot="content">Refresh Workspaces</p>
         <iconify-icon icon="material-symbols:refresh" aria-label="Refresh Workspaces"></iconify-icon>
       </loading-button-component>

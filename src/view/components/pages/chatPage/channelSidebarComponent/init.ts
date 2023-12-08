@@ -1,7 +1,7 @@
 import { ChannelSidebar } from "./index";
 
 /**
- * Init channel side bar component by inserting its html elment and registering its custom element. 
+ * Init channel side bar component by inserting its html elment and registering its custom element.
  */
 export default function channelSidebarComponentInit() {
   document.body.insertAdjacentHTML(
@@ -83,7 +83,7 @@ export default function channelSidebarComponentInit() {
         <loading-button-component
           id="refresh-channels-button"
           style="background: none; border: none"
-          disable-if-state-loading="channels"
+          disable-if-state-loading="channels workspaces user"
         >
           <section slot="content" class="button-content">
             <p>Refresh Channels</p>

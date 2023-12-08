@@ -1,5 +1,5 @@
 import { slog } from "../../../../slog";
-import { ReactionUpdateEvent } from "../../../datatypes";
+import { ReactionUpdateEvent, StateName } from "../../../datatypes";
 import { getView } from "../../../view";
 
 /**
@@ -9,6 +9,8 @@ class StarButtonComponent extends HTMLElement {
   private controller: AbortController | null = null;
 
   private starButton: HTMLButtonElement;
+
+  private starIcon: HTMLElement;
 
   private parentPath: string | undefined;
 
@@ -51,6 +53,8 @@ class StarButtonComponent extends HTMLElement {
 
     this.starIcon = starIcon;
     this.starButton = starButton;
+
+    getView().addLoadingListener(this);
   }
 
   /**
@@ -99,12 +103,14 @@ class StarButtonComponent extends HTMLElement {
       curReacted = false;
     }
 
+    const event_id = String(Date.now());
     // Dispatch the update star posts event.
     let starEventContent: ReactionUpdateEvent = {
       userName: user,
       postPath: postPath,
       add: !curReacted,
       reactionName: undefined,
+      id: event_id,
     };
     slog.info("StarButtonComponet: updateStarred", [
       "starEventContent",
@@ -112,6 +118,12 @@ class StarButtonComponent extends HTMLElement {
     ]);
     const starUpdateEvent = new CustomEvent("reactionUpdateEvent", {
       detail: starEventContent,
+    });
+    this.starIcon.setAttribute("icon", "svg-spinners:180-ring-with-bg");
+    this.starIcon.setAttribute("disabled", "");
+    getView().waitForEvent(event_id, () => {
+      this.starIcon.setAttribute("icon", "material-symbols:star-outline");
+      this.starIcon.removeAttribute("disabled");
     });
     document.dispatchEvent(starUpdateEvent);
   }
@@ -124,7 +136,7 @@ class StarButtonComponent extends HTMLElement {
   }
 
   /**
-   * When the observed attributes are changed, adjust state of the starred post accordingling. 
+   * When the observed attributes are changed, adjust state of the starred post accordingling.
    * @param name name of attribute that are changed
    * @param oldValue the old value of the changed attribute
    * @param newValue the new value of the changed attribute
@@ -154,6 +166,18 @@ class StarButtonComponent extends HTMLElement {
    */
   setLoggedInUser(username: string) {
     this.loggedInUser = username;
+  }
+
+  onLoading(state: StateName) {
+    if (state == "channels" || state == "user" || state == "workspaces") {
+      this.starButton.setAttribute("disabled", "");
+    }
+  }
+
+  onEndLoading(state: StateName) {
+    if (state == "channels" || state == "user" || state == "workspaces") {
+      this.starButton.removeAttribute("disabled");
+    }
   }
 }
 

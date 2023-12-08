@@ -53,9 +53,9 @@ export default function reactionComponentInit() {
       }
       
     </style>
-    <section id="reaction-container">
-      <loading-button-component disable-if-state-loading="posts" id="reaction-button" aria-label="smile reaction" style="border: 0px; background-color: transparent; }" default-button-styles="true">
-        <section id="reaction-button-content" slot="content">
+    <div id="reaction-container">
+      <loading-button-component disable-if-state-loading="posts channels workspaces user" id="reaction-button" aria-label="smile reaction" style="padding: 0;" default-button-styles="true">
+        <div id="reaction-button-content" slot="content">
           <iconify-icon slot="content" icon="lucide:smile" id="smile-reaction"></iconify-icon>
         </section>
       </loading-button-component>
