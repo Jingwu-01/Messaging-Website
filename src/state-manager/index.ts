@@ -1,10 +1,6 @@
-import { ModelChannel } from "../model/channel";
-import { getModel } from "../model/model";
-import { ModelWorkspace } from "../model/workspace";
-import { getView } from "../view/view";
 import { PostsManager } from "./postsManager";
 import { PostResponse } from "../../types/postResponse";
-import { ModelInterface, ViewInterface } from "../interfaces";
+import { ChannelInterface, ModelInterface, ViewInterface, WorkspaceInterface } from "../interfaces";
 
 /**
  * The state manager stores the state of the application
@@ -12,9 +8,9 @@ import { ModelInterface, ViewInterface } from "../interfaces";
  * It interfaces with the Model, and has functions that are called by the Adapter.
  */
 export class StateManager {
-  private openWorkspace: ModelWorkspace | null = null;
+  private openWorkspace: WorkspaceInterface | null = null;
 
-  private openChannel: ModelChannel | null = null;
+  private openChannel: ChannelInterface | null = null;
 
   private postsManager: PostsManager;
 
@@ -34,7 +30,7 @@ export class StateManager {
    * Gets the currently open workspace
    * @returns a ModelWorkspace if it's open, or null if no workspace is open.
    */
-  getOpenWorkspace(): ModelWorkspace | null {
+  getOpenWorkspace(): WorkspaceInterface | null {
     return this.openWorkspace;
   }
 
@@ -46,23 +42,23 @@ export class StateManager {
    */
   async setOpenWorkspace(
     workspaceName: string | null
-  ): Promise<ModelWorkspace | null> {
+  ): Promise<WorkspaceInterface | null> {
     // Close workspace if we passed a null.
     if (workspaceName == null) {
       this.openWorkspace = null;
       await this.setOpenChannel(null);
-      getView().displayOpenWorkspace(null);
+      this.getView().displayOpenWorkspace(null);
       return null;
     }
     // Don't do anything if it's the same workspace.
     if (this.openWorkspace?.getName() === workspaceName) {
       return this.openWorkspace;
     }
-    this.openWorkspace = await getModel().getWorkspace(workspaceName);
+    this.openWorkspace = await this.getModel().getWorkspace(workspaceName);
     // Un-select the open channel.
     await this.setOpenChannel(null);
     // Display the new open workspace.
-    getView().displayOpenWorkspace({
+    this.getView().displayOpenWorkspace({
       name: this.openWorkspace.getName(),
     });
     return this.openWorkspace;
@@ -72,7 +68,7 @@ export class StateManager {
    * Gets the application's currently open channel
    * @returns The currently open channel, or null if no channel is open.
    */
-  getOpenChannel(): ModelChannel | null {
+  getOpenChannel(): ChannelInterface | null {
     return this.openChannel;
   }
 
@@ -83,7 +79,7 @@ export class StateManager {
    */
   async setOpenChannel(
     channelName: string | null
-  ): Promise<ModelChannel | null> {
+  ): Promise<ChannelInterface | null> {
     // Unsub from old channel
     if (this.openChannel != null) {
       this.openChannel.unsubscribe();
@@ -91,18 +87,18 @@ export class StateManager {
     }
     if (channelName == null) {
       this.openChannel = null;
-      getView().displayOpenChannel(null);
-      getView().removePostDisplay();
+      this.getView().displayOpenChannel(null);
+      this.getView().removePostDisplay();
       return null;
     }
     let ws = this.getOpenWorkspace();
     if (ws != null) {
       this.openChannel = await ws.getChannel(channelName);
       this.openChannel.subscribeToPosts();
-      getView().displayOpenChannel({
+      this.getView().displayOpenChannel({
         name: this.openChannel.getName(),
       });
-      getView().displayPostDisplay();
+      this.getView().displayPostDisplay();
       return this.openChannel;
     } else {
       throw new Error("Cannot get open channel: no open workspace");
