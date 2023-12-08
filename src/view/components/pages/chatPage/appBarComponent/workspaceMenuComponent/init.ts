@@ -1,7 +1,7 @@
 import WorkspaceMenuComponent from ".";
 
 /**
- * Initializes the workspace component HTML.
+ * Initializes the workspace component HTML and register the custom element.
  */
 export default function workspaceMenuComponentInit() {
   document.body.insertAdjacentHTML(

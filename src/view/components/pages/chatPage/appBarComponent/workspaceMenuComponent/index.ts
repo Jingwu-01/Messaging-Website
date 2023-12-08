@@ -67,10 +67,9 @@ class WorkspaceMenuComponent extends HTMLElement {
   }
 
   /**
-   * When disconnected, do the following thing.
+   * When disconnected, remove the workspace listener. 
    */
   disconnectedCallback(): void {
-    // The browser calls this when the element is removed from a document.
     // TODO remove workspace listener.
   }
 
