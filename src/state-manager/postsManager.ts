@@ -10,7 +10,6 @@ import {
 import { StateManagerInterface, ViewInterface } from "../interfaces";
 import { slog } from "../slog";
 import { CreatePostEvent, ViewPostUpdate } from "../view/datatypes";
-import { getView } from "../view/view";
 
 export class PostsManager {
 
@@ -202,7 +201,7 @@ export class PostsManager {
       ["updatedPost", updatedPost],
       ["this.starredPosts", this.starredPosts]
     );
-    getView().displayPosts(updatedPost);
+    this.getView().displayPosts(updatedPost);
   }
 
   insertRootAdapterPost(adapterPost: AdapterPost, exists: boolean) {
