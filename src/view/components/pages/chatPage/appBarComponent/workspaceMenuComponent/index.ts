@@ -74,7 +74,7 @@ class WorkspaceMenuComponent extends HTMLElement {
   }
 
   /**
-   * Called by view whenever there is a change in the open workspace
+   * Called by view whenever there is a change in the open workspace. 
    */
   displayOpenWorkspace(workspace: ViewWorkspace | null) {
     // update the displayed open workspace
@@ -90,7 +90,7 @@ class WorkspaceMenuComponent extends HTMLElement {
   }
 
   /**
-   * called by view whenever there is a change in the workspaces
+   * Called by view whenever there is a change in the workspaces
    * create text for all of the workspaces and display them
    */
   displayWorkspaces(update: ViewWorkspaceUpdate) {

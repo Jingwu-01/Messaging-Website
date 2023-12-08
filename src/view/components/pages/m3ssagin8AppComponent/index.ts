@@ -7,11 +7,10 @@ export default class M3ssagin8AppComponent extends HTMLElement {
    */
   constructor() {
     super();
-
     this.attachShadow({ mode: "open" });
 
+    // Set up template and clone it. 
     let template = document.querySelector("#m3ssagin8-app-template");
-
     if (!(template instanceof HTMLTemplateElement)) {
       throw Error("m3ssagin8app template was not found");
     }
