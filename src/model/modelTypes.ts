@@ -3,14 +3,6 @@
  */
 
 import { PostResponse } from "../../types/postResponse";
-import { ModelPost } from "./post";
-
-/**
- * An event that is thrown every time we receive a post.
- */
-export type PostsEvent = {
-  postRoots: Array<ModelPost>;
-};
 
 /**
  * An event that is thrown every time we receive a post, in the event of single post changes.
