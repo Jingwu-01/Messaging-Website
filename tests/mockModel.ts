@@ -50,6 +50,9 @@ export class MockChannel {
 
 export class MockModel {
     login(username: string) {
+        if (username === "test_user") {
+            
+        }
         return Promise.resolve({
             token: "somerandomtoken"
         });
