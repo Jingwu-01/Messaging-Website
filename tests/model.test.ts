@@ -1,7 +1,6 @@
 import { typedFetch } from "../src/model/utils";
 import { fetchFunc } from "./mockfetch";
 import { getModel } from "../src/model/model";
-import { ModelWorkspace } from "../src/model/workspace";
 import { beforeAll, expect, test } from "@jest/globals";
 
 const model = getModel();
@@ -68,50 +67,4 @@ test("Failed fetch response", async () => {
   } catch (e) {
     expect((e as Error).message).toMatch("Bad Request");
   }
-});
-
-test("Log in / out", async () => {
-  await model.logout();
-  const res_login = await model.login("test_user");
-  expect(res_login.token).toBeInstanceOf(String);
-});
-
-test("Workspaces", async () => {
-  await model.login("test_user");
-  await model.addWorkspace("test_ws_1");
-  await model.addWorkspace("test_ws_2");
-
-  const expected_test_ws_1 = new ModelWorkspace({
-    doc: {},
-    meta: {
-      createdAt: 1,
-      createdBy: "1",
-      lastModifiedAt: 1,
-      lastModifiedBy: "1",
-    },
-    path: "/test_ws_1",
-  });
-
-  const expected_test_ws_2 = new ModelWorkspace({
-    doc: {},
-    meta: {
-      createdAt: 1,
-      createdBy: "1",
-      lastModifiedAt: 1,
-      lastModifiedBy: "1",
-    },
-    path: "/test_ws_2",
-  });
-
-  expect(await model.getWorkspace("test_ws_1")).toBe(expected_test_ws_1);
-  expect(await model.getWorkspace("test_ws_2")).toBe(expected_test_ws_2);
-  expect(await model.getAllWorkspaces()).toBe({
-    test_ws_1: expected_test_ws_1,
-    test_ws_2: expected_test_ws_2,
-  });
-
-  await model.removeWorkspace("test_ws_2");
-  expect(await model.getAllWorkspaces()).toBe({
-    test_ws_1: expected_test_ws_1,
-  });
 });

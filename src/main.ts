@@ -70,6 +70,8 @@ function main(): void {
   const model: ModelInterface = getModel();
   const stateManager: StateManagerInterface = new StateManager(view, model);
 
+  slog.setLevel(slog.LevelError);
+
   initAdapter(view, model, stateManager);
   initView();
 }

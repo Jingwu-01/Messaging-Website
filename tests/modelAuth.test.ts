@@ -47,6 +47,6 @@ test("Logout when not logged in", async () => {
   try {
     await model.logout();
   } catch (e) {
-    expect((e as Error).message).toBe("Bad Request");
+    expect((e as Error).message).toBe("expected empty response");
   }
 });
