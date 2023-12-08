@@ -16,8 +16,6 @@ class ReactionComponent extends HTMLElement {
   private reactionIcon: HTMLElement;
   /** Reaction button */
   private reactionButton: HTMLElement;
-  /** Reaction buttton container */
-  private reactionButtonContent: HTMLElement;
   /** name of the reaction */
   private reactionName: reactions = "smile";
   /** the number of reactions received of this type */
