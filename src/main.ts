@@ -16,7 +16,11 @@ import {
 import { LoginEvent } from "./view/datatypes";
 import { initView } from "./view/init";
 import { ModelPostEvent } from "./model/modelTypes";
-import { ModelInterface, StateManagerInterface, ViewInterface } from "./interfaces";
+import {
+  ModelInterface,
+  StateManagerInterface,
+  ViewInterface,
+} from "./interfaces";
 import { getView } from "./view/view";
 import { getModel } from "./model/model";
 import getStateManager from "./state-manager";
@@ -49,7 +53,7 @@ declare global {
     channelDeleted: CustomEvent<DeleteChannelEvent>;
     createPostEvent: CustomEvent<CreatePostEvent>;
     modelPostEvent: CustomEvent<ModelPostEvent>;
-    refreshorkspaces: CustomEvent<RefreshWorkspacesEvent>;
+    refreshWorkspaces: CustomEvent<RefreshWorkspacesEvent>;
     refreshChannels: CustomEvent<RefreshChannelsEvent>;
   }
 }
