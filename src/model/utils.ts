@@ -26,31 +26,19 @@ import { slog } from "../slog";
  * @throws         an error if the fetch fails, there is no response body,
  *                 or the response is not valid JSON
  */
-export async function typedFetch<T>(
-  url: string,
-  options?: RequestInit,
-  timeout?: number
-): Promise<T> {
-  // Setup request timeout
-  const opts = options || {};
-  const wait = timeout || 5000; // 5 second default timeout
-  const controller = new AbortController();
-  opts.signal = controller.signal;
+export function typedFetch<T>(url: string, options?: RequestInit): Promise<T> {
   slog.info("typedFetch: was called");
-  const response = await fetch(url, opts);
-  setTimeout(() => {
-    slog.info("Request timed out");
-    controller.abort("Request timed out");
-  }, wait);
-  slog.info("typedFetch: received response");
-  if (!response.ok) {
-    slog.info("typedFetch: !response.ok");
-    throw new Error(response.statusText);
-  }
-  // Type of unmarshaled response needs to be validated
-  return response.json().catch((err) => {
-    throw new Error("error parsing JSON input");
-  }) as Promise<T>;
+  return fetch(url, options).then((response: Response) => {
+    slog.info("typedFetch: received response");
+    if (!response.ok) {
+      slog.info("typedFetch: !response.ok");
+      throw new Error(response.statusText);
+    }
+    // Type of unmarshaled response needs to be validated
+    return response.json().catch(err => {
+      throw new Error("error parsing JSON input");
+    }) as Promise<T>;
+  });
 }
 
 /**
@@ -59,33 +47,22 @@ export async function typedFetch<T>(
  * @param options a RequestInit object representing the options for the fetch request
  * @returns an empty promise
  */
-export async function emptyFetch(
-  url: string,
-  options?: RequestInit,
-  timeout?: number
-): Promise<void> {
-  // Setup request timeout
-  const opts = options || {};
-  const wait = timeout || 5000; // 5 second default timeout
-  const controller = new AbortController();
-  opts.signal = controller.signal;
-  const response = await fetch(url, opts);
-  setTimeout(() => {
-    slog.info("Request timed out");
-    controller.abort("Request timed out");
-  }, wait);
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
-  // Return decoded JSON if there is a response body or null otherwise
-  const contentLength = response.headers.get("Content-Length");
-  if (contentLength && contentLength !== "0") {
-    // Should not be a response body
-    throw new Error(`expected empty response`);
-  } else {
-    // No content
-    return;
-  }
+export function emptyFetch(url: string, options?: RequestInit): Promise<void> {
+  return fetch(url, options).then((response: Response) => {
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    // Return decoded JSON if there is a response body or null otherwise
+    const contentLength = response.headers.get("Content-Length");
+    if (contentLength && contentLength !== "0") {
+      // Should not be a response body
+      throw new Error(`expected empty response`);
+    } else {
+      // No content
+      return;
+    }
+  });
 }
 
 /**
@@ -113,9 +90,7 @@ export function getAuthPath(): string {
   return process.env.DATABASE_HOST + "/auth";
 }
 
-export function getPatchBody(
-  reactionUpdate: ModelReactionUpdate
-): Array<PatchBody> {
+export function getPatchBody(reactionUpdate: ModelReactionUpdate): Array<PatchBody> {
   let patches = new Array<PatchBody>();
   let objPath: string;
   let reactionName: string;
@@ -129,13 +104,13 @@ export function getPatchBody(
   let addReactionObject: PatchBody = {
     path: objPath,
     op: "ObjectAdd",
-    value: {},
+    value: {}
   };
   patches.push(addReactionObject);
   let addReactionArray: PatchBody = {
     path: `${objPath}/${reactionName}`,
     op: "ObjectAdd",
-    value: [],
+    value: []
   };
   patches.push(addReactionArray);
   let op: "ArrayAdd" | "ArrayRemove";
@@ -147,7 +122,7 @@ export function getPatchBody(
   let addReaction: PatchBody = {
     path: `${objPath}/${reactionName}`,
     op: op,
-    value: reactionUpdate.userName,
+    value: reactionUpdate.userName
   };
   patches.push(addReaction);
   return patches;
@@ -160,17 +135,17 @@ export const ajv = new Ajv();
 export const validateCreateResponse = ajv.compile(CreateResponseSchema);
 
 export const validateGetWorkspacesResponse = ajv.compile(
-  GetWorkspacesResponseSchema
+  GetWorkspacesResponseSchema,
 );
 
 export const validateGetChannelsResponse = ajv.compile(
-  GetChannelsResponseSchema
+  GetChannelsResponseSchema,
 );
 
 export const validateLoginResponse = ajv.compile(LoginResponseSchema);
 
 export const validatePatchDocumentResponse = ajv.compile(
-  PatchDocumentResponseSchema
+  PatchDocumentResponseSchema,
 );
 
 export const validatePostResponse = ajv.compile(PostResponseSchema);
