@@ -24,7 +24,7 @@ export class EditDialogComponent extends HTMLElement {
   /** add item text input */
   protected addItemInput: HTMLInputElement;
   /** item display div element */
-  protected itemDisplay: HTMLDivElement;
+  protected itemDisplay: HTMLElement;
   /** Edit dialog element */
   protected dialog: HTMLDialogElement;
   /** Save and close button element */
@@ -35,7 +35,7 @@ export class EditDialogComponent extends HTMLElement {
   protected item_elements: HTMLElement[] = [];
 
   /**
-   * Constructor for the edit dialog. 
+   * Constructor for the edit dialog.
    */
   constructor() {
     super();
@@ -67,7 +67,7 @@ export class EditDialogComponent extends HTMLElement {
 
     // Set up item display
     let item_display_query = this.shadowRoot?.querySelector("#item-display");
-    if (!(item_display_query instanceof HTMLDivElement)) {
+    if (!(item_display_query instanceof HTMLElement)) {
       throw Error("Could not find form #item-display");
     }
     this.itemDisplay = item_display_query;
@@ -97,7 +97,7 @@ export class EditDialogComponent extends HTMLElement {
   }
 
   /**
-   * When connected, add click listeners to add item button and close button. 
+   * When connected, add click listeners to add item button and close button.
    */
   connectedCallback(): void {
     // Click event listener for add item button 
