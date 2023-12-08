@@ -12,6 +12,7 @@ class StarButtonComponent extends HTMLElement {
   /** star button */
   private starButton: HTMLButtonElement;
 
+  private starIcon: HTMLElement;
 
   /** parent post path */
   private parentPath: string | undefined;
@@ -46,6 +47,17 @@ class StarButtonComponent extends HTMLElement {
         "StarButtonComponent: could not find an element with the #star-button id"
       );
     }
+
+    this.starButton = starButton;
+
+    const starIcon = this.shadowRoot.querySelector("#star-icon");
+    if (!(starIcon instanceof HTMLButtonElement)) {
+      throw new Error(
+        "StarButtonComponent: could not find an element with the #star-icon id"
+      );
+    }
+
+    this.starIcon = starIcon;
 
     this.starButton = starButton;
 
