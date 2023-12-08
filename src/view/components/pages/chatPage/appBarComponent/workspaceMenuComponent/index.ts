@@ -1,4 +1,5 @@
 import { ViewWorkspace, ViewWorkspaceUpdate } from "../../../../../datatypes";
+import escapeString from "../../../../../utils";
 import { getView } from "../../../../../view";
 
 /**
@@ -83,9 +84,9 @@ class WorkspaceMenuComponent extends HTMLElement {
     );
     // Default to "Select Workspace" text if there is no workspace.
     if (open_workspace_el instanceof HTMLElement) {
-      open_workspace_el.innerHTML = workspace
+      open_workspace_el.innerHTML = escapeString(workspace
         ? workspace.name
-        : "Select Workspace";
+        : "Select Workspace");
     }
   }
 

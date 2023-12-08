@@ -1,5 +1,6 @@
 import { slog } from "../../../../slog";
 import { ReactionUpdateEvent } from "../../../datatypes";
+import escapeString from "../../../utils";
 import { getView } from "../../../view";
 
 // Reactions can only one of the four defined reactions types.
@@ -136,7 +137,7 @@ class ReactionComponent extends HTMLElement {
       throw new Error("countText is not an HTML paragraph element");
     } else {
       // Set the innerHTML of countText to the input count string.
-      countText.innerHTML = count.toString();
+      countText.innerHTML = escapeString(count.toString());
       slog.info("addReactionCount: set count", [
         "countText.innerHTML",
         countText.innerHTML,
