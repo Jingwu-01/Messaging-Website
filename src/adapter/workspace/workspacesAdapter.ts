@@ -12,6 +12,10 @@ import {
 } from "../../view/datatypes";
 import { modelToViewChannels, modelToViewWorkspaces } from "../utils";
 
+/**
+ * Adapter between the view and the StateManager / Model
+ * for workspace-related events.
+ */
 export class WorkspacesAdapter {
   private view: ViewInterface;
   private model: ModelInterface;
@@ -27,18 +31,32 @@ export class WorkspacesAdapter {
     this.stateManager = stateManager;
   }
 
+  /**
+   * @returns The view instance used by this WorkspaceAdapter
+   */
   getView(): ViewInterface {
     return this.view;
   }
 
+  /**
+   * @returns The model instance used by this WorkspaceAdapter
+   */
   getModel(): ModelInterface {
     return this.model;
   }
 
+  /**
+   * @returns The state manager instance used by this WorkspaceAdapter.
+   */
   getStateManager(): StateManagerInterface {
     return this.stateManager;
   }
 
+  /**
+   * Event handler for when the user selects a new workspace.
+   * @param evt The event sent by the view
+   * @returns A void promise
+   */
   async selectWorkspace(evt: CustomEvent<SelectWorkspaceEvent>) {
     slog.info(`Workspace selected: ${evt.detail.name}`);
     this.getView().setStateLoadingUntil(
@@ -67,6 +85,11 @@ export class WorkspacesAdapter {
     this.getView().completeEvent(evt);
   }
 
+  /**
+   * Event handler for when the user creates a workspace.
+   * @param evt The event sent by the view
+   * @returns A void promise
+   */
   async createWorkspace(evt: CustomEvent<CreateWorkspaceEvent>) {
     slog.info(`Workspace added: ${evt.detail.name}`);
     // Try to create the workspace
@@ -87,6 +110,11 @@ export class WorkspacesAdapter {
     this.getView().completeEvent(evt);
   }
 
+  /**
+   * Event handler for when the user deletes a workspace
+   * @param evt The event sent by the view
+   * @returns A void promise
+   */
   async deleteWorkspace(evt: CustomEvent<DeleteWorkspaceEvent>) {
     slog.info(`Workspace deleted: ${evt.detail.name}`);
     this.getView().setStateLoadingUntil(
@@ -109,6 +137,11 @@ export class WorkspacesAdapter {
     this.getView().completeEvent(evt);
   }
 
+  /**
+   * Event handler for when the user refreshes the workspaces
+   * @param evt The event sent by the view
+   * @returns A void promise
+   */
   async refreshWorkspacesEvent(evt: CustomEvent<RefreshWorkspacesEvent>) {
     slog.info(`Workspaces refreshed`);
     this.getView().setStateLoadingUntil(["workspaces"], evt);
@@ -121,6 +154,11 @@ export class WorkspacesAdapter {
     this.getView().completeEvent(evt);
   }
 
+  /**
+   * Event handler for when the user refreshes the channels
+   * @param evt The event sent by the view
+   * @returns A void promise
+   */
   async refreshChannels(evt: Event) {
     // Refresh the channels in the model
     const channels = await this.getStateManager()
@@ -146,6 +184,11 @@ export class WorkspacesAdapter {
     });
   }
 
+  /**
+   * Event handler for when the user refreshes the channels.
+   * @param event The event sent by the view
+   * @returns A void promise
+   */
   async refreshWorkspaces(event: Event) {
     const workspaces = await this.getModel().getAllWorkspaces();
     // If the open workspace doesn't exist anymore, then close the open workspace.
