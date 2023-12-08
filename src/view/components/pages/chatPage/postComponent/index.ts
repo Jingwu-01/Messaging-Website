@@ -54,6 +54,7 @@ export class PostComponent extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
 
+    // Set up template and clone 
     let template = document.querySelector("#post-template");
     if (!(template instanceof HTMLTemplateElement)) {
       throw Error("post template was not found");
@@ -62,6 +63,8 @@ export class PostComponent extends HTMLElement {
       throw Error("no shadow root exists");
     }
     this.shadowRoot.append(template.content.cloneNode(true));
+
+    // Set up the private fields elements. 
     let postHeader = this.shadowRoot.querySelector("#post-header");
     let postBody = this.shadowRoot.querySelector("#post-body");
     let postButtons = this.shadowRoot.querySelector("#post-buttons");
@@ -89,7 +92,7 @@ export class PostComponent extends HTMLElement {
     this.postHeader.append(starButton);
     this.starButton = starButton;
 
-    // add buttons
+    // Add buttons
     let reactions = {
       smile: "lucide:smile",
       frown: "lucide:frown",

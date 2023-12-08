@@ -7,8 +7,11 @@ import { getView } from "../../../view";
  * Set the loading-until-event attribute and pass it an event ID in order
  *  to make the button say "loading..." */
 class LoadingButtonComponent extends HTMLElement {
+  /** Loading text element */
   private loadingText: HTMLElement;
+  /** Content element  */
   private content: HTMLElement;
+  /** button element */
   private button: HTMLElement;
 
   /**
