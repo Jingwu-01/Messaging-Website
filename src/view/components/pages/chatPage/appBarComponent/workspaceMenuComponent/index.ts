@@ -1,8 +1,9 @@
 import { ViewWorkspace, ViewWorkspaceUpdate } from "../../../../../datatypes";
+import escapeString from "../../../../../utils";
 import { getView } from "../../../../../view";
 
 /**
- *  WorkspaceMenu Component displays the workspaces. 
+ *  WorkspaceMenu Component displays the workspaces.
  */
 class WorkspaceMenuComponent extends HTMLElement {
   /** The workspace menu. */
@@ -15,8 +16,9 @@ class WorkspaceMenuComponent extends HTMLElement {
    */
   constructor() {
     super();
-
     this.attachShadow({ mode: "open" });
+
+    // Set up the template. 
     let template = document.querySelector<HTMLTemplateElement>(
       "#workspace-menu-component-template"
     );
@@ -25,12 +27,14 @@ class WorkspaceMenuComponent extends HTMLElement {
     }
     this.shadowRoot?.append(template.content.cloneNode(true));
 
+    // Set up menu. 
     let menu_query = this.shadowRoot?.querySelector("#menu");
     if (!(menu_query instanceof HTMLElement)) {
       throw Error("Could not find element #menu");
     }
     this.menu = menu_query;
 
+    // Set the refresh button. 
     let refresh_workspaces_button_query = this.shadowRoot?.querySelector(
       "#refresh-workspaces-button"
     );
@@ -67,15 +71,7 @@ class WorkspaceMenuComponent extends HTMLElement {
   }
 
   /**
-   * When disconnected, do the following thing.
-   */
-  disconnectedCallback(): void {
-    // The browser calls this when the element is removed from a document.
-    // TODO remove workspace listener.
-  }
-
-  /**
-   * Called by view whenever there is a change in the open workspace
+   * Called by view whenever there is a change in the open workspace.
    */
   displayOpenWorkspace(workspace: ViewWorkspace | null) {
     // update the displayed open workspace
@@ -84,14 +80,14 @@ class WorkspaceMenuComponent extends HTMLElement {
     );
     // Default to "Select Workspace" text if there is no workspace.
     if (open_workspace_el instanceof HTMLElement) {
-      open_workspace_el.innerHTML = workspace
+      open_workspace_el.innerHTML = escapeString(workspace
         ? workspace.name
-        : "Select Workspace";
+        : "Select Workspace");
     }
   }
 
   /**
-   * called by view whenever there is a change in the workspaces
+   * Called by view whenever there is a change in the workspaces
    * create text for all of the workspaces and display them
    */
   displayWorkspaces(update: ViewWorkspaceUpdate) {
@@ -107,7 +103,7 @@ class WorkspaceMenuComponent extends HTMLElement {
       } else {
         workspaces.forEach((workspace, i) => {
           new_inner_html += `
-          <loading-button-component disable-if-state-loading="workspaces" id="workspace-select-${i}" class="workspace-select" style="background: none; border: none;" >
+          <loading-button-component disable-if-state-loading="workspaces channels posts user" id="workspace-select-${i}" class="workspace-select" style="background: none; border: none;" >
             <p slot="content">${workspace.name}</p>
           </loading-button-component>
           `;

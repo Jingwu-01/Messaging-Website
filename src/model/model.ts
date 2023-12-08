@@ -25,16 +25,22 @@ import { ModelReactionUpdate } from "./modelTypes";
 import { ModelChannel } from "./channel";
 import { GetChannelsResponse } from "../../types/getChannelsResponse";
 import { ChannelResponse } from "../../types/channelResponse";
+import { WorkspaceInterface } from "../interfaces";
 
 /**
  * A class representing the model we use for interfacing with OwlDB.
  */
 export class OwlDBModel {
+  /** Username of the logged in user */
   private username: string;
+  /** Token of the logged in user */
   private token: string | null;
 
+  /**
+   * Constructor for a OwlDBmodel 
+   */
   constructor() {
-    // Initialize the posts as an empty array.
+    // Initialize the username and token as empty strings
     this.username = "";
     this.token = "";
   }
@@ -48,7 +54,6 @@ export class OwlDBModel {
    * @returns a Promise resolving to requested datatype T
    */
   async typedModelFetch<T>(url: string, options?: RequestInit): Promise<T> {
-    // console.log(`typedModelFetch: this.token: ${this.token}`)
     if (!options) {
       options = {};
     }
@@ -76,7 +81,6 @@ export class OwlDBModel {
    * @returns an empty Promise
    */
   async emptyModelFetch(url: string, options?: RequestInit): Promise<void> {
-    // console.log(`typedModelFetch: this.token: ${this.token}`)
     if (!options) {
       options = {};
     }
@@ -113,7 +117,6 @@ export class OwlDBModel {
           "invalid response from login",
           `${validateLoginResponse.errors}`,
         ]);
-        // TODO: make a custom login error class so we can gracefully handle this situation by notifying the user.
         throw new Error("invalid login response received from owldb");
       }
       if (response.token) {
@@ -140,8 +143,6 @@ export class OwlDBModel {
       },
     };
     // Return a void promise.
-    // TODO: how are you handling the case where emptyFetch has invalid data because it does indeed
-    // have a response body?
     return emptyFetch(getAuthPath(), options).then((value) => {
       this.token = null;
     });
@@ -150,9 +151,9 @@ export class OwlDBModel {
   /**
    * Retrieves a workspace from the model.
    * @param id a string representing the identifier for the workspace
-   * @returns a Promise resolving to a ModelWorkspace, used by our application
+   * @returns a Promise resolving to a WorkspaceInterface, used by our application
    */
-  async getWorkspace(id: string): Promise<ModelWorkspace> {
+  async getWorkspace(id: string): Promise<WorkspaceInterface> {
     const response = await this.typedModelFetch<WorkspaceResponse>(`/${id}`, {
       headers: {
         accept: "application/json",
@@ -164,7 +165,6 @@ export class OwlDBModel {
         "invalid response from retrieving a workspace",
         `${validateWorkspaceResponse.errors}`,
       ]);
-      // TODO: make a custom login error class so we can gracefully handle this situation by notifying the user.
       throw new Error("invalid workspace response received from owldb");
     }
     let freshWorkspace = new ModelWorkspace(response);
@@ -185,7 +185,6 @@ export class OwlDBModel {
         "invalid response from getting all workspaces",
         `${validateGetWorkspacesResponse.errors}`,
       ]);
-      // TODO: make a custom login error class so we can gracefully handle this situation by notifying the user.
       throw new Error(
         "invalid getting all workspaces response received from owldb"
       );
@@ -347,7 +346,6 @@ export class OwlDBModel {
       },
       body: JSON.stringify(patches),
     };
-    // TODO: add a catch handler
     slog.info("updateReactions", ["options", options]);
     return getModel()
       .typedModelFetch<PatchDocumentResponse>(

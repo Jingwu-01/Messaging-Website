@@ -2,6 +2,13 @@ import { ExtensionResponse } from "../../../types/extensionResponse";
 import { validateExtensionResponse } from "../../model/utils";
 import { slog } from "../../slog";
 
+/**
+ * Validates that the post path is of the correct length from the model; that is,
+ * it must be a relative path to the database and be contained in a workspace and channel.
+ * @param postPath a string representing a post document path, relative to the database
+ * @returns an array of strings split by the / character, or an error if the string is
+ * not of the correct nesting length.
+ */
 export function validatePostPath(postPath: string): string[] {
     let postPathArr = postPath.split("/");
     if (postPathArr.length !== 6) {
@@ -10,6 +17,13 @@ export function validatePostPath(postPath: string): string[] {
     return postPathArr;
 }
 
+/**
+ * Validates that the parent path is a valid parent in the same workspace and collection as this post,
+ * and also that the parent is not the post itself.
+ * @param parentPath a string or undefined variable representing the parent path of a post
+ * @param postPathArr an array of strings representing the post's path split on / characters
+ * @returns a string representing the name of the document name for the parent
+ */
 export function validateParentPath(parentPath: string | undefined, postPathArr: string[]): string {
     // Set the parent of the post, checking for error cases.
     if (parentPath === undefined || parentPath === "") {
@@ -43,6 +57,11 @@ export function validateParentPath(parentPath: string | undefined, postPathArr: 
     return parentName;
 }
 
+/**
+ * Validates that the extension contained in the post response follows a valid schema.
+ * @param extensions an object representing the extensions attached to a post
+ * @returns an ExtensionResponse object representing valid extension data for our application.
+ */
 export function validateExtension(extensions: any): ExtensionResponse {
     if (extensions === undefined) {
       extensions = {
@@ -55,7 +74,6 @@ export function validateExtension(extensions: any): ExtensionResponse {
         "invalid response from getting all workspaces",
         `${validateExtensionResponse.errors}`,
       ]);
-      // TODO: make a custom login error class so we can gracefully handle this situation by notifying the user.
       throw new Error(
         "unsupported extension type from owldb",
       );

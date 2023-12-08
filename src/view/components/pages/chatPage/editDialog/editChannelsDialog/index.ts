@@ -7,7 +7,7 @@ import {
 import { getView } from "../../../../../view";
 
 /**
- * EditDialog subclass that allows channels to be edited.
+ * EditDialog is a subclass that allows channels to be edited.
  */
 export class EditChannelsDialogComponent extends EditDialogComponent {
   /**

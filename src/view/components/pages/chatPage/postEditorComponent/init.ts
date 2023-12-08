@@ -111,7 +111,7 @@ export default function postEditorInit() {
                 <button class="reactions" id="like-reaction" aria-label="like" tabindex="0"><iconify-icon icon="mdi:like-outline"></iconify-icon></button>
                 <button class="reactions" id="celebrate-reaction" aria-label="celebrate" tabindex="0"><iconify-icon icon="mingcute:celebrate-line"></iconify-icon></button>
             </section>
-            <button id="cancel-reply" class="editor-op--end"><iconify-icon icon="octicon:x-12"></iconify-icon></button>
+            <button id="cancel-reply" class="editor-op--end" aria-label="cancel reply" role="button"><iconify-icon icon="octicon:x-12"></iconify-icon></button>
         </section>
         <form id="post-form">
             <textarea id="post-input" name="post_input" aria-label="Type your post input"></textarea>

@@ -11,7 +11,7 @@ import { PostResponse } from "../../types/postResponse";
 import { ChannelResponse } from "../../types/channelResponse";
 
 /**
- * A data representation of a channel in the model. Allows us to control connection requests related to specific channels.
+ * A data representation of a channel in the model. Allows us to control connection requests related to specific channels. 
  */
 export class ModelChannel {
   // The path corresponding to this channel
@@ -20,6 +20,10 @@ export class ModelChannel {
   // A controller for cancelling subscription connections.
   private controller = new AbortController();
 
+  /**
+   * Constructs a new ModelChannel based on the received ChannelResponse.
+   * @res A ChannelResponse received from an OwlDB Channel fetch.
+   */
   constructor(res: ChannelResponse) {
     this.path = res.path;
   }
@@ -32,13 +36,10 @@ export class ModelChannel {
       Authorization: "Bearer " + getModel().getToken(),
       accept: "application/json",
     };
-    // TODO: can make this more elegant by making modelFetch take in a fetch function which it uses
     let fetchUrl = getDatabasePath() + `${this.path}/posts/?mode=subscribe`;
     slog.info("subscribeToPosts", ["fetchUrl", `${fetchUrl}`]);
     fetchEventSource(fetchUrl, {
       headers: options,
-      // TODO: I am SURE that you can theoretically have some extra
-      // error handling here too, for impossible events.
       onmessage(event) {
         switch (event.event) {
           // When we receive a new post, add it to our internal array
@@ -53,7 +54,6 @@ export class ModelChannel {
                 `${JSON.stringify(validatePostResponse.errors)}`,
               ]);
             } else {
-              // slog.info("subscribeToPosts", ["event.data", `${JSON.stringify(event.data)}`]);
               slog.info("update event for post", [
                 "incoming post",
                 JSON.stringify(response),
@@ -74,6 +74,13 @@ export class ModelChannel {
     });
   }
 
+  /**
+   * Creates a new post
+   * @param postContent The content of the post
+   * @param postParent The post to reply to
+   * @param channelPath The path of the channel to put the post in.
+   * @returns The response from OwlDB
+   */
   createPost(
     postContent: string,
     postParent: string,
@@ -93,11 +100,17 @@ export class ModelChannel {
     });
   }
 
+  /**
+   * Unsubscribes this channel from model post updates.
+   */
   unsubscribe() {
     this.controller.abort();
     this.controller = new AbortController();
   }
 
+  /**
+   * @returns The name of this channel.
+   */
   getName() {
     return this.path.split("/")[3];
   }

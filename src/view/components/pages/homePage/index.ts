@@ -22,6 +22,7 @@ class HomePage extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
 
+    // Set up the template and clone it. 
     if (this.shadowRoot) {
       let template = document?.querySelector("#home-page-template");
       if (!(template instanceof HTMLTemplateElement)) {
@@ -31,18 +32,21 @@ class HomePage extends HTMLElement {
       }
     }
 
+    // Set up the login dialog 
     let dialog = this.shadowRoot?.querySelector("#login-dialog");
     if (!(dialog instanceof HTMLDialogElement)) {
       throw Error("#login dialog is not a HTMLDialog element");
     }
     this.dialog = dialog;
 
+    // Set up the login form
     let form = this.shadowRoot?.querySelector("#username-form");
     if (!(form instanceof HTMLFormElement)) {
       throw new Error("form not found");
     }
     this.form = form;
 
+    // Set up the submit button
     let submit_button = this.shadowRoot?.querySelector("#submit-button");
     if (!(submit_button instanceof HTMLElement)) {
       throw new Error("button not found");
@@ -55,15 +59,19 @@ class HomePage extends HTMLElement {
   }
 
   /**
-   * When connected, add listeners for sumbit button and keyboard events.
+   * When connected, add userlistner. Also, add event listeners for sumbit and keyboard events.
    */
   connectedCallback(): void {
+    // Add user listener. 
+    getView().addUserListener(this);
+
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
+    // Add submit event listener for form. 
     this.form.addEventListener("submit", this.handleSubmit.bind(this), options);
 
+    // Add keyboard event listener for the dialog. 
     this.dialog?.addEventListener("keydown", this.keyDown.bind(this));
-    getView().addUserListener(this);
   }
 
   /**

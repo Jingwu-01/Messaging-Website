@@ -15,8 +15,15 @@ import {
 } from "./view/datatypes";
 import { LoginEvent } from "./view/datatypes";
 import { initView } from "./view/init";
-import { ModelPostEvent, PostsEvent } from "./model/modelTypes";
-import { setupBasicApp } from "../tests/setup-additional-state";
+import { ModelPostEvent } from "./model/modelTypes";
+import {
+  ModelInterface,
+  StateManagerInterface,
+  ViewInterface,
+} from "./interfaces";
+import { getView } from "./view/view";
+import { getModel } from "./model/model";
+import { StateManager } from "./state-manager";
 
 /**
  * Declare names and types of environment variables.
@@ -29,11 +36,11 @@ declare const process: {
   };
 };
 
-// TODO: can you declare a global in both the model AND the view?
-/* Defines all the customEvents. */
+/**
+ * Defines all the custom events that are used.
+ */
 declare global {
   interface DocumentEventMap {
-    postsEvent: CustomEvent<PostsEvent>;
     loginEvent: CustomEvent<LoginEvent>;
     logoutEvent: CustomEvent<LogoutEvent>;
     workspaceSelected: CustomEvent<SelectWorkspaceEvent>;
@@ -50,22 +57,6 @@ declare global {
   }
 }
 
-// // // TODO: just a placeholder function for testing posts
-// // // because I can't get jest to work for some reason
-// async function testUpdatePosts(model: OwlDBModel) {
-//   await model.login("user1");
-//   // TODO: how to do subscriptions when the model has the token?
-//   // hard to refactor because the fetchEventSource is pretty different from the fetch function.
-//   (await (await model.getWorkspace("ws1")).getChannel("ch1")).subscribeToPosts("ws1", "ch1", model.getToken());
-//   // model.login("user1").then(() => {
-//   //   model.getWorkspace("ws1").then((ws) => {
-//   //     ws.getChannel("ch1").then((chan) => {
-//   //       chan.subscribeToPosts("ws1", "ch1");
-//   //     });
-//   //   })
-//   // })
-// }
-
 /**
  * Inital entry to point of the application.
  */
@@ -74,66 +65,14 @@ function main(): void {
     "database",
     `${process.env.DATABASE_HOST}${process.env.DATABASE_PATH}`,
   ]);
-  // Initialize a model for testing purposes
-  // TODO: change later when I figure out how to use jest
 
-  // const model = getModel();
-  // testUpdatePosts(model);
+  const view: ViewInterface = getView();
+  const model: ModelInterface = getModel();
+  const stateManager: StateManagerInterface = new StateManager(view, model);
 
-  // Set up test DB.
-  // TODO: Remove before submitting
-  // setupTestDb();
-  setupBasicApp();
-
-  initAdapter();
+  initAdapter(view, model, stateManager);
   initView();
 }
-
-// function viewPostConverter(modelPost: ModelPost): ViewPost {
-//   return {
-//     msg: modelPost.getResponse().doc.msg,
-//     reactions: modelPost.getResponse().doc.reactions,
-//     extensions: modelPost.getResponse().doc.extensions,
-//     createdUser: modelPost.getResponse().meta.createdBy,
-//     postTime: modelPost.getResponse().meta.createdAt,
-//     children: new Array<ViewPost>(),
-//     path: modelPost.getResponse().path,
-//     parent: modelPost.getResponse().doc.parent,
-//   };
-// }
-
-// Function that converts a tree of modelposts into an array of Viewposts.
-// Viewposts will form a tree-like structure for posts.
-// export function getViewPosts(
-//   modelPostRoots: Array<ModelPost>,
-// ): Array<ViewPost> {
-//   // let sortedPosts = modelPosts.toSorted((a, b) => a.Path.split("/")[])
-//   let viewPostRoots = new Array<ViewPost>();
-//   getViewPostsHelper(viewPostRoots, modelPostRoots);
-//   return viewPostRoots;
-// }
-
-// modifies curViewPost inplace
-// function getViewPostsHelper(
-//   viewPostChildren: Array<ViewPost>,
-//   modelPostRoots: Array<ModelPost>,
-// ): void {
-//   modelPostRoots.sort((a, b) =>
-//     a.getResponse().meta.createdAt < b.getResponse().meta.createdAt
-//       ? -1
-//       : a.getResponse().meta.createdAt > b.getResponse().meta.createdAt
-//       ? 1
-//       : 0,
-//   );
-//   for (let modelPostChild of modelPostRoots) {
-//     let viewPostChild = viewPostConverter(modelPostChild);
-//     getViewPostsHelper(
-//       viewPostChild.children,
-//       Array.from(modelPostChild.getReplies().values()),
-//     );
-//     viewPostChildren.push(viewPostChild);
-//   }
-// }
 
 /* Register event handler to run after the page is fully loaded. */
 document.addEventListener("DOMContentLoaded", () => {

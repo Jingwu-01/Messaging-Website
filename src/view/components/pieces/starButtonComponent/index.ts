@@ -1,19 +1,24 @@
 import { slog } from "../../../../slog";
-import { ReactionUpdateEvent } from "../../../datatypes";
+import { ReactionUpdateEvent, StateName } from "../../../datatypes";
 import { getView } from "../../../view";
 
 /**
  * StarButtonComponent is used for starring posts. When a user clicks on it, they can star or de-star a post and view starred posts later in my starred posts section.
  */
 class StarButtonComponent extends HTMLElement {
+  /** controller */
   private controller: AbortController | null = null;
 
-  private starIcon: HTMLElement;
-
+  /** star button */
   private starButton: HTMLButtonElement;
 
+  /** star icon */
+  private starIcon: HTMLElement;
+
+  /** parent post path */
   private parentPath: string | undefined;
 
+  /** logged in username */
   private loggedInUser: string | undefined;
 
   /**
@@ -37,13 +42,6 @@ class StarButtonComponent extends HTMLElement {
 
     this.shadowRoot.append(template.content.cloneNode(true));
 
-    const starIcon = this.shadowRoot.querySelector("#star-icon");
-    if (!(starIcon instanceof HTMLElement)) {
-      throw new Error(
-        "StarButtonComponent: could not find an element with the #star-icon id"
-      );
-    }
-
     const starButton = this.shadowRoot.querySelector("#star-button");
     if (!(starButton instanceof HTMLButtonElement)) {
       throw new Error(
@@ -51,8 +49,18 @@ class StarButtonComponent extends HTMLElement {
       );
     }
 
-    this.starIcon = starIcon;
     this.starButton = starButton;
+
+    const starIcon = this.shadowRoot.querySelector("#star-icon");
+    if (!(starIcon instanceof HTMLElement)) {
+      throw new Error(
+        "StarButtonComponent: could not find an element with the #star-icon id"
+      );
+    }
+
+    this.starIcon = starIcon;
+
+    getView().addLoadingListener(this);
   }
 
   /**
@@ -101,12 +109,14 @@ class StarButtonComponent extends HTMLElement {
       curReacted = false;
     }
 
+    const event_id = String(Date.now());
     // Dispatch the update star posts event.
     let starEventContent: ReactionUpdateEvent = {
       userName: user,
       postPath: postPath,
       add: !curReacted,
       reactionName: undefined,
+      id: event_id,
     };
     slog.info("StarButtonComponet: updateStarred", [
       "starEventContent",
@@ -114,6 +124,12 @@ class StarButtonComponent extends HTMLElement {
     ]);
     const starUpdateEvent = new CustomEvent("reactionUpdateEvent", {
       detail: starEventContent,
+    });
+    this.starIcon.setAttribute("icon", "svg-spinners:180-ring-with-bg");
+    this.starIcon.setAttribute("disabled", "");
+    getView().waitForEvent(event_id, () => {
+      this.starIcon.setAttribute("icon", "material-symbols:star-outline");
+      this.starIcon.removeAttribute("disabled");
     });
     document.dispatchEvent(starUpdateEvent);
   }
@@ -126,14 +142,13 @@ class StarButtonComponent extends HTMLElement {
   }
 
   /**
-   * When the observed attributes are changed, adjust state of the starred post accordingling. 
+   * When the observed attributes are changed, adjust state of the starred post accordingling.
    * @param name name of attribute that are changed
    * @param oldValue the old value of the changed attribute
    * @param newValue the new value of the changed attribute
    */
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     if (name === "reacted") {
-      // TODO: compare to old values and stuff
       if (newValue === "true") {
         this.starButton.classList.add("reacted");
       } else {
@@ -156,6 +171,26 @@ class StarButtonComponent extends HTMLElement {
    */
   setLoggedInUser(username: string) {
     this.loggedInUser = username;
+  }
+
+  /**
+   * Called by the view when a piece of the state starts loading.
+   * @param state The piece of the state that is loading.
+   */
+  onLoading(state: StateName) {
+    if (state === "channels" || state === "user" || state === "workspaces") {
+      this.starButton.setAttribute("disabled", "");
+    }
+  }
+
+  /**
+   * Called by the view when a piece of the state is finished loading.
+   * @param state The piece of the state that is finished loading.
+   */
+  onEndLoading(state: StateName) {
+    if (state === "channels" || state === "user" || state === "workspaces") {
+      this.starButton.removeAttribute("disabled");
+    }
   }
 }
 

@@ -2,6 +2,7 @@
  * SnackbarDisplayComponennt displays the snack bar for messages.
  * */
 class SnackbarDisplayComponent extends HTMLElement {
+  /** Display element */
   private display: HTMLElement;
 
   /**

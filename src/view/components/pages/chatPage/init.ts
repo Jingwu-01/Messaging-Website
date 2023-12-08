@@ -4,8 +4,6 @@ import ChatPage from ".";
  * Initialize the ChatPage component by inserting its html template and registering its custom component. 
  */
 export default function chatPageInit() {
-  // TODO: add styling here. below sidebar and post display needs to be
-  // in flexbox
   document.body.insertAdjacentHTML(
     "beforeend",
     `

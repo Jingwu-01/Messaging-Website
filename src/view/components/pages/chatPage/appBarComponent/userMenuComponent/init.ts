@@ -1,7 +1,7 @@
 import UserMenuComponent from ".";
 
 /**
- * Initialize the userMenuComponent by inserting its html template and registering custom elements. 
+ * Initialize the userMenuComponent by inserting its html template and registering the custom element. 
  */
 export default function init() {
   document.body.insertAdjacentHTML(
@@ -73,8 +73,8 @@ export default function init() {
         ></iconify-icon>
       </button>
       <section slot="menu-items" id="user-menu-dropdown">
-        <button class="user-buttons">
-          <p id="my-starred-posts-button">My Starred Posts</p>
+        <button class="user-buttons" id="my-starred-posts-button">
+          <p>My Starred Posts</p>
         </button>
         <loading-button-component
           disable-if-state-loading="user"

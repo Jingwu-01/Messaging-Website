@@ -1,5 +1,6 @@
 import { slog } from "../../../../../slog";
 import { ReactionData, StarExtension, ViewPost } from "../../../../datatypes";
+import escapeString from "../../../../utils";
 import { getView } from "../../../../view";
 import ReactionComponent from "../../../pieces/reactionComponent";
 import ReplyButtonComponent from "../../../pieces/replyButtonComponent";
@@ -7,11 +8,11 @@ import StarButtonComponent from "../../../pieces/starButtonComponent";
 import { PostEditor } from "../postEditorComponent";
 
 /**
- * PostComponent displays the content of an individual post. 
+ * PostComponent displays the content of an individual post.
  */
 export class PostComponent extends HTMLElement {
   /** Container of everthing of the post */
-  private postAll: HTMLElement; 
+  private postAll: HTMLElement;
 
   /** Container of post header */
   private postHeader: HTMLElement;
@@ -24,9 +25,6 @@ export class PostComponent extends HTMLElement {
 
   /** Container of post buttons */
   private postButtons: HTMLElement;
-
-  /** Post user */
-  private postUser: string | undefined;
 
   /** Reply button of the post */
   private replyButton: ReplyButtonComponent;
@@ -47,12 +45,13 @@ export class PostComponent extends HTMLElement {
   private starButton: StarButtonComponent;
 
   /**
-   * Constructor for the post component. 
+   * Constructor for the post component.
    */
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
 
+    // Set up template and clone
     let template = document.querySelector("#post-template");
     if (!(template instanceof HTMLTemplateElement)) {
       throw Error("post template was not found");
@@ -61,6 +60,8 @@ export class PostComponent extends HTMLElement {
       throw Error("no shadow root exists");
     }
     this.shadowRoot.append(template.content.cloneNode(true));
+
+    // Set up the private fields elements.
     let postHeader = this.shadowRoot.querySelector("#post-header");
     let postBody = this.shadowRoot.querySelector("#post-body");
     let postButtons = this.shadowRoot.querySelector("#post-buttons");
@@ -75,20 +76,20 @@ export class PostComponent extends HTMLElement {
     if (!(postButtons instanceof HTMLElement)) {
       throw new Error("Could not find an element with the #post-buttons id");
     }
-    if (!(postAll instanceof HTMLElement)){
-      throw new Error("cannot find #post-all HTMLElement")
-    } 
+    if (!(postAll instanceof HTMLElement)) {
+      throw new Error("cannot find #post-all HTMLElement");
+    }
 
     this.postHeader = postHeader;
     this.postBody = postBody;
     this.postButtons = postButtons;
-    this.postAll = postAll
+    this.postAll = postAll;
 
     let starButton = new StarButtonComponent();
     this.postHeader.append(starButton);
     this.starButton = starButton;
 
-    // add buttons
+    // Add buttons
     let reactions = {
       smile: "lucide:smile",
       frown: "lucide:frown",
@@ -109,8 +110,8 @@ export class PostComponent extends HTMLElement {
     }
   }
 
-  /** 
-   * When connected, add listener to add reply 
+  /**
+   * When connected, add listener to add reply
    */
   connectedCallback() {
     this.controller = new AbortController();
@@ -125,7 +126,7 @@ export class PostComponent extends HTMLElement {
   }
 
   /**
-   * observe the starred attribute. 
+   * observe the starred attribute.
    */
   static get observedAttributes(): string[] {
     return ["starred"];
@@ -152,14 +153,10 @@ export class PostComponent extends HTMLElement {
   }
 
   /**
-   * Move the post editor under the correct post when reply is clicked. 
+   * Move the post editor under the correct post when reply is clicked.
    * @param event MouseEvent
    */
   addReplyPostEditor(event: MouseEvent) {
-    // let postEditor = new PostEditor();
-    // // this call should technically be before the previous one
-    // getView().replacePostEditor(postEditor);
-    // this.postBody.parentNode?.insertBefore(postEditor, this.postBody.nextSibling);
     this.highlight();
     getView().moveReplyPostEditorTo(this);
   }
@@ -173,14 +170,12 @@ export class PostComponent extends HTMLElement {
     // TODO: obviously can add more functionality here later as needed.
     slog.info("addPostContent: top of func call", ["viewPost", viewPost]);
     this.postPath = viewPost.path;
-    console.log("Posting the msg: " + viewPost.msg);
-    // this.postBody.innerText = this.formatText(viewPost.msg)
-    this.appendFormattedText(viewPost.msg, this.postBody);
+    this.appendFormattedText(escapeString(viewPost.msg), this.postBody);
     this.postMsg = viewPost.msg;
     let postUserText = this.postHeader.querySelector("#post-user-text");
     // TODO handle error better
     if (postUserText != null) {
-      postUserText.innerHTML = viewPost.createdUser;
+      postUserText.innerHTML = escapeString(viewPost.createdUser);
     }
     // assumed that time is in ms
     let postTimeObj = new Date(viewPost.postTime);
@@ -193,13 +188,13 @@ export class PostComponent extends HTMLElement {
         timeToDisplay = postTimeObj.toLocaleTimeString();
       }
       postTimeShortEl.setAttribute("datetime", postTimeObj.toISOString());
-      postTimeShortEl.innerHTML = `<u>${timeToDisplay}</u>`;
+      postTimeShortEl.innerHTML = `<u>${escapeString(timeToDisplay)}</u>`;
     }
     // TODO handle error better
     let postTimeLongEl = this.postHeader.querySelector("#post-time-long");
     if (postTimeLongEl != null) {
       postTimeLongEl.setAttribute("datetime", postTimeObj.toISOString());
-      postTimeLongEl.innerHTML = postTimeObj.toString();
+      postTimeLongEl.innerHTML = escapeString(postTimeObj.toString());
     }
 
     let currentUsername: string;
@@ -230,9 +225,6 @@ export class PostComponent extends HTMLElement {
       reactionButton.setLoggedInUser(currentUsername);
     }
 
-    // TODO: check if the post is starred
-    // TODO: set the attribute 'starred' of the star button based on whether or not the post is starred.
-    // TODO:
     slog.info("addPostContent: initializing starred post");
     let extensionsObj = viewPost.extensions;
     if (extensionsObj["p2group50"].includes(currentUsername)) {
@@ -261,7 +253,7 @@ export class PostComponent extends HTMLElement {
   }
 
   /**
-   * append the post editor to the bottom of the page. 
+   * append the post editor to the bottom of the page.
    * @param postEditor PostEditor
    */
   appendPostEditor(postEditor: PostEditor) {
@@ -276,18 +268,8 @@ export class PostComponent extends HTMLElement {
     return this.postPath;
   }
 
-  // displayPosts(update: ViewPostUpdate) {
-  //   // if this post's id is in update.affectedPosts,
-  //   // then add the reactio if it's a "modify"
-  // }
-
   /**
-   * Convert the input string to their corresponding HTML elements based on the markdown patterns and append them to the input HTML container element. Mark down patterns: 
-  1. Text surrounded by single * symbols rendered in italics using <em>; 
-  2. Text surrounded by double * symbols rendered in bold using <strong>;
-  3. Text and a URL surrounded by []() rendered as links using <a>;
-  4. Reaction names like :smile: must be rendered as their associated emoji using <iconify>. 
-  5. Other text rendered as plain text using <p>
+   * Convert the input string to their corresponding HTML elements based on the markdown patterns and append them to the input HTML container element.
    * @param text string for conversion 
    * @param container HTML that accepts the converted text
    */
@@ -338,7 +320,7 @@ export class PostComponent extends HTMLElement {
   /**
    * Update the reactions based on received ReactionData
    * @param reactionData ReactionData
-   * @returns nothing 
+   * @returns nothing
    */
   updateReactions(reactionData: ReactionData) {
     let currentUsername: string;
@@ -374,7 +356,7 @@ export class PostComponent extends HTMLElement {
   /**
    * update the extensions based on received StarExtension
    * @param extensionData StarExtension
-   * @returns nothing 
+   * @returns nothing
    */
   updateExtensions(extensionData: StarExtension) {
     let currentUsername: string;
@@ -397,27 +379,27 @@ export class PostComponent extends HTMLElement {
   }
 
   /**
-   * get post text of the post. 
-   * @returns string for the post message 
+   * get post text of the post.
+   * @returns string for the post message
    */
   getPostText() {
     return this.postMsg;
   }
 
   /**
-   * highlight a post that the user is replying to 
+   * highlight a post that the user is replying to
    */
   highlight() {
-    this.postAll.style.backgroundColor = "#d9d9d9"; 
-    this.postAll.style.borderRadius = "5px"; 
+    this.postAll.style.backgroundColor = "#d9d9d9";
+    this.postAll.style.borderRadius = "5px";
   }
 
   /**
-   * unhighly a post that the user is no longer replying to 
+   * unhighly a post that the user is no longer replying to
    */
   unhighlight() {
-    this.postAll.style.backgroundColor = "transparent"; 
-    this.postAll.style.borderRadius = "0px"; 
+    this.postAll.style.backgroundColor = "transparent";
+    this.postAll.style.borderRadius = "0px";
   }
 }
 

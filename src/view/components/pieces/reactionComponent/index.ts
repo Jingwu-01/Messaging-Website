@@ -1,25 +1,32 @@
 import { slog } from "../../../../slog";
-import { ReactionUpdateEvent } from "../../../datatypes";
+import { ReactionUpdateEvent, StateName } from "../../../datatypes";
+import escapeString from "../../../utils";
 import { getView } from "../../../view";
 
-// Reactions can only one of the four defined reactions types.
+/** Reactions can only one of the four defined reactions types. */ 
 type reactions = "smile" | "frown" | "like" | "celebrate";
 
 /** ReactionComponent is reaction buttons for posts. When a user clicks on it, a
  * reaction will be added or removed.
- */ 
+ */
 class ReactionComponent extends HTMLElement {
+  /** Controller */
   private controller: AbortController | null = null;
+  /** Reaction icon element */
   private reactionIcon: HTMLElement;
+  /** Reaction button */
   private reactionButton: HTMLElement;
-  private reactionButtonContent: HTMLElement;
+  /** name of the reaction */
   private reactionName: reactions = "smile";
+  /** the number of reactions received of this type */
   private count: number = 0;
+  /** parent post path */
   private parentPath: string | undefined;
+  /** logged in username */
   private loggedInUser: string | undefined;
 
   /**
-   * Constructor for the ReactionComponent. 
+   * Constructor for the ReactionComponent.
    */
   constructor() {
     super();
@@ -46,26 +53,18 @@ class ReactionComponent extends HTMLElement {
       throw new Error("smileButton is not an HTMLElement");
     }
 
-    const reactionButtonContent = this.shadowRoot?.querySelector(
-      "#reaction-button-content"
-    );
-    if (!(reactionButtonContent instanceof HTMLElement)) {
-      throw new Error("No HTML element with id #reaction-button-content");
-    }
-
     this.reactionIcon = reactionIcon;
     this.reactionButton = reactionButton;
-    this.reactionButtonContent = reactionButtonContent;
   }
 
   /**
    * When the ReactionComponent is connected, add a click listener for the reaction button.
    */
   connectedCallback(): void {
-    // Set the count for the reaction. 
+    // Set the count for the reaction.
     this.setCount(this.count);
 
-    // Add click event listener for the reactionButton. If clicked, call the this.update() function. 
+    // Add click event listener for the reactionButton. If clicked, call the this.update() function.
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
     this.reactionButton.addEventListener(
@@ -73,6 +72,8 @@ class ReactionComponent extends HTMLElement {
       this.update.bind(this),
       options
     );
+
+    getView().addLoadingListener(this);
   }
 
   /**
@@ -84,14 +85,14 @@ class ReactionComponent extends HTMLElement {
   }
 
   /**
-   * Dispatch an reaction update event to the adapter. 
+   * Dispatch an reaction update event to the adapter.
    */
   update(): void {
     let user = this.loggedInUser;
     let postPath = this.parentPath;
     let curReacted: boolean;
 
-    // If postPath or loggedin user is undefine, slog an error. 
+    // If postPath or loggedin user is undefine, slog an error.
     if (postPath === undefined || user === undefined) {
       getView().displayError("reacted to a malformed post");
       slog.error(
@@ -101,13 +102,13 @@ class ReactionComponent extends HTMLElement {
       );
       return;
     }
-    if (this.reactionButtonContent.classList.contains("reacted")) {
+    if (this.reactionButton.classList.contains("reacted")) {
       curReacted = true;
     } else {
       curReacted = false;
     }
-    const event_id = String(Date.now());    
-    // Dispatch the reactionUpdate event, which contains the reaction name, username, post path, and new state of the reaction. 
+    const event_id = String(Date.now());
+    // Dispatch the reactionUpdate event, which contains the reaction name, username, post path, and new state of the reaction.
     let updateEventContent: ReactionUpdateEvent = {
       reactionName: `${this.reactionName}`,
       userName: user,
@@ -122,20 +123,30 @@ class ReactionComponent extends HTMLElement {
     const reactionUpdateEvent = new CustomEvent("reactionUpdateEvent", {
       detail: updateEventContent,
     });
+    this.reactionButton.setAttribute("disabled", "");
+    const oldIcon = this.reactionIcon.getAttribute("icon");
+    if (!oldIcon) {
+      throw new Error("iconify-icon component has no icon attribute");
+    }
+    this.reactionIcon.setAttribute("icon", "svg-spinners:180-ring-with-bg");
+    getView().waitForEvent(event_id, (evt, err) => {
+      this.reactionIcon.setAttribute("icon", oldIcon);
+      this.reactionButton.removeAttribute("disabled");
+    });
     document.dispatchEvent(reactionUpdateEvent);
   }
 
   /**
    * Set the count of a particular reaction
-   * @param count the number of a particular reaction that the post receives. 
+   * @param count the number of a particular reaction that the post receives.
    */
   setCount(count: number): void {
     const countText = this.shadowRoot?.querySelector("#reaction-count");
     if (!(countText instanceof HTMLParagraphElement)) {
       throw new Error("countText is not an HTML paragraph element");
     } else {
-      // Set the innerHTML of countText to the input count string. 
-      countText.innerHTML = count.toString();
+      // Set the innerHTML of countText to the input count string.
+      countText.innerHTML = escapeString(count.toString());
       slog.info("addReactionCount: set count", [
         "countText.innerHTML",
         countText.innerHTML,
@@ -156,12 +167,12 @@ class ReactionComponent extends HTMLElement {
 
   /**
    * When the observed attributes are changed, adjust arial-labels and display the correct iconify icons.
-   * @param name name of attribute that are changed 
-   * @param oldValue the old value of the changed attribute 
+   * @param name name of attribute that are changed
+   * @param oldValue the old value of the changed attribute
    * @param newValue the new value of the changed attribute
    */
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-    // If the icon attribute is changed, update the corresponding arial-labels and reactionName. 
+    // If the icon attribute is changed, update the corresponding arial-labels and reactionName.
     if (name === "icon") {
       if (newValue === "lucide:frown") {
         this.reactionButton.setAttribute("aria-label", "frown reaction");
@@ -184,23 +195,22 @@ class ReactionComponent extends HTMLElement {
       // Update the icon attribute to the newValue so that the appropriate iconify icons could be displayed.
       this.reactionIcon.setAttribute("icon", newValue);
     } else if (name === "reaction-count") {
-      // If the count of reactions are changed, update and display the count. 
+      // If the count of reactions are changed, update and display the count.
       slog.info("attributeChangedCallback: reaction-count");
       let numReactionCount = parseInt(newValue);
       this.count = numReactionCount;
       this.setCount(numReactionCount);
     } else if (name === "reacted") {
-      // TODO: compare to the old values, and maybe unfreeze the button.
       if (newValue === "true") {
-        this.reactionButtonContent.classList.add("reacted");
+        this.reactionButton.classList.add("reacted");
       } else {
-        this.reactionButtonContent.classList.remove("reacted");
+        this.reactionButton.classList.remove("reacted");
       }
     }
   }
 
   /**
-   * Set the parentPath of this ReactionComponent to the input string. 
+   * Set the parentPath of this ReactionComponent to the input string.
    * @param parentPath the input string for new parentPath
    */
   setParentPath(parentPath: string) {
@@ -208,11 +218,23 @@ class ReactionComponent extends HTMLElement {
   }
 
   /**
-   * Set the loggedInUser of this ReactionComponent to intput username string. 
-   * @param username the input string for the new username 
+   * Set the loggedInUser of this ReactionComponent to intput username string.
+   * @param username the input string for the new username
    */
   setLoggedInUser(username: string) {
     this.loggedInUser = username;
+  }
+
+  onLoading(state: StateName) {
+    if (state === "user") {
+      this.reactionButton.setAttribute("disabled", "");
+    }
+  }
+
+  onEndLoading(state: StateName) {
+    if (state === "user") {
+      this.reactionButton.removeAttribute("disabled");
+    }
   }
 }
 

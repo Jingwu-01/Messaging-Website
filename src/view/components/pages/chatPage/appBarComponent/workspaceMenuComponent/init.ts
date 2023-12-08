@@ -1,7 +1,7 @@
 import WorkspaceMenuComponent from ".";
 
 /**
- * Initializes the workspace component HTML.
+ * Initializes the workspace component HTML and register the custom element.
  */
 export default function workspaceMenuComponentInit() {
   document.body.insertAdjacentHTML(
@@ -41,6 +41,7 @@ export default function workspaceMenuComponentInit() {
     }
     edit-dialog-component:active {
       background-color: #0f2831; 
+      border-radius: 3px 3px 3px 3px;
     }
     p:hover {
       background-color: #3896b7; 
@@ -48,6 +49,7 @@ export default function workspaceMenuComponentInit() {
     }
     p:active {
       background-color: #0f2831; 
+      border-radius: 3px 3px 3px 3px;
     }
     #center-button {
       background: none;
@@ -83,7 +85,7 @@ export default function workspaceMenuComponentInit() {
         No workspaces yet. Click "Edit Workspaces" to add one!
       </section>
       <section class="divider"></section>
-      <loading-button-component disable-if-state-loading="workspaces" id="refresh-workspaces-button" style="border: none; background: none;">
+      <loading-button-component disable-if-state-loading="workspaces user" id="refresh-workspaces-button" style="border: none; background: none;">
         <p slot="content">Refresh Workspaces</p>
         <iconify-icon icon="material-symbols:refresh" aria-label="Refresh Workspaces"></iconify-icon>
       </loading-button-component>

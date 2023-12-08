@@ -14,12 +14,10 @@ export default function reactionComponentInit() {
         display: flex;
         margin-left: 10px;
       }
-      #reaction-button-content {
+      #reaction-button {
         width: 30px;
         height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        border-radius: 3px 3px 3px 3px;
       }
       #reaction-count {
         margin-left: 10px;
@@ -27,28 +25,30 @@ export default function reactionComponentInit() {
       }
       #reaction-button:hover {
         background-color: #818589;
+        border-radius: 3px 3px 3px 3px;
       }
-      #reaction-button:active {
+      #reaction-container button:active {
         background-color: #5a5a5a;
+        border-radius: 3px 3px 3px 3px;
       }
       .reacted {
         background-color: #add8e6;
       }
-      #reaction-button:focus-visible {
+      #reaction-container button:focus-visible {
         box-shadow: #ff0000 0 0 0 3px;
         outline: none;
+        border-radius: 3px 3px 3px 3px;
       }
-      #reaction-button:focus:not(:focus-visible) {
+      #reaction-container button:focus:not(:focus-visible) {
         box-shadow: none;
         outline: none;
       }
+      
     </style>
     <div id="reaction-container">
-      <loading-button-component disable-if-state-loading="posts" id="reaction-button" aria-label="smile reaction" style="padding: 0;" default-button-styles="true">
-        <div id="reaction-button-content" slot="content">
-          <iconify-icon slot="content" icon="lucide:smile" id="smile-reaction"></iconify-icon>
-        </div>
-      </loading-button-component>
+      <button id="reaction-button" aria-label="smile reaction">
+        <iconify-icon slot="content" icon="lucide:smile" id="smile-reaction"></iconify-icon>
+      </button>
       <p id="reaction-count"></p>
     </section>
   </template>

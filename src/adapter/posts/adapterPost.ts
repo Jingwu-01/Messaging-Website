@@ -3,11 +3,13 @@
  */
 
 import { PostResponse } from "../../../types/postResponse";
-import { validateExtensionResponse } from "../../model/utils";
 import { slog } from "../../slog";
 import { insertPostSorted } from "./handleSortingPosts";
-import { ExtensionResponse } from "../../../types/extensionResponse";
-import { validateExtension, validateParentPath, validatePostPath } from "./dataValidation";
+import {
+  validateExtension,
+  validateParentPath,
+  validatePostPath,
+} from "./dataValidation";
 
 /**
  * This class is the adapter's representation of a post. The adapter takes care of two primary
@@ -45,12 +47,16 @@ export class AdapterPost {
 
   private usersStarred: Array<string> = new Array<string>();
 
-  // Creates a new AdapterPost, and also validates data.
+  /**
+   * Creates a new AdapterPost, and additionally validates that the post repsonse is valid.
+   * @param response a PostResponse object representing the JSON that is returned by the model.
+   */
   constructor(response: PostResponse) {
-    // console.log(`AdapterPost constructor: response.path: ${response.path}`);
-    // console.log(`AdapterPost constructor: response.path.split("/"): ${response.path.split("/")}`);
-    // console.log(`AdapterPost constructor: response.path.split("/").pop(): ${response.path.split("/").pop()}`);
-    slog.info("AdapterPost constructor: top of func call", ["response", response.path], ["response.path", response.path]);
+    slog.info(
+      "AdapterPost constructor: top of func call",
+      ["response", response.path],
+      ["response.path", response.path]
+    );
     let postPathArr = validatePostPath(response.path);
     // Set the name, workspace name, and channel name for the post.
     this.name = postPathArr[5];
@@ -149,22 +155,42 @@ export class AdapterPost {
     this.replies = oldPost.replies;
   }
 
+  /**
+   * Sets the starred index of the post (indicating the position the post should be added in the view).
+   * @param starredIndex an integer representing the starred index of the post to add to the view.
+   */
   setStarredIndex(starredIndex: number) {
     this.starredIndex = starredIndex;
   }
 
+  /**
+   * Retrieves the starred index; that is, the index of this post with respect to other starred posts.
+   * @returns an integer representing this post's starred index.
+   */
   getStarredIndex() {
     return this.starredIndex;
   }
 
+  /**
+   * Retrieves a boolean indicating whether or not this post is currently starred.
+   * @returns a boolean indicating whether this post is starred or not.
+   */
   getStarred() {
     return this.starred;
   }
 
+  /**
+   * Sets whether or not this post is now starred.
+   * @param starred a boolean indicating whether or not this post is now starred.
+   */
   setStarred(starred: boolean) {
     this.starred = starred;
   }
 
+  /**
+   * Returns an array of usernames indicating which users have starred this post.
+   * @returns an array of usernames indicating who's starred this post.
+   */
   getUsersStarred(): Array<string> {
     return this.usersStarred;
   }

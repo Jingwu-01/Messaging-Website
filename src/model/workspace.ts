@@ -8,8 +8,13 @@ import { WorkspaceResponse } from "../../types/workspaceResponse";
  * A class representing the model's representation of a workspace.
  */
 export class ModelWorkspace {
+  /** path of this workspace */
   path: string;
 
+  /**
+   * Constructs a new ModelWorkspace based on the received WorkspaceResponse
+   * @param res workspaceResponce received from an OwlDB workspace fetch.
+   */
   constructor(res: WorkspaceResponse) {
     this.path = res.path;
   }

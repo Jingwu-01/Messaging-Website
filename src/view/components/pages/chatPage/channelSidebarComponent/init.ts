@@ -1,7 +1,7 @@
 import { ChannelSidebar } from "./index";
 
 /**
- * Init channel side bar component by inserting its html elment and registering its custom element. 
+ * Init channel side bar component by inserting its html elment and registering its custom element.
  */
 export default function channelSidebarComponentInit() {
   document.body.insertAdjacentHTML(
@@ -83,19 +83,20 @@ export default function channelSidebarComponentInit() {
         <loading-button-component
           id="refresh-channels-button"
           style="background: none; border: none"
-          disable-if-state-loading="channels"
+          disable-if-state-loading="channels workspaces user"
+          aria-label="Refresh Channels" role="button"
         >
           <section slot="content" class="button-content">
             <p>Refresh Channels</p>
             <iconify-icon
               icon="material-symbols:refresh"
-              aria-label="Refresh Channels"
             ></iconify-icon>
           </section>
         </loading-button-component>
         <open-dialog-button-component
           dialog="edit-channels-dialog"
           style="border: none; background: none"
+          aria-label="Edit Channels" role="button"
         >
           <section
             slot="button-content"
@@ -105,7 +106,6 @@ export default function channelSidebarComponentInit() {
             <p>Edit Channels</p>
             <iconify-icon
               icon="material-symbols:edit"
-              aria-label="Edit Channels"
             ></iconify-icon>
           </section>
         </open-dialog-button-component>

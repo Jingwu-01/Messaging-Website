@@ -13,6 +13,7 @@ export type ViewPostUpdate = {
   op: "add" | "modify" | "insert";
   /** A list of the posts that were affected by this update */
   affectedPosts: Array<ViewPost>;
+  /** the set of operations that are suppported */
   starOp: "insert" | "modify" | "delete" | "nop";
 };
 
@@ -21,16 +22,27 @@ export type ViewPostUpdate = {
 that the view can display.
  */
 export type ViewPost = {
+  /** post message */
   msg: string;
-  reactions: ReactionData; // TODO: should be an array of strings? or custom reactions objects based on what we want?
-  extensions: StarExtension; // TODO: see above for 'reactions'
+  /** reaction info  */
+  reactions: ReactionData;
+  /** extension info */
+  extensions: StarExtension;
+  /** created by username */
   createdUser: string;
+  /** post time of post */
   postTime: number;
+  /** children of posts */
   children: Array<ViewPost>;
+  /** post path */
   path: string;
+  /** parent post path */
   parent: string | undefined;
+  /** post id  */
   postIdx: number | undefined;
+  /** name of post */
   name: string;
+  /** starred index */
   starredIndex: number | undefined;
 };
 
@@ -85,9 +97,13 @@ export type ViewChannelUpdate = {
  * ReactionData have fields including smiles, frown, like and celebrate. 
  */
 export type ReactionData = {
+  /** an array of usernames that reacted to smile */
   smile: string[];
+  /** an array of usernames that reacted to frown */
   frown: string[];
+  /** an array of usernames that reacted to like */
   like: string[];
+  /** an array of username that reacted to celebrate */
   celebrate: string[];
   [k: string]: string[];
 };
@@ -186,12 +202,16 @@ export type DeleteChannelEvent = {
 /**
  * Sent to the Adapter when a post is reacted to
  */
-// TODO: use composition of ReactionUpdateEvent and StarUpdateEvent?
 export type ReactionUpdateEvent = {
+  /** name of the reaction */
   reactionName: string | undefined;
+  /** username of reacted */
   userName: string;
+  /** path of post being reacted */
   postPath: string;
+  /** add or remove reaction */
   add: boolean;
+  /** reaction id */
   id: string;
 };
 

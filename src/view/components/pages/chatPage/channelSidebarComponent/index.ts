@@ -6,10 +6,11 @@ import {
   ViewWorkspace,
   ViewWorkspaceUpdate,
 } from "../../../../datatypes";
+import escapeString from "../../../../utils";
 import { getView } from "../../../../view";
 
 /**
- * Channel side bar displays all the channels in the current workspace and allows users to select or edit a channel. 
+ * Channel side bar displays all the channels in the current workspace and allows users to select or edit a channel.
  */
 export class ChannelSidebar extends HTMLElement {
   /** Container for channels */
@@ -19,16 +20,19 @@ export class ChannelSidebar extends HTMLElement {
   private buttonWrapper: HTMLElement;
 
   /** A map of channel name to ids */
-  private channelNameToIdx = new Map<String, Number>(); 
+  private channelNameToIdx = new Map<String, Number>();
 
   /** Refresh channel button */
   private refreshChannelsButton: HTMLElement;
 
+  /**
+   * Constructor for the channel side bar component.
+   */
   constructor() {
     super();
-
     this.attachShadow({ mode: "open" });
 
+    // Set up template. 
     let template = document.querySelector(
       "#channel-sidebar-component-template"
     );
@@ -42,25 +46,23 @@ export class ChannelSidebar extends HTMLElement {
         "could not find shadow DOM root for channeldisplay element in constructor"
       );
     }
-
     this.shadowRoot.append(template.content.cloneNode(true));
 
+    // Set up channel list. 
     let channelList = this.shadowRoot.querySelector("#channel-list");
-
     if (!(channelList instanceof HTMLElement)) {
       throw Error("Could not find an element with the channel-container id");
     }
-
     this.channelList = channelList;
 
+    // Set up button wrapper. 
     let button_wrapper_query = this.shadowRoot.querySelector("#button-wrapper");
-
     if (!(button_wrapper_query instanceof HTMLElement)) {
       throw Error("Could not find an element with the button-wrapper id");
     }
-
     this.buttonWrapper = button_wrapper_query;
 
+    // Set up refresh channels button. 
     let refresh_channels_button_query = this.shadowRoot.querySelector(
       "#refresh-channels-button"
     );
@@ -70,18 +72,17 @@ export class ChannelSidebar extends HTMLElement {
       );
     }
     this.refreshChannelsButton = refresh_channels_button_query;
-    // this.displayPosts.bind(this);
   }
 
   /**
-   * When connnected, add channel, workspace, and loading listeners in the view. Also, add click event listener to the refresh button. 
+   * When connnected, add channel, workspace, and loading listeners in the view. Also, add click event listener to the refresh button.
    */
   connectedCallback() {
     // Add listener for refresh channels button
     this.refreshChannelsButton.addEventListener("click", () => {
       let event_id = String(Date.now());
       this.refreshChannelsButton.setAttribute("loading-until-event", event_id);
-      // Dispatch a refresh channel event 
+      // Dispatch a refresh channel event
       document.dispatchEvent(
         new CustomEvent("refreshChannels", {
           detail: {
@@ -99,11 +100,10 @@ export class ChannelSidebar extends HTMLElement {
   }
 
   /**
-   * Display the open channel. 
+   * Display the open channel.
    * @param channel a ViewChannel or null
    */
   displayOpenChannel(channel: ViewChannel | null) {
-    // TODO: may have to update this selector
     this.shadowRoot
       ?.querySelectorAll("#channel-list > button.selected-channel")
       .forEach((selectedEl) => {
@@ -117,7 +117,6 @@ export class ChannelSidebar extends HTMLElement {
 
     let channelIdx = this.channelNameToIdx.get(channel.name);
     if (channelIdx === undefined) {
-      // TODO: test to reproduce this error
       throw Error(
         "displayOpenChannel: trying to display a channel that doesn't exist on the view"
       );
@@ -134,18 +133,19 @@ export class ChannelSidebar extends HTMLElement {
   }
 
   /**
-   * Display the channels of the current workspace. 
+   * Display the channels of the current workspace.
    * @param update ViewChannelUpdate
    */
   displayChannels(update: ViewChannelUpdate) {
     const channels = update.allChannels;
     slog.info("displayChannels", ["channels", `${JSON.stringify(channels)}`]);
     this.channelList.innerHTML = "";
+    // Add each channel in the workspace as a button and add click event listeners. 
     channels.forEach((channel, idx) => {
       let channelListEl = document.createElement("button");
       channelListEl.id = "channel-select-" + idx;
       this.channelNameToIdx.set(channel.name, idx);
-      channelListEl.innerText = channel.name;
+      channelListEl.innerText = escapeString(channel.name);
       this.channelList.append(channelListEl);
       channelListEl.addEventListener("click", () => {
         slog.info("clicked channel list el", [
@@ -180,11 +180,16 @@ export class ChannelSidebar extends HTMLElement {
   displayWorkspaces(update: ViewWorkspaceUpdate) {}
 
   /**
-   * Disable all of our buttons when our channels are loading.
+   * Disallow channel selects if anything in the app is loading.
    * @param state StateName
    */
   onLoading(state: StateName) {
-    if (state == "channels") {
+    if (
+      state === "workspaces" ||
+      state === "channels" ||
+      state === "posts" ||
+      state === "user"
+    ) {
       this.channelList.querySelectorAll("button").forEach((button) => {
         button.disabled = true;
       });
@@ -192,11 +197,16 @@ export class ChannelSidebar extends HTMLElement {
   }
 
   /**
-   * Re-enable all of our buttons when our channels stop loading.
+   * Re-enable channel selects when the application state stops loading.
    * @param state StateName
    */
   onEndLoading(state: StateName) {
-    if (state == "channels") {
+    if (
+      state === "workspaces" ||
+      state === "channels" ||
+      state == "posts" ||
+      state === "user"
+    ) {
       this.channelList.querySelectorAll("button").forEach((button) => {
         button.disabled = false;
       });
