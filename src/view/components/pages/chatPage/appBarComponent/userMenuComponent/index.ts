@@ -1,4 +1,5 @@
 import { ViewUser } from "../../../../../datatypes";
+import escapeString from "../../../../../utils";
 import { getView } from "../../../../../view";
 
 /**
@@ -113,7 +114,7 @@ class UserMenuComponent extends HTMLElement {
     // update the displayed username
     let user_text_el = this.shadowRoot?.querySelector("#user-text");
     if (user_text_el instanceof HTMLElement) {
-      user_text_el.innerHTML = user?.username ?? "";
+      user_text_el.innerHTML = escapeString(user?.username ?? "");
     }
   }
 

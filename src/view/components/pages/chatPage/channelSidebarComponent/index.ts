@@ -6,6 +6,7 @@ import {
   ViewWorkspace,
   ViewWorkspaceUpdate,
 } from "../../../../datatypes";
+import escapeString from "../../../../utils";
 import { getView } from "../../../../view";
 
 /**
@@ -148,7 +149,7 @@ export class ChannelSidebar extends HTMLElement {
       let channelListEl = document.createElement("button");
       channelListEl.id = "channel-select-" + idx;
       this.channelNameToIdx.set(channel.name, idx);
-      channelListEl.innerText = channel.name;
+      channelListEl.innerText = escapeString(channel.name);
       this.channelList.append(channelListEl);
       channelListEl.addEventListener("click", () => {
         slog.info("clicked channel list el", [
