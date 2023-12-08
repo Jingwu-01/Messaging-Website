@@ -1,18 +1,18 @@
 /**
- * MenuComponent is a drop-down menu. When a user clicks on it, the elements of the menu will show. 
+ * MenuComponent is a drop-down menu. When a user clicks on it, the elements of the menu will show.
  */
 class MenuComponent extends HTMLElement {
   private popoverElement: HTMLElement;
 
   /**
-   * Constructor for the MenuComponent. 
+   * Constructor for the MenuComponent.
    */
   constructor() {
     super();
 
     this.attachShadow({ mode: "open" });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#menu-component-template"
+      "#menu-component-template",
     );
     if (!template) {
       throw Error("Could not find template #hover-component-template");
@@ -27,10 +27,9 @@ class MenuComponent extends HTMLElement {
   }
 
   /**
-   * When the component is connected, add some event listners to window and menu. 
+   * When the component is connected, add some event listners to window and menu.
    */
   connectedCallback(): void {
-   
     // Add a click listener to the document that closes this menu if it isn't open.
     // This means clicking outside the menu will close it.
     window.addEventListener("click", () => {
@@ -54,7 +53,7 @@ class MenuComponent extends HTMLElement {
   }
 
   /**
-   * Observe the attribute open. 
+   * Observe the attribute open.
    */
   static get observedAttributes(): Array<string> {
     // Attributes to observe
@@ -62,15 +61,15 @@ class MenuComponent extends HTMLElement {
   }
 
   /**
-   * When the open attribute changes, open or close the menu accordingly. 
+   * When the open attribute changes, open or close the menu accordingly.
    * @param name the name of attribute that changed
    * @param oldValue the old value of changed attribute
-   * @param newValue the new value of chanegd attribute 
+   * @param newValue the new value of chanegd attribute
    */
   attributeChangedCallback(
     name: string,
     oldValue: string,
-    newValue: string
+    newValue: string,
   ): void {
     if (name == "open") {
       this.popoverElement.setAttribute("open", newValue);

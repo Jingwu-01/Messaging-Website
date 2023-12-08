@@ -24,7 +24,7 @@ export class WorkspacesAdapter {
   constructor(
     view: ViewInterface,
     model: ModelInterface,
-    stateManager: StateManagerInterface
+    stateManager: StateManagerInterface,
   ) {
     this.view = view;
     this.model = model;
@@ -61,7 +61,7 @@ export class WorkspacesAdapter {
     slog.info(`Workspace selected: ${evt.detail.name}`);
     this.getView().setStateLoadingUntil(
       ["workspaces", "channels", "posts"],
-      evt
+      evt,
     );
     // Set the open workspace
     try {
@@ -164,7 +164,7 @@ export class WorkspacesAdapter {
     // The user should never be able to trigger this.
     if (!channels) {
       throw new Error(
-        "Tried to add a channel without a workspace currently open"
+        "Tried to add a channel without a workspace currently open",
       );
     }
     // Close the open channel if it doesn't exist anymore.
@@ -214,24 +214,24 @@ export class WorkspacesAdapter {
     // Handle workspace event
     document.addEventListener(
       "workspaceSelected",
-      this.selectWorkspace.bind(this)
+      this.selectWorkspace.bind(this),
     );
 
     document.addEventListener(
       "workspaceCreated",
-      this.createWorkspace.bind(this)
+      this.createWorkspace.bind(this),
     );
 
     // Handle workspace deletion
     document.addEventListener(
       "workspaceDeleted",
-      this.deleteWorkspace.bind(this)
+      this.deleteWorkspace.bind(this),
     );
 
     //Handle workspace refresh
     document.addEventListener(
       "refreshWorkspaces",
-      this.refreshWorkspacesEvent.bind(this)
+      this.refreshWorkspacesEvent.bind(this),
     );
   }
 }

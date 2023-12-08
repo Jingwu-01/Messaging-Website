@@ -29,7 +29,7 @@ class LoadingButtonComponent extends HTMLElement {
 
     this.attachShadow({ mode: "open", delegatesFocus: true });
     let template = document.querySelector<HTMLTemplateElement>(
-      "#loading-button-component-template"
+      "#loading-button-component-template",
     );
     if (!template) {
       throw Error("Could not find template #hover-component-template");
@@ -56,7 +56,7 @@ class LoadingButtonComponent extends HTMLElement {
   }
 
   /**
-   * When the loadingButton component is connected, add loading listener to it. 
+   * When the loadingButton component is connected, add loading listener to it.
    */
   connectedCallback() {
     getView().addLoadingListener(this);
@@ -76,19 +76,19 @@ class LoadingButtonComponent extends HTMLElement {
   }
 
   /**
-   * When the open attribute changes, show or hide loading text accordingly. 
+   * When the open attribute changes, show or hide loading text accordingly.
    * @param name the name of attribute that changed
    * @param oldValue the old value of changed attribute
-   * @param newValue the new value of chanegd attribute 
+   * @param newValue the new value of chanegd attribute
    */
   attributeChangedCallback(
     name: string,
     oldValue: string,
-    newValue: string
+    newValue: string,
   ): void {
     if (name === "disable-if-state-loading") {
       this.disableIfStateLoading = new Set(
-        newValue.split(" ")
+        newValue.split(" "),
       ) as Set<StateName>;
     }
 

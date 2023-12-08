@@ -29,7 +29,7 @@ import { slog } from "../slog";
 export async function typedFetch<T>(
   url: string,
   options?: RequestInit,
-  timeout?: number
+  timeout?: number,
 ): Promise<T> {
   // Setup request timeout
   const opts = options || {};
@@ -62,7 +62,7 @@ export async function typedFetch<T>(
 export async function emptyFetch(
   url: string,
   options?: RequestInit,
-  timeout?: number
+  timeout?: number,
 ): Promise<void> {
   // Setup request timeout
   const opts = options || {};
@@ -114,12 +114,12 @@ export function getAuthPath(): string {
 }
 
 /**
- * Returns an array of PatchBody that contains the reaction update info 
+ * Returns an array of PatchBody that contains the reaction update info
  * @param reactionUpdate contains the reaction update info
- * @returns an array of PatchBody that contains the reaction update info 
+ * @returns an array of PatchBody that contains the reaction update info
  */
 export function getPatchBody(
-  reactionUpdate: ModelReactionUpdate
+  reactionUpdate: ModelReactionUpdate,
 ): Array<PatchBody> {
   let patches = new Array<PatchBody>();
   let objPath: string;
@@ -165,17 +165,17 @@ export const ajv = new Ajv();
 export const validateCreateResponse = ajv.compile(CreateResponseSchema);
 
 export const validateGetWorkspacesResponse = ajv.compile(
-  GetWorkspacesResponseSchema
+  GetWorkspacesResponseSchema,
 );
 
 export const validateGetChannelsResponse = ajv.compile(
-  GetChannelsResponseSchema
+  GetChannelsResponseSchema,
 );
 
 export const validateLoginResponse = ajv.compile(LoginResponseSchema);
 
 export const validatePatchDocumentResponse = ajv.compile(
-  PatchDocumentResponseSchema
+  PatchDocumentResponseSchema,
 );
 
 export const validatePostResponse = ajv.compile(PostResponseSchema);

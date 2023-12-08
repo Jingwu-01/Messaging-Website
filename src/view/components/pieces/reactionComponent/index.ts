@@ -3,7 +3,7 @@ import { ReactionUpdateEvent, StateName } from "../../../datatypes";
 import escapeString from "../../../utils";
 import { getView } from "../../../view";
 
-/** Reactions can only one of the four defined reactions types. */ 
+/** Reactions can only one of the four defined reactions types. */
 export type reactions = "smile" | "frown" | "like" | "celebrate";
 
 /** ReactionComponent is reaction buttons for posts. When a user clicks on it, a
@@ -70,7 +70,7 @@ class ReactionComponent extends HTMLElement {
     this.reactionButton.addEventListener(
       "click",
       this.update.bind(this),
-      options
+      options,
     );
 
     getView().addLoadingListener(this);
@@ -98,7 +98,7 @@ class ReactionComponent extends HTMLElement {
       slog.error(
         "ReactionComponent: update, user or postPath is undefined",
         ["user", user],
-        ["postPath", postPath]
+        ["postPath", postPath],
       );
       return;
     }
@@ -239,4 +239,3 @@ class ReactionComponent extends HTMLElement {
 }
 
 export default ReactionComponent;
-

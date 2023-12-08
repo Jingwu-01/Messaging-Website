@@ -5,7 +5,7 @@ import { PostComponent } from "../postComponent";
 import { PostEditor } from "../postEditorComponent";
 
 /**
- * Post Display component displays all the posts in the selected channel. 
+ * Post Display component displays all the posts in the selected channel.
  */
 export class PostDisplay extends HTMLElement {
   /** post container element  */
@@ -19,13 +19,13 @@ export class PostDisplay extends HTMLElement {
   >();
 
   /**
-   * Constructor for the post display. 
+   * Constructor for the post display.
    */
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
 
-    // Set up the template and clone. 
+    // Set up the template and clone.
     let template = document.querySelector("#postdisplay-template");
     if (!(template instanceof HTMLTemplateElement)) {
       throw Error("post display template was not found");
@@ -62,9 +62,8 @@ export class PostDisplay extends HTMLElement {
     this.displayPosts.bind(this);
   }
 
-
   /**
-   * When connected, add post listener in the view. 
+   * When connected, add post listener in the view.
    */
   connectedCallback() {
     slog.info("PostDisplay: connectedCallback was called");
@@ -72,7 +71,7 @@ export class PostDisplay extends HTMLElement {
   }
 
   /**
-   * When disconnected, remove the post listener in the view. 
+   * When disconnected, remove the post listener in the view.
    */
   disconnectedCallback() {
     slog.info("PostDisplay: disconnectedCallback was called");
@@ -80,7 +79,7 @@ export class PostDisplay extends HTMLElement {
   }
 
   /**
-   * Display the posts based on the view update. 
+   * Display the posts based on the view update.
    * @param update ViewPostUpdate
    */
   displayPosts(update: ViewPostUpdate): void {
@@ -204,10 +203,10 @@ export class PostDisplay extends HTMLElement {
   }
 
   /**
-   * Display posts helper function that display the children posts. 
-   * @param postEl root post element 
-   * @param childrenPosts array of children posts 
-   * @param childrenContainer children container element 
+   * Display posts helper function that display the children posts.
+   * @param postEl root post element
+   * @param childrenPosts array of children posts
+   * @param childrenContainer children container element
    */
   displayPostsHelper(
     postEl: PostComponent,
@@ -238,8 +237,8 @@ export class PostDisplay extends HTMLElement {
   }
 
   /**
-   * Move the post editor to the correct position. 
-   * @param postEl postComponent being replied to 
+   * Move the post editor to the correct position.
+   * @param postEl postComponent being replied to
    */
   moveReplyPostEditorTo(postEl: PostComponent) {
     postEl.parentNode?.insertBefore(this.postEditor, postEl.nextSibling);
@@ -249,7 +248,6 @@ export class PostDisplay extends HTMLElement {
     }
     this.postEditor.setParentPath(postPath, postEl);
   }
-
 }
 
 export default PostDisplay;

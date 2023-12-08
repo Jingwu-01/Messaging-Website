@@ -33,7 +33,7 @@ export class ChannelsAdapter {
   constructor(
     view: ViewInterface,
     model: ModelInterface,
-    stateManager: StateManagerInterface
+    stateManager: StateManagerInterface,
   ) {
     this.view = view;
     this.model = model;
@@ -74,7 +74,7 @@ export class ChannelsAdapter {
     slog.info("initChannels", ["Channel Selected", `${evt.detail.name}`]);
     this.getView().setStateLoadingUntil(
       ["posts", "channels", "workspaces"],
-      evt
+      evt,
     );
     try {
       await this.getStateManager().setOpenChannel(evt.detail.name);
@@ -145,7 +145,7 @@ export class ChannelsAdapter {
     // The user should never be able to trigger this.
     if (!channels) {
       throw new Error(
-        "Tried to add a channel without a workspace currently open"
+        "Tried to add a channel without a workspace currently open",
       );
     }
     // Close the open channel if it doesn't exist anymore.
@@ -206,7 +206,7 @@ export class ChannelsAdapter {
     // Handle channel refresh
     document.addEventListener(
       "refreshChannels",
-      this.refreshChannelsEvent.bind(this)
+      this.refreshChannelsEvent.bind(this),
     );
   }
 }

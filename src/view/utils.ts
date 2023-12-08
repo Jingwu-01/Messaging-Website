@@ -4,7 +4,7 @@
  * @returns a string that is escaped and can safely be displayed as text in the user interface
  */
 export default function escapeString(inputString: string): string {
-    const dummy = document.createElement("p");
-    dummy.innerText = inputString;
-    return dummy.innerHTML;
+  const dummy = document.createElement("p");
+  dummy.innerText = inputString;
+  return dummy.innerHTML;
 }

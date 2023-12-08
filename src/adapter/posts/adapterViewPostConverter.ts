@@ -41,13 +41,13 @@ function convertReactions(postResponse: PostResponse): ReactionData {
 function convertExtensions(postResponse: PostResponse): StarExtension {
   if (postResponse.doc.extensions === undefined) {
     return {
-      "p2group50": []
-    }
+      p2group50: [],
+    };
   } else {
     return {
-      "p2group50": [],
+      p2group50: [],
       ...postResponse.doc.extensions,
-    }
+    };
   }
 }
 
@@ -69,6 +69,6 @@ export function adapterViewPostConverter(adapterPost: AdapterPost): ViewPost {
     parent: adapterPost.getParentName(),
     name: adapterPost.getName(),
     postIdx: adapterPost.getPostIndex(),
-    starredIndex: adapterPost.getStarredIndex()
+    starredIndex: adapterPost.getStarredIndex(),
   };
 }

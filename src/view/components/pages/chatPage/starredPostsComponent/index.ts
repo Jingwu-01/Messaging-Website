@@ -31,7 +31,7 @@ export class StarredPosts extends HTMLElement {
 
     if (this.shadowRoot === null) {
       throw Error(
-        "could not find shadow DOM root for starredposts element in constructor"
+        "could not find shadow DOM root for starredposts element in constructor",
       );
     }
 
@@ -39,7 +39,7 @@ export class StarredPosts extends HTMLElement {
 
     let postsContainer = this.shadowRoot.querySelector("#posts-container");
     let starredPostsWrapper = this.shadowRoot.querySelector(
-      "#starredposts-wrapper"
+      "#starredposts-wrapper",
     );
     let postsDialog = this.shadowRoot.querySelector("#starred-posts-dialog");
     let closeButton = this.shadowRoot.querySelector("#close-starred-posts");
@@ -50,18 +50,18 @@ export class StarredPosts extends HTMLElement {
 
     if (!(starredPostsWrapper instanceof HTMLElement)) {
       throw new Error(
-        "Could not find an element with the id starredposts-wrapper"
+        "Could not find an element with the id starredposts-wrapper",
       );
     }
 
     if (!(postsDialog instanceof HTMLDialogElement)) {
       throw new Error(
-        "Could not find an element with the id starred-posts-dialog"
+        "Could not find an element with the id starred-posts-dialog",
       );
     }
     if (!(closeButton instanceof HTMLElement)) {
       throw new Error(
-        "Could not find an element with the id close-starred-posts"
+        "Could not find an element with the id close-starred-posts",
       );
     }
     this.postsContainer = postsContainer;
@@ -88,7 +88,7 @@ export class StarredPosts extends HTMLElement {
       slog.info(
         "StarredPosts displayPosts: insert or modify",
         ["postToUpsert.parent", postToUpsert.parent],
-        ["postToUpsert", postToUpsert]
+        ["postToUpsert", postToUpsert],
       );
       if (postToUpsert.starredIndex === undefined) {
         slog.error("StarredPosts displayPosts", [
@@ -96,7 +96,7 @@ export class StarredPosts extends HTMLElement {
           `${postToUpsert.starredIndex}`,
         ]);
         throw new Error(
-          "postToUpsert.starredIndex is undefined but should not be"
+          "postToUpsert.starredIndex is undefined but should not be",
         );
       }
       slog.info("StarredPosts displayPosts", [
@@ -104,7 +104,7 @@ export class StarredPosts extends HTMLElement {
         postToUpsert.starredIndex,
       ]);
       postChildren = this.postsContainer.querySelectorAll(
-        ":scope > post-component"
+        ":scope > post-component",
       );
       if (opString === "modify" || opString === "delete") {
         let potentialPostComp = postChildren[postToUpsert.starredIndex];
@@ -123,7 +123,7 @@ export class StarredPosts extends HTMLElement {
         ["postChildren", postChildren],
         ["postToUpsert.starredIndex", postToUpsert.starredIndex],
         ["postChildren.length", postChildren.length],
-        ["postComp", postComp]
+        ["postComp", postComp],
       );
       if (opString === "modify") {
         postComp.modifyPostContent(postToUpsert);
@@ -135,7 +135,7 @@ export class StarredPosts extends HTMLElement {
           slog.info(
             "StarredPosts: displayPosts: no children OR postToUpsert.starredIndex is at the end",
             ["postToUpsert.starredIndex", postToUpsert.starredIndex],
-            ["postChildren.length", postChildren.length]
+            ["postChildren.length", postChildren.length],
           );
           this.postsContainer.append(postComp);
           slog.info("StarredPosts: displayPosts, after appending to parentEl", [
@@ -153,7 +153,7 @@ export class StarredPosts extends HTMLElement {
     }
   }
 
-  /** 
+  /**
    * When the component is connected, add post listener in the view and event listener to the close button.
    */
   connectedCallback() {
@@ -166,7 +166,7 @@ export class StarredPosts extends HTMLElement {
   }
 
   /**
-   * When the component is disconnected, remove the post listener in the view. 
+   * When the component is disconnected, remove the post listener in the view.
    */
   disconnectedCallback() {
     slog.info("PostDisplay: disconnectedCallback was called");
@@ -175,9 +175,9 @@ export class StarredPosts extends HTMLElement {
   }
 
   /**
-   * Move the post editor to under the correct post when reply button is hit. 
-   * @param postEl a post component 
-   * @returns null 
+   * Move the post editor to under the correct post when reply button is hit.
+   * @param postEl a post component
+   * @returns null
    */
   moveReplyPostEditorTo(postEl: PostComponent) {
     // should never be called in theory
@@ -185,28 +185,28 @@ export class StarredPosts extends HTMLElement {
   }
 
   /**
-   * Close the starred posts dialog. 
+   * Close the starred posts dialog.
    */
   close() {
     this.postsDialog.close();
   }
 
   /**
-   * Open the starred posts dialog. 
+   * Open the starred posts dialog.
    */
   showModal() {
     this.postsDialog.showModal();
   }
 
   /**
-   * When display post display listener is added, clear the starred posts dialog. 
+   * When display post display listener is added, clear the starred posts dialog.
    */
   displayPostDisplay() {
     this.postsContainer.innerHTML = "";
   }
 
   /**
-   * When display post display listner is removed, clear the starred posts dialog. 
+   * When display post display listner is removed, clear the starred posts dialog.
    */
   removePostDisplay() {
     this.postsContainer.innerHTML = "";

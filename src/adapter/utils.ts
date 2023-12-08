@@ -2,7 +2,6 @@ import { ChannelInterface, WorkspaceInterface } from "../interfaces";
 import { slog } from "../slog";
 import { ViewChannel, ViewWorkspace } from "../view/datatypes";
 
-
 /**
  * Converts the map of ModelChannels to an array of ViewChannels
  */
@@ -27,13 +26,13 @@ export function modelToViewChannels(
  * @param workspaces The map of workspaces to convert.
  */
 export function modelToViewWorkspaces(
-    workspaces: Map<string, WorkspaceInterface>
-  ): ViewWorkspace[] {
-    let view_workspaces: ViewWorkspace[] = [];
-    workspaces.forEach((ws) => {
-      view_workspaces.push({
-        name: ws.getName(),
-      });
+  workspaces: Map<string, WorkspaceInterface>,
+): ViewWorkspace[] {
+  let view_workspaces: ViewWorkspace[] = [];
+  workspaces.forEach((ws) => {
+    view_workspaces.push({
+      name: ws.getName(),
     });
-    return view_workspaces;
+  });
+  return view_workspaces;
 }

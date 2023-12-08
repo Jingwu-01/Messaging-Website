@@ -1,10 +1,10 @@
 /**
  * PopoverComponent is used for elements that will pop over when some conditions are met. In the display of dates of posts, when a user
- * hovers over the date, the detailed time would pop over. 
+ * hovers over the date, the detailed time would pop over.
  */
 class PopoverComponent extends HTMLElement {
   /**
-   * Constructor for the Popover Component. 
+   * Constructor for the Popover Component.
    */
   constructor() {
     super();
@@ -20,24 +20,23 @@ class PopoverComponent extends HTMLElement {
   }
 
   /**
-   * Observe the attributes open and align if they change. 
+   * Observe the attributes open and align if they change.
    */
   static get observedAttributes(): Array<string> {
     return ["open", "align"];
   }
 
   /**
-   * Display the pop over box based on value of "open" attribute and set alignment of popover box based "align". 
-   * @param name the name of attribute that changes 
+   * Display the pop over box based on value of "open" attribute and set alignment of popover box based "align".
+   * @param name the name of attribute that changes
    * @param oldValue the old value of chanegd attribute
-   * @param newValue the new value of chanegd attribute 
+   * @param newValue the new value of chanegd attribute
    */
   attributeChangedCallback(
     name: string,
     oldValue: string,
     newValue: string,
   ): void {
-
     // Open / close popover based on value of "open" attribute
     if (name == "open") {
       let popover_box_el = this.shadowRoot?.querySelector("#popover-box");

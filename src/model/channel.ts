@@ -11,7 +11,7 @@ import { PostResponse } from "../../types/postResponse";
 import { ChannelResponse } from "../../types/channelResponse";
 
 /**
- * A data representation of a channel in the model. Allows us to control connection requests related to specific channels. 
+ * A data representation of a channel in the model. Allows us to control connection requests related to specific channels.
  */
 export class ModelChannel {
   // The path corresponding to this channel
@@ -84,7 +84,7 @@ export class ModelChannel {
   createPost(
     postContent: string,
     postParent: string,
-    channelPath: string
+    channelPath: string,
   ): Promise<CreateResponse> {
     // for now, this return type is indeed ignored. because i update from the subscription always.
     return getModel().typedModelFetch<CreateResponse>(`${channelPath}/posts/`, {

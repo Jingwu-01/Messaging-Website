@@ -2,7 +2,7 @@ import HoverComponent from ".";
 
 /**
  * Initialize the HTML template for hover component and register the hover
- * component custom element. 
+ * component custom element.
  */
 export default function hoverComponentInit() {
   document.body.insertAdjacentHTML(

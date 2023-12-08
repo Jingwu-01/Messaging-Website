@@ -65,7 +65,7 @@ export default function editDialogComponentInit() {
     </section>
   </dialog>
 </template>
-`
+`,
   );
 
   customElements.define("edit-dialog-component", EditDialogComponent);

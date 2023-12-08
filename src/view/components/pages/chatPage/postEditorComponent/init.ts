@@ -122,7 +122,7 @@ export default function postEditorInit() {
         </form>
     </section>
 </template>
-        `
+        `,
   );
 
   customElements.define("post-editor-component", PostEditor);

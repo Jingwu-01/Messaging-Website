@@ -1,11 +1,11 @@
 import StarButtonComponent from ".";
 
 /**
- * Initialize the html template for starButton and register the custom element. 
+ * Initialize the html template for starButton and register the custom element.
  */
 export default function starButtonInit() {
-    document.body.insertAdjacentHTML(
-        "beforeend",
+  document.body.insertAdjacentHTML(
+    "beforeend",
     `
     <template id="star-button-component-template">
     <style>
@@ -38,8 +38,8 @@ export default function starButtonInit() {
     </button>
   </template>
 
-`
-    );
+`,
+  );
 
-    customElements.define("star-button-component", StarButtonComponent);
+  customElements.define("star-button-component", StarButtonComponent);
 }

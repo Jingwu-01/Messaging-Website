@@ -53,7 +53,7 @@ export default function reactionComponentInit() {
     </section>
   </template>
   
-`
+`,
   );
 
   customElements.define("reaction-component", ReactionComponent);

@@ -1,7 +1,7 @@
 import UserMenuComponent from ".";
 
 /**
- * Initialize the userMenuComponent by inserting its html template and registering the custom element. 
+ * Initialize the userMenuComponent by inserting its html template and registering the custom element.
  */
 export default function init() {
   document.body.insertAdjacentHTML(
@@ -87,7 +87,7 @@ export default function init() {
       </section>
     </menu-component>
   </template>
-`
+`,
   );
 
   customElements.define("user-menu-component", UserMenuComponent);

@@ -11,7 +11,7 @@ import { getView } from "../../../../../view";
  */
 export class EditChannelsDialogComponent extends EditDialogComponent {
   /**
-   * When connected, show the edit channels text and add channel listener in the view. 
+   * When connected, show the edit channels text and add channel listener in the view.
    */
   connectedCallback(): void {
     super.connectedCallback();
@@ -24,13 +24,13 @@ export class EditChannelsDialogComponent extends EditDialogComponent {
   }
 
   /**
-   * Display the open channel. 
+   * Display the open channel.
    * @param channel ViewChannel | null
    */
   displayOpenChannel(channel: ViewChannel | null) {}
 
   /**
-   * Display the channels. 
+   * Display the channels.
    * @param update ViewChannelUpdate
    */
   displayChannels(update: ViewChannelUpdate) {
@@ -38,8 +38,8 @@ export class EditChannelsDialogComponent extends EditDialogComponent {
   }
 
   /**
-   * get the add channel event. 
-   * @param new_item_name string for new channel name 
+   * get the add channel event.
+   * @param new_item_name string for new channel name
    * @returns EventWithId
    */
   public getAddEvent(new_item_name: string): EventWithId {
@@ -53,8 +53,8 @@ export class EditChannelsDialogComponent extends EditDialogComponent {
   }
 
   /**
-   * get the remove channel event. 
-   * @param channel_name string for the channel 
+   * get the remove channel event.
+   * @param channel_name string for the channel
    * @returns EventWithId
    */
   public getRemoveEvent(channel_name: string): EventWithId {
