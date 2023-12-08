@@ -1,21 +1,28 @@
 import { slog } from "../../../../slog";
-import { ReactionUpdateEvent } from "../../../datatypes";
+import { ReactionUpdateEvent, StateName } from "../../../datatypes";
 import escapeString from "../../../utils";
 import { getView } from "../../../view";
 
-// Reactions can only one of the four defined reactions types.
+/** Reactions can only one of the four defined reactions types. */ 
 type reactions = "smile" | "frown" | "like" | "celebrate";
 
 /** ReactionComponent is reaction buttons for posts. When a user clicks on it, a
  * reaction will be added or removed.
  */
 class ReactionComponent extends HTMLElement {
+  /** Controller */
   private controller: AbortController | null = null;
+  /** Reaction icon element */
   private reactionIcon: HTMLElement;
+  /** Reaction button */
   private reactionButton: HTMLElement;
+  /** name of the reaction */
   private reactionName: reactions = "smile";
+  /** the number of reactions received of this type */
   private count: number = 0;
+  /** parent post path */
   private parentPath: string | undefined;
+  /** logged in username */
   private loggedInUser: string | undefined;
 
   /**
@@ -65,6 +72,8 @@ class ReactionComponent extends HTMLElement {
       this.update.bind(this),
       options
     );
+
+    getView().addLoadingListener(this);
   }
 
   /**
@@ -215,6 +224,18 @@ class ReactionComponent extends HTMLElement {
    */
   setLoggedInUser(username: string) {
     this.loggedInUser = username;
+  }
+
+  onLoading(state: StateName) {
+    if (state === "user") {
+      this.reactionButton.setAttribute("disabled", "");
+    }
+  }
+
+  onEndLoading(state: StateName) {
+    if (state === "user") {
+      this.reactionButton.removeAttribute("disabled");
+    }
   }
 }
 

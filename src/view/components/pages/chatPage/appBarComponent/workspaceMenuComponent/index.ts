@@ -16,8 +16,9 @@ class WorkspaceMenuComponent extends HTMLElement {
    */
   constructor() {
     super();
-
     this.attachShadow({ mode: "open" });
+
+    // Set up the template. 
     let template = document.querySelector<HTMLTemplateElement>(
       "#workspace-menu-component-template"
     );
@@ -26,12 +27,14 @@ class WorkspaceMenuComponent extends HTMLElement {
     }
     this.shadowRoot?.append(template.content.cloneNode(true));
 
+    // Set up menu. 
     let menu_query = this.shadowRoot?.querySelector("#menu");
     if (!(menu_query instanceof HTMLElement)) {
       throw Error("Could not find element #menu");
     }
     this.menu = menu_query;
 
+    // Set the refresh button. 
     let refresh_workspaces_button_query = this.shadowRoot?.querySelector(
       "#refresh-workspaces-button"
     );
@@ -68,14 +71,7 @@ class WorkspaceMenuComponent extends HTMLElement {
   }
 
   /**
-   * When disconnected, remove the workspace listener. 
-   */
-  disconnectedCallback(): void {
-    // TODO remove workspace listener.
-  }
-
-  /**
-   * Called by view whenever there is a change in the open workspace. 
+   * Called by view whenever there is a change in the open workspace.
    */
   displayOpenWorkspace(workspace: ViewWorkspace | null) {
     // update the displayed open workspace
@@ -107,7 +103,7 @@ class WorkspaceMenuComponent extends HTMLElement {
       } else {
         workspaces.forEach((workspace, i) => {
           new_inner_html += `
-          <loading-button-component disable-if-state-loading="workspaces user" id="workspace-select-${i}" class="workspace-select" style="background: none; border: none;" >
+          <loading-button-component disable-if-state-loading="workspaces channels posts user" id="workspace-select-${i}" class="workspace-select" style="background: none; border: none;" >
             <p slot="content">${workspace.name}</p>
           </loading-button-component>
           `;

@@ -64,6 +64,7 @@ interface WorkspaceListener {
 }
 
 /**
+ * 
  * Interface for channel listeners.
  * A component that is a ChannelListener will receive updates
  * when the Adapter changes what channels should be displayed.
@@ -275,8 +276,9 @@ export class View {
     });
   }
 
-  /**
-   * @param listener Will receive updates when the displayed User changes.
+  /** 
+   * Will receive updates when the displayed User changes.
+   * @param listener UserListener
    */
   addUserListener(listener: UserListener) {
     this.userListeners.push(listener);
@@ -295,7 +297,8 @@ export class View {
   }
 
   /**
-   * @param listener Will receive updates when the displayed workspaces change.
+   * Will receive updates when the displayed workspaces change.
+   * @param listener WorkspaceListener
    */
   addWorkspaceListener(listener: WorkspaceListener) {
     this.workspaceListeners.push(listener);
@@ -330,7 +333,8 @@ export class View {
   }
 
   /**
-   * @param listener Will receive updates when the displayed Channels are changed.
+   * Will receive updates when the displayed Channels are changed.
+   * @param listener ChannelListener
    */
   addChannelListener(listener: ChannelListener) {
     this.channelListeners.push(listener);
@@ -344,6 +348,7 @@ export class View {
 
   /**
    * Change which channels are displayed on-screen.
+   * @param update ViewChannelUpdate
    */
   displayChannels(update: ViewChannelUpdate) {
     this.channels = update.allChannels;
@@ -363,6 +368,10 @@ export class View {
     });
   }
 
+  /**
+   * add a post display listener 
+   * @param listener PostDisplayListener
+   */
   addPostDisplayListener(listener: PostDisplayListener) {
     this.postDisplayListeners.push(listener);
     slog.info(
@@ -372,6 +381,10 @@ export class View {
     );
   }
 
+  /**
+   * remove a post display listener
+   * @param listener PostDisplayListener
+   */
   removePostDisplayListener(listener: PostDisplayListener) {
     let index = this.postDisplayListeners.indexOf(listener);
     slog.info(
@@ -391,6 +404,9 @@ export class View {
     ]);
   }
 
+  /**
+   * Display post display.
+   */
   displayPostDisplay() {
     slog.info("displayPostDisplay: was called");
     this.postDisplayListeners.forEach((listener) => {
@@ -398,6 +414,9 @@ export class View {
     });
   }
 
+  /**
+   * remove post display.
+   */
   removePostDisplay() {
     this.postDisplayListeners.forEach((listener) => {
       listener.removePostDisplay();

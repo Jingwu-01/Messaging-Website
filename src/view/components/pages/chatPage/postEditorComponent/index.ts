@@ -3,15 +3,13 @@ import { StateName } from "../../../../datatypes";
 import { getView } from "../../../../view";
 import PostComponent from "../postComponent";
 
+/** A function that returns a string */
 type StringFunction = () => string;
 
 /**
  * PostEditor component is a post editor that allows users to add a post.
  */
 export class PostEditor extends HTMLElement {
-  // TODO: can definitely add abortcontroller for event handlers and
-  // 'deregistering' the event handlers here.
-
   /** Controller */
   private controller: AbortController | null = null;
 
@@ -33,8 +31,11 @@ export class PostEditor extends HTMLElement {
 
   /** top reply element */
   private topReplyEl: HTMLElement | undefined;
-
+  
+  /** sumbit icon */
   private submitPostIcon: HTMLElement;
+
+  /** sumbit post button */
   private submitPostButton: HTMLElement;
 
   /** parent post component of the post editor.  */
@@ -45,23 +46,21 @@ export class PostEditor extends HTMLElement {
    */
   constructor() {
     super();
-
     this.attachShadow({ mode: "open" });
 
+    // Set up the template and clone. 
     let template = document.querySelector("#post-editor-template");
-
     if (!(template instanceof HTMLTemplateElement)) {
       throw Error("post editor template was not found");
     }
-
     if (this.shadowRoot === null) {
       throw Error(
         "could not find shadow DOM root for post-editor element in constructor"
       );
     }
-
     this.shadowRoot.append(template.content.cloneNode(true));
 
+    // Set up the other elements and check if they actually exist. 
     let postOperations = this.shadowRoot.querySelector("#post-operations");
     let postInput = this.shadowRoot.querySelector("#post-input");
     let postForm = this.shadowRoot.querySelector("#post-form");
@@ -92,6 +91,7 @@ export class PostEditor extends HTMLElement {
       throw Error("Could not find an element with the post-submit id");
     }
 
+    // assignment to this 
     this.postOperations = postOperations;
     this.postInput = postInput;
     this.postForm = postForm;
@@ -109,6 +109,7 @@ export class PostEditor extends HTMLElement {
     const options = { signal: this.controller.signal };
 
     slog.info("postEditor added to the DOM");
+    // set up the post editor 
     let postOperationElements = this.postOperations.children;
     for (let childEl of postOperationElements) {
       let id = childEl.id;
@@ -118,6 +119,7 @@ export class PostEditor extends HTMLElement {
       let prefixFunc: StringFunction;
       let suffixFunc: StringFunction;
       switch (operationType) {
+        // Different operation types. 
         case "reaction": {
           innerTextFunc = () => {
             return splitId[0];
@@ -139,6 +141,7 @@ export class PostEditor extends HTMLElement {
         }
       }
       switch (splitId[0]) {
+        // Markdowns for different operations
         case "bold":
           prefixFunc = this.boldMarkdown;
           suffixFunc = this.boldMarkdown;
@@ -172,7 +175,8 @@ export class PostEditor extends HTMLElement {
       this.submitPost.bind(this),
       options
     );
-
+    
+    // click event listner for cancel button
     this.cancelReply.addEventListener(
       "click",
       this.replyToTopLevel.bind(this),
@@ -219,6 +223,8 @@ export class PostEditor extends HTMLElement {
   submitPost(event: SubmitEvent) {
     slog.info("submitPost: called");
     event.preventDefault();
+
+    // Make a create post event 
     const postData = this.postInput.value;
     if (this.parentPath === undefined) {
       throw Error("error: submitPost: this.parentPath is undefined");
@@ -231,13 +237,18 @@ export class PostEditor extends HTMLElement {
       "createPostEvent.detail",
       `${JSON.stringify(createPostEvent.detail)}`,
     ]);
+    // The submit buttons changes to loading 
     this.submitPostButton.setAttribute("disabled", "");
     this.submitPostIcon.setAttribute("icon", "svg-spinners:180-ring-with-bg");
     getView().waitForEvent(id, (evt, err) => {
       this.submitPostIcon.setAttribute("icon", "tabler:send");
       this.submitPostButton.removeAttribute("disabled");
     });
+
+    // Dispatch the create post event 
     document.dispatchEvent(createPostEvent);
+
+    // Clear the textarea
     this.postInput.value = "";
   }
 
@@ -302,9 +313,10 @@ export class PostEditor extends HTMLElement {
   }
 
   /**
-   * Set the
-   * @param topReplyEl HTMLElement for top reply element
+   * Set the topreply elemet to the given element. 
+   * @param topReplyEl HTMLElement for top reply element 
    */
+  
   setTopReplyEl(topReplyEl: HTMLElement) {
     this.topReplyEl = topReplyEl;
   }
@@ -342,12 +354,20 @@ export class PostEditor extends HTMLElement {
     this.postInput.value = text;
   }
 
+  /**
+   * When loading, disable the submit button 
+   * @param state StateName
+   */
   onLoading(state: StateName) {
     if (state === "channels" || state === "workspaces" || state === "user") {
       this.submitPostButton.setAttribute("disabled", "");
     }
   }
 
+  /**
+   * View calls this when the adapter marks any piece of state as done loading
+   * @param state StateName
+   */
   onEndLoading(state: StateName) {
     if (state === "channels" || state === "workspaces" || state === "user") {
       this.submitPostButton.removeAttribute("disabled");

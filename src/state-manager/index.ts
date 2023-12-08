@@ -15,10 +15,6 @@ class StateManager {
 
   private openChannel: ModelChannel | null = null;
 
-  private openWorkspaceName: string | null = null;
-
-  private openChannelName: string | null = null;
-
   private postsManager: PostsManager = new PostsManager();
 
   private loggedInUser: string | null = null;
@@ -52,7 +48,6 @@ class StateManager {
       return this.openWorkspace;
     }
     this.openWorkspace = await getModel().getWorkspace(workspaceName);
-    this.openWorkspaceName = workspaceName;
     // Un-select the open channel.
     await this.setOpenChannel(null);
     // Display the new open workspace.
@@ -62,10 +57,19 @@ class StateManager {
     return this.openWorkspace;
   }
 
+  /**
+   * Gets the application's currently open channel
+   * @returns The currently open channel, or null if no channel is open.
+   */
   getOpenChannel(): ModelChannel | null {
     return this.openChannel;
   }
 
+  /**
+   * Sets the open channel to channelName. Updates the view.
+   * @param channelName The channel to open
+   * @returns A promise that resolves to the new open channel
+   */
   async setOpenChannel(
     channelName: string | null
   ): Promise<ModelChannel | null> {
@@ -76,7 +80,6 @@ class StateManager {
     }
     if (channelName == null) {
       this.openChannel = null;
-      this.openChannelName = null;
       getView().displayOpenChannel(null);
       getView().removePostDisplay();
       return null;
@@ -85,7 +88,6 @@ class StateManager {
     if (ws != null) {
       this.openChannel = await ws.getChannel(channelName);
       this.openChannel.subscribeToPosts();
-      this.openChannelName = channelName;
       getView().displayOpenChannel({
         name: this.openChannel.getName(),
       });
@@ -96,26 +98,45 @@ class StateManager {
     }
   }
 
+  /**
+   * @returns The name of the currently open workspace, or null if there is none.
+   */
   getOpenWorkspaceName() {
-    return this.openWorkspaceName;
+    return this.openWorkspace?.getName();
   }
-
+  /**
+   * @returns The name of the currently open workspace, or null if there is none.
+   */
   getOpenChannelName() {
-    return this.openChannelName;
+    return this.openChannel?.getName();
   }
 
+  /**
+   * Serializes the PostResponse.
+   */
   serializePostResponse(response: PostResponse) {
     return this.postsManager.serializePostResponse(response);
   }
 
+  /**
+   * Resets the posts manager
+   */
   resetPostsManager() {
     this.postsManager = new PostsManager();
   }
 
+  /**
+   * Sets the logged-in user to username. Does not affect the model.
+   * @param username The username of the
+   */
   setLoggedInUser(username: string | null) {
     this.loggedInUser = username;
   }
 
+  /**
+   * Gets the logged-in user's username
+   * @returns The username of the logged-in user
+   */
   getLoggedInUser(): string | null {
     return this.loggedInUser;
   }
@@ -123,6 +144,10 @@ class StateManager {
 
 // state manager
 let stateManager = new StateManager();
+/**
+ * Returns the app's state manager singleton
+ * @returns The app's state manager singleton
+ */
 function getStateManager() {
   return stateManager;
 }

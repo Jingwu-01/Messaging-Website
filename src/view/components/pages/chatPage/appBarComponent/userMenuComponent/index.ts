@@ -9,7 +9,7 @@ import { getView } from "../../../../../view";
 class UserMenuComponent extends HTMLElement {
   /** Controller */
   private controller: AbortController | null = null;
-  /** the starred posts button  */
+  /** the starred posts button */
   private starredPostsButton: HTMLElement;
   /** logout button */
   private logoutButton: HTMLElement | null;
@@ -21,7 +21,7 @@ class UserMenuComponent extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
 
-    // Find the template and make a clone. 
+    // Set up the template.  
     const template = document.querySelector<HTMLTemplateElement>(
       "#user-menu-component-template"
     );
@@ -30,7 +30,7 @@ class UserMenuComponent extends HTMLElement {
     }
     this.shadowRoot?.append(template.content.cloneNode(true));
 
-    // Define starred posts button 
+    // Set up the starred posts button.
     const starredPostsButton = this.shadowRoot?.querySelector(
       "#my-starred-posts-button"
     );
@@ -40,7 +40,7 @@ class UserMenuComponent extends HTMLElement {
       this.starredPostsButton = starredPostsButton;
     }
 
-    // Define logout button 
+    // Set up the logout button.
     const logoutButton = this.shadowRoot?.querySelector("#logout-button");
     if (!(logoutButton instanceof HTMLElement)) {
       throw Error("cannot find #logout-button HTMLElement");

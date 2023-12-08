@@ -20,6 +20,10 @@ export class ModelChannel {
   // A controller for cancelling subscription connections.
   private controller = new AbortController();
 
+  /**
+   * Constructs a new ModelChannel based on the received ChannelResponse.
+   * @res A ChannelResponse received from an OwlDB Channel fetch.
+   */
   constructor(res: ChannelResponse) {
     this.path = res.path;
   }
@@ -74,6 +78,13 @@ export class ModelChannel {
     });
   }
 
+  /**
+   * Creates a new post
+   * @param postContent The content of the post
+   * @param postParent The post to reply to
+   * @param channelPath The path of the channel to put the post in.
+   * @returns The response from OwlDB
+   */
   createPost(
     postContent: string,
     postParent: string,
@@ -93,11 +104,17 @@ export class ModelChannel {
     });
   }
 
+  /**
+   * Unsubscribes this channel from model post updates.
+   */
   unsubscribe() {
     this.controller.abort();
     this.controller = new AbortController();
   }
 
+  /**
+   * @returns The name of this channel.
+   */
   getName() {
     return this.path.split("/")[3];
   }

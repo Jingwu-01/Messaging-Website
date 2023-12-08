@@ -6,14 +6,19 @@ import { getView } from "../../../view";
  * StarButtonComponent is used for starring posts. When a user clicks on it, they can star or de-star a post and view starred posts later in my starred posts section.
  */
 class StarButtonComponent extends HTMLElement {
+  /** controller */
   private controller: AbortController | null = null;
 
+  /** star button */
   private starButton: HTMLButtonElement;
 
+  /** star icon */
   private starIcon: HTMLElement;
 
+  /** parent post path */
   private parentPath: string | undefined;
 
+  /** logged in username */
   private loggedInUser: string | undefined;
 
   /**
@@ -37,13 +42,6 @@ class StarButtonComponent extends HTMLElement {
 
     this.shadowRoot.append(template.content.cloneNode(true));
 
-    const starIcon = this.shadowRoot.querySelector("#star-icon");
-    if (!(starIcon instanceof HTMLElement)) {
-      throw new Error(
-        "StarButtonComponent: could not find an element with the #star-icon id"
-      );
-    }
-
     const starButton = this.shadowRoot.querySelector("#star-button");
     if (!(starButton instanceof HTMLButtonElement)) {
       throw new Error(
@@ -51,8 +49,16 @@ class StarButtonComponent extends HTMLElement {
       );
     }
 
-    this.starIcon = starIcon;
     this.starButton = starButton;
+
+    const starIcon = this.shadowRoot.querySelector("#star-icon");
+    if (!(starIcon instanceof HTMLElement)) {
+      throw new Error(
+        "StarButtonComponent: could not find an element with the #star-icon id"
+      );
+    }
+
+    this.starIcon = starIcon;
 
     getView().addLoadingListener(this);
   }
@@ -173,7 +179,7 @@ class StarButtonComponent extends HTMLElement {
    * @param state The piece of the state that is loading.
    */
   onLoading(state: StateName) {
-    if (state == "channels" || state == "user" || state == "workspaces") {
+    if (state === "channels" || state === "user" || state === "workspaces") {
       this.starButton.setAttribute("disabled", "");
     }
   }
@@ -183,7 +189,7 @@ class StarButtonComponent extends HTMLElement {
    * @param state The piece of the state that is finished loading.
    */
   onEndLoading(state: StateName) {
-    if (state == "channels" || state == "user" || state == "workspaces") {
+    if (state === "channels" || state === "user" || state === "workspaces") {
       this.starButton.removeAttribute("disabled");
     }
   }

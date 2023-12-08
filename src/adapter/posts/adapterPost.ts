@@ -3,10 +3,8 @@
  */
 
 import { PostResponse } from "../../../types/postResponse";
-import { validateExtensionResponse } from "../../model/utils";
 import { slog } from "../../slog";
 import { insertPostSorted } from "./handleSortingPosts";
-import { ExtensionResponse } from "../../../types/extensionResponse";
 import { validateExtension, validateParentPath, validatePostPath } from "./dataValidation";
 
 /**

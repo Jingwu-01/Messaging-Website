@@ -10,10 +10,8 @@ import { PostEditor } from "../postEditorComponent";
 export class PostDisplay extends HTMLElement {
   /** post container element  */
   private postsContainer: HTMLElement;
-
   /** post editor class */
   private postEditor: PostEditor;
-
   /** A map of post ton its children posts */
   private postToHTMLChildren: Map<string, HTMLElement> = new Map<
     string,
@@ -25,9 +23,9 @@ export class PostDisplay extends HTMLElement {
    */
   constructor() {
     super();
-
     this.attachShadow({ mode: "open" });
 
+    // Set up the template and clone. 
     let template = document.querySelector("#postdisplay-template");
     if (!(template instanceof HTMLTemplateElement)) {
       throw Error("post display template was not found");
@@ -37,9 +35,9 @@ export class PostDisplay extends HTMLElement {
         "could not find shadow DOM root for postdisplay element in constructor",
       );
     }
-
     this.shadowRoot.append(template.content.cloneNode(true));
 
+    // Set up the other html elements
     let postsContainer = this.shadowRoot.querySelector("#posts-container");
     let postDisplayWrapper = this.shadowRoot.querySelector(
       "#postdisplay-wrapper",
@@ -80,8 +78,6 @@ export class PostDisplay extends HTMLElement {
     slog.info("PostDisplay: disconnectedCallback was called");
     getView().removePostListener(this);
   }
-
-  // TODO: add another helper for setting the channel name
 
   /**
    * Display the posts based on the view update. 

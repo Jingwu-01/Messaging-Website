@@ -71,16 +71,5 @@ export default function postComponentInit() {
 `,
   );
 
-  // a post element shuld look like
-  //     <section>
-  //     <header id="post-header">
-  //      {username}
-  //      <time>{post-time}</time>
-  //     </header>
-  //     <p id="post-body">
-  //         {post-message}
-  //     </p>
-  // </section>
-
   customElements.define("post-component", PostComponent);
 }
