@@ -11,7 +11,7 @@ beforeAll(async () => {
   process.env.DATABASE_PATH = "/v1/p2group50";
   process.env.AUTH_PATH = "auth";
   (global as any).fetch = fetchFunc;
-  // await model.login("test_user");
+  await model.login("test_user");
 });
 
 test("Duplicated login", async () => {

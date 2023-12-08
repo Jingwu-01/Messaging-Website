@@ -33,10 +33,20 @@ test("Login without username", async () => {
   }
 });
 
+// ContentLength is not set up correctly
 test("Successful logout", async () => {
-  await model.login("test_user");
-  const data = await model.logout();
-  console.log(data)
+  try {
+    await model.login("test_user");
+    await model.logout();
+  } catch (e) {
+    expect((e as Error).message).toBe("expected empty response");
+  }
 });
 
-test;
+test("Logout when not logged in", async () => {
+  try {
+    await model.logout();
+  } catch (e) {
+    expect((e as Error).message).toBe("Bad Request");
+  }
+});

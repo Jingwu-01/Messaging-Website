@@ -3,13 +3,13 @@ import { slog } from "../src/slog";
 
 function getDocumentResult(docName: string, doc: string, databasePath: string, username: string, createdAt: number, lastModifiedAt: number, prefixPath: string): string {
     return `{
-        "path": ${databasePath}${prefixPath}/${docName},
+        "path": "${databasePath}${prefixPath}/${docName}",
         "doc": ${doc},
         "meta": {
-            "createdAt": ${createdAt.toString()},
-            "createdBy": ${username},
-            "lastModifiedAt": 1701827861753,
-            "lastModifiedBy": ${lastModifiedAt.toString()}
+            "createdAt": 5,
+            "createdBy": "${username}",
+            "lastModifiedAt": 5,
+            "lastModifiedBy": “${username}",
         }
     }`
 }
@@ -287,6 +287,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
             switch (method) {
                 case "GET":
                     body = `${documentBodies.get("existingworkspace_onechannel")}`;
+                    slog.info("called mock fetch existingworkspace_onechannel", ["existingworkspace_onechannel body", documentBodies.get("existingworkspace_onechannel")]);
                     break;
                 case "PUT":
                     console.log("should never be overwriting an existing channel. this is an error.");
