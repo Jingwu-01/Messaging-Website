@@ -25,9 +25,18 @@ test("Get empty workspace", async ()=> {
 })
 
 test("Get workspace with one channel", async() => {
-    const data = await model.getWorkspace("workspace_onechannel");
+    const receivedData = await model.getWorkspace("workspace_onechannel");
     const expectedPath = "v1/p2group50/workspace_onechannel"
-    expect(data.getName()).toBe(expectedPath);
+    expect(receivedData.getName()).toBe(expectedPath);
 })
 
-// test("Get exisitng workspaces")
+test("Get workspaces", async() => {
+  const receivedData = await model.getAllWorkspaces()
+  receivedData
+  expect(receivedData).toBe(expectedData);
+})
+
+test("Add new workspace", async() => {
+  const data = await model.addWorkspace("new_workspace")
+  console.log(data)
+})
