@@ -64,6 +64,7 @@ interface WorkspaceListener {
 }
 
 /**
+ * 
  * Interface for channel listeners.
  * A component that is a ChannelListener will receive updates
  * when the Adapter changes what channels should be displayed.

@@ -3,6 +3,7 @@ import { StateName } from "../../../../datatypes";
 import { getView } from "../../../../view";
 import PostComponent from "../postComponent";
 
+/** A function that returns a string */
 type StringFunction = () => string;
 
 /**
