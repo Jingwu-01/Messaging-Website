@@ -9,13 +9,21 @@ type reactions = "smile" | "frown" | "like" | "celebrate";
  * reaction will be added or removed.
  */ 
 class ReactionComponent extends HTMLElement {
+  /** Controller */
   private controller: AbortController | null = null;
+  /** Reaction icon element */
   private reactionIcon: HTMLElement;
+  /** Reaction button */
   private reactionButton: HTMLElement;
+  /** Reaction buttton container */
   private reactionButtonContent: HTMLElement;
+  /** name of the reaction */
   private reactionName: reactions = "smile";
+  /** the number of reactions received of this type */
   private count: number = 0;
+  /** parent post path */
   private parentPath: string | undefined;
+  /** logged in username */
   private loggedInUser: string | undefined;
 
   /**

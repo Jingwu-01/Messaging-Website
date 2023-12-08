@@ -6,12 +6,16 @@ import { getView } from "../../../view";
  * StarButtonComponent is used for starring posts. When a user clicks on it, they can star or de-star a post and view starred posts later in my starred posts section.
  */
 class StarButtonComponent extends HTMLElement {
+  /** controller */
   private controller: AbortController | null = null;
 
+  /** star button */
   private starButton: HTMLButtonElement;
 
+  /** parent post path */
   private parentPath: string | undefined;
 
+  /** logged in username */
   private loggedInUser: string | undefined;
 
   /**
@@ -35,13 +39,6 @@ class StarButtonComponent extends HTMLElement {
 
     this.shadowRoot.append(template.content.cloneNode(true));
 
-    const starIcon = this.shadowRoot.querySelector("#star-icon");
-    if (!(starIcon instanceof HTMLElement)) {
-      throw new Error(
-        "StarButtonComponent: could not find an element with the #star-icon id"
-      );
-    }
-
     const starButton = this.shadowRoot.querySelector("#star-button");
     if (!(starButton instanceof HTMLButtonElement)) {
       throw new Error(
@@ -49,7 +46,6 @@ class StarButtonComponent extends HTMLElement {
       );
     }
 
-    this.starIcon = starIcon;
     this.starButton = starButton;
   }
 
