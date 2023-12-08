@@ -8,6 +8,7 @@ import {
   StateName,
 } from "../src/view/datatypes";
 import { slog } from "../src/slog";
+import { jest, beforeAll, expect, test } from "@jest/globals";
 let view: View;
 
 const queriesToElements: Map<string, HTMLElement> = new Map<

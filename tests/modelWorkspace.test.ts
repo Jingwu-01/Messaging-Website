@@ -42,18 +42,16 @@ test("Get workspaces", async () => {
 
 test("Add new workspace", async () => {
   try {
-   await model.addWorkspace("new_workspace");
+    await model.addWorkspace("new_workspace");
   } catch (e) {
     expect((e as Error).message).toBe("Not Found");
   }
 });
 
-test("Remove workspace", async() => {
+test("Remove workspace", async () => {
   try {
-    await model.removeWorkspace("missing_workspace"); 
+    await model.removeWorkspace("missing_workspace");
   } catch (e) {
-    expect((e as Error).message).toBe("Not Found") 
+    expect((e as Error).message).toBe("Not Found");
   }
-})
-
-
+});

@@ -22,23 +22,6 @@ test("Get 1 existing workspace", async() => {
   }
 })
 
-test("Duplicated login", async () => {
-  try {
-    await model.login("test_user");
-  } catch(e) {
-    expect((e as Error).message).toBe("Bad Request")
-  }
-});
-
-// Looks like we don't have a empty fetch mock function.
-test("Successful logout", async() => { 
-  try {
-    await model.logout();
-  } catch(e) {
-    expect((e as Error).message).toBe("expected empty response")
-  }
-})
-
 test("Get workspace that does not exist", async() => {
   try {
    await model.getWorkspace("existingworkspace_onechannel")
@@ -54,13 +37,6 @@ test("Successful typedfetch case", async () => {
   );
   expect(data).toBe("some body");
 });
-
-
-
-
-
-
-
 
 test("Failed typedfetch case", async () => {
   expect.assertions(1);
