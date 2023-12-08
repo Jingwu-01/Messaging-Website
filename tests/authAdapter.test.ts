@@ -46,6 +46,60 @@ test("authAdapter login()", async () => {
     expect(failEventSpy).toHaveBeenCalledTimes(0);
 });
 
-test("authAdapterLogout", () => {
-    
-})
+test("authAdapterLogout", async () => {
+    const authAdapter = getAuthAdapter();
+    const loadingSpy = jest.spyOn(authAdapter.getView(), "setStateLoadingUntil");
+    const modelSpy = jest.spyOn(authAdapter.getModel(), "logout");
+    const displayUserSpy = jest.spyOn(authAdapter.getView(), "displayUser");
+    const setLoggedInUserSpy = jest.spyOn(authAdapter.getStateManager(), "setLoggedInUser");
+    const setOpenWorkspaceSpy = jest.spyOn(authAdapter.getStateManager(), "setOpenWorkspace");
+    const completeEventSpy = jest.spyOn(authAdapter.getView(), "completeEvent");
+    const failEventSpy = jest.spyOn(authAdapter.getView(), "failEvent");
+
+    await authAdapter.logout(new CustomEvent("logoutEvent", {
+        detail: {id: "1"}
+    }));
+
+    expect(loadingSpy).toHaveBeenCalledTimes(1);
+    expect(modelSpy).toHaveBeenCalledTimes(1);
+    expect(displayUserSpy).toHaveBeenCalledTimes(1);
+    expect(setLoggedInUserSpy).toHaveBeenCalledTimes(1);
+    expect(setOpenWorkspaceSpy).toHaveBeenCalledTimes(1);
+    expect(completeEventSpy).toHaveBeenCalledTimes(1);
+    expect(failEventSpy).toHaveBeenCalledTimes(0);
+});
+
+test("Refresh workspaces", async () => {
+    const authAdapter = getAuthAdapter();
+    const getallWorkspacesSpy = jest.spyOn(authAdapter.getModel(), "getAllWorkspaces");
+    const getOpenWorkspaceSpy = jest.spyOn(authAdapter.getStateManager(), "getOpenWorkspace");
+    const setOpenWorkspaceSpy = jest.spyOn(authAdapter.getStateManager(), "setOpenWorkspace");
+    const displayChannelsSpy = jest.spyOn(authAdapter.getView(), "displayChannels");
+    const displayWorkspacesSpy = jest.spyOn(authAdapter.getView(), "displayWorkspaces");
+
+    await authAdapter.refreshWorkspaces(new Event("arbitrary event"));
+
+    expect(getallWorkspacesSpy).toHaveBeenCalledTimes(1);
+    expect(getOpenWorkspaceSpy).toHaveBeenCalledTimes(1);
+    expect(setOpenWorkspaceSpy).toHaveBeenCalledTimes(1);
+    expect(displayChannelsSpy).toHaveBeenCalledTimes(1);
+    expect(displayWorkspacesSpy).toHaveBeenCalledTimes(1);
+});
+
+test("initAuth", () => {
+    const authAdapter = getAuthAdapter();
+    const loginSpy = jest.spyOn(authAdapter, "login");
+    const logoutSpy = jest.spyOn(authAdapter, "logout");
+    authAdapter.initAuth();
+
+    document.dispatchEvent(new CustomEvent("loginEvent", {
+        detail: {id: "1", username: "test_user"}
+    }));
+
+    document.dispatchEvent(new CustomEvent("logoutEvent", {
+        detail: {id: "1"}
+    }));
+
+    expect(loginSpy).toHaveBeenCalledTimes(1);
+    expect(logoutSpy).toHaveBeenCalledTimes(1);
+});

@@ -74,9 +74,9 @@ export class MockModel {
         return Promise.resolve();
     }
     getAllWorkspaces() {
-        let mockWorkspace = new MockWorkspace();
+        // let mockWorkspace = new MockWorkspace();
         let returnedMap = new Map<string, WorkspaceInterface>();
-        returnedMap.set("workspacename", mockWorkspace);
+        // returnedMap.set("workspacename", mockWorkspace);
         return Promise.resolve(returnedMap);
     }
     getWorkspace(id: string): Promise<WorkspaceInterface> {
