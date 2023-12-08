@@ -37,7 +37,7 @@ export class OwlDBModel {
   private token: string | null;
 
   /**
-   * Constructor for a OwlDBmodel 
+   * Constructor for a OwlDBmodel
    */
   constructor() {
     // Initialize the username and token as empty strings
@@ -186,7 +186,7 @@ export class OwlDBModel {
         `${validateGetWorkspacesResponse.errors}`,
       ]);
       throw new Error(
-        "invalid getting all workspaces response received from owldb"
+        "invalid getting all workspaces response received from owldb",
       );
     }
     db_workspaces.forEach((workspace_response) => {
@@ -247,7 +247,7 @@ export class OwlDBModel {
         headers: {
           accept: "application/json",
         },
-      }
+      },
     );
     const valid = validateChannelResponse(response);
     if (!valid) {
@@ -304,13 +304,13 @@ export class OwlDBModel {
    * @returns a map of channel names to ModelChannels
    */
   async getAllChannels(
-    workspace_path: string
+    workspace_path: string,
   ): Promise<Map<string, ModelChannel>> {
     // Update channels, if we aren't subscribed
     let channels = new Map<string, ModelChannel>();
     slog.info("getAllChannels", ["workspace_path", `${workspace_path}`]);
     let db_channels = await getModel().typedModelFetch<GetChannelsResponse>(
-      `${workspace_path}/channels/`
+      `${workspace_path}/channels/`,
     );
     const valid = validateGetChannelsResponse(db_channels);
     if (!valid) {
@@ -335,7 +335,7 @@ export class OwlDBModel {
    * @returns a Promise that resolves to the patch response received from the database.
    */
   async updateReaction(
-    reactionUpdate: ModelReactionUpdate
+    reactionUpdate: ModelReactionUpdate,
   ): Promise<PatchDocumentResponse> {
     let patches = getPatchBody(reactionUpdate);
     const options = {
@@ -350,7 +350,7 @@ export class OwlDBModel {
     return getModel()
       .typedModelFetch<PatchDocumentResponse>(
         `${reactionUpdate.postPath}`,
-        options
+        options,
       )
       .then((response) => {
         slog.info("updateReaction", ["response", response]);

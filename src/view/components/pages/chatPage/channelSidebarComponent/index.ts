@@ -32,43 +32,43 @@ export class ChannelSidebar extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
 
-    // Set up template. 
+    // Set up template.
     let template = document.querySelector(
-      "#channel-sidebar-component-template"
+      "#channel-sidebar-component-template",
     );
     if (!(template instanceof HTMLTemplateElement)) {
       throw Error(
-        "element with id #channel-sidebar-component-template was not found"
+        "element with id #channel-sidebar-component-template was not found",
       );
     }
     if (this.shadowRoot === null) {
       throw Error(
-        "could not find shadow DOM root for channeldisplay element in constructor"
+        "could not find shadow DOM root for channeldisplay element in constructor",
       );
     }
     this.shadowRoot.append(template.content.cloneNode(true));
 
-    // Set up channel list. 
+    // Set up channel list.
     let channelList = this.shadowRoot.querySelector("#channel-list");
     if (!(channelList instanceof HTMLElement)) {
       throw Error("Could not find an element with the channel-container id");
     }
     this.channelList = channelList;
 
-    // Set up button wrapper. 
+    // Set up button wrapper.
     let button_wrapper_query = this.shadowRoot.querySelector("#button-wrapper");
     if (!(button_wrapper_query instanceof HTMLElement)) {
       throw Error("Could not find an element with the button-wrapper id");
     }
     this.buttonWrapper = button_wrapper_query;
 
-    // Set up refresh channels button. 
+    // Set up refresh channels button.
     let refresh_channels_button_query = this.shadowRoot.querySelector(
-      "#refresh-channels-button"
+      "#refresh-channels-button",
     );
     if (!(refresh_channels_button_query instanceof HTMLElement)) {
       throw Error(
-        "Could not find an element with the refresh-channels-button id"
+        "Could not find an element with the refresh-channels-button id",
       );
     }
     this.refreshChannelsButton = refresh_channels_button_query;
@@ -88,7 +88,7 @@ export class ChannelSidebar extends HTMLElement {
           detail: {
             id: event_id,
           },
-        })
+        }),
       );
     });
     getView().addChannelListener(this);
@@ -118,15 +118,15 @@ export class ChannelSidebar extends HTMLElement {
     let channelIdx = this.channelNameToIdx.get(channel.name);
     if (channelIdx === undefined) {
       throw Error(
-        "displayOpenChannel: trying to display a channel that doesn't exist on the view"
+        "displayOpenChannel: trying to display a channel that doesn't exist on the view",
       );
     }
     let selectedChannelEl = this.shadowRoot?.querySelector(
-      "#channel-select-" + channelIdx
+      "#channel-select-" + channelIdx,
     );
     if (!(selectedChannelEl instanceof HTMLElement)) {
       throw Error(
-        `displayOpenChannel: selected element with ID #channel-select-${channel.name} is not an HTML element`
+        `displayOpenChannel: selected element with ID #channel-select-${channel.name} is not an HTML element`,
       );
     }
     selectedChannelEl.classList.add("selected-channel");
@@ -140,7 +140,7 @@ export class ChannelSidebar extends HTMLElement {
     const channels = update.allChannels;
     slog.info("displayChannels", ["channels", `${JSON.stringify(channels)}`]);
     this.channelList.innerHTML = "";
-    // Add each channel in the workspace as a button and add click event listeners. 
+    // Add each channel in the workspace as a button and add click event listeners.
     channels.forEach((channel, idx) => {
       let channelListEl = document.createElement("button");
       channelListEl.id = "channel-select-" + idx;
@@ -155,7 +155,7 @@ export class ChannelSidebar extends HTMLElement {
         document.dispatchEvent(
           new CustomEvent("channelSelected", {
             detail: { name: channel.name },
-          })
+          }),
         );
       });
     });

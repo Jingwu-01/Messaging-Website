@@ -11,7 +11,7 @@ import { getView } from "../../../../../view";
  */
 export class EditWorkspacesDialogComponent extends EditDialogComponent {
   /**
-   * When connected, show edit workspace text and add workspace listner in the view. 
+   * When connected, show edit workspace text and add workspace listner in the view.
    */
   connectedCallback(): void {
     super.connectedCallback();
@@ -24,13 +24,13 @@ export class EditWorkspacesDialogComponent extends EditDialogComponent {
   }
 
   /**
-   * Display the open workspace. 
+   * Display the open workspace.
    * @param workspace ViewWorkspace
    */
   displayOpenWorkspace(workspace: ViewWorkspace) {}
 
   /**
-   * Display the workspaces. 
+   * Display the workspaces.
    * @param update ViewWorkspaceUpdate
    */
   displayWorkspaces(update: ViewWorkspaceUpdate) {
@@ -38,7 +38,7 @@ export class EditWorkspacesDialogComponent extends EditDialogComponent {
   }
 
   /**
-   * get the add workspace event  
+   * get the add workspace event
    * @param new_item_name string for the new worksapce
    * @returns EventWithId
    */
@@ -53,7 +53,7 @@ export class EditWorkspacesDialogComponent extends EditDialogComponent {
   }
 
   /**
-   * get the remove workspace event. 
+   * get the remove workspace event.
    * @param workspace_name string for the removed worksapce
    * @returns EventWithId
    */

@@ -40,7 +40,11 @@ export function insertPostSorted(
   let idx = findSortedIdx(postList, newPost);
   if (exists) {
     if (postList[idx].getName() !== newPost.getName()) {
-      slog.error("insertPostSorted: could not find existing post with the same name", ["postList[idx]", postList[idx]], ["newPost", newPost]);
+      slog.error(
+        "insertPostSorted: could not find existing post with the same name",
+        ["postList[idx]", postList[idx]],
+        ["newPost", newPost],
+      );
       throw new Error(
         "couldn't find a post with the same name as the post already exists",
       );
@@ -61,12 +65,19 @@ export function insertPostSorted(
  * @returns a [number, StarOps] pair where the first element represents the index that this post
  * was removed from, and the second element represents the operation to perform on the view post.
  */
-export function removePostSorted(postList: Array<AdapterPost>, curPost: AdapterPost): [number, StarOps] {
+export function removePostSorted(
+  postList: Array<AdapterPost>,
+  curPost: AdapterPost,
+): [number, StarOps] {
   let idx = findSortedIdx(postList, curPost);
   if (postList.length === 0 || idx === postList.length) {
     return [-2, "nop"];
   } else if (postList[idx].getName() === curPost.getName()) {
-    slog.info("removePostSorted: could not find existing post with the same name", ["postList[idx]", postList[idx]], ["curPost", curPost]);
+    slog.info(
+      "removePostSorted: could not find existing post with the same name",
+      ["postList[idx]", postList[idx]],
+      ["curPost", curPost],
+    );
     postList.splice(idx, 1);
     return [idx, "delete"];
   } else {
@@ -82,7 +93,10 @@ export function removePostSorted(postList: Array<AdapterPost>, curPost: AdapterP
  * @returns a [number, StarOps] pair, where the first element represents the index that the post was upserted,
  * and the second element represents the operation to perform on the upsertedpost
  */
-export function insertStarredPostSorted(postList: Array<AdapterPost>, curPost: AdapterPost): [number, StarOps] {
+export function insertStarredPostSorted(
+  postList: Array<AdapterPost>,
+  curPost: AdapterPost,
+): [number, StarOps] {
   let idx = findSortedIdx(postList, curPost);
   let starOp: StarOps;
   if (idx === postList.length) {

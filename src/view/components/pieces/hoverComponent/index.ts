@@ -1,5 +1,5 @@
 /**
- * HoverComponent is a component that will do something when a user hovers over it. It is used to show the time of posts: when a user hovers over it, the detailed time will pop over. 
+ * HoverComponent is a component that will do something when a user hovers over it. It is used to show the time of posts: when a user hovers over it, the detailed time will pop over.
  */
 class HoverComponent extends HTMLElement {
   /**
@@ -60,7 +60,7 @@ class HoverComponent extends HTMLElement {
    * When the align attribute changes, display the pop over element.
    * @param name the name of attribute that changed
    * @param oldValue the old value of changed attribute
-   * @param newValue the new value of chanegd attribute 
+   * @param newValue the new value of chanegd attribute
    */
   attributeChangedCallback(
     name: string,

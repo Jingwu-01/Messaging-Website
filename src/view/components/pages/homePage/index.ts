@@ -3,7 +3,7 @@ import { ViewUser } from "../../../datatypes";
 import { getView } from "../../../view";
 
 /**
- * HomePage is a dialog that propts the user to log in. 
+ * HomePage is a dialog that propts the user to log in.
  */
 class HomePage extends HTMLElement {
   /** controller */
@@ -16,13 +16,13 @@ class HomePage extends HTMLElement {
   private submitButton: HTMLElement;
 
   /**
-   * Constructor for the HomePage component. 
+   * Constructor for the HomePage component.
    */
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
 
-    // Set up the template and clone it. 
+    // Set up the template and clone it.
     if (this.shadowRoot) {
       let template = document?.querySelector("#home-page-template");
       if (!(template instanceof HTMLTemplateElement)) {
@@ -32,7 +32,7 @@ class HomePage extends HTMLElement {
       }
     }
 
-    // Set up the login dialog 
+    // Set up the login dialog
     let dialog = this.shadowRoot?.querySelector("#login-dialog");
     if (!(dialog instanceof HTMLDialogElement)) {
       throw Error("#login dialog is not a HTMLDialog element");
@@ -62,15 +62,15 @@ class HomePage extends HTMLElement {
    * When connected, add userlistner. Also, add event listeners for sumbit and keyboard events.
    */
   connectedCallback(): void {
-    // Add user listener. 
+    // Add user listener.
     getView().addUserListener(this);
 
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
-    // Add submit event listener for form. 
+    // Add submit event listener for form.
     this.form.addEventListener("submit", this.handleSubmit.bind(this), options);
 
-    // Add keyboard event listener for the dialog. 
+    // Add keyboard event listener for the dialog.
     this.dialog?.addEventListener("keydown", this.keyDown.bind(this));
   }
 
@@ -141,7 +141,7 @@ class HomePage extends HTMLElement {
   }
 
   /**
-   * Based on the cuurent user, display the Login Dialog again or close the dialog. 
+   * Based on the cuurent user, display the Login Dialog again or close the dialog.
    */
   displayUser(user: ViewUser | null) {
     if (user == null) {

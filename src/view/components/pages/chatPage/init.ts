@@ -1,7 +1,7 @@
 import ChatPage from ".";
 
 /**
- * Initialize the ChatPage component by inserting its html template and registering its custom component. 
+ * Initialize the ChatPage component by inserting its html template and registering its custom component.
  */
 export default function chatPageInit() {
   document.body.insertAdjacentHTML(

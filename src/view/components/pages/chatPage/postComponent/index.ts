@@ -121,7 +121,7 @@ export class PostComponent extends HTMLElement {
     this.replyButton.addEventListener(
       "click",
       this.addReplyPostEditor.bind(this),
-      options
+      options,
     );
   }
 
@@ -198,7 +198,7 @@ export class PostComponent extends HTMLElement {
     if (currentUser === null) {
       // this is the case where we're logged out but dealing with this event.
       slog.info(
-        "addPostContent: trying to add a post when a user is logged out, dead request"
+        "addPostContent: trying to add a post when a user is logged out, dead request",
       );
       return;
     }
@@ -209,7 +209,7 @@ export class PostComponent extends HTMLElement {
       slog.info(
         "addPostContent: reaction loop",
         ["reactionName", reactionName],
-        ["reactionCount", reactionCount]
+        ["reactionCount", reactionCount],
       );
       reactionButton.setAttribute("reaction-count", reactionCount.toString());
       if (viewPost.reactions[reactionName].includes(currentUsername)) {
@@ -266,7 +266,7 @@ export class PostComponent extends HTMLElement {
 
   /**
    * Convert the input string to their corresponding HTML elements based on the markdown patterns and append them to the input HTML container element.
-   * @param text string for conversion 
+   * @param text string for conversion
    * @param container HTML that accepts the converted text
    */
   appendFormattedText(text: string, container: HTMLElement): void {
@@ -286,11 +286,11 @@ export class PostComponent extends HTMLElement {
       .replace(/:frown:/g, `<iconify-icon icon="lucide:frown"></iconify-icon>`)
       .replace(
         /:like:/g,
-        `<iconify-icon icon="mdi:like-outline"></iconify-icon>`
+        `<iconify-icon icon="mdi:like-outline"></iconify-icon>`,
       )
       .replace(
         /:celebrate:/g,
-        `<iconify-icon icon="mingcute:celebrate-line"></iconify-icon>`
+        `<iconify-icon icon="mingcute:celebrate-line"></iconify-icon>`,
       )
       .replace(/\n/g, "<br>");
 
@@ -324,7 +324,7 @@ export class PostComponent extends HTMLElement {
     if (currentUser === null) {
       // this is the case where we're logged out but dealing with this event.
       slog.info(
-        "addPostContent: trying to add a post when a user is logged out, dead request"
+        "addPostContent: trying to add a post when a user is logged out, dead request",
       );
       return;
     }
@@ -337,7 +337,7 @@ export class PostComponent extends HTMLElement {
         slog.info(
           "addPostContent: reaction loop",
           ["reactionName", reactionName],
-          ["reactionCount", reactionCount]
+          ["reactionCount", reactionCount],
         );
         reactionButton.setAttribute("reaction-count", reactionCount.toString());
         if (reactionArray.includes(currentUsername)) {
@@ -360,7 +360,7 @@ export class PostComponent extends HTMLElement {
     if (currentUser === null) {
       // this is the case where we're logged out but dealing with this event.
       slog.info(
-        "addPostContent: trying to add a post when a user is logged out, dead request"
+        "addPostContent: trying to add a post when a user is logged out, dead request",
       );
       return;
     }

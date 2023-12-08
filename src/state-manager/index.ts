@@ -1,6 +1,11 @@
 import { PostsManager } from "./postsManager";
 import { PostResponse } from "../../types/postResponse";
-import { ChannelInterface, ModelInterface, ViewInterface, WorkspaceInterface } from "../interfaces";
+import {
+  ChannelInterface,
+  ModelInterface,
+  ViewInterface,
+  WorkspaceInterface,
+} from "../interfaces";
 
 /**
  * The state manager stores the state of the application
@@ -41,7 +46,7 @@ export class StateManager {
    * not able to be set.
    */
   async setOpenWorkspace(
-    workspaceName: string | null
+    workspaceName: string | null,
   ): Promise<WorkspaceInterface | null> {
     // Close workspace if we passed a null.
     if (workspaceName == null) {
@@ -78,7 +83,7 @@ export class StateManager {
    * @returns A promise that resolves to the new open channel
    */
   async setOpenChannel(
-    channelName: string | null
+    channelName: string | null,
   ): Promise<ChannelInterface | null> {
     // Unsub from old channel
     if (this.openChannel != null) {
@@ -155,7 +160,7 @@ export class StateManager {
   getView() {
     return this.view;
   }
-  
+
   /**
    * Returns the model that this state manager requests information from.
    * @returns the model interface that this state manager requests information from.

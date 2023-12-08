@@ -113,7 +113,7 @@ export default function channelSidebarComponentInit() {
     </section>
   </template>
   
-`
+`,
   );
   // an example channel element looks like:
   // <li id="channel-select-{channel-name}">{channel-name}</li>

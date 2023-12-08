@@ -41,9 +41,9 @@ export class EditDialogComponent extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
 
-    // Set up template 
+    // Set up template
     let template = document.querySelector<HTMLTemplateElement>(
-      "#edit-dialog-component-template"
+      "#edit-dialog-component-template",
     );
     if (!template) {
       throw Error("Could not find template #edit-dialog-component-template");
@@ -88,7 +88,7 @@ export class EditDialogComponent extends HTMLElement {
 
     // Set up save and close button
     let save_and_close_button_query = this.shadowRoot?.querySelector(
-      "#save-and-close-button"
+      "#save-and-close-button",
     );
     if (!(save_and_close_button_query instanceof HTMLElement)) {
       throw Error("Could not find a save and close button");
@@ -100,7 +100,7 @@ export class EditDialogComponent extends HTMLElement {
    * When connected, add click listeners to add item button and close button.
    */
   connectedCallback(): void {
-    // Click event listener for add item button 
+    // Click event listener for add item button
     this.addItemButton.addEventListener("click", () => {
       this.onAdd(this.addItemInput.value);
     });
@@ -146,7 +146,7 @@ export class EditDialogComponent extends HTMLElement {
       new_item_element.classList.add("item");
       // query the remove button
       const remove_button = new_item_element.querySelector(
-        `#remove-item-${index}`
+        `#remove-item-${index}`,
       );
       if (!remove_button) {
         throw new Error("Failed to add remove button for new item");
@@ -190,7 +190,7 @@ export class EditDialogComponent extends HTMLElement {
     // 0 --> this.item_elements.length - 1: it's one of the items
     if (this.focused_element_index < this.item_elements.length) {
       const item_remove_button = this.shadowRoot?.querySelector(
-        `#remove-item-${this.focused_element_index}`
+        `#remove-item-${this.focused_element_index}`,
       );
       if (!(item_remove_button instanceof HTMLElement)) {
         throw new Error("Item does not have a remove button");

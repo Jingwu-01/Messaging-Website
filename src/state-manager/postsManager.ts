@@ -17,7 +17,6 @@ import { CreatePostEvent, ViewPostUpdate } from "../view/datatypes";
  * post itself and (2) each post is inserted according to ascending order of timestamp.
  */
 export class PostsManager {
-
   private view: ViewInterface;
 
   private stateManager: StateManagerInterface;
@@ -85,7 +84,7 @@ export class PostsManager {
       ["this.adapterPosts", this.adapterPosts],
       ["this.rootAdapterPosts", this.rootAdapterPosts],
       ["this.pendingPosts", this.pendingPosts],
-      ["response", response]
+      ["response", response],
     );
     let newPost: AdapterPost;
     try {
@@ -148,7 +147,7 @@ export class PostsManager {
     slog.info(
       "addPendingPosts: called",
       ["addedPostName", addedPostName],
-      ["addedPost", addedPost]
+      ["addedPost", addedPost],
     );
     let parentPendingPosts = this.pendingPosts.get(addedPostName);
     if (parentPendingPosts === undefined) {
@@ -194,7 +193,7 @@ export class PostsManager {
         "this.adapterPosts",
         `${JSON.stringify(Object.fromEntries(this.adapterPosts))}`,
       ],
-      ["this.rootAdapterPosts", `${JSON.stringify(this.rootAdapterPosts)}`]
+      ["this.rootAdapterPosts", `${JSON.stringify(this.rootAdapterPosts)}`],
     );
     this.upsertAdapterPost(adapterPost, exists);
     slog.info(
@@ -203,7 +202,7 @@ export class PostsManager {
         "this.adapterPosts",
         `${JSON.stringify(Object.fromEntries(this.adapterPosts))}`,
       ],
-      ["this.rootAdapterPosts", `${JSON.stringify(this.rootAdapterPosts)}`]
+      ["this.rootAdapterPosts", `${JSON.stringify(this.rootAdapterPosts)}`],
     );
   }
 
@@ -251,7 +250,7 @@ export class PostsManager {
     slog.info(
       "upsertAdapterPost: end of func call",
       ["updatedPost", updatedPost],
-      ["this.starredPosts", this.starredPosts]
+      ["this.starredPosts", this.starredPosts],
     );
     this.getView().displayPosts(updatedPost);
   }
@@ -279,7 +278,7 @@ export class PostsManager {
    */
   insertStarredPost(
     adapterPost: AdapterPost,
-    exists: boolean
+    exists: boolean,
   ): [number, StarOps] {
     // slog.info("insertStarredPost", ["exists", exists], ["isRespPostStarred(adapterPost)", isRespPostStarred(adapterPost)], ["adapterPost.getStarred()", adapterPost.getStarred()]);
     if (exists) {
@@ -325,7 +324,9 @@ export class PostsManager {
     let loggedInUser = this.getStateManager().getLoggedInUser();
     if (loggedInUser === null) {
       // this should never happen. enforce that user, ws, and channel have null equivalence.
-      slog.error("isRespPostStarred: loggedInUser is null but this should be impossible");
+      slog.error(
+        "isRespPostStarred: loggedInUser is null but this should be impossible",
+      );
       return false;
     }
     return usersStarred.includes(loggedInUser);

@@ -35,7 +35,7 @@ export default function loadingButtonComponentInit() {
     </section>
   </button>
 </template>
-`
+`,
   );
 
   customElements.define("loading-button-component", LoadingButtonComponent);

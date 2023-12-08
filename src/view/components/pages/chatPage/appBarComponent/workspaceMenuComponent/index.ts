@@ -18,25 +18,25 @@ class WorkspaceMenuComponent extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
 
-    // Set up the template. 
+    // Set up the template.
     let template = document.querySelector<HTMLTemplateElement>(
-      "#workspace-menu-component-template"
+      "#workspace-menu-component-template",
     );
     if (!template) {
       throw Error("Could not find template #workspace-menu-component-template");
     }
     this.shadowRoot?.append(template.content.cloneNode(true));
 
-    // Set up menu. 
+    // Set up menu.
     let menu_query = this.shadowRoot?.querySelector("#menu");
     if (!(menu_query instanceof HTMLElement)) {
       throw Error("Could not find element #menu");
     }
     this.menu = menu_query;
 
-    // Set the refresh button. 
+    // Set the refresh button.
     let refresh_workspaces_button_query = this.shadowRoot?.querySelector(
-      "#refresh-workspaces-button"
+      "#refresh-workspaces-button",
     );
     if (!(refresh_workspaces_button_query instanceof HTMLElement)) {
       throw Error("Could not find element #refresh-workspaces-button");
@@ -55,14 +55,14 @@ class WorkspaceMenuComponent extends HTMLElement {
       let event_id = String(Date.now());
       this.refreshWorkspacesButton.setAttribute(
         "loading-until-event",
-        event_id
+        event_id,
       );
       document.dispatchEvent(
         new CustomEvent("refreshWorkspaces", {
           detail: {
             id: event_id,
           },
-        })
+        }),
       );
     });
 
@@ -76,13 +76,13 @@ class WorkspaceMenuComponent extends HTMLElement {
   displayOpenWorkspace(workspace: ViewWorkspace | null) {
     // update the displayed open workspace
     let open_workspace_el = this.shadowRoot?.querySelector(
-      "#open-workspace-text"
+      "#open-workspace-text",
     );
     // Default to "Select Workspace" text if there is no workspace.
     if (open_workspace_el instanceof HTMLElement) {
-      open_workspace_el.innerHTML = escapeString(workspace
-        ? workspace.name
-        : "Select Workspace");
+      open_workspace_el.innerHTML = escapeString(
+        workspace ? workspace.name : "Select Workspace",
+      );
     }
   }
 
@@ -93,7 +93,7 @@ class WorkspaceMenuComponent extends HTMLElement {
   displayWorkspaces(update: ViewWorkspaceUpdate) {
     const workspaces = update.allWorkspaces;
     let workspace_menu_items_el = this.shadowRoot?.querySelector(
-      "#workspace-menu-items"
+      "#workspace-menu-items",
     );
     if (workspace_menu_items_el instanceof HTMLElement) {
       // loop through, creating a new HTML element to display each workspace
@@ -114,7 +114,7 @@ class WorkspaceMenuComponent extends HTMLElement {
       // give every element we just added a click listener
       workspaces.forEach((workspace, i) => {
         let workspace_item_el = this.shadowRoot?.querySelector(
-          `#workspace-select-${i}`
+          `#workspace-select-${i}`,
         );
 
         workspace_item_el?.addEventListener("click", () => {
@@ -127,7 +127,7 @@ class WorkspaceMenuComponent extends HTMLElement {
           document.dispatchEvent(
             new CustomEvent("workspaceSelected", {
               detail: { name: workspace.name, id: event_id },
-            })
+            }),
           );
           getView().waitForEvent(event_id, (event, err) => {
             // If we successfully selected a workspace, close the menu.

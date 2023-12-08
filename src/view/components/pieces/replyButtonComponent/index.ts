@@ -1,6 +1,6 @@
 /**
  * ReplyButtonComponent is a reply button for posts. When a user clicks on it, the post editor will show.
- */ 
+ */
 class ReplyButtonComponent extends HTMLElement {
   /** controller */
   private controller: AbortController | null = null;
@@ -24,7 +24,7 @@ class ReplyButtonComponent extends HTMLElement {
     this.shadowRoot.append(template.content.cloneNode(true));
   }
 
-  /** When connected, create and assign a new AbortController.*/ 
+  /** When connected, create and assign a new AbortController.*/
   connectedCallback(): void {
     this.controller = new AbortController();
   }

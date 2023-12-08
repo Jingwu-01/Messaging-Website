@@ -32,7 +32,7 @@ class StarButtonComponent extends HTMLElement {
 
     if (!(template instanceof HTMLTemplateElement)) {
       throw new Error(
-        "StarButtonComponent: could not find an element with the id star-button-component-template"
+        "StarButtonComponent: could not find an element with the id star-button-component-template",
       );
     }
 
@@ -45,7 +45,7 @@ class StarButtonComponent extends HTMLElement {
     const starButton = this.shadowRoot.querySelector("#star-button");
     if (!(starButton instanceof HTMLButtonElement)) {
       throw new Error(
-        "StarButtonComponent: could not find an element with the #star-button id"
+        "StarButtonComponent: could not find an element with the #star-button id",
       );
     }
 
@@ -54,7 +54,7 @@ class StarButtonComponent extends HTMLElement {
     const starIcon = this.shadowRoot.querySelector("#star-icon");
     if (!(starIcon instanceof HTMLElement)) {
       throw new Error(
-        "StarButtonComponent: could not find an element with the #star-icon id"
+        "StarButtonComponent: could not find an element with the #star-icon id",
       );
     }
 
@@ -72,7 +72,7 @@ class StarButtonComponent extends HTMLElement {
     this.starButton.addEventListener(
       "click",
       this.updateStarred.bind(this),
-      options
+      options,
     );
   }
 
@@ -98,7 +98,7 @@ class StarButtonComponent extends HTMLElement {
       slog.error(
         "StarButtonComponent: updateStarred, user or postPath is undefined",
         ["user", user],
-        ["postPath", postPath]
+        ["postPath", postPath],
       );
       return;
     }

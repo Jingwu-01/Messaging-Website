@@ -38,7 +38,7 @@ export class PostsAdapter {
   constructor(
     view: ViewInterface,
     model: ModelInterface,
-    stateManager: StateManagerInterface
+    stateManager: StateManagerInterface,
   ) {
     this.view = view;
     this.model = model;
@@ -162,7 +162,7 @@ export class PostsAdapter {
     ]);
     // Render the post
     let [success, message] = this.getStateManager().serializePostResponse(
-      evt.detail.post
+      evt.detail.post,
     );
     // After everything is rendered, check if this event was the result of an
     // action taken by our user.
@@ -194,7 +194,7 @@ export class PostsAdapter {
   initPosts() {
     document.addEventListener(
       "createPostEvent",
-      this.createPostEvent.bind(this)
+      this.createPostEvent.bind(this),
     );
 
     /**
@@ -202,7 +202,7 @@ export class PostsAdapter {
      */
     document.addEventListener(
       "reactionUpdateEvent",
-      this.updateReaction.bind(this)
+      this.updateReaction.bind(this),
     );
 
     /**
@@ -210,7 +210,7 @@ export class PostsAdapter {
      */
     document.addEventListener(
       "modelPostEvent",
-      this.modelPostUpdate.bind(this)
+      this.modelPostUpdate.bind(this),
     );
   }
 }

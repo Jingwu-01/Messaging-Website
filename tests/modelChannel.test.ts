@@ -16,7 +16,7 @@ beforeAll(async () => {
 test("Get channel", async () => {
   try {
     await model.getChannel(
-      "/existingworkspace_onechannel/channels/existing_onechannel_onepost"
+      "/existingworkspace_onechannel/channels/existing_onechannel_onepost",
     );
   } catch (e) {
     expect((e as Error).message).toBe("Not Found");
@@ -43,7 +43,7 @@ test("Add channel", async () => {
 test("Remove channel", async () => {
   try {
     await model.removeChannel(
-      "/existingworkspace_onechannel/channels/existing_onechannel_onepost"
+      "/existingworkspace_onechannel/channels/existing_onechannel_onepost",
     );
   } catch (e) {
     expect((e as Error).message).toBe("expected empty response");

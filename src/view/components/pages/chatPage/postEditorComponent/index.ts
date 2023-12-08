@@ -30,7 +30,7 @@ export class PostEditor extends HTMLElement {
 
   /** top reply element */
   private topReplyEl: HTMLElement | undefined;
-  
+
   /** sumbit icon */
   private submitPostIcon: HTMLElement;
 
@@ -47,19 +47,19 @@ export class PostEditor extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
 
-    // Set up the template and clone. 
+    // Set up the template and clone.
     let template = document.querySelector("#post-editor-template");
     if (!(template instanceof HTMLTemplateElement)) {
       throw Error("post editor template was not found");
     }
     if (this.shadowRoot === null) {
       throw Error(
-        "could not find shadow DOM root for post-editor element in constructor"
+        "could not find shadow DOM root for post-editor element in constructor",
       );
     }
     this.shadowRoot.append(template.content.cloneNode(true));
 
-    // Set up the other elements and check if they actually exist. 
+    // Set up the other elements and check if they actually exist.
     let postOperations = this.shadowRoot.querySelector("#post-operations");
     let postInput = this.shadowRoot.querySelector("#post-input");
     let postForm = this.shadowRoot.querySelector("#post-form");
@@ -90,7 +90,7 @@ export class PostEditor extends HTMLElement {
       throw Error("Could not find an element with the post-submit id");
     }
 
-    // assignment to this 
+    // assignment to this
     this.postOperations = postOperations;
     this.postInput = postInput;
     this.postForm = postForm;
@@ -108,7 +108,7 @@ export class PostEditor extends HTMLElement {
     const options = { signal: this.controller.signal };
 
     slog.info("postEditor added to the DOM");
-    // set up the post editor 
+    // set up the post editor
     let postOperationElements = this.postOperations.children;
     for (let childEl of postOperationElements) {
       let id = childEl.id;
@@ -118,7 +118,7 @@ export class PostEditor extends HTMLElement {
       let prefixFunc: StringFunction;
       let suffixFunc: StringFunction;
       switch (operationType) {
-        // Different operation types. 
+        // Different operation types.
         case "reaction": {
           innerTextFunc = () => {
             return splitId[0];
@@ -135,7 +135,7 @@ export class PostEditor extends HTMLElement {
         }
         default: {
           throw Error(
-            `post editor connected callback: expected id of post operation to be of the form <operation>-text or <operation>-reaction, but id is: ${id}`
+            `post editor connected callback: expected id of post operation to be of the form <operation>-text or <operation>-reaction, but id is: ${id}`,
           );
         }
       }
@@ -164,7 +164,7 @@ export class PostEditor extends HTMLElement {
         () => {
           this.applyTextFormatting(prefixFunc, suffixFunc, innerTextFunc);
         },
-        options
+        options,
       );
     }
 
@@ -172,14 +172,14 @@ export class PostEditor extends HTMLElement {
     this.postForm.addEventListener(
       "submit",
       this.submitPost.bind(this),
-      options
+      options,
     );
-    
+
     // click event listner for cancel button
     this.cancelReply.addEventListener(
       "click",
       this.replyToTopLevel.bind(this),
-      options
+      options,
     );
 
     getView().addLoadingListener(this);
@@ -203,7 +203,7 @@ export class PostEditor extends HTMLElement {
   applyTextFormatting(
     prefixFunc: StringFunction,
     suffixFunc: StringFunction,
-    selectedValFunc: StringFunction
+    selectedValFunc: StringFunction,
   ) {
     let startCharIdx = this.postInput.selectionStart;
     let endCharIdx = this.postInput.selectionEnd;
@@ -223,7 +223,7 @@ export class PostEditor extends HTMLElement {
     slog.info("submitPost: called");
     event.preventDefault();
 
-    // Make a create post event 
+    // Make a create post event
     const postData = this.postInput.value;
     if (this.parentPath === undefined) {
       throw Error("error: submitPost: this.parentPath is undefined");
@@ -236,7 +236,7 @@ export class PostEditor extends HTMLElement {
       "createPostEvent.detail",
       `${JSON.stringify(createPostEvent.detail)}`,
     ]);
-    // The submit buttons changes to loading 
+    // The submit buttons changes to loading
     this.submitPostButton.setAttribute("disabled", "");
     this.submitPostIcon.setAttribute("icon", "svg-spinners:180-ring-with-bg");
     getView().waitForEvent(id, (evt, err) => {
@@ -244,7 +244,7 @@ export class PostEditor extends HTMLElement {
       this.submitPostButton.removeAttribute("disabled");
     });
 
-    // Dispatch the create post event 
+    // Dispatch the create post event
     document.dispatchEvent(createPostEvent);
 
     // Clear the textarea
@@ -305,17 +305,17 @@ export class PostEditor extends HTMLElement {
     slog.info(
       "setParentPath",
       ["parentPath", `${parentPath}`],
-      ["parentPost", parentPost]
+      ["parentPost", parentPost],
     );
     this.parentPath = parentPath;
     this.parentPost = parentPost;
   }
 
   /**
-   * Set the topreply elemet to the given element. 
-   * @param topReplyEl HTMLElement for top reply element 
+   * Set the topreply elemet to the given element.
+   * @param topReplyEl HTMLElement for top reply element
    */
-  
+
   setTopReplyEl(topReplyEl: HTMLElement) {
     this.topReplyEl = topReplyEl;
   }
@@ -341,7 +341,7 @@ export class PostEditor extends HTMLElement {
     slog.info(
       "printParentEl",
       ["postEditor parent", `${JSON.stringify(this.parentNode)}`],
-      ["postEditor", `${JSON.stringify(this)}`]
+      ["postEditor", `${JSON.stringify(this)}`],
     );
   }
 
@@ -354,7 +354,7 @@ export class PostEditor extends HTMLElement {
   }
 
   /**
-   * When loading, disable the submit button 
+   * When loading, disable the submit button
    * @param state StateName
    */
   onLoading(state: StateName) {

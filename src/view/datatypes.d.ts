@@ -47,7 +47,7 @@ export type ViewPost = {
 };
 
 /**
- * StarExtention contains an array of usernames that starred a post. 
+ * StarExtention contains an array of usernames that starred a post.
  */
 export type StarExtension = {
   p2group50: Array<string>;
@@ -94,7 +94,7 @@ export type ViewChannelUpdate = {
 };
 
 /**
- * ReactionData have fields including smiles, frown, like and celebrate. 
+ * ReactionData have fields including smiles, frown, like and celebrate.
  */
 export type ReactionData = {
   /** an array of usernames that reacted to smile */

@@ -123,7 +123,7 @@ test("Loading listener receives updates", () => {
   const testEvent = new CustomEvent("test event", { detail: { id: "1" } });
   view.setStateLoadingUntil(
     ["channels", "posts", "user", "workspaces"],
-    testEvent
+    testEvent,
   );
   view.completeEvent(testEvent);
   expect(receivedLoadingState.size).toBe(4);

@@ -55,7 +55,7 @@ export class AdapterPost {
     slog.info(
       "AdapterPost constructor: top of func call",
       ["response", response.path],
-      ["response.path", response.path]
+      ["response.path", response.path],
     );
     let postPathArr = validatePostPath(response.path);
     // Set the name, workspace name, and channel name for the post.

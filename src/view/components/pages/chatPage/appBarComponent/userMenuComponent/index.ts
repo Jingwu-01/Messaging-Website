@@ -21,9 +21,9 @@ class UserMenuComponent extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
 
-    // Set up the template.  
+    // Set up the template.
     const template = document.querySelector<HTMLTemplateElement>(
-      "#user-menu-component-template"
+      "#user-menu-component-template",
     );
     if (!template) {
       throw Error("Could not find template #user-menu-component-template");
@@ -32,7 +32,7 @@ class UserMenuComponent extends HTMLElement {
 
     // Set up the starred posts button.
     const starredPostsButton = this.shadowRoot?.querySelector(
-      "#my-starred-posts-button"
+      "#my-starred-posts-button",
     );
     if (!(starredPostsButton instanceof HTMLElement)) {
       throw Error("cannot find #my-starred-posts-button HTMLElement");
@@ -50,7 +50,7 @@ class UserMenuComponent extends HTMLElement {
   }
 
   /**
-   * When UserMenuComponent is added to a document, add click event listeners and add user and post display listeners. 
+   * When UserMenuComponent is added to a document, add click event listeners and add user and post display listeners.
    */
   connectedCallback(): void {
     // Tell the view that this component wants to listen to user and post display updates
@@ -65,14 +65,14 @@ class UserMenuComponent extends HTMLElement {
     this.logoutButton?.addEventListener(
       "click",
       this.handleLogout.bind(this),
-      options
+      options,
     );
 
     // Add starredPosts listener to starredPostsButton
     this.starredPostsButton?.addEventListener(
       "click",
       this.handleStarredPosts.bind(this),
-      options
+      options,
     );
   }
 
@@ -119,14 +119,14 @@ class UserMenuComponent extends HTMLElement {
   }
 
   /**
-   * Display the my starred posts button. 
+   * Display the my starred posts button.
    */
   displayPostDisplay() {
     this.starredPostsButton.style.display = "block";
   }
 
   /**
-   * Remove the my starred posts button. 
+   * Remove the my starred posts button.
    */
   removePostDisplay() {
     this.starredPostsButton.style.display = "none";

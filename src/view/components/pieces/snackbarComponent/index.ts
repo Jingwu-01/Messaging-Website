@@ -1,5 +1,5 @@
 /**
- * A Snackbar pops up at the bottom of the screen with a message and disappears when the "x" button is clicked. It is used for diaplaying error messages. 
+ * A Snackbar pops up at the bottom of the screen with a message and disappears when the "x" button is clicked. It is used for diaplaying error messages.
  */
 class SnackbarComponent extends HTMLElement {
   private wrapper: HTMLElement;
@@ -7,7 +7,7 @@ class SnackbarComponent extends HTMLElement {
 
   /**
    * Constructor for the snack bar custom element
-   * */ 
+   * */
   constructor() {
     super();
 
@@ -34,7 +34,7 @@ class SnackbarComponent extends HTMLElement {
   }
 
   /**
-   * When the component is connected, add event listeners for the wrapper and the close button. 
+   * When the component is connected, add event listeners for the wrapper and the close button.
    */
   connectedCallback(): void {
     // Disable the animation when it's done.
@@ -52,15 +52,15 @@ class SnackbarComponent extends HTMLElement {
   }
 
   /**
-   * Close the snack bar. 
+   * Close the snack bar.
    */
   close() {
     this.parentNode?.removeChild(this);
     this.remove();
   }
-  
+
   /**
-   * Observe the changes of level attribute. 
+   * Observe the changes of level attribute.
    */
   static get observedAttributes(): Array<string> {
     // Attributes to observe
@@ -69,7 +69,7 @@ class SnackbarComponent extends HTMLElement {
 
   /**
    * When the level attribute changes, display the corresponding snack bar.
-   * @param name the name of the attibute that changes 
+   * @param name the name of the attibute that changes
    * @param oldValue the old value of changed attribute
    * @param newValue the new value of chanegd attribute
    */
@@ -78,7 +78,7 @@ class SnackbarComponent extends HTMLElement {
     oldValue: string,
     newValue: string,
   ): void {
-    // Display the snack bar in different colors based on the level of info. 
+    // Display the snack bar in different colors based on the level of info.
     if (name == "level") {
       switch (newValue) {
         case "error":
