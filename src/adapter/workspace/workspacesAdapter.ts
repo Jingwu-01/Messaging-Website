@@ -117,10 +117,7 @@ export class WorkspacesAdapter {
    */
   async deleteWorkspace(evt: CustomEvent<DeleteWorkspaceEvent>) {
     slog.info(`Workspace deleted: ${evt.detail.name}`);
-    this.getView().setStateLoadingUntil(
-      ["workspaces", "channels", "posts"],
-      evt
-    );
+    this.getView().setStateLoadingUntil(["workspaces"], evt);
     try {
       await this.getModel().removeWorkspace(evt.detail.name);
     } catch (error) {
