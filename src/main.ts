@@ -17,6 +17,10 @@ import { LoginEvent } from "./view/datatypes";
 import { initView } from "./view/init";
 import { ModelPostEvent, PostsEvent } from "./model/modelTypes";
 import { setupBasicApp } from "../tests/setup-additional-state";
+import { ModelInterface, StateManagerInterface, ViewInterface } from "./interfaces";
+import { getView } from "./view/view";
+import { getModel } from "./model/model";
+import getStateManager from "./state-manager";
 
 /**
  * Declare names and types of environment variables.
@@ -87,7 +91,11 @@ function main(): void {
   // setupTestDb();
   setupBasicApp();
 
-  initAdapter();
+  const view: ViewInterface = getView();
+  const model: ModelInterface = getModel();
+  const stateManager: StateManagerInterface = getStateManager();
+
+  initAdapter(view, model, stateManager);
   initView();
 }
 
