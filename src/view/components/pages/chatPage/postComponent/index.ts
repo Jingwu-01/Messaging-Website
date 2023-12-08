@@ -1,5 +1,6 @@
 import { slog } from "../../../../../slog";
 import { ReactionData, StarExtension, ViewPost } from "../../../../datatypes";
+import escapeString from "../../../../utils";
 import { getView } from "../../../../view";
 import ReactionComponent from "../../../pieces/reactionComponent";
 import ReplyButtonComponent from "../../../pieces/replyButtonComponent";
@@ -178,12 +179,12 @@ export class PostComponent extends HTMLElement {
     this.postPath = viewPost.path;
     console.log("Posting the msg: " + viewPost.msg);
     // this.postBody.innerText = this.formatText(viewPost.msg)
-    this.appendFormattedText(viewPost.msg, this.postBody);
+    this.appendFormattedText(escapeString(viewPost.msg), this.postBody);
     this.postMsg = viewPost.msg;
     let postUserText = this.postHeader.querySelector("#post-user-text");
     // TODO handle error better
     if (postUserText != null) {
-      postUserText.innerHTML = viewPost.createdUser;
+      postUserText.innerHTML = escapeString(viewPost.createdUser);
     }
     // assumed that time is in ms
     let postTimeObj = new Date(viewPost.postTime);
@@ -196,13 +197,13 @@ export class PostComponent extends HTMLElement {
         timeToDisplay = postTimeObj.toLocaleTimeString();
       }
       postTimeShortEl.setAttribute("datetime", postTimeObj.toISOString());
-      postTimeShortEl.innerHTML = `<u>${timeToDisplay}</u>`;
+      postTimeShortEl.innerHTML = `<u>${escapeString(timeToDisplay)}</u>`;
     }
     // TODO handle error better
     let postTimeLongEl = this.postHeader.querySelector("#post-time-long");
     if (postTimeLongEl != null) {
       postTimeLongEl.setAttribute("datetime", postTimeObj.toISOString());
-      postTimeLongEl.innerHTML = postTimeObj.toString();
+      postTimeLongEl.innerHTML = escapeString(postTimeObj.toString());
     }
 
     let currentUsername: string;

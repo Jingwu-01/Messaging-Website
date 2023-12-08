@@ -1,4 +1,5 @@
 import { EventWithId } from "../../../../datatypes";
+import escapeString from "../../../../utils";
 
 /**
  * An EditDialog is a dialog that allows for the creation or deletion of channels or workspaces.
@@ -137,7 +138,7 @@ export class EditDialogComponent extends HTMLElement {
       // maybe make this an actual web component instead of what we have?
       let new_item_element = document.createElement("div");
       new_item_element.innerHTML = `
-        <p>${item_name}</p>
+        <p>${escapeString(item_name)}</p>
         <loading-button-component disable-if-state-loading="workspaces channels" id="remove-item-${index}">
           <iconify-icon icon="material-symbols:delete" slot="content"></iconify-icon>
         </loading-button-component>

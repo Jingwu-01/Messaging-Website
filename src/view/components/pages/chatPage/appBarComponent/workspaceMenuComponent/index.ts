@@ -1,8 +1,9 @@
 import { ViewWorkspace, ViewWorkspaceUpdate } from "../../../../../datatypes";
+import escapeString from "../../../../../utils";
 import { getView } from "../../../../../view";
 
 /**
- *  WorkspaceMenu Component displays the workspaces. 
+ *  WorkspaceMenu Component displays the workspaces.
  */
 class WorkspaceMenuComponent extends HTMLElement {
   /** The workspace menu. */
@@ -70,14 +71,14 @@ class WorkspaceMenuComponent extends HTMLElement {
   }
 
   /**
-   * When disconnected, remove the workspace listener. 
+   * When disconnected, remove the workspace listener.
    */
   disconnectedCallback(): void {
     // TODO remove workspace listener.
   }
 
   /**
-   * Called by view whenever there is a change in the open workspace. 
+   * Called by view whenever there is a change in the open workspace.
    */
   displayOpenWorkspace(workspace: ViewWorkspace | null) {
     // update the displayed open workspace
@@ -86,9 +87,9 @@ class WorkspaceMenuComponent extends HTMLElement {
     );
     // Default to "Select Workspace" text if there is no workspace.
     if (open_workspace_el instanceof HTMLElement) {
-      open_workspace_el.innerHTML = workspace
+      open_workspace_el.innerHTML = escapeString(workspace
         ? workspace.name
-        : "Select Workspace";
+        : "Select Workspace");
     }
   }
 
@@ -109,7 +110,7 @@ class WorkspaceMenuComponent extends HTMLElement {
       } else {
         workspaces.forEach((workspace, i) => {
           new_inner_html += `
-          <loading-button-component disable-if-state-loading="workspaces" id="workspace-select-${i}" class="workspace-select" style="background: none; border: none;" >
+          <loading-button-component disable-if-state-loading="workspaces channels posts user" id="workspace-select-${i}" class="workspace-select" style="background: none; border: none;" >
             <p slot="content">${workspace.name}</p>
           </loading-button-component>
           `;

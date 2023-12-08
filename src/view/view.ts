@@ -12,6 +12,7 @@ import {
   ViewWorkspace,
   ViewWorkspaceUpdate,
 } from "./datatypes";
+import escapeString from "./utils";
 
 /**
  * interface for posts display that could display posts display or remove post display
@@ -524,7 +525,7 @@ export class View {
    */
   openSnackbar(level: string, message: string) {
     const snackbarEl = new SnackbarComponent();
-    snackbarEl.innerHTML = `<p slot="content">${message}</p>`;
+    snackbarEl.innerHTML = `<p slot="content">${escapeString(message)}</p>`;
     snackbarEl.setAttribute("level", level);
     this.snackbarDisplay.appendChild(snackbarEl);
   }
