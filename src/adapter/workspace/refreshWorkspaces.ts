@@ -1,7 +1,6 @@
 import { getModel } from "../../model/model";
 import getStateManager from "../../state-manager";
 import { getView } from "../../view/view";
-import modelToViewChannels from "../channel/modelToViewChannels";
 import modelToViewWorkspaces from "./modelToViewWorkspaces";
 
 /**
@@ -14,11 +13,6 @@ export default async function refreshWorkspaces(evt: Event) {
   let open_workspace_name = getStateManager().getOpenWorkspace()?.getName();
   if (open_workspace_name && !workspaces.has(open_workspace_name)) {
     getStateManager().setOpenWorkspace(null);
-    getView().displayChannels({
-      allChannels: [],
-      op: "replace",
-      affectedChannels: [],
-    });
   }
   getView().displayWorkspaces({
     allWorkspaces: modelToViewWorkspaces(workspaces),
