@@ -167,20 +167,17 @@ export class PostComponent extends HTMLElement {
    * @returns void
    */
   addPostContent(viewPost: ViewPost): void {
-    // TODO: obviously can add more functionality here later as needed.
     slog.info("addPostContent: top of func call", ["viewPost", viewPost]);
     this.postPath = viewPost.path;
     this.appendFormattedText(escapeString(viewPost.msg), this.postBody);
     this.postMsg = viewPost.msg;
     let postUserText = this.postHeader.querySelector("#post-user-text");
-    // TODO handle error better
     if (postUserText != null) {
       postUserText.innerHTML = escapeString(viewPost.createdUser);
     }
     // assumed that time is in ms
     let postTimeObj = new Date(viewPost.postTime);
     let postTimeShortEl = this.postHeader.querySelector("#post-time-short");
-    // TODO handle error better
     if (postTimeShortEl != null) {
       // display date if not today, time if today
       let timeToDisplay = `${postTimeObj.getDate()}`;
@@ -190,7 +187,6 @@ export class PostComponent extends HTMLElement {
       postTimeShortEl.setAttribute("datetime", postTimeObj.toISOString());
       postTimeShortEl.innerHTML = `<u>${escapeString(timeToDisplay)}</u>`;
     }
-    // TODO handle error better
     let postTimeLongEl = this.postHeader.querySelector("#post-time-long");
     if (postTimeLongEl != null) {
       postTimeLongEl.setAttribute("datetime", postTimeObj.toISOString());

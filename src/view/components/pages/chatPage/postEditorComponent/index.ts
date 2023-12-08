@@ -4,7 +4,7 @@ import { getView } from "../../../../view";
 import PostComponent from "../postComponent";
 
 /** A function that returns a string */
-type StringFunction = () => string;
+export type StringFunction = () => string;
 
 /**
  * PostEditor component is a post editor that allows users to add a post.

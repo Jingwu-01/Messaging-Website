@@ -17,7 +17,7 @@ import escapeString from "./utils";
 /**
  * interface for posts display that could display posts display or remove post display
  */
-interface PostDisplayListener {
+export interface PostDisplayListener {
   displayPostDisplay(): void;
   removePostDisplay(): void;
 }
@@ -27,7 +27,7 @@ interface PostDisplayListener {
  * A component that is a PostListener will receive
  * updates when the Adapter changes what posts should be displayed
  */
-interface PostListener {
+export interface PostListener {
   /**
    * Called by the view when there is an update to the posts that should be displayed
    * @param posts Contains info about the new posts that need displaying.
@@ -41,7 +41,7 @@ interface PostListener {
  * A component that is a UserListener will receive updates
  * when the Adapter changes what user should be rendered.
  */
-interface UserListener {
+export interface UserListener {
   displayUser(user: ViewUser | null): void;
 }
 
@@ -50,7 +50,7 @@ interface UserListener {
  * A component that is a WorkspaceListener will receive updates
  * when the Adapter changes what workspaces should be displayed
  */
-interface WorkspaceListener {
+export interface WorkspaceListener {
   /**
    * Called by the view when there is an update to the workspaces that should be displayed
    * @param update Info about what changed
@@ -69,7 +69,7 @@ interface WorkspaceListener {
  * A component that is a ChannelListener will receive updates
  * when the Adapter changes what channels should be displayed.
  */
-interface ChannelListener {
+export interface ChannelListener {
   /**
    * Called by the view when there is an update to the channels that should be displayed
    * @param update The new open workspace, or null if there is no open workspace.
@@ -97,7 +97,7 @@ interface Dialog extends HTMLElement {
  * then a component that is a LoadingListener will receive
  * that update and can interact accordingly
  */
-interface LoadingListener {
+export interface LoadingListener {
   /**
    * Called by the view when state is loading
    * @param state The name of the state that is loading
@@ -157,7 +157,7 @@ export class View {
   /**
    * A list of components that should receive updates when the posts change.
    */
-  private postDisplayListeners: Array<PostDisplayListener> =
+ private postDisplayListeners: Array<PostDisplayListener> =
     new Array<PostDisplayListener>();
 
   /**
