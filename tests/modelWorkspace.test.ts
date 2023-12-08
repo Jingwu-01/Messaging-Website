@@ -1,7 +1,6 @@
 import { fetchFunc } from "./mockfetch";
 import { getModel } from "../src/model/model";
 import { beforeAll, expect, test } from "@jest/globals";
-import { ModelWorkspace } from "../src/model/workspace";
 
 const model = getModel();
 
@@ -13,16 +12,22 @@ beforeAll(async () => {
   await model.login("test_user");
 });
 
-test("Get existing workspace", async() => {
-    const data = await model.getWorkspace("existingworkspace_onechannel"); 
-    expect(data).toBe({
-        path: '/v1/p2group50/existingworkspace_onechannel',
-        doc: {},
-        meta: {
-          createdAt: 1701876023839,
-          createdBy: 'test_user',
-          lastModifiedAt: 1701827861753,
-          lastModifiedBy: 'test_user'
-        }
-      })
+test("Get existing workspace", async () => {
+  const data = await model.getWorkspace("existingworkspace_onechannel");
+  const expectedPath = "v1/p2group50/existingworkspace_onechannel";
+  expect(data.getName()).toBe(expectedPath);
+});
+
+test("Get empty workspace", async ()=> {
+    const data = await model.getWorkspace("empty_workspace");
+    const expectedPath = "v1/p2group50/empty_workspace"
+    expect(data.getName()).toBe(expectedPath);
 })
+
+test("Get workspace with one channel", async() => {
+    const data = await model.getWorkspace("workspace_onechannel");
+    const expectedPath = "v1/p2group50/workspace_onechannel"
+    expect(data.getName()).toBe(expectedPath);
+})
+
+// test("Get exisitng workspaces")

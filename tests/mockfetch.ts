@@ -8,7 +8,7 @@ function getDocumentResult(docName: string, doc: string, databasePath: string, u
         "meta": {
             "createdAt": ${createdAt.toString()},
             "createdBy": "${username}",
-            "lastModifiedAt": 1701827861753,
+            "lastModifiedAt": ${lastModifiedAt.toString()},
             "lastModifiedBy": "${username}"
         }
     }`
