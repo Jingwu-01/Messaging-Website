@@ -8,8 +8,6 @@ import { getView } from "../../../view";
 class StarButtonComponent extends HTMLElement {
   private controller: AbortController | null = null;
 
-  private starIcon: HTMLElement;
-
   private starButton: HTMLButtonElement;
 
   private parentPath: string | undefined;
