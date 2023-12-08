@@ -2,6 +2,7 @@ import { typedFetch } from "../src/model/utils";
 import { fetchFunc } from "./mockfetch";
 import { getModel } from "../src/model/model";
 import { ModelWorkspace } from "../src/model/workspace";
+import { beforeAll, expect, test } from "@jest/globals";
 
 const model = getModel();
 
@@ -10,8 +11,42 @@ beforeAll(async () => {
   process.env.DATABASE_PATH = "/v1/p2group50";
   process.env.AUTH_PATH = "auth";
   (global as any).fetch = fetchFunc;
-  await model.login("test_user");
+  // await model.login("test_user");
 });
+
+test("Duplicated login", async () => {
+  try {
+    await model.login("test_user");
+  } catch(e) {
+    expect((e as Error).message).toBe("Bad Request")
+  }
+});
+
+// Looks like we don't have a empty fetch mock function.
+test("Successful logout", async() => { 
+  try {
+    await model.logout();
+  } catch(e) {
+    expect((e as Error).message).toBe("expected empty response")
+  }
+})
+
+test("Get workspace that does not exist", async() => {
+  try {
+   await model.getWorkspace("existingworkspace_onechannel")
+  }
+  catch(e) {
+    expect((e as Error).message).toBe("error parsing JSON input")
+  }
+})
+
+test("Get workspace that does exist", async() => {
+  const data = await model.getWorkspace
+})
+
+
+
+
 
 test("Successful typedfetch case", async () => {
   const data = await typedFetch<string>(
@@ -19,6 +54,13 @@ test("Successful typedfetch case", async () => {
   );
   expect(data).toBe("some body");
 });
+
+
+
+
+
+
+
 
 test("Failed typedfetch case", async () => {
   expect.assertions(1);

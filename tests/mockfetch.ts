@@ -1,3 +1,4 @@
+import { jest } from "@jest/globals";
 import { slog } from "../src/slog";
 
 function getDocumentResult(docName: string, doc: string, databasePath: string, username: string, createdAt: number, lastModifiedAt: number, prefixPath: string): string {
@@ -144,6 +145,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
                         }
                         status = 204;
                         statusText = "No Content";
+                        
                         break;
                     }
                     ok = false;
