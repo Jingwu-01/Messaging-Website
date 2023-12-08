@@ -6,10 +6,10 @@ function getDocumentResult(docName: string, doc: string, databasePath: string, u
         "path": "${databasePath}${prefixPath}/${docName}",
         "doc": ${doc},
         "meta": {
-            "createdAt": 5,
+            "createdAt": ${createdAt.toString()},
             "createdBy": "${username}",
-            "lastModifiedAt": 5,
-            "lastModifiedBy": “${username}",
+            "lastModifiedAt": ${lastModifiedAt.toString()},
+            "lastModifiedBy": "${username}"
         }
     }`
 }
