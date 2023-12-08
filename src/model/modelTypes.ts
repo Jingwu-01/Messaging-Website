@@ -1,5 +1,5 @@
 /**
- * Various types used by the model to interact with the adapter.
+ * This file contains various types used by the model to interact with the adapter.
  */
 
 import { PostResponse } from "../../types/postResponse";

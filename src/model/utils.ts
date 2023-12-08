@@ -1,5 +1,5 @@
 /**
- * Utlity functions used by our model.
+ * This file contains utlity functions used by our model.
  */
 
 import Ajv from "ajv";
@@ -113,6 +113,11 @@ export function getAuthPath(): string {
   return process.env.DATABASE_HOST + "/auth";
 }
 
+/**
+ * Returns an array of PatchBody that contains the reaction update info 
+ * @param reactionUpdate contains the reaction update info
+ * @returns an array of PatchBody that contains the reaction update info 
+ */
 export function getPatchBody(
   reactionUpdate: ModelReactionUpdate
 ): Array<PatchBody> {

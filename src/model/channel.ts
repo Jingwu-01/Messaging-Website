@@ -11,7 +11,7 @@ import { PostResponse } from "../../types/postResponse";
 import { ChannelResponse } from "../../types/channelResponse";
 
 /**
- * A data representation of a channel in the model. Allows us to control connection requests related to specific channels.
+ * A data representation of a channel in the model. Allows us to control connection requests related to specific channels. 
  */
 export class ModelChannel {
   // The path corresponding to this channel
@@ -36,13 +36,10 @@ export class ModelChannel {
       Authorization: "Bearer " + getModel().getToken(),
       accept: "application/json",
     };
-    // TODO: can make this more elegant by making modelFetch take in a fetch function which it uses
     let fetchUrl = getDatabasePath() + `${this.path}/posts/?mode=subscribe`;
     slog.info("subscribeToPosts", ["fetchUrl", `${fetchUrl}`]);
     fetchEventSource(fetchUrl, {
       headers: options,
-      // TODO: I am SURE that you can theoretically have some extra
-      // error handling here too, for impossible events.
       onmessage(event) {
         switch (event.event) {
           // When we receive a new post, add it to our internal array
@@ -57,7 +54,6 @@ export class ModelChannel {
                 `${JSON.stringify(validatePostResponse.errors)}`,
               ]);
             } else {
-              // slog.info("subscribeToPosts", ["event.data", `${JSON.stringify(event.data)}`]);
               slog.info("update event for post", [
                 "incoming post",
                 JSON.stringify(response),
