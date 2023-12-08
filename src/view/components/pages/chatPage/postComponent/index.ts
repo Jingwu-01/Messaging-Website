@@ -26,9 +26,6 @@ export class PostComponent extends HTMLElement {
   /** Container of post buttons */
   private postButtons: HTMLElement;
 
-  /** Post user */
-  private postUser: string | undefined;
-
   /** Reply button of the post */
   private replyButton: ReplyButtonComponent;
 
@@ -160,10 +157,6 @@ export class PostComponent extends HTMLElement {
    * @param event MouseEvent
    */
   addReplyPostEditor(event: MouseEvent) {
-    // let postEditor = new PostEditor();
-    // // this call should technically be before the previous one
-    // getView().replacePostEditor(postEditor);
-    // this.postBody.parentNode?.insertBefore(postEditor, this.postBody.nextSibling);
     this.highlight();
     getView().moveReplyPostEditorTo(this);
   }
@@ -232,9 +225,6 @@ export class PostComponent extends HTMLElement {
       reactionButton.setLoggedInUser(currentUsername);
     }
 
-    // TODO: check if the post is starred
-    // TODO: set the attribute 'starred' of the star button based on whether or not the post is starred.
-    // TODO:
     slog.info("addPostContent: initializing starred post");
     let extensionsObj = viewPost.extensions;
     if (extensionsObj["p2group50"].includes(currentUsername)) {
@@ -278,18 +268,8 @@ export class PostComponent extends HTMLElement {
     return this.postPath;
   }
 
-  // displayPosts(update: ViewPostUpdate) {
-  //   // if this post's id is in update.affectedPosts,
-  //   // then add the reactio if it's a "modify"
-  // }
-
   /**
-   * Convert the input string to their corresponding HTML elements based on the markdown patterns and append them to the input HTML container element. Mark down patterns: 
-  1. Text surrounded by single * symbols rendered in italics using <em>; 
-  2. Text surrounded by double * symbols rendered in bold using <strong>;
-  3. Text and a URL surrounded by []() rendered as links using <a>;
-  4. Reaction names like :smile: must be rendered as their associated emoji using <iconify>. 
-  5. Other text rendered as plain text using <p>
+   * Convert the input string to their corresponding HTML elements based on the markdown patterns and append them to the input HTML container element.
    * @param text string for conversion 
    * @param container HTML that accepts the converted text
    */

@@ -72,7 +72,6 @@ export class ChannelSidebar extends HTMLElement {
       );
     }
     this.refreshChannelsButton = refresh_channels_button_query;
-    // this.displayPosts.bind(this);
   }
 
   /**
@@ -119,7 +118,6 @@ export class ChannelSidebar extends HTMLElement {
 
     let channelIdx = this.channelNameToIdx.get(channel.name);
     if (channelIdx === undefined) {
-      // TODO: test to reproduce this error
       throw Error(
         "displayOpenChannel: trying to display a channel that doesn't exist on the view"
       );

@@ -79,8 +79,6 @@ export class PostDisplay extends HTMLElement {
     getView().removePostListener(this);
   }
 
-  // TODO: add another helper for setting the channel name
-
   /**
    * Display the posts based on the view update. 
    * @param update ViewPostUpdate

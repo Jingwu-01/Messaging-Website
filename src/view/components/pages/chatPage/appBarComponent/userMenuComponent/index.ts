@@ -9,7 +9,7 @@ import { getView } from "../../../../../view";
 class UserMenuComponent extends HTMLElement {
   /** Controller */
   private controller: AbortController | null = null;
-  /** the starred posts button  */
+  /** the starred posts button */
   private starredPostsButton: HTMLElement;
   /** logout button */
   private logoutButton: HTMLElement | null;

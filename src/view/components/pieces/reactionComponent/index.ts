@@ -3,7 +3,7 @@ import { ReactionUpdateEvent, StateName } from "../../../datatypes";
 import escapeString from "../../../utils";
 import { getView } from "../../../view";
 
-// Reactions can only one of the four defined reactions types.
+/** Reactions can only one of the four defined reactions types. */ 
 type reactions = "smile" | "frown" | "like" | "celebrate";
 
 /** ReactionComponent is reaction buttons for posts. When a user clicks on it, a

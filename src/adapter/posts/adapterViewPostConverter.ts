@@ -32,6 +32,12 @@ function convertReactions(postResponse: PostResponse): ReactionData {
   }
 }
 
+/**
+ * Returns an extension response that is compatible with our view. In particular,
+ * initializes our extension to map to an empty array if it does not yet exist.
+ * @param postResponse an object representing the JSON response received by the model
+ * @returns a StarExtension object, mapping our extension name to an empty array of usernames who have starred the post.
+ */
 function convertExtensions(postResponse: PostResponse): StarExtension {
   if (postResponse.doc.extensions === undefined) {
     return {

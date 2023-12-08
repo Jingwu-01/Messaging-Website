@@ -3,15 +3,13 @@ import { StateName } from "../../../../datatypes";
 import { getView } from "../../../../view";
 import PostComponent from "../postComponent";
 
+/** A function that returns a string */
 type StringFunction = () => string;
 
 /**
  * PostEditor component is a post editor that allows users to add a post.
  */
 export class PostEditor extends HTMLElement {
-  // TODO: can definitely add abortcontroller for event handlers and
-  // 'deregistering' the event handlers here.
-
   /** Controller */
   private controller: AbortController | null = null;
 
