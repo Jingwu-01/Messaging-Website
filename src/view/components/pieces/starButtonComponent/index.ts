@@ -173,7 +173,7 @@ class StarButtonComponent extends HTMLElement {
    * @param state The piece of the state that is loading.
    */
   onLoading(state: StateName) {
-    if (state == "channels" || state == "user" || state == "workspaces") {
+    if (state === "channels" || state === "user" || state === "workspaces") {
       this.starButton.setAttribute("disabled", "");
     }
   }
@@ -183,7 +183,7 @@ class StarButtonComponent extends HTMLElement {
    * @param state The piece of the state that is finished loading.
    */
   onEndLoading(state: StateName) {
-    if (state == "channels" || state == "user" || state == "workspaces") {
+    if (state === "channels" || state === "user" || state === "workspaces") {
       this.starButton.removeAttribute("disabled");
     }
   }

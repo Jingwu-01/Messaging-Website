@@ -25,7 +25,7 @@ export class ChannelSidebar extends HTMLElement {
   private refreshChannelsButton: HTMLElement;
 
   /**
-   * Constructor for the channel side bar component. 
+   * Constructor for the channel side bar component.
    */
   constructor() {
     super();
@@ -187,7 +187,7 @@ export class ChannelSidebar extends HTMLElement {
    * @param state StateName
    */
   onLoading(state: StateName) {
-    if (state == "channels" || state == "posts") {
+    if (state === "channels" || state === "posts" || state === "user") {
       this.channelList.querySelectorAll("button").forEach((button) => {
         button.disabled = true;
       });
@@ -199,7 +199,7 @@ export class ChannelSidebar extends HTMLElement {
    * @param state StateName
    */
   onEndLoading(state: StateName) {
-    if (state == "channels" || state == "posts") {
+    if (state === "channels" || state == "posts" || state === "user") {
       this.channelList.querySelectorAll("button").forEach((button) => {
         button.disabled = false;
       });

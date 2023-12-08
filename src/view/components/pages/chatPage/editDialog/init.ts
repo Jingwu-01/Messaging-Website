@@ -50,13 +50,14 @@ export default function editDialogComponentInit() {
         <input type="text" id="add-item-input" arial-label="Your input"/>
         <loading-button-component 
           id="add-item-button"
+          disable-if-state-loading="user"
         >
           <span slot="content">
             Add
           </span>
         </loading-button-component>
       </section>
-      <loading-button-component disable-if-state-loading="workspaces channels" id="save-and-close-button">
+      <loading-button-component disable-if-state-loading="workspaces channels user" id="save-and-close-button">
         <span slot="content">
           Save and Close
         </span>
