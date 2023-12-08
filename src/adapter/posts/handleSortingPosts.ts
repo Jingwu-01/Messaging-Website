@@ -3,7 +3,7 @@
  */
 
 import { slog } from "../../slog";
-import { StarOps } from "../../state-manager/utils";
+import { StarOps } from "../../state-manager/postsManager";
 import { AdapterPost } from "./adapterPost";
 
 /**

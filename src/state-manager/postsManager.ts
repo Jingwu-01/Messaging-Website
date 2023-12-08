@@ -1,4 +1,3 @@
-import getStateManager from ".";
 import { CreateResponse } from "../../types/createResponse";
 import { PostResponse } from "../../types/postResponse";
 import { AdapterPost } from "../adapter/posts/adapterPost";
@@ -8,12 +7,17 @@ import {
   insertStarredPostSorted,
   removePostSorted,
 } from "../adapter/posts/handleSortingPosts";
+import { StateManagerInterface, ViewInterface } from "../interfaces";
 import { slog } from "../slog";
 import { CreatePostEvent, ViewPostUpdate } from "../view/datatypes";
 import { getView } from "../view/view";
-import { StarOps, isRespPostStarred } from "./utils";
 
 export class PostsManager {
+
+  private view: ViewInterface;
+
+  private stateManager: StateManagerInterface;
+
   private adapterPosts: Map<string, AdapterPost> = new Map<
     string,
     AdapterPost
@@ -28,9 +32,14 @@ export class PostsManager {
 
   private starredPosts: Array<AdapterPost> = new Array<AdapterPost>();
 
+  constructor(view: ViewInterface, stateManager: StateManagerInterface) {
+    this.view = view;
+    this.stateManager = stateManager;
+  }
+
   createPost(postData: CreatePostEvent) {
     // TODO: consider if we want to enforce that a channel are open in order to send a message?
-    let channel = getStateManager().getOpenChannel();
+    let channel = this.getStateManager().getOpenChannel();
     if (channel === null) {
       throw new Error("Cannot add a post: no open channel");
     }
@@ -124,10 +133,10 @@ export class PostsManager {
   verifyAlivePost(newPost: AdapterPost): [boolean, string] {
     let postWorkspace = newPost.getWorkspaceName();
     let postChannel = newPost.getChannelName();
-    if (postWorkspace !== getStateManager().getOpenWorkspaceName()) {
+    if (postWorkspace !== this.getStateManager().getOpenWorkspaceName()) {
       return [false, "post workspace is invalid"];
     }
-    if (postChannel !== getStateManager().getOpenChannelName()) {
+    if (postChannel !== this.getStateManager().getOpenChannelName()) {
       return [false, "post channel is invalid"];
     }
     return [true, ""];
@@ -207,17 +216,47 @@ export class PostsManager {
   ): [number, StarOps] {
     // slog.info("insertStarredPost", ["exists", exists], ["isRespPostStarred(adapterPost)", isRespPostStarred(adapterPost)], ["adapterPost.getStarred()", adapterPost.getStarred()]);
     if (exists) {
-      if (isRespPostStarred(adapterPost)) {
+      if (this.isRespPostStarred(adapterPost)) {
         return insertStarredPostSorted(this.starredPosts, adapterPost);
       } else {
         return removePostSorted(this.starredPosts, adapterPost);
       }
     } else {
-      if (isRespPostStarred(adapterPost)) {
+      if (this.isRespPostStarred(adapterPost)) {
         return insertStarredPostSorted(this.starredPosts, adapterPost);
       } else {
         return [-2, "nop"];
       }
     }
   }
+
+  /**
+   * Returns the view that this posts manager updates.
+   * @returns the view interface that this state manager updates with posts..
+   */
+  getView() {
+    return this.view;
+  }
+
+  /**
+   * Returns the state manager that this posts manager needs information from;
+   * specifically, the currently open workspace and channel name.
+   * @returns the state manager interface that this posts manager requests information from.
+   */
+  getStateManager() {
+    return this.stateManager;
+  }
+
+  isRespPostStarred(adapterPost: AdapterPost): boolean {
+    let usersStarred = adapterPost.getUsersStarred();
+    let loggedInUser = this.getStateManager().getLoggedInUser();
+    if (loggedInUser === null) {
+      // this should never happen. enforce that user, ws, and channel have null equivalence.
+      slog.error("isRespPostStarred: loggedInUser is null but this should be impossible");
+      return false;
+    }
+    return usersStarred.includes(loggedInUser);
+  }
 }
+
+export type StarOps = "modify" | "insert" | "delete" | "nop";
