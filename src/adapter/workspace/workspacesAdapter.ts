@@ -7,7 +7,6 @@ import { slog } from "../../slog";
 import {
   CreateWorkspaceEvent,
   DeleteWorkspaceEvent,
-  RefreshChannelsEvent,
   RefreshWorkspacesEvent,
   SelectWorkspaceEvent,
 } from "../../view/datatypes";

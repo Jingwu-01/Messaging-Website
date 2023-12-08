@@ -26,9 +26,6 @@ export class PostComponent extends HTMLElement {
   /** Container of post buttons */
   private postButtons: HTMLElement;
 
-  /** Post user */
-  private postUser: string | undefined;
-
   /** Reply button of the post */
   private replyButton: ReplyButtonComponent;
 

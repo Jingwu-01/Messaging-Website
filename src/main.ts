@@ -15,7 +15,7 @@ import {
 } from "./view/datatypes";
 import { LoginEvent } from "./view/datatypes";
 import { initView } from "./view/init";
-import { ModelPostEvent, PostsEvent } from "./model/modelTypes";
+import { ModelPostEvent } from "./model/modelTypes";
 import { setupBasicApp } from "../tests/setup-additional-state";
 import { ModelInterface, StateManagerInterface, ViewInterface } from "./interfaces";
 import { getView } from "./view/view";
@@ -39,7 +39,6 @@ declare const process: {
  */
 declare global {
   interface DocumentEventMap {
-    postsEvent: CustomEvent<PostsEvent>;
     loginEvent: CustomEvent<LoginEvent>;
     logoutEvent: CustomEvent<LogoutEvent>;
     workspaceSelected: CustomEvent<SelectWorkspaceEvent>;
