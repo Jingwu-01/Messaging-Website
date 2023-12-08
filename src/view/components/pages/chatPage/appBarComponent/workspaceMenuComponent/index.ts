@@ -2,7 +2,7 @@ import { ViewWorkspace, ViewWorkspaceUpdate } from "../../../../../datatypes";
 import { getView } from "../../../../../view";
 
 /**
- *  WorkspaceMenu Component displays the workspaces. 
+ *  WorkspaceMenu Component displays the workspaces.
  */
 class WorkspaceMenuComponent extends HTMLElement {
   /** The workspace menu. */
@@ -106,7 +106,7 @@ class WorkspaceMenuComponent extends HTMLElement {
       } else {
         workspaces.forEach((workspace, i) => {
           new_inner_html += `
-          <loading-button-component disable-if-state-loading="workspaces" id="workspace-select-${i}" class="workspace-select" style="background: none; border: none;" >
+          <loading-button-component disable-if-state-loading="workspaces user" id="workspace-select-${i}" class="workspace-select" style="background: none; border: none;" >
             <p slot="content">${workspace.name}</p>
           </loading-button-component>
           `;
