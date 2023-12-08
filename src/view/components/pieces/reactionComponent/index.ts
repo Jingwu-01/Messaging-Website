@@ -201,7 +201,6 @@ class ReactionComponent extends HTMLElement {
       this.count = numReactionCount;
       this.setCount(numReactionCount);
     } else if (name === "reacted") {
-      // TODO: compare to the old values, and maybe unfreeze the button.
       if (newValue === "true") {
         this.reactionButton.classList.add("reacted");
       } else {

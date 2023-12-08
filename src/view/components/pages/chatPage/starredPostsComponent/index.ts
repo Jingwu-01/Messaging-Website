@@ -38,7 +38,6 @@ export class StarredPosts extends HTMLElement {
     this.shadowRoot.append(template.content.cloneNode(true));
 
     let postsContainer = this.shadowRoot.querySelector("#posts-container");
-    // TODO: think about if you even want/need starredPostsWrapper?
     let starredPostsWrapper = this.shadowRoot.querySelector(
       "#starredposts-wrapper"
     );
