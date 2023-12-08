@@ -25,9 +25,9 @@ export type ViewPost = {
   /** post message */
   msg: string;
   /** reaction info  */
-  reactions: ReactionData; // TODO: should be an array of strings? or custom reactions objects based on what we want?
+  reactions: ReactionData;
   /** extension info */
-  extensions: StarExtension; // TODO: see above for 'reactions'
+  extensions: StarExtension;
   /** created by username */
   createdUser: string;
   /** post time of post */
@@ -202,7 +202,6 @@ export type DeleteChannelEvent = {
 /**
  * Sent to the Adapter when a post is reacted to
  */
-// TODO: use composition of ReactionUpdateEvent and StarUpdateEvent?
 export type ReactionUpdateEvent = {
   /** name of the reaction */
   reactionName: string | undefined;

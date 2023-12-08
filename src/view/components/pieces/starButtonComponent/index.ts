@@ -149,7 +149,6 @@ class StarButtonComponent extends HTMLElement {
    */
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     if (name === "reacted") {
-      // TODO: compare to old values and stuff
       if (newValue === "true") {
         this.starButton.classList.add("reacted");
       } else {

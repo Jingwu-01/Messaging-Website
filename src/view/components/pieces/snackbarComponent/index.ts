@@ -49,10 +49,6 @@ class SnackbarComponent extends HTMLElement {
       this.close();
     });
     // Auto-close snackbar after timeout
-    // TODO: next meeting, talk about whether we need this or not.
-    // setTimeout(() => {
-    //   this.close();
-    // }, 5000);
   }
 
   /**
