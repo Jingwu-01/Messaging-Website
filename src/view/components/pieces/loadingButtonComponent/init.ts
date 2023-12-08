@@ -13,9 +13,6 @@ export default function loadingButtonComponentInit() {
     background-color: #add8e6;
     border-radius: 15px;
   }
-   #outer-button{
-     border: 0px; 
-   }
   #outer-button:hover {
     background-color: #818589;
   }
