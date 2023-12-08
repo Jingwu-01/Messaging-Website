@@ -5,7 +5,12 @@
 import { PostResponse } from "../../../types/postResponse";
 import { slog } from "../../slog";
 import { insertPostSorted } from "./handleSortingPosts";
-import { validateExtension, validateParentPath, validatePostPath } from "./dataValidation";
+import { ExtensionResponse } from "../../../types/extensionResponse";
+import {
+  validateExtension,
+  validateParentPath,
+  validatePostPath,
+} from "./dataValidation";
 
 /**
  * This class is the adapter's representation of a post. The adapter takes care of two primary
@@ -48,10 +53,11 @@ export class AdapterPost {
    * @param response a PostResponse object representing the JSON that is returned by the model.
    */
   constructor(response: PostResponse) {
-    // console.log(`AdapterPost constructor: response.path: ${response.path}`);
-    // console.log(`AdapterPost constructor: response.path.split("/"): ${response.path.split("/")}`);
-    // console.log(`AdapterPost constructor: response.path.split("/").pop(): ${response.path.split("/").pop()}`);
-    slog.info("AdapterPost constructor: top of func call", ["response", response.path], ["response.path", response.path]);
+    slog.info(
+      "AdapterPost constructor: top of func call",
+      ["response", response.path],
+      ["response.path", response.path]
+    );
     let postPathArr = validatePostPath(response.path);
     // Set the name, workspace name, and channel name for the post.
     this.name = postPathArr[5];

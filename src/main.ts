@@ -16,7 +16,6 @@ import {
 import { LoginEvent } from "./view/datatypes";
 import { initView } from "./view/init";
 import { ModelPostEvent } from "./model/modelTypes";
-import { setupBasicApp } from "../tests/setup-additional-state";
 import { ModelInterface, StateManagerInterface, ViewInterface } from "./interfaces";
 import { getView } from "./view/view";
 import { getModel } from "./model/model";
@@ -35,7 +34,7 @@ declare const process: {
 
 // TODO: can you declare a global in both the model AND the view?
 /**
- * Defines all the custom events that are used. 
+ * Defines all the custom events that are used.
  */
 declare global {
   interface DocumentEventMap {
@@ -50,7 +49,7 @@ declare global {
     channelDeleted: CustomEvent<DeleteChannelEvent>;
     createPostEvent: CustomEvent<CreatePostEvent>;
     modelPostEvent: CustomEvent<ModelPostEvent>;
-    refreshWorkspaces: CustomEvent<RefreshWorkspacesEvent>;
+    refreshorkspaces: CustomEvent<RefreshWorkspacesEvent>;
     refreshChannels: CustomEvent<RefreshChannelsEvent>;
   }
 }
@@ -63,16 +62,6 @@ function main(): void {
     "database",
     `${process.env.DATABASE_HOST}${process.env.DATABASE_PATH}`,
   ]);
-  // Initialize a model for testing purposes
-  // TODO: change later when I figure out how to use jest
-
-  // const model = getModel();
-  // testUpdatePosts(model);
-
-  // Set up test DB.
-  // TODO: Remove before submitting
-  // setupTestDb();
-  setupBasicApp();
 
   const view: ViewInterface = getView();
   const model: ModelInterface = getModel();

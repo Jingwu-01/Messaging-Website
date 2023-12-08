@@ -48,7 +48,6 @@ export class OwlDBModel {
    * @returns a Promise resolving to requested datatype T
    */
   async typedModelFetch<T>(url: string, options?: RequestInit): Promise<T> {
-    // console.log(`typedModelFetch: this.token: ${this.token}`)
     if (!options) {
       options = {};
     }
@@ -76,7 +75,6 @@ export class OwlDBModel {
    * @returns an empty Promise
    */
   async emptyModelFetch(url: string, options?: RequestInit): Promise<void> {
-    // console.log(`typedModelFetch: this.token: ${this.token}`)
     if (!options) {
       options = {};
     }
