@@ -7,8 +7,9 @@ export class AppBarComponent extends HTMLElement {
    */
   constructor() {
     super();
-
     this.attachShadow({ mode: "open" });
+
+    // Set up the template. 
     let template = document.querySelector<HTMLTemplateElement>(
       "#app-bar-component-template",
     );

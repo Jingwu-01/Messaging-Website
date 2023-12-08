@@ -15,8 +15,9 @@ class WorkspaceMenuComponent extends HTMLElement {
    */
   constructor() {
     super();
-
     this.attachShadow({ mode: "open" });
+
+    // Set up the template. 
     let template = document.querySelector<HTMLTemplateElement>(
       "#workspace-menu-component-template"
     );
@@ -25,12 +26,14 @@ class WorkspaceMenuComponent extends HTMLElement {
     }
     this.shadowRoot?.append(template.content.cloneNode(true));
 
+    // Set up menu. 
     let menu_query = this.shadowRoot?.querySelector("#menu");
     if (!(menu_query instanceof HTMLElement)) {
       throw Error("Could not find element #menu");
     }
     this.menu = menu_query;
 
+    // Set the refresh button. 
     let refresh_workspaces_button_query = this.shadowRoot?.querySelector(
       "#refresh-workspaces-button"
     );

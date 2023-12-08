@@ -29,9 +29,9 @@ export class ChannelSidebar extends HTMLElement {
    */
   constructor() {
     super();
-
     this.attachShadow({ mode: "open" });
 
+    // Set up template. 
     let template = document.querySelector(
       "#channel-sidebar-component-template"
     );
@@ -45,25 +45,23 @@ export class ChannelSidebar extends HTMLElement {
         "could not find shadow DOM root for channeldisplay element in constructor"
       );
     }
-
     this.shadowRoot.append(template.content.cloneNode(true));
 
+    // Set up channel list. 
     let channelList = this.shadowRoot.querySelector("#channel-list");
-
     if (!(channelList instanceof HTMLElement)) {
       throw Error("Could not find an element with the channel-container id");
     }
-
     this.channelList = channelList;
 
+    // Set up button wrapper. 
     let button_wrapper_query = this.shadowRoot.querySelector("#button-wrapper");
-
     if (!(button_wrapper_query instanceof HTMLElement)) {
       throw Error("Could not find an element with the button-wrapper id");
     }
-
     this.buttonWrapper = button_wrapper_query;
 
+    // Set up refresh channels button. 
     let refresh_channels_button_query = this.shadowRoot.querySelector(
       "#refresh-channels-button"
     );
@@ -144,6 +142,7 @@ export class ChannelSidebar extends HTMLElement {
     const channels = update.allChannels;
     slog.info("displayChannels", ["channels", `${JSON.stringify(channels)}`]);
     this.channelList.innerHTML = "";
+    // Add each channel in the workspace as a button and add click event listeners. 
     channels.forEach((channel, idx) => {
       let channelListEl = document.createElement("button");
       channelListEl.id = "channel-select-" + idx;

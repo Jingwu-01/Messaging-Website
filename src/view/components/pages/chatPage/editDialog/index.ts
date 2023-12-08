@@ -38,8 +38,9 @@ export class EditDialogComponent extends HTMLElement {
    */
   constructor() {
     super();
-
     this.attachShadow({ mode: "open" });
+
+    // Set up template 
     let template = document.querySelector<HTMLTemplateElement>(
       "#edit-dialog-component-template"
     );
@@ -98,10 +99,12 @@ export class EditDialogComponent extends HTMLElement {
    * When connected, add click listeners to add item button and close button.
    */
   connectedCallback(): void {
+    // Click event listener for add item button 
     this.addItemButton.addEventListener("click", () => {
       this.onAdd(this.addItemInput.value);
     });
 
+    // Click event listener for save and close button
     this.saveAndCloseButton.addEventListener("click", () => {
       this.close();
     });
