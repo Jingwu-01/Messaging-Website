@@ -46,6 +46,15 @@ export class ModelWorkspace {
   }
 
   /**
+   * Removes the channel with the specified name
+   * @param channel_name
+   * @returns
+   */
+  async removeChannel(channel_name: string): Promise<void> {
+    return getModel().removeChannel(`${this.path}/channels/${channel_name}`);
+  }
+
+  /**
    * Gets the name of this workspace.
    * @returns a string representing the name of this workspace.
    */
