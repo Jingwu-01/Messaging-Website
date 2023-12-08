@@ -8,11 +8,11 @@ import StarButtonComponent from "../../../pieces/starButtonComponent";
 import { PostEditor } from "../postEditorComponent";
 
 /**
- * PostComponent displays the content of an individual post. 
+ * PostComponent displays the content of an individual post.
  */
 export class PostComponent extends HTMLElement {
   /** Container of everthing of the post */
-  private postAll: HTMLElement; 
+  private postAll: HTMLElement;
 
   /** Container of post header */
   private postHeader: HTMLElement;
@@ -48,13 +48,13 @@ export class PostComponent extends HTMLElement {
   private starButton: StarButtonComponent;
 
   /**
-   * Constructor for the post component. 
+   * Constructor for the post component.
    */
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
 
-    // Set up template and clone 
+    // Set up template and clone
     let template = document.querySelector("#post-template");
     if (!(template instanceof HTMLTemplateElement)) {
       throw Error("post template was not found");
@@ -64,7 +64,7 @@ export class PostComponent extends HTMLElement {
     }
     this.shadowRoot.append(template.content.cloneNode(true));
 
-    // Set up the private fields elements. 
+    // Set up the private fields elements.
     let postHeader = this.shadowRoot.querySelector("#post-header");
     let postBody = this.shadowRoot.querySelector("#post-body");
     let postButtons = this.shadowRoot.querySelector("#post-buttons");
@@ -79,14 +79,14 @@ export class PostComponent extends HTMLElement {
     if (!(postButtons instanceof HTMLElement)) {
       throw new Error("Could not find an element with the #post-buttons id");
     }
-    if (!(postAll instanceof HTMLElement)){
-      throw new Error("cannot find #post-all HTMLElement")
-    } 
+    if (!(postAll instanceof HTMLElement)) {
+      throw new Error("cannot find #post-all HTMLElement");
+    }
 
     this.postHeader = postHeader;
     this.postBody = postBody;
     this.postButtons = postButtons;
-    this.postAll = postAll
+    this.postAll = postAll;
 
     let starButton = new StarButtonComponent();
     this.postHeader.append(starButton);
@@ -113,8 +113,8 @@ export class PostComponent extends HTMLElement {
     }
   }
 
-  /** 
-   * When connected, add listener to add reply 
+  /**
+   * When connected, add listener to add reply
    */
   connectedCallback() {
     this.controller = new AbortController();
@@ -129,7 +129,7 @@ export class PostComponent extends HTMLElement {
   }
 
   /**
-   * observe the starred attribute. 
+   * observe the starred attribute.
    */
   static get observedAttributes(): string[] {
     return ["starred"];
@@ -156,7 +156,7 @@ export class PostComponent extends HTMLElement {
   }
 
   /**
-   * Move the post editor under the correct post when reply is clicked. 
+   * Move the post editor under the correct post when reply is clicked.
    * @param event MouseEvent
    */
   addReplyPostEditor(event: MouseEvent) {
@@ -177,8 +177,6 @@ export class PostComponent extends HTMLElement {
     // TODO: obviously can add more functionality here later as needed.
     slog.info("addPostContent: top of func call", ["viewPost", viewPost]);
     this.postPath = viewPost.path;
-    console.log("Posting the msg: " + viewPost.msg);
-    // this.postBody.innerText = this.formatText(viewPost.msg)
     this.appendFormattedText(escapeString(viewPost.msg), this.postBody);
     this.postMsg = viewPost.msg;
     let postUserText = this.postHeader.querySelector("#post-user-text");
@@ -265,7 +263,7 @@ export class PostComponent extends HTMLElement {
   }
 
   /**
-   * append the post editor to the bottom of the page. 
+   * append the post editor to the bottom of the page.
    * @param postEditor PostEditor
    */
   appendPostEditor(postEditor: PostEditor) {
@@ -342,7 +340,7 @@ export class PostComponent extends HTMLElement {
   /**
    * Update the reactions based on received ReactionData
    * @param reactionData ReactionData
-   * @returns nothing 
+   * @returns nothing
    */
   updateReactions(reactionData: ReactionData) {
     let currentUsername: string;
@@ -378,7 +376,7 @@ export class PostComponent extends HTMLElement {
   /**
    * update the extensions based on received StarExtension
    * @param extensionData StarExtension
-   * @returns nothing 
+   * @returns nothing
    */
   updateExtensions(extensionData: StarExtension) {
     let currentUsername: string;
@@ -401,27 +399,27 @@ export class PostComponent extends HTMLElement {
   }
 
   /**
-   * get post text of the post. 
-   * @returns string for the post message 
+   * get post text of the post.
+   * @returns string for the post message
    */
   getPostText() {
     return this.postMsg;
   }
 
   /**
-   * highlight a post that the user is replying to 
+   * highlight a post that the user is replying to
    */
   highlight() {
-    this.postAll.style.backgroundColor = "#d9d9d9"; 
-    this.postAll.style.borderRadius = "5px"; 
+    this.postAll.style.backgroundColor = "#d9d9d9";
+    this.postAll.style.borderRadius = "5px";
   }
 
   /**
-   * unhighly a post that the user is no longer replying to 
+   * unhighly a post that the user is no longer replying to
    */
   unhighlight() {
-    this.postAll.style.backgroundColor = "transparent"; 
-    this.postAll.style.borderRadius = "0px"; 
+    this.postAll.style.backgroundColor = "transparent";
+    this.postAll.style.borderRadius = "0px";
   }
 }
 

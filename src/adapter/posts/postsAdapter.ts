@@ -116,7 +116,6 @@ export class PostsAdapter {
       evt.detail.post.meta.lastModifiedBy ===
       this.getStateManager().getLoggedInUser()
     ) {
-      console.log("reaction updated!");
       this.eventsWaitingOnPostUpdate.forEach((evt) => {
         if (!success) {
           this.getView().failEvent(evt, message);
