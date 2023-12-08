@@ -5,7 +5,6 @@
 import { PostResponse } from "../../../types/postResponse";
 import { slog } from "../../slog";
 import { insertPostSorted } from "./handleSortingPosts";
-import { ExtensionResponse } from "../../../types/extensionResponse";
 import {
   validateExtension,
   validateParentPath,
