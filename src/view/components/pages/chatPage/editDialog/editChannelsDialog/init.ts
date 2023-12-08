@@ -1,7 +1,7 @@
 import { EditChannelsDialogComponent } from ".";
 
 /**
- * Initialize the EditChannelsDialog component
+ * Initialize the EditChannelsDialog component and register the custom element.
  */
 export default function editChannelsDialogComponentInit() {
   customElements.define(

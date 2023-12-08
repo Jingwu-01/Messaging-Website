@@ -127,7 +127,7 @@ export class StarredPosts extends HTMLElement {
     connectedCallback() {
         slog.info("PostDisplay: connectedCallback was called");
         getView().addPostListener(this);
-        getView().addChannelListener(this)
+        getView().addPostDisplayListener(this);
         this.controller = new AbortController();
         const options = { signal: this.controller.signal };
         this.closeButton.addEventListener(
@@ -139,6 +139,7 @@ export class StarredPosts extends HTMLElement {
     disconnectedCallback() {
         slog.info("PostDisplay: disconnectedCallback was called");
         getView().removePostListener(this);
+        getView().removePostDisplayListener(this);
     }
 
     moveReplyPostEditorTo(postEl: PostComponent) {
@@ -154,12 +155,12 @@ export class StarredPosts extends HTMLElement {
         this.postsDialog.showModal(); 
     }
 
-    displayChannels(channels: ViewChannelUpdate) {
-
+    displayPostDisplay() {
+        this.postsContainer.innerHTML = "";
     }
 
-    displayOpenChannel(channel: ViewChannel | null) {
-        this.postsContainer.innerHTML = ""
+    removePostDisplay() {
+        this.postsContainer.innerHTML = "";
     }
     
 }

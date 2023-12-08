@@ -1,7 +1,7 @@
 import WorkspaceMenuComponent from ".";
 
 /**
- * Initializes the workspace component HTML.
+ * Initializes the workspace component HTML and register the custom element.
  */
 export default function workspaceMenuComponentInit() {
   document.body.insertAdjacentHTML(
@@ -41,6 +41,7 @@ export default function workspaceMenuComponentInit() {
     }
     edit-dialog-component:active {
       background-color: #0f2831; 
+      border-radius: 3px 3px 3px 3px;
     }
     p:hover {
       background-color: #3896b7; 
@@ -48,6 +49,7 @@ export default function workspaceMenuComponentInit() {
     }
     p:active {
       background-color: #0f2831; 
+      border-radius: 3px 3px 3px 3px;
     }
     #center-button {
       background: none;

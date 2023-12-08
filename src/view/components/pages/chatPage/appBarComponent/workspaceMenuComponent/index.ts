@@ -67,15 +67,14 @@ class WorkspaceMenuComponent extends HTMLElement {
   }
 
   /**
-   * When disconnected, do the following thing.
+   * When disconnected, remove the workspace listener. 
    */
   disconnectedCallback(): void {
-    // The browser calls this when the element is removed from a document.
     // TODO remove workspace listener.
   }
 
   /**
-   * Called by view whenever there is a change in the open workspace
+   * Called by view whenever there is a change in the open workspace. 
    */
   displayOpenWorkspace(workspace: ViewWorkspace | null) {
     // update the displayed open workspace
@@ -91,7 +90,7 @@ class WorkspaceMenuComponent extends HTMLElement {
   }
 
   /**
-   * called by view whenever there is a change in the workspaces
+   * Called by view whenever there is a change in the workspaces
    * create text for all of the workspaces and display them
    */
   displayWorkspaces(update: ViewWorkspaceUpdate) {

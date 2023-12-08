@@ -1,8 +1,4 @@
-import {
-  ViewChannel,
-  ViewChannelUpdate,
-  ViewUser,
-} from "../../../../../datatypes";
+import { ViewUser } from "../../../../../datatypes";
 import { getView } from "../../../../../view";
 
 /**
@@ -22,9 +18,10 @@ class UserMenuComponent extends HTMLElement {
    */
   constructor() {
     super();
-
     this.attachShadow({ mode: "open" });
-    let template = document.querySelector<HTMLTemplateElement>(
+
+    // Find the template and make a clone. 
+    const template = document.querySelector<HTMLTemplateElement>(
       "#user-menu-component-template"
     );
     if (!template) {
@@ -32,6 +29,7 @@ class UserMenuComponent extends HTMLElement {
     }
     this.shadowRoot?.append(template.content.cloneNode(true));
 
+    // Define starred posts button 
     const starredPostsButton = this.shadowRoot?.querySelector(
       "#my-starred-posts-button"
     );
@@ -41,6 +39,7 @@ class UserMenuComponent extends HTMLElement {
       this.starredPostsButton = starredPostsButton;
     }
 
+    // Define logout button 
     const logoutButton = this.shadowRoot?.querySelector("#logout-button");
     if (!(logoutButton instanceof HTMLElement)) {
       throw Error("cannot find #logout-button HTMLElement");
@@ -50,13 +49,13 @@ class UserMenuComponent extends HTMLElement {
   }
 
   /**
-   * When UserMenuComponent is added to a document, this is called.
+   * When UserMenuComponent is added to a document, add click event listeners and add user and post display listeners. 
    */
   connectedCallback(): void {
-    // Tell the view that this component wants to listen to user updates
+    // Tell the view that this component wants to listen to user and post display updates
     this.starredPostsButton.style.display = "none";
     getView().addUserListener(this);
-    getView().addChannelListener(this);
+    getView().addPostDisplayListener(this);
 
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
@@ -77,16 +76,17 @@ class UserMenuComponent extends HTMLElement {
   }
 
   /**
-   * When disconnected, abort the controller.
+   * When disconnected, abort the controller and remove the post display listener.
    */
   disconnectedCallback(): void {
     this.controller?.abort();
     this.controller = null;
+    getView().removePostDisplayListener(this);
   }
 
   /**
    * Handles the logout request by sending a logout event.
-   * @param event Mousevent of clicking
+   * @param event Mousevent of clicking loggout button
    */
   handleLogout(event: MouseEvent) {
     event.preventDefault();
@@ -97,27 +97,16 @@ class UserMenuComponent extends HTMLElement {
   }
 
   /**
-   * Handles the show starred posts by ask the view to get the starred posts component and display the dialog.
-   * @param event Mousevent of clicking
+   * Handles the show starred posts by asking the view to get the starred posts component and display the dialog.
+   * @param event Mousevent of clicking my starred posts button
    */
   handleStarredPosts(event: MouseEvent) {
     event.preventDefault();
     getView().openDialog("starred-posts-dialog");
   }
 
-  static get observedAttributes(): Array<string> {
-    // Attributes to observe
-    return [];
-  }
-
-  attributeChangedCallback(
-    name: string,
-    oldValue: string,
-    newValue: string
-  ): void {}
-
   /**
-   * called by view whenever there is a change in the logged-in user
+   * Called by view whenever there is a change in the logged-in user
    * @param user a VierUser that contains username or null
    */
   displayUser(user: ViewUser | null) {
@@ -128,14 +117,18 @@ class UserMenuComponent extends HTMLElement {
     }
   }
 
-  displayChannels(update: ViewChannelUpdate) {}
+  /**
+   * Display the my starred posts button. 
+   */
+  displayPostDisplay() {
+    this.starredPostsButton.style.display = "block";
+  }
 
-  displayOpenChannel(open_channel: ViewChannel | null) {
-    if (open_channel === null) {
-      this.starredPostsButton.style.display = "none";
-    } else {
-      this.starredPostsButton.style.display = "block";
-    }
+  /**
+   * Remove the my starred posts button. 
+   */
+  removePostDisplay() {
+    this.starredPostsButton.style.display = "none";
   }
 }
 

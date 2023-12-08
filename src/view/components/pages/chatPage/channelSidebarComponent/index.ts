@@ -24,6 +24,9 @@ export class ChannelSidebar extends HTMLElement {
   /** Refresh channel button */
   private refreshChannelsButton: HTMLElement;
 
+  /**
+   * Constructor for the channel side bar component. 
+   */
   constructor() {
     super();
 

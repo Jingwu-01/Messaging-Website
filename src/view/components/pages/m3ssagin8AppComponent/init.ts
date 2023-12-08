@@ -1,7 +1,7 @@
 import M3ssagin8AppComponent from ".";
 
 /**
- * Initialize the html template for the messageApp component
+ * Initialize the html template for the messageApp component and register it. 
  */
 function m3ssagin8AppComponentInit() {
   document.body.insertAdjacentHTML(

@@ -15,6 +15,7 @@ export default function replyButtonComponentInit() {
         height: 30px;
         border-radius: 3px 3px 3px 3px;
         margin-right: 10px;
+        margin-top: 1px
       }
       button:hover {
         background-color: #818589;
