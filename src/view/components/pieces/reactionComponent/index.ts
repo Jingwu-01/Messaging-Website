@@ -4,7 +4,7 @@ import escapeString from "../../../utils";
 import { getView } from "../../../view";
 
 /** Reactions can only one of the four defined reactions types. */ 
-type reactions = "smile" | "frown" | "like" | "celebrate";
+export type reactions = "smile" | "frown" | "like" | "celebrate";
 
 /** ReactionComponent is reaction buttons for posts. When a user clicks on it, a
  * reaction will be added or removed.
@@ -239,3 +239,4 @@ class ReactionComponent extends HTMLElement {
 }
 
 export default ReactionComponent;
+

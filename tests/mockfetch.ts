@@ -1,48 +1,63 @@
+import { jest } from "@jest/globals";
 import { slog } from "../src/slog";
 
 function getDocumentResult(docName: string, doc: string, databasePath: string, username: string, createdAt: number, lastModifiedAt: number, prefixPath: string): string {
     return `{
-        "path": ${databasePath}${prefixPath}/${docName},
+        "path": "${databasePath}${prefixPath}/${docName}",
         "doc": ${doc},
         "meta": {
             "createdAt": ${createdAt.toString()},
-            "createdBy": ${username},
-            "lastModifiedAt": 1701827861753,
-            "lastModifiedBy": ${lastModifiedAt.toString()}
+            "createdBy": "${username}",
+            "lastModifiedAt": ${lastModifiedAt.toString()},
+            "lastModifiedBy": "${username}"
         }
     }`
 }
 
-function stringAdditionHelper(keyName: string, dataPair: [string, boolean]) {
+function stringAdditionHelper(keyName: string, dataPair: [string, boolean], last: boolean) {
     if (dataPair[1]) {
-        return `${keyName}: ${dataPair[0]}`;
+        if (last) {
+            return `"${keyName}": ${dataPair[0]}`;
+        } else {
+            return `"${keyName}": ${dataPair[0]},`;
+        }
     } else {
         return '';
     }
 }
 
 function getReactionObject(smile: [string, boolean], frown: [string, boolean], like: [string, boolean], celebrate: [string, boolean], additionalReaction: [string, string, boolean]) {
-    return `{
-        ${stringAdditionHelper("smile", smile)},
-        ${stringAdditionHelper("frown", frown)},
-        ${stringAdditionHelper("like", like)},
-        ${stringAdditionHelper("celebrate", celebrate)},
-        ${stringAdditionHelper(additionalReaction[0], [additionalReaction[1], additionalReaction[2]])}
-    }`;
+    if (!additionalReaction[2]) {
+        return `{
+            ${stringAdditionHelper("smile", smile, false)}
+            ${stringAdditionHelper("frown", frown, false)}
+            ${stringAdditionHelper("like", like, false)}
+            ${stringAdditionHelper("celebrate", celebrate, true)}
+        }`
+    } else {
+        return `{
+            ${stringAdditionHelper("smile", smile, false)}
+            ${stringAdditionHelper("frown", frown, false)}
+            ${stringAdditionHelper("like", like, false)}
+            ${stringAdditionHelper("celebrate", celebrate, false)}
+            ${stringAdditionHelper(additionalReaction[0], [additionalReaction[1], additionalReaction[2]], true)}
+        }`;
+    }
+
 }
 
 function getExtensionObject(p2group50: [string, boolean]) {
     return `{
-        ${stringAdditionHelper("p2group50", p2group50)}
+        ${stringAdditionHelper("p2group50", p2group50, true)}
     }`;
 }
 
 function getPostBody(message: string, parent: [string, boolean], reactions: [string, boolean], extensions: [string, boolean]) {
     return `{
         message: ${message},
-        ${stringAdditionHelper("parent", parent)},
-        ${stringAdditionHelper("reactions", reactions)},
-        ${stringAdditionHelper("extensions", extensions)}
+        ${stringAdditionHelper("parent", parent, false)},
+        ${stringAdditionHelper("reactions", reactions, false)},
+        ${stringAdditionHelper("extensions", extensions, true)}
     }`;
 }
 
@@ -58,7 +73,7 @@ function getDocumentBodies(databasePath: string, username: string): Map<string, 
         ["workspace_onechannel", getDocumentResult("workspace_onechannel", "{}", databasePath, username, 1701873141526, 1701873147688, "")],
         ["onechannel_multposts", getDocumentResult("onechannel_multposts", "{}", databasePath, username, 1701873177565, 1701873257345, "/workspace_onechannel/channels")],
         ["multposts_post1", getDocumentResult("multposts_post1", getPostBody("test message 1", ["", false], ["", false], ["", false]), databasePath, username, 1701873686563, 1701873691816, "/workspace_onechannel/channels/onechannel_multposts/posts")],
-        ["multposts_post2", getDocumentResult("multposts_post2", getPostBody("another test message for post 2. contains reactions", [`${databasePath}/channels/onechannel_multposts/multposts_post1`, true], [getReactionObject([`[${username}]`, true], [`[${username}]`, true], [`[${username}]`, true], [`[${username}]`, true], ["", "", false]), true], ["", false]), databasePath, username, 1701873756630, 1701873756630, "/workspace_onechannel/channels/onechannel_multposts/posts")],
+        ["multposts_post2", getDocumentResult("multposts_post2", getPostBody("another test message for post 2. contains reactions", [`"${databasePath}/channels/onechannel_multposts/multposts_post1"`, true], [getReactionObject([`[${username}]`, true], [`[${username}]`, true], [`[${username}]`, true], [`[${username}]`, true], ["", "", false]), true], ["", false]), databasePath, username, 1701873756630, 1701873756630, "/workspace_onechannel/channels/onechannel_multposts/posts")],
         ["multposts_post3", getDocumentResult("multposts_post3", getPostBody("some post content for post 3. contains extensions :smile::like::celebrate:**bold***italic*[text](https://www.google.com])", ["", false], ["", false], [getExtensionObject([`[${username}]`, true]), true]), databasePath, username, 1701873686563, 1701873691816, "/workspace_onechannel/channels/onechannel_multposts/posts")],
 
 
@@ -144,6 +159,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
                         }
                         status = 204;
                         statusText = "No Content";
+                        
                         break;
                     }
                     ok = false;
@@ -285,6 +301,7 @@ export const fetchFunc = jest.fn((input: RequestInfo | URL, init?: RequestInit):
             switch (method) {
                 case "GET":
                     body = `${documentBodies.get("existingworkspace_onechannel")}`;
+                    slog.info("called mock fetch existingworkspace_onechannel", ["existingworkspace_onechannel body", documentBodies.get("existingworkspace_onechannel")]);
                     break;
                 case "PUT":
                     console.log("should never be overwriting an existing channel. this is an error.");

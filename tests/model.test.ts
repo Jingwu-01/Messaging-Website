@@ -2,6 +2,7 @@ import { typedFetch } from "../src/model/utils";
 import { fetchFunc } from "./mockfetch";
 import { getModel } from "../src/model/model";
 import { ModelWorkspace } from "../src/model/workspace";
+import { beforeAll, expect, test } from "@jest/globals";
 
 const model = getModel();
 
@@ -12,6 +13,23 @@ beforeAll(async () => {
   (global as any).fetch = fetchFunc;
   await model.login("test_user");
 });
+
+test("Get 1 existing workspace", async() => {
+  try {
+    await model.getWorkspace("existingworkspace_onechannel"); 
+  } catch(e) {
+    expect((e as Error).message).toBe('What')
+  }
+})
+
+test("Get workspace that does not exist", async() => {
+  try {
+   await model.getWorkspace("existingworkspace_onechannel")
+  }
+  catch(e) {
+    expect((e as Error).message).toBe("error parsing JSON input")
+  }
+})
 
 test("Successful typedfetch case", async () => {
   const data = await typedFetch<string>(
