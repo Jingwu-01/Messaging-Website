@@ -43,7 +43,10 @@ export class AdapterPost {
 
   private usersStarred: Array<string> = new Array<string>();
 
-  // Creates a new AdapterPost, and also validates data.
+  /**
+   * Creates a new AdapterPost, and additionally validates that the post repsonse is valid.
+   * @param response a PostResponse object representing the JSON that is returned by the model.
+   */
   constructor(response: PostResponse) {
     // console.log(`AdapterPost constructor: response.path: ${response.path}`);
     // console.log(`AdapterPost constructor: response.path.split("/"): ${response.path.split("/")}`);
@@ -147,22 +150,42 @@ export class AdapterPost {
     this.replies = oldPost.replies;
   }
 
+  /**
+   * Sets the starred index of the post (indicating the position the post should be added in the view).
+   * @param starredIndex an integer representing the starred index of the post to add to the view.
+   */
   setStarredIndex(starredIndex: number) {
     this.starredIndex = starredIndex;
   }
 
+  /**
+   * Retrieves the starred index; that is, the index of this post with respect to other starred posts.
+   * @returns an integer representing this post's starred index.
+   */
   getStarredIndex() {
     return this.starredIndex;
   }
 
+  /**
+   * Retrieves a boolean indicating whether or not this post is currently starred.
+   * @returns a boolean indicating whether this post is starred or not.
+   */
   getStarred() {
     return this.starred;
   }
 
+  /**
+   * Sets whether or not this post is now starred.
+   * @param starred a boolean indicating whether or not this post is now starred.
+   */
   setStarred(starred: boolean) {
     this.starred = starred;
   }
 
+  /**
+   * Returns an array of usernames indicating which users have starred this post.
+   * @returns an array of usernames indicating who's starred this post.
+   */
   getUsersStarred(): Array<string> {
     return this.usersStarred;
   }

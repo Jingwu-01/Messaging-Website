@@ -6,7 +6,13 @@ import { slog } from "../../slog";
 import { StarOps } from "../../state-manager/utils";
 import { AdapterPost } from "./adapterPost";
 
-
+/**
+ * Given a list of sorted posts in order of increasing timestamp, finds
+ * the index to insert this new post. Assumes that timestamps are unique.
+ * @param postList an array of AdapterPost representing the list of posts to upsert into
+ * @param newPost an AdapterPost to upsert into the list
+ * @returns an integer representing the index of the post to upsert in postList
+ */
 function findSortedIdx(postList: Array<AdapterPost>, newPost: AdapterPost) {
   let idx: number;
   slog.info("findSortedIdx", ["postList", postList], ["newPost", newPost]);
@@ -45,27 +51,16 @@ export function insertPostSorted(
     postList.splice(idx, 0, newPost);
   }
   return idx;
-
-  // Attempted binary search implementation; gave up. can always change this later.
-
-  // let low = 0;
-  // let high = postList.length;
-  // while (low < high) {
-  //   let mid = Math.floor((low + high) / 2);
-  //   if (postList[mid].getCreatedTime() === newPost.getCreatedTime()) {
-  //     postList.splice(mid, 0, newPost)
-  //     return mid;
-  //   } else if (postList[mid].getCreatedTime() < newPost.getCreatedTime()) {
-  //     low = mid + 1;
-  //   } else {
-  //     high = mid - 1;
-  //   }
-  // }
-  // postList.splice(low, 0, newPost);
-  // return low;
-  // insert at low
 }
 
+/**
+ * Removes a post from an array of posts, assuming that the array of posts is sorted in increasing order
+ * of created at timestamps. Also assumes that timestamps are unique.
+ * @param postList an array of AdapterPost representing the posts we currently have
+ * @param curPost an AdapterPost representing the post that we want to remove from postList
+ * @returns a [number, StarOps] pair where the first element represents the index that this post
+ * was removed from, and the second element represents the operation to perform on the view post.
+ */
 export function removePostSorted(postList: Array<AdapterPost>, curPost: AdapterPost): [number, StarOps] {
   let idx = findSortedIdx(postList, curPost);
   if (postList.length === 0 || idx === postList.length) {
@@ -79,6 +74,14 @@ export function removePostSorted(postList: Array<AdapterPost>, curPost: AdapterP
   }
 }
 
+/**
+ * Upserts a starred post into an array of posts. Notably, we do not know if the post currently exists, but
+ * we assume that timestamps are unique, so we upsert the starred post into the array accordingly.
+ * @param postList an array of posts representing the starred posts to insert into
+ * @param curPost an AdapterPost representing the post to upsert into the array
+ * @returns a [number, StarOps] pair, where the first element represents the index that the post was upserted,
+ * and the second element represents the operation to perform on the upsertedpost
+ */
 export function insertStarredPostSorted(postList: Array<AdapterPost>, curPost: AdapterPost): [number, StarOps] {
   let idx = findSortedIdx(postList, curPost);
   let starOp: StarOps;
