@@ -13,9 +13,19 @@ export default function loadingButtonComponentInit() {
     background-color: #add8e6;
     border-radius: 15px;
   }
+   #outer-button{
+     border: 0px; 
+   }
+  #outer-button:hover {
+    background-color: #818589;
+  }
+  #outer-button:active {
+    background-color: #818589;
+  }
   #outer-button:focus-visible {
     box-shadow: #FF0000 0 0 0 3px;
     outline: none;
+    border-radius: 3px 3px 3px 3px;
   }
   button:focus:not(:focus-visible) {
     box-shadow: none;

@@ -1,3 +1,4 @@
+import { slog } from "../../../../../../slog";
 import {
   ViewChannel,
   ViewChannelUpdate,
@@ -56,7 +57,7 @@ class UserMenuComponent extends HTMLElement {
     // Tell the view that this component wants to listen to user updates
     this.starredPostsButton.style.display = "none";
     getView().addUserListener(this);
-    getView().addChannelListener(this);
+    getView().addPostDisplayListener(this);
 
     this.controller = new AbortController();
     const options = { signal: this.controller.signal };
@@ -82,6 +83,7 @@ class UserMenuComponent extends HTMLElement {
   disconnectedCallback(): void {
     this.controller?.abort();
     this.controller = null;
+    getView().removePostDisplayListener(this);
   }
 
   /**
@@ -128,14 +130,12 @@ class UserMenuComponent extends HTMLElement {
     }
   }
 
-  displayChannels(update: ViewChannelUpdate) {}
+  displayPostDisplay() {
+    this.starredPostsButton.style.display = "block";
+  }
 
-  displayOpenChannel(open_channel: ViewChannel | null) {
-    if (open_channel === null) {
-      this.starredPostsButton.style.display = "none";
-    } else {
-      this.starredPostsButton.style.display = "block";
-    }
+  removePostDisplay() {
+    this.starredPostsButton.style.display = "none";
   }
 }
 
