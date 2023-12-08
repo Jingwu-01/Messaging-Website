@@ -37,6 +37,8 @@ export interface StateManagerInterface {
     getLoggedInUser(): string | null;
     serializePostResponse(response: PostResponse): [boolean, string];
     setOpenWorkspace(workspaceName: string | null): Promise<WorkspaceInterface | null>;
+    getOpenWorkspaceName(): string | undefined;
+    getOpenChannelName(): string | undefined;
 }
 
 export interface WorkspaceInterface {

@@ -23,7 +23,7 @@ import {
 } from "./interfaces";
 import { getView } from "./view/view";
 import { getModel } from "./model/model";
-import getStateManager from "./state-manager";
+import { StateManager } from "./state-manager";
 
 /**
  * Declare names and types of environment variables.
@@ -68,7 +68,7 @@ function main(): void {
 
   const view: ViewInterface = getView();
   const model: ModelInterface = getModel();
-  const stateManager: StateManagerInterface = getStateManager();
+  const stateManager: StateManagerInterface = new StateManager(view, model);
 
   initAdapter(view, model, stateManager);
   initView();

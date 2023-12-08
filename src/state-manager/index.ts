@@ -4,20 +4,31 @@ import { ModelWorkspace } from "../model/workspace";
 import { getView } from "../view/view";
 import { PostsManager } from "./postsManager";
 import { PostResponse } from "../../types/postResponse";
+import { ModelInterface, ViewInterface } from "../interfaces";
 
 /**
  * The state manager stores the state of the application
  * and has functions that the adapter can call to manipulate that state.
  * It interfaces with the Model, and has functions that are called by the Adapter.
  */
-class StateManager {
+export class StateManager {
   private openWorkspace: ModelWorkspace | null = null;
 
   private openChannel: ModelChannel | null = null;
 
-  private postsManager: PostsManager = new PostsManager();
+  private postsManager: PostsManager;
 
   private loggedInUser: string | null = null;
+
+  private view: ViewInterface;
+
+  private model: ModelInterface;
+
+  constructor(view: ViewInterface, model: ModelInterface) {
+    this.view = view;
+    this.model = model;
+    this.postsManager = new PostsManager(view, this);
+  }
 
   /**
    * Gets the currently open workspace
@@ -122,7 +133,7 @@ class StateManager {
    * Resets the posts manager
    */
   resetPostsManager() {
-    this.postsManager = new PostsManager();
+    this.postsManager = new PostsManager(this.getView(), this);
   }
 
   /**
@@ -140,16 +151,20 @@ class StateManager {
   getLoggedInUser(): string | null {
     return this.loggedInUser;
   }
-}
 
-// state manager
-let stateManager = new StateManager();
-/**
- * Returns the app's state manager singleton
- * @returns The app's state manager singleton
- */
-function getStateManager() {
-  return stateManager;
+  /**
+   * Returns the view that this state manager updates.
+   * @returns the view interface that this state manager updates.
+   */
+  getView() {
+    return this.view;
+  }
+  
+  /**
+   * Returns the model that this state manager requests information from.
+   * @returns the model interface that this state manager requests information from.
+   */
+  getModel() {
+    return this.model;
+  }
 }
-
-export default getStateManager;
